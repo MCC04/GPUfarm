@@ -3,8 +3,8 @@
 rm -f ./results/managed_m2.txt
 touch ./results/managed_m2.txt
 
-rm -f ./profiling/managed_m2.txt
-touch ./profiling/managed_m2.txt
+rm -f ./profiling/managed*-m2.txt
+#touch ./profiling/managed_m2.txt
 
 #ARGS="device nExec kerIters elemNum" >> managed_m2.txt
 #standard
@@ -15,7 +15,7 @@ do
         let "N = $k*56*32"
         #for ((i=0; i<7; i+=1));
         #do
-                ./a.out 3 $k 1000 $N >> ./results/managed_m2.txt
+                ./a.out 0 $k 1000 $N >> ./results/managed_m2.txt
         #done
 done
 
@@ -26,7 +26,7 @@ do
         let "N = $k*56*32"
         #for ((i=0; i<7; i+=1));
         #do
-               nvprof --log-file ./profiling/managed_m2.txt ./a.out 3 $k 1000 $N 
+               nvprof --log-file ./profiling/managed$k-m2.txt ./a.out 0 $k 1000 $N 
         #done
 done
 
