@@ -14,8 +14,8 @@
 #define HIGH 500.0f
 #define LOW -500.0f
 
-#define GRID 1
-#define BLOCK 32
+//#define GRID 1
+//#define BLOCK 256
 
 //M = iterations; N = size
 __global__ void cosKernel(int M, int N, float *x_d, int offset, int *myclocks){    
@@ -39,6 +39,8 @@ __global__ void cosKernel(int M, int N, float *x_d, int offset, int *myclocks){
     return ;
 }
 
+__global__ void emptyKernel(){ return; }
+
 // Function to check any CUDA runtime API results
 inline cudaError_t checkCuda(cudaError_t result)
 {
@@ -54,7 +56,8 @@ inline cudaError_t checkCuda(cudaError_t result)
 int main(int argc, char **argv){
     std::srand(static_cast <unsigned> (time(NULL)));
 
-    
+    int GRID=0;
+    int BLOCK=0;
     int gpu_clk=1;
     float msSum=0.0; // elapsed time in milliseconds
 
@@ -128,6 +131,8 @@ int main(int argc, char **argv){
     std::cout<<"########## ONE SM ##########" <<std::endl;
     std::cout<<"##########################" <<std::endl;
 
+    GRID = 1;
+    BLOCK=32;
     const int bytesSize = N_size*sizeof(float);   
     int* myClock, *myClock_d;     
     float *x_d,*cosx,ms=0.0;
@@ -193,10 +198,41 @@ int main(int argc, char **argv){
         msSum+=tmp;
     }
     cudaFree(x_d);
+
+#elif EMPTYKER
+    //const int N = 100;
+    float time = 0.f;
+    cudaEvent_t start, stop;
+    float max=0,min=0;
+
+    BLOCK=256
+    GRID=N_size/BLOCK;
+    //K = num iterations
+    //M = 0
+    //N = num elem
+    
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+
+    for (int i=0; i<K_exec; i++) { 
+        cudaEventRecord(start, 0);
+        emptyKernel<<<GRID, BLOCK>>>(); 
+        cudaEventRecord(stop, 0);
+        cudaEventSynchronize(stop);
+        cudaEventElapsedTime(&time, start, stop);
+        msSum = msSum + time;
+        if(time>max) max = time;
+        if(time<min) min = time;
+
+    }
+    #if !defined(MEASURES)
+        std::cout<<std::endl<<"Max time \t Min time \t Avg tima "<<std::endl;
+    #endif
+        std::cout<<std::endl<<max<<"\t"<<min<< "\t"<<msSum/N<<std::endl;
+
 #endif
-
+    
     std::cout<<std::endl<<"----Total Events measures: "<< msSum<<"ms"<<std::endl;
-
-
+   
     return 0;
 }

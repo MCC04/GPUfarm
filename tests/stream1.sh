@@ -1,31 +1,38 @@
 #!/bin/bash
   
-rm -f ./results/stream_m1.txt
-touch ./results/stream_m1.txt
+rm -f ./results/stream.txt
+touch ./results/stream.txt
 
-rm -f ./profiling/stream*-m1.txt
-#touch ./profiling/stream_m1.txt
+rm -f ./profiling/stream*.txt
+#touch ./profiling/stream_m2.txt
 
-#ARGS="device nExec kerIters elemNum" >> stream_m1.txt
+#ARGS="device nExec kerIters elemNum" >> stream_m2.txt
 #standard
 
-for((k=4; k<=16; k*=2));
+for((k=1; k<=32; k*=2));
 do
-        echo running for k = $k
-        let "N = $k*56*32"
-        #for ((i=0; i<7; i+=1));
-        #do
-                ./a.out 0 $k 500 $N >> ./results/stream_m1.txt
-        #done
+	echo running with k = $k
+	let "N = $k*56*32"
+	
+        for((i=10; i<=1250; i*=5));
+        do
+        	echo iterations M = $i
+                ./a.out 1 $k $i $N >> ./results/stream.txt
+  	done
+        ./a.out 1 $k 2500 $N >> ./results/stream.txt
 done
 
-for((k=4; k<=16; k*=2));
+
+for((k=1; k<=32; k*=2));
 do
-        echo profiling for k = $k
+        echo profiling with k = $k
         let "N = $k*56*32"
-        #for ((i=0; i<7; i+=1));
-        #do
-                nvprof --log-file ./profiling/stream$k-m1.txt ./a.out 0 $k 500 $N 
-        #done
+        
+        for((i=10; i<=1250; i*=5));
+        do
+        	echo iterations M = $i
+        	nvprof --log-file ./profiling/stream$k-$i.txt ./a.out 1 $k $i $N 
+        done
+        nvprof --log-file ./profiling/stream$k-2500.txt ./a.out 1 $k 2500 $N 
 done
 

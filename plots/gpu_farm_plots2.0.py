@@ -27,53 +27,87 @@ def getDatas(str):
 	return evTimes
 	
 def getAvgTimes(times1, times2):
+	
 	l1=[sum(times1[0:3])/4, sum(times1[4:11])/8, sum(times1[12:27])/16 ]
 	l2=[sum(times2[0:3])/4, sum(times2[4:11])/8, sum(times2[12:27])/16 ]
 	
 	return l1,l2
+	
+def getAvgTimes2(times1):
+	#elems=[]
+	avgList=[]
+	
+	count=0
+	j=1
+	while j<=32:
+		print ("J: ",j)
+		
+		m=0
+		while(m<5):
+			i = 0
+			tmp=0
+			
+			while(i<j):			
+				tmp+=times1[count]
+				count+=1
+				i+=1
+				print ("i: ",i)
+				print ("count: ",count)
+				print ("tmp: ",tmp)
+
+			avgList.append(tmp/j)
+		
+			m+=1
+		j*=2
+	print (avgList)
+	
+	return avgList
 	
 ##########
 ###MAIN###
 ##########
 def main():
 
-	elem_num=[7168, 14336, 28672]	
+	#elem_num=[7168, 14336, 28672]	
 
-	print("\nStream 500 Times: ")
-	stream1 = getDatas('../results/stream_m1.txt')
-	print("\nStream 1000 Times: ")
-	stream2 = getDatas('../results/stream_m2.txt')
+	print("\nStream Times: ")
+	stream1 = getDatas('../results/stream.txt')
+	#print("\nStream 1000 Times: ")
+	#stream2 = getDatas('../results/stream_m2.txt')
 
-	print("\nFuture 500 Times: ")
-	future1 = getDatas('../results/future_m1.txt')
-	print("\nFuture 1000 Times: ")
-	future2 = getDatas('../results/future_m2.txt')
+	print("\nFuture Times: ")
+	future1 = getDatas('../results/future.txt')
+	#print("\nFuture 1000 Times: ")
+	#future2 = getDatas('../results/future_m2.txt')
 	
-	print("\nManaged 500 Times: ")
-	managed1 = getDatas('../results/managed_m1.txt')
-	print("\nManaged 1000 Times: ")
-	managed2 = getDatas('../results/managed_m2.txt')
+	print("\nManaged Times: ")
+	managed1 = getDatas('../results/managed.txt')
+	#print("\nManaged 1000 Times: ")
+	#managed2 = getDatas('../results/managed_m2.txt')
 
-	print("\nOne SM 1000 Times: ")
+	print("\nOne SM Times: ")
 	oneSm = getDatas('../results/oneSm.txt')
 
-	s1, s2 = getAvgTimes(stream1, stream2)
-	f1, f2 = getAvgTimes(future1, future2)
-	m1, m2 = getAvgTimes(managed1, managed2)		
-	one=l2=[sum(oneSm[0:3])/4, sum(oneSm[4:11])/8, sum(oneSm[12:27])/16 ]
-	print("\nFuture 500 avg: ")
+	elems=[1792,3584,7168,14336,28672,57344]
+	iterNum=[10,50,250,1250,2500]
+	#for j in range(1,16,2):
+	#	elems.append(56*256*j)
+	s1 = getAvgTimes2(stream1)
+	f1 = getAvgTimes2(future1)
+	m1 = getAvgTimes2(managed1)	
+	one = getAvgTimes2(oneSm)	
+	
+	#one=l2=[sum(oneSm[0:3])/4, sum(oneSm[4:11])/8, sum(oneSm[12:27])/16 ]
+	print("\nFuture avg: ")
 	print(f1)	
-	print("\nFuture 1000 avg: ")
-	print(f2)	
-	print("\nStream 500 avg: ")
+	
+	print("\nStream avg: ")
 	print(s1)
-	print("\nStream 1000 avg: ")
-	print(s2)
-	print("\nManaged 500 avg: ")
+	
+	print("\nManaged avg: ")
 	print(m1)
-	print("\nManaged 1000 avg: ")
-	print(m2)
-	print("\nOne SM 1000 avg: ")
+
+	print("\nOne SM avg: ")
 	print(one)	
 	
 	o=np.array(one, dtype=np.float)
@@ -91,73 +125,216 @@ def main():
 	print("\nManaged Memory Stream speedup: ")
 	print(speedUp3)
 	
-
+	
 	######################
 	########GRAPHS########
 	######################	
-	#500 ITERATIONS COMPARISON
+	
+	
+	
+	#N=3584 COMPARISON
 	plt.figure(1)
-	plt.plot(elem_num, f1, marker='.',label='Future 500')
-	plt.plot(elem_num, s1, marker='.',label='Stream 500')
-	plt.plot(elem_num, m1, marker='.',label='Managed 500')
+	
+
+	
+	plt.plot(iterNum, f1[5:10], marker='.',label='Future')
+	
+	plt.plot(iterNum, s1[5:10], marker='.',label='Stream ')
+
+	plt.plot(iterNum, m1[5:10], marker='.',label='Managed')
 	plt.xlabel('ELEM NUMBER')
-	plt.ylabel('EVENT ELAPSED (ms)')
-	plt.xticks(elem_num)
-	plt.legend()
+	plt.ylabel('EVENT ELAPSED 3584 ELEMS \n (ms)')
+	
+	#plt.xscale('log',basex=2)
+	plt.xticks(iterNum)
+	plt.xscale('log',basex=5)
+	plt.legend(loc='upper left')
 	plt.grid()
 	plt.show()
 	
-	#COMPARISON WITH ONE_SM
+	#N=14336 COMPARISON
 	plt.figure(2)
-	plt.plot(elem_num, f1, marker='.',label='Future 500')
-	plt.plot(elem_num, s1, marker='.',label='Stream 500')
-	plt.plot(elem_num, m1, marker='.',label='Managed 500')
-	plt.plot(elem_num, one, marker='.',label='One SM 500')
+	
+	plt.plot(iterNum, f1[15:20], marker='.',label='Future')
+	
+	plt.plot(iterNum, s1[15:20], marker='.',label='Stream ')
+
+	plt.plot(iterNum, m1[15:20], marker='.',label='Managed')
 	plt.xlabel('ELEM NUMBER')
-	plt.ylabel('EVENT ELAPSED (ms)')
-	plt.xticks(elem_num)
-	plt.legend()
+	plt.ylabel('EVENT ELAPSED 14336 ELEMS \n (ms)')
+	#plt.xticks(elems)
+	#plt.xscale('log',basex=2)
+	plt.xticks(iterNum)
+	plt.xscale('log',basex=5)
+	plt.legend(loc='upper left')
 	plt.grid()
 	plt.show()
-	
-	#1000 ITERATIONS COMPARISON
+
+	#N=57344 COMPARISON
 	plt.figure(3)
-	plt.plot(elem_num, f2, marker='.',label='Future 1000')
-	plt.plot(elem_num, s2, marker='.',label='Stream 1000')
-	plt.plot(elem_num, m2, marker='.',label='Managed 1000')
+	
+	plt.plot(iterNum, f1[25:30], marker='.',label='Future')
+	
+	plt.plot(iterNum, s1[25:30], marker='.',label='Stream ')
+
+	plt.plot(iterNum, m1[25:30], marker='.',label='Managed')
 	plt.xlabel('ELEM NUMBER')
-	plt.ylabel('EVENT ELAPSED (ms)')
-	plt.xticks(elem_num)
-	plt.legend()
+	plt.ylabel('EVENT ELAPSED 57344 ELEMS \n (ms)')
+	#plt.xticks(elems)
+	#plt.xscale('log',basex=2)
+	plt.xticks(iterNum)
+	plt.xscale('log',basex=5)
+	plt.legend(loc='upper left')
 	plt.grid()
 	plt.show()
 	
-	#GLOBAL COMPARISON
+	
+	
+	
+	#M=250 COMPARISON
 	plt.figure(4)
-	plt.plot(elem_num, f1,linestyle='--', marker='.',label='Future 500')
-	plt.plot(elem_num, s1,linestyle='--', marker='.',label='Stream 500')
-	plt.plot(elem_num, m1,linestyle='--', marker='.',label='Managed 500')
-	#plt.plot(elem_num, one,linestyle=':', marker='.',label='One SM 500')
-	plt.plot(elem_num, f2, marker='.',label='Future 1000')
-	plt.plot(elem_num, s2, marker='.',label='Stream 1000')
-	plt.plot(elem_num, m2, marker='.',label='Managed 1000')
+	
+	plt.plot(elems, [f1[2],f1[7],f1[12],f1[17],f1[22],f1[27]], marker='.',label='Future')
+	
+	plt.plot(elems, [s1[2],s1[7],s1[12],s1[17],s1[22],s1[27]], marker='.',label='Stream ')
+
+	plt.plot(elems, [m1[2],m1[7],m1[12],m1[17],m1[22],m1[27]], marker='.',label='Managed')
 	plt.xlabel('ELEM NUMBER')
-	plt.ylabel('EVENT ELAPSED (ms)')
-	plt.xticks(elem_num)
-	plt.legend()
+	plt.ylabel('EVENT ELAPSED 250 KER ITER \n (ms)')
+	
+	plt.xscale('log',basex=2)
+	#plt.xticks(elems)
+	plt.legend(loc='upper left')
 	plt.grid()
 	plt.show()
+	
+	#M=1250 COMPARISON
+	plt.figure(5)
+	
+	plt.plot(elems, [f1[3],f1[8],f1[13],f1[18],f1[23],f1[28]], marker='.',label='Future')
+	
+	plt.plot(elems, [s1[3],s1[8],s1[13],s1[18],s1[23],s1[28]], marker='.',label='Stream ')
+
+	plt.plot(elems, [m1[3],m1[8],m1[13],m1[18],m1[23],m1[28]], marker='.',label='Managed')
+	plt.xlabel('ELEM NUMBER')
+	plt.ylabel('EVENT ELAPSED 1250 KER ITER \n (ms)')
+	#plt.xticks(elems)
+	plt.xscale('log',basex=2)
+	plt.legend(loc='upper left')
+	plt.grid()
+	plt.show()
+
+	#M=2500 COMPARISON
+	plt.figure(6)
+	
+	plt.plot(elems, [f1[4],f1[9],f1[14],f1[19],f1[24],f1[29]], marker='.',label='Future')
+	
+	plt.plot(elems, [s1[4],s1[9],s1[14],s1[19],s1[24],s1[29]], marker='.',label='Stream ')
+
+	plt.plot(elems, [m1[4],m1[9],m1[14],m1[19],m1[24],m1[29]], marker='.',label='Managed')
+	plt.xlabel('ELEM NUMBER')
+	plt.ylabel('EVENT ELAPSED 2500 KER ITER \n (ms)')
+	#plt.xticks(elems)
+	plt.xscale('log',basex=2)
+	plt.legend(loc='upper left')
+	plt.grid()
+	plt.show()
+	
+	#COMPARE ALL ITERS
+	
+	plt.figure(7)
+	
+	plt.plot(elems, [f1[2],f1[7],f1[12],f1[17],f1[22],f1[27]], marker='o',label='Future 250', color='blue', linestyle=':')	
+	plt.plot(elems, [s1[2],s1[7],s1[12],s1[17],s1[22],s1[27]], marker='o',label='Stream 250',color='green', linestyle=':')
+	plt.plot(elems, [m1[2],m1[7],m1[12],m1[17],m1[22],m1[27]], marker='o',label='Managed 250',color='red', linestyle=':')
+	
+	plt.plot(elems, [f1[3],f1[8],f1[13],f1[18],f1[23],f1[28]], marker='v',label='Future 1250',color='blue', linestyle='--')	
+	plt.plot(elems, [s1[3],s1[8],s1[13],s1[18],s1[23],s1[28]], marker='v',label='Stream 1250',color='green', linestyle='--')
+	plt.plot(elems, [m1[3],m1[8],m1[13],m1[18],m1[23],m1[28]], marker='v',label='Managed 1250',color='red', linestyle='--')
+	
+	plt.plot(elems, [f1[4],f1[9],f1[14],f1[19],f1[24],f1[29]], marker='s',label='Future 2500',color='blue')	
+	plt.plot(elems, [s1[4],s1[9],s1[14],s1[19],s1[24],s1[29]], marker='s',label='Stream 2500',color='green')
+	plt.plot(elems, [m1[4],m1[9],m1[14],m1[19],m1[24],m1[29]], marker='s',label='Managed 2500',color='red')
+	
+	plt.xlabel('ELEM NUMBER')
+	plt.ylabel('EVENT ELAPSED (ms)')
+	
+	plt.xscale('log',basex=2)
+	#plt.xticks(elems)
+	plt.legend(loc='upper left')
+	plt.grid()
+	plt.show()
+	
+	
+
+
 	
 	#SPEEDUP
-	plt.figure(5)
-	plt.plot(elem_num, speedUp1, marker='.',label='Future speed up')
-	plt.plot(elem_num, speedUp2, marker='.',label='Stream speed up')
-	plt.plot(elem_num, speedUp3, marker='.',label='Managed speed up')
-	plt.plot(elem_num, elem_num,linestyle='--', marker='.',label='Ideal speed up')
+	plt.figure(8)
+	plt.plot(elems,  [speedUp1[2],speedUp1[7],speedUp1[12],speedUp1[17],speedUp1[22],speedUp1[27]], marker='o',label='Future 250',color='blue')
+	plt.plot(elems,  [speedUp2[2],speedUp2[7],speedUp2[12],speedUp2[17],speedUp2[22],speedUp2[27]], marker='o',label='Stream 250',color='green')
+	plt.plot(elems,  [speedUp3[2],speedUp3[7],speedUp3[12],speedUp3[17],speedUp3[22],speedUp3[27]], marker='o',label='Managed 250',color='red')
+	plt.plot(elems, elems, marker='.',label='Ideal speed up',color='orange',linestyle='--')
 	plt.xlabel('ELEM NUMBER')
 	plt.ylabel('SPEEDUP')
-	plt.xticks(elem_num)
-	plt.legend()
+	#plt.xticks(elems)
+
+	
+	plt.xlim([elems[0],elems[5]])
+	plt.ylim([elems[0],elems[5]])
+	
+	plt.xscale('log',basex=2)
+	plt.yscale('log',basey=2)
+	
+	plt.legend(loc='upper left')
+	
+	plt.grid()
+	plt.show()
+	
+	
+	plt.figure(9)
+	plt.plot(elems, [speedUp1[3],speedUp1[8],speedUp1[13],speedUp1[18],speedUp1[23],speedUp1[28]], marker='v',label='Future 1250',color='blue')
+	plt.plot(elems, [speedUp2[3],speedUp2[8],speedUp2[13],speedUp2[18],speedUp2[23],speedUp2[28]], marker='v',label='Stream 1250',color='green')
+	plt.plot(elems, [speedUp3[3],speedUp3[8],speedUp3[13],speedUp3[18],speedUp3[23],speedUp3[28]], marker='v',label='Managed 1250',color='red')
+	
+	plt.plot(elems, elems, marker='.',label='Ideal speed up',color='orange',linestyle='--')
+	plt.xlabel('ELEM NUMBER')
+	plt.ylabel('SPEEDUP')
+	#plt.xticks(elems)
+
+	
+	plt.xlim([elems[0],elems[5]])
+	plt.ylim([elems[0],elems[5]])
+	
+	plt.xscale('log',basex=2)
+	plt.yscale('log',basey=2)
+	
+	plt.legend(loc='upper left')
+	
+	plt.grid()
+	plt.show()
+	
+	plt.figure(10)		
+	plt.plot(elems, [speedUp1[4],speedUp1[9],speedUp1[14],speedUp1[19],speedUp1[24],speedUp1[29]], marker='s',label='Future 2500',color='blue')
+	plt.plot(elems, [speedUp2[4],speedUp2[9],speedUp2[14],speedUp2[19],speedUp2[24],speedUp2[29]], marker='s',label='Stream 2500',color='green')
+	plt.plot(elems, [speedUp3[4],speedUp3[9],speedUp3[14],speedUp3[19],speedUp3[24],speedUp3[29]], marker='s',label='Managed speed up 2500',color='red')
+	
+
+	
+	plt.plot(elems, elems, marker='.',label='Ideal speed up',color='orange',linestyle='--')
+	plt.xlabel('ELEM NUMBER')
+	plt.ylabel('SPEEDUP')
+	#plt.xticks(elems)
+
+	
+	plt.xlim([elems[0],elems[5]])
+	plt.ylim([elems[0],elems[5]])
+	
+	plt.xscale('log',basex=2)
+	plt.yscale('log',basey=2)
+	
+	plt.legend(loc='upper left')
+	
 	plt.grid()
 	plt.show()
 	
