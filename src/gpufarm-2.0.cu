@@ -288,8 +288,6 @@ int main(int argc, char **argv){
 
 
 
-
-
 #elif STREAMNEW
     std::cout<<std::endl<<"##########################" <<std::endl;
     std::cout<<"##########STREAM NEW##########" <<std::endl;
@@ -311,7 +309,6 @@ int main(int argc, char **argv){
         std::cout << "Stream Size \t Stream bytes \t GRID \t BLOCK " << std::endl;
         std::cout << streamSize<<" \t \t " <<streamBytes<< " \t \t " << GRID <<" \t " << BLOCK << std::endl;
     #endif
-    //cudaMallocHost(&x, bytesSize);
     cudaMalloc(&x_d, bytesSize);
     cudaMalloc(&clocks_d,GRID*sizeof(int));
 
@@ -331,28 +328,22 @@ int main(int argc, char **argv){
 
     for (int r = 0; r < K_exec; ++r) {  
         ms=0;     
-        //for (int i = 0; i < K_exec; ++i) {
-            //int offset = i * streamSize; 
-            //int clockOffs= i*GRID;
-            //float tmp=0.0;
 
-            checkCuda( cudaEventRecord(startEvent,0) );
-            cudaMemcpyAsync(x_d, x, streamBytes, cudaMemcpyHostToDevice, stream[r]);    
+        checkCuda( cudaEventRecord(startEvent,0) );
+        cudaMemcpyAsync(x_d, x, streamBytes, cudaMemcpyHostToDevice, stream[r]);    
 
-            #ifdef STRIDE
-                cosGridStride<<<GRID, BLOCK, 0, stream[r]>>>(M_iter, N_size, x_d, 0, clocks_d);
-            #else
-                cosKernel<<<GRID, BLOCK, 0, stream[r]>>>(M_iter, N_size, x_d, 0, clocks_d);
-            #endif
-            cudaMemcpyAsync( cosx, x_d, streamBytes, cudaMemcpyDeviceToHost, stream[r]);
-            cudaMemcpyAsync( clocks, clocks_d, GRID*sizeof(int), cudaMemcpyDeviceToHost, stream[r]);
+        #ifdef STRIDE
+            cosGridStride<<<GRID, BLOCK, 0, stream[r]>>>(M_iter, N_size, x_d, 0, clocks_d);
+        #else
+            cosKernel<<<GRID, BLOCK, 0, stream[r]>>>(M_iter, N_size, x_d, 0, clocks_d);
+        #endif
+        cudaMemcpyAsync( cosx, x_d, streamBytes, cudaMemcpyDeviceToHost, stream[r]);
+        cudaMemcpyAsync( clocks, clocks_d, GRID*sizeof(int), cudaMemcpyDeviceToHost, stream[r]);
 
-            checkCuda( cudaEventRecord(stopEvent, 0) );
-            checkCuda( cudaEventSynchronize(stopEvent) );
-            checkCuda( cudaEventElapsedTime(&ms, startEvent, stopEvent) );
-           // ms+=tmp;
-        //}
-        
+        checkCuda( cudaEventRecord(stopEvent, 0) );
+        checkCuda( cudaEventSynchronize(stopEvent) );
+        checkCuda( cudaEventElapsedTime(&ms, startEvent, stopEvent) );
+     
         #if !defined(MEASURES)
             std::cout<<"COSX array : " <<std::endl;  
             for(int j=0; j<N_size;j+=1) 
@@ -397,7 +388,7 @@ int main(int argc, char **argv){
         const int streamBytes = streamSize* sizeof(float) ;
     
         float ms=0.0;
-        GRID=streamSize/BLOCK;///K_exec;
+        GRID=streamSize/BLOCK;
         int *clocks;
         clocks=new int[GRID]; 
     
@@ -426,21 +417,15 @@ int main(int argc, char **argv){
         }
     
         for (int r = 0; r < K_exec; ++r) {   
-            ms=0;
+            ms=0;          
+    
+            checkCuda( cudaEventRecord(startEvent,0) ); 
             
-                //int offset = i * streamSize;
-                //float tmp=0.0;
-    
-                checkCuda( cudaEventRecord(startEvent,0) ); 
-                //checkCuda(cudaStreamAttachMemAsync(stream[i], &x[offset], streamSize, cudaMemAttachSingle));    
-                //checkCuda(cudaStreamAttachMemAsync(stream[i], &clocks[i], 0, cudaMemAttachSingle));
-                
-                cosKernel<<<GRID, BLOCK, 0, stream[r]>>>(M_iter, N_size, x, 0, clocks);
-    
-                checkCuda( cudaEventRecord(stopEvent, 0) );
-                checkCuda( cudaEventSynchronize(stopEvent) );
-                checkCuda( cudaEventElapsedTime(&ms, startEvent, stopEvent) );
-                //ms+=tmp;
+            cosKernel<<<GRID, BLOCK, 0, stream[r]>>>(M_iter, N_size, x, 0, clocks);
+
+            checkCuda( cudaEventRecord(stopEvent, 0) );
+            checkCuda( cudaEventSynchronize(stopEvent) );
+            checkCuda( cudaEventElapsedTime(&ms, startEvent, stopEvent) );
             
     
             #if !defined(MEASURES)
@@ -482,9 +467,6 @@ int main(int argc, char **argv){
             checkCuda(cudaStreamDestroy(stream[i]));
 
 
-
-
-
 #elif STREAMMANAGED
     std::cout<<std::endl<<"##################################" <<std::endl;
     std::cout<<"##########STREAM MANAGED##########" <<std::endl;
@@ -493,7 +475,7 @@ int main(int argc, char **argv){
     const int streamBytes = streamSize* sizeof(float) ;
 
     float ms=0.0;
-    GRID=streamSize/BLOCK;///K_exec;
+    GRID=streamSize/BLOCK;
     int *clocks;
     clocks=new int[GRID]; 
 
@@ -528,9 +510,7 @@ int main(int argc, char **argv){
             float tmp=0.0;
 
             checkCuda( cudaEventRecord(startEvent,0) ); 
-            //checkCuda(cudaStreamAttachMemAsync(stream[i], &x[offset], streamSize, cudaMemAttachSingle));    
-            //checkCuda(cudaStreamAttachMemAsync(stream[i], &clocks[i], 0, cudaMemAttachSingle));
-            
+                        
             cosKernel<<<GRID, BLOCK, 0, stream[i]>>>(M_iter, N_size, x, offset, clocks);
 
             checkCuda( cudaEventRecord(stopEvent, 0) );
