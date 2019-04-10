@@ -1,0 +1,29 @@
+======== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:  100.00%  863.35us         2  431.68us  187.65us  675.71us  cosKernel(int, int, float*, int*, int)
+      API calls:   92.78%  339.55ms         2  169.77ms  1.1100us  339.55ms  cudaEventCreate
+                    5.61%  20.542ms         3  6.8472ms  15.679us  20.482ms  cudaMallocManaged
+                    0.74%  2.7117ms       384  7.0610us     218ns  283.20us  cuDeviceGetAttribute
+                    0.26%  940.70us         4  235.17us  104.18us  362.90us  cuDeviceTotalMem
+                    0.24%  869.57us         2  434.79us  191.39us  678.18us  cudaEventSynchronize
+                    0.18%  660.39us         1  660.39us  660.39us  660.39us  cudaGetDeviceProperties
+                    0.08%  278.67us         1  278.67us  278.67us  278.67us  cudaDeviceGetAttribute
+                    0.06%  231.83us         4  57.956us  55.720us  62.946us  cuDeviceGetName
+                    0.02%  65.816us         2  32.908us  23.318us  42.498us  cudaLaunchKernel
+                    0.01%  41.109us         2  20.554us  15.164us  25.945us  cudaStreamCreate
+                    0.01%  33.311us         4  8.3270us  4.3290us  16.333us  cudaEventRecord
+                    0.01%  21.674us         2  10.837us  7.7830us  13.891us  cudaStreamDestroy
+                    0.00%  8.7050us         2  4.3520us  4.1620us  4.5430us  cudaEventElapsedTime
+                    0.00%  8.0520us         4  2.0130us  1.3620us  3.2850us  cuDeviceGetPCIBusId
+                    0.00%  4.1760us         1  4.1760us  4.1760us  4.1760us  cudaSetDevice
+                    0.00%  4.0190us         8     502ns     262ns  1.2600us  cuDeviceGet
+                    0.00%  1.6280us         3     542ns     153ns     946ns  cuDeviceGetCount
+                    0.00%  1.1410us         4     285ns     246ns     386ns  cuDeviceGetUuid
+
+======== Unified Memory profiling result:
+Device "Tesla P100-PCIE-16GB (1)"
+   Count  Avg Size  Min Size  Max Size  Total Size  Total Time  Name
+       6  21.333KB  12.000KB  36.000KB  128.0000KB  19.42400us  Host To Device
+       2  32.000KB  4.0000KB  60.000KB  64.00000KB  6.304000us  Device To Host
+       3         -         -         -           -  747.0080us  Gpu page fault groups
+Total CPU Page faults: 2
