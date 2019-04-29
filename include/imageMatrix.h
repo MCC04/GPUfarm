@@ -36,11 +36,6 @@ float smallMatMulKer(
     int m, int k, int n, 
     cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop);
 
-/*float filter (
-    unsigned char *img_in, unsigned char *img_out,
-    int width, int height,
-    cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop);*/
-
 float blurGaussianfilter (
     unsigned char *img_in, unsigned char *img_out,
     int width, int height,int kerdim, float sigma,
