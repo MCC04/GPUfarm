@@ -4,18 +4,12 @@ rm -f ./results/dev_cos_invert.txt
 touch ./results/dev_cos_invert.txt
 
 rm -f ./profiling/dev_cos_inv*.txt
-#touch ./profiling/dev_cos_invert.txt
 
-#ARGS="device nExec kerIters elemNum" >> dev_cos_invert.txt
-#standard
-
-#BLUE='\e[1;34m$1\e[0m'
 BLUE='\033[1;34m'
 NC='\033[0m'
-
+#let GPU=2
 let GPU=1
 let BLOCK=512
-
 
 ###########
 make clean
@@ -31,14 +25,14 @@ do
 
 	for((i=10; i<=1250; i*=5));
 	do
-		for((j=0; j<=15; j+=1));
+		for((j=0; j<=12; j+=1));
 		do
 			echo iterations M = $i
-	                nvprof --log-file ./profiling/dev_cos_inv$k-$i.txt ./bin/future.out $GPU $BLOCK $k $i $N >> ./results/dev_cos_invert.txt
+			nvprof --log-file ./profiling/dev_cos_inv$k-$i.txt ./bin/future.out $GPU $BLOCK $k $i $N >> ./results/dev_cos_invert.txt
 		done		
 	done
 	
-	for((j=0; j<=15; j+=1));
+	for((j=0; j<=12; j+=1));
 	do
 		nvprof --log-file ./profiling/dev_cos_inv$k-2500.txt ./bin/future.out $GPU $BLOCK $k 2500 $N  >> ./results/dev_cos_invert.txt
 	done
@@ -57,14 +51,14 @@ do
 
 	for((i=10; i<=1250; i*=5));
 	do
-		for((j=0; j<=15; j+=1));
+		for((j=0; j<=12; j+=1));
 		do
 			echo iterations M = $i
-		        nvprof --log-file ./profiling/dev_cos_inv$k-$i.txt ./bin/stream.out $GPU $BLOCK $k $i $N >> ./results/dev_cos_invert.txt
+			nvprof --log-file ./profiling/dev_cos_inv$k-$i.txt ./bin/stream.out $GPU $BLOCK $k $i $N >> ./results/dev_cos_invert.txt
 		done
 	
 	done
-	for((j=0; j<=15; j+=1));
+	for((j=0; j<=12; j+=1));
 	do
 		nvprof --log-file ./profiling/dev_cos_inv$k-2500.txt ./bin/stream.out $GPU $BLOCK $k 2500 $N  >> ./results/dev_cos_invert.txt
 	done
@@ -84,13 +78,13 @@ do
 
 	for((i=10; i<=1250; i*=5));
 	do
-		for((j=0; j<=15; j+=1));
+		for((j=0; j<=12; j+=1));
 		do
 			echo iterations M = $i
-		        nvprof --log-file ./profiling/dev_cos_inv$k-$i.txt ./bin/managed.out $GPU $BLOCK $k $i $N >> ./results/dev_cos_invert.txt
+			nvprof --log-file ./profiling/dev_cos_inv$k-$i.txt ./bin/managed.out $GPU $BLOCK $k $i $N >> ./results/dev_cos_invert.txt
 		done	
 	done
-	for((j=0; j<=15; j+=1));
+	for((j=0; j<=12; j+=1));
 	do
 		nvprof --log-file ./profiling/dev_cos_inv$k-2500.txt ./bin/managed.out $GPU $BLOCK $k 2500 $N  >> ./results/dev_cos_invert.txt
 	done

@@ -46,7 +46,7 @@ void printResults(float ms){
 
 void printTotalTimes(float eventsTime,  float hostTime ){
     #ifdef MEASURES
-        std::cout<<std::endl<<"$"<< eventsTime<<","<<hostTime<<std::endl;//hostTime*1000<<std::endl;
+        std::cout<<std::endl<<"$"<< eventsTime<<","<<hostTime<<std::endl;
     #else
         std::cout<<std::endl<<"----Total Device Events measures: "<< eventsTime<<"ms"<<std::endl;
         std::cout<<std::endl<<"----Total Host measures: "<< hostTime <<"ms"<<std::endl;
@@ -78,8 +78,7 @@ void printAll(float *cosx, int *clocks, float ms){
     std::cout<<std::endl<<"----Effective Bandwidth: "<< (rb_wb/ms/1e6)<<"GB/s"<<std::endl;      
 }
 
-int main(int argc, char **argv){
-    
+int main(int argc, char **argv){   
 
     std::srand(static_cast <unsigned> (time(NULL)));
 
@@ -90,7 +89,7 @@ int main(int argc, char **argv){
 
     int devId = atoi(argv[1]);
     #ifdef LOWPAR
-        BLOCK=32;
+        BLOCK=16;
         GRID=1;
     #else
         BLOCK = atoi(argv[2]);
@@ -103,14 +102,12 @@ int main(int argc, char **argv){
     #ifdef EMPTY
         std::cout <<"*";
         for (int i = 0; i < K_exec; ++i) {  
-            emptyKer();
+            float ms=emptyKer();
             std::cout <<ms<< ",";     
         }
 
         return 0;
     #endif
-
-
 
     bytesSize = N_size*sizeof(float); 
     float *x=new float [N_size];      
@@ -158,7 +155,7 @@ int main(int argc, char **argv){
 
     int *clocks_d,*clocks;
     float *cosx=new float[N_size];
-    const int streamSize = N_size;//*2 ;
+    const int streamSize = N_size;
     const int streamBytes = streamSize* sizeof(float) ;
     #ifndef LOWPAR
         GRID=streamSize/BLOCK; 
@@ -188,7 +185,6 @@ int main(int argc, char **argv){
         checkCuda( cudaEventRecord(startEvent,0) );
         
         cudaMemcpyAsync(x_d, x, streamBytes, cudaMemcpyHostToDevice, stream[i]);          
-        //cosKerStream(M_iter,N_size, x_d, cosx, clocks_d, 0, stream[i]);
         cosKerStream(M_iter,N_size, x_d, clocks_d, 0, stream[i]);
         cudaMemcpyAsync( cosx, x_d, streamBytes, cudaMemcpyDeviceToHost, stream[i]);
         cudaMemcpyAsync( clocks, clocks_d, GRID*sizeof(int), cudaMemcpyDeviceToHost, stream[i]);
@@ -252,7 +248,6 @@ int main(int argc, char **argv){
         msSum+=ms;
     }
     streamDestroy(stream,K_exec);
-   // delete [] clocks;
     end=std::chrono::system_clock::now();
 
 #endif

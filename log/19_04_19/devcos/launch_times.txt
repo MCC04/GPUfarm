@@ -1,0 +1,6 @@
+***dev_cos.sh***
+start: Thu Apr 18 08:48:23 CEST 2019
+end: Thu Apr 18 08:57:53 CEST 2019
+***dev_cos_invert.sh***
+start: Thu Apr 18 08:57:53 CEST 2019
+end: Thu Apr 18 09:09:04 CEST 2019

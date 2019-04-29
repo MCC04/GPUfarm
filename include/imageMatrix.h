@@ -31,6 +31,11 @@ float matMulKer(
     cudaStream_t strm,
     cudaEvent_t start, cudaEvent_t stop);
 
+float smallMatMulKer(
+    float *Ad, float *Bd, float *Cd, float *C, 
+    int m, int k, int n, 
+    cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop);
+
 /*float filter (
     unsigned char *img_in, unsigned char *img_out,
     int width, int height,

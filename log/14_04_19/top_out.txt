@@ -1,0 +1,1025 @@
+Sun Apr 14 02:00:00 CEST 2019
+top - 02:00:00 up 106 days,  5:30, 18 users,  load average: 85.44, 79.98, 81.19
+Tasks: 1368 total,   6 running, 890 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36412560+free, 84747856 used, 79409024 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43748112+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.096g 136108 R  4224  0.2  37062:27 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 388.0  2.7 514:00.02 python
+ 6071 nardi     20   0 17.913g 2.279g 221076 R 100.0  0.5   5854:06 python
+14515 setzu     20   0 2844440 371024  34172 R 100.0  0.1 952:47.27 python3
+68097 setzu     20   0 2878332 404840  33836 R 100.0  0.1 669:56.91 python3
+76103 cecconi   22   2    9248    768    704 R 100.0  0.0   0:00.34 rm
+ 8728 dnsmasq   20   0 5514152 154500   2228 S  56.0  0.0  27974:09 beam.smp
+76109 cecconi   22   2   47196   5248   3424 R  40.0  0.0   0:00.18 top
+ 3809 rabbitmq  20   0 41.597g 106696   2400 S   8.0  0.0  14721:23 beam.smp
+ 7435 message+  20   0  291792  13876  12168 S   4.0  0.0   4:20.94 postgres
+************************
+Sun Apr 14 02:00:10 CEST 2019
+top - 02:00:10 up 106 days,  5:30, 18 users,  load average: 88.24, 80.78, 81.44
+Tasks: 1370 total,   3 running, 895 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36501075+free, 85219032 used, 78052688 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43700995+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.107g 136108 S  6368  0.2  37071:45 python
+67040 attardi   20   0 89.342g 0.013t 2.723g S 886.4  2.7 515:03.49 python
+ 6071 nardi     20   0 17.913g 2.279g 221076 S 100.0  0.5   5854:15 python
+14515 setzu     20   0 2844440 371024  34172 R 100.0  0.1 952:57.37 python3
+68097 setzu     20   0 2878332 404840  33836 R 100.0  0.1 670:07.15 python3
+76403 cecconi   22   2   47196   5164   3348 R  27.3  0.0   0:00.12 top
+76408 cecconi   22   2 32.534g  11864  10280 S  13.6  0.0   0:00.03 nvprof
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.42 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:09.07 kthreadd
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00 kworker/0:+
+************************
+Sun Apr 14 02:00:20 CEST 2019
+top - 02:00:21 up 106 days,  5:31, 18 users,  load average: 83.07, 79.93, 81.16
+Tasks: 1374 total,   4 running, 896 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36545379+free, 84743456 used, 78085224 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43748537+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.119g 136108 R  5680  0.2  37080:46 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 675.0  2.7 516:11.94 python
+68097 setzu     20   0 2878332 404840  33836 R 100.0  0.1 670:17.23 python3
+14515 setzu     20   0 2844440 371024  34172 R 100.0  0.1 953:07.38 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  80.0  0.5   5854:24 python
+76701 cecconi   22   2   47200   5176   3356 R  35.0  0.0   0:00.11 top
+ 3809 rabbitmq  20   0 41.598g 107168   2400 S  25.0  0.0  14721:24 beam.smp
+76703 cecconi   22   2 32.534g  11816  10240 S  10.0  0.0   0:00.02 nvprof
+ 2354 root      20   0 6342024  30868   4092 S   5.0  0.0 456:23.78 dockerd
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.42 systemd
+************************
+Sun Apr 14 02:00:31 CEST 2019
+top - 02:00:31 up 106 days,  5:31, 18 users,  load average: 85.87, 80.65, 81.38
+Tasks: 1376 total,   7 running, 895 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36494124+free, 85165112 used, 78176128 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43706387+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.119g 136108 R  6061  0.2  37089:48 python
+67040 attardi   20   0 89.535g 0.014t 2.723g S 452.2  2.8 517:18.58 python
+14515 setzu     20   0 2844440 371024  34172 R  95.7  0.1 953:17.61 python3
+68097 setzu     20   0 2878332 404840  33836 R  91.3  0.1 670:27.27 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  65.2  0.5   5854:33 python
+76904 cecconi   22   2   47172   5224   3412 R  26.1  0.0   0:00.12 top
+76907 cecconi   22   2 32.604g  11928  10344 S  13.0  0.0   0:00.03 nvprof
+76915 cecconi   22   2  191156  15992  12612 R   4.3  0.0   0:00.01 managed.out
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.43 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:09.07 kthreadd
+************************
+Sun Apr 14 02:00:41 CEST 2019
+top - 02:00:41 up 106 days,  5:31, 18 users,  load average: 82.83, 80.20, 81.23
+Tasks: 1374 total,   4 running, 896 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36524182+free, 84790464 used, 78250176 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43743865+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.096g 136108 R  6391  0.2  37099:01 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 704.5  2.7 518:25.58 python
+14515 setzu     20   0 2844440 371024  34172 R 100.0  0.1 953:27.79 python3
+68097 setzu     20   0 2878332 404840  33836 R  95.5  0.1 670:37.18 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  81.8  0.5   5854:41 python
+77213 cecconi   22   2   47172   5120   3304 R  31.8  0.0   0:00.13 top
+ 3809 rabbitmq  20   0 41.594g 106508   2400 S  18.2  0.0  14721:26 beam.smp
+71453 root      20   0       0      0      0 D  13.6  0.0   0:00.78 kworker/u1+
+77219 cecconi   22   2 32.534g  11884  10300 S   9.1  0.0   0:00.02 nvprof
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.44 systemd
+************************
+Sun Apr 14 02:00:51 CEST 2019
+top - 02:00:52 up 106 days,  5:31, 18 users,  load average: 87.21, 81.30, 81.57
+Tasks: 1373 total,   5 running, 894 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36506419+free, 84927440 used, 78290848 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43729552+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.100g 136108 S  6609  0.2  37108:17 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 282.6  2.7 519:38.37 python
+14515 setzu     20   0 2844440 371024  34172 R  95.7  0.1 953:37.99 python3
+68097 setzu     20   0 2878332 404840  33836 R  91.3  0.1 670:47.33 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  73.9  0.5   5854:51 python
+77530 cecconi   22   2 37.131g 139804 125724 R  73.9  0.0   0:00.26 managed.out
+48318 setzu     20   0   42080  11976   2524 R  30.4  0.0   2982:05 htop
+77537 cecconi   22   2   47200   5184   3372 R  30.4  0.0   0:00.14 top
+11088 root      20   0 1824752  15656   3188 S   4.3  0.0 649:06.80 fail2ban-s+
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.44 systemd
+************************
+Sun Apr 14 02:01:02 CEST 2019
+top - 02:01:02 up 106 days,  5:31, 18 users,  load average: 81.03, 80.17, 81.20
+Tasks: 1381 total,   5 running, 902 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36493216+free, 84974816 used, 78375504 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43725401+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.105g 136108 S  6074  0.2  37117:19 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 373.9  2.7 520:44.16 python
+68097 setzu     20   0 2878332 404840  33836 R 100.0  0.1 670:57.50 python3
+14515 setzu     20   0 2844440 371024  34172 R  95.7  0.1 953:48.30 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  73.9  0.5   5855:00 python
+77863 root      20   0  138612  16412   3640 S  69.6  0.0   0:00.18 awstats.pl
+48318 setzu     20   0   42080  11976   2524 S  52.2  0.0   2982:06 htop
+77866 cecconi   22   2 36.842g  27268  18908 R  47.8  0.0   0:00.11 managed.out
+77859 cecconi   22   2   47176   5176   3360 R  26.1  0.0   0:00.13 top
+77873 root      20   0  122916   4696   3592 R  17.4  0.0   0:00.04 perl
+************************
+Sun Apr 14 02:01:12 CEST 2019
+top - 02:01:13 up 106 days,  5:31, 18 users,  load average: 85.13, 81.10, 81.49
+Tasks: 1374 total,   5 running, 894 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36498825+free, 84843712 used, 78450488 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43738528+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.123g 136108 S  4464  0.2  37126:29 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 718.2  2.7 521:55.21 python
+68097 setzu     20   0 2878332 404840  33836 R  90.9  0.1 671:07.77 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  81.8  0.5   5855:09 python
+14515 setzu     20   0 2844440 371024  34172 R  77.3  0.1 953:58.37 python3
+ 8728 dnsmasq   20   0 5517116 154024   2228 S  54.5  0.0  27974:19 beam.smp
+78126 cecconi   22   2 36.842g  27340  18992 R  50.0  0.0   0:00.11 managed.out
+78122 cecconi   22   2   47200   5164   3356 R  22.7  0.0   0:00.11 top
+ 3809 rabbitmq  20   0 41.597g 106940   2400 S  18.2  0.0  14721:29 beam.smp
+   60 root      20   0       0      0      0 S   4.5  0.0   2:36.30 ksoftirqd/8
+************************
+Sun Apr 14 02:01:23 CEST 2019
+top - 02:01:23 up 106 days,  5:32, 18 users,  load average: 82.06, 80.59, 81.33
+Tasks: 1379 total,   5 running, 900 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36497500+free, 84815296 used, 78492160 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43740336+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.119g 136108 S  6561  0.2  37135:53 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 565.2  2.6 523:05.65 python
+14515 setzu     20   0 2844440 371024  34172 R 100.0  0.1 954:08.54 python3
+68097 setzu     20   0 2878332 404840  33836 R 100.0  0.1 671:18.01 python3
+78413 cecconi   22   2 37.274g 251312 195804 R 100.0  0.0   0:01.02 managed.out
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  95.7  0.5   5855:19 python
+ 8728 dnsmasq   20   0 5516236 154744   2228 S  34.8  0.0  27974:20 beam.smp
+78427 cecconi   22   2   47176   5184   3376 R  34.8  0.0   0:00.14 top
+ 2354 root      20   0 6342024  30844   4092 S   4.3  0.0 456:23.93 dockerd
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.47 systemd
+************************
+Sun Apr 14 02:01:33 CEST 2019
+top - 02:01:33 up 106 days,  5:32, 18 users,  load average: 82.76, 80.75, 81.37
+Tasks: 1373 total,   6 running, 891 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36416707+free, 85539360 used, 78576032 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43668940+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.092g 136108 R  4209  0.2  37144:39 python
+67040 attardi   20   0 90.030g 0.014t 2.723g S  1213  2.8 524:13.58 python
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  95.7  0.5   5855:28 python
+14515 setzu     20   0 2844440 371024  34172 R  95.7  0.1 954:18.79 python3
+68097 setzu     20   0 2878332 404840  33836 R  95.7  0.1 671:28.24 python3
+78686 cecconi   22   2   47200   5208   3400 R  26.1  0.0   0:00.13 top
+78691 cecconi   22   2 32.605g  21324  13984 R  21.7  0.0   0:00.05 managed.out
+44998 root      20   0       0      0      0 I   8.7  0.0   0:00.62 kworker/u1+
+78688 cecconi   22   2 32.604g  11952  10368 S   8.7  0.0   0:00.03 nvprof
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.47 systemd
+************************
+Sun Apr 14 02:01:43 CEST 2019
+top - 02:01:44 up 106 days,  5:32, 18 users,  load average: 86.41, 81.53, 81.61
+Tasks: 1376 total,   5 running, 894 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36479433+free, 84826848 used, 78661280 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43739168+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.127g 136108 S  5413  0.2  37153:51 python
+67040 attardi   20   0 89.024g 0.013t 2.723g R  95.7  2.6 525:29.44 python
+14515 setzu     20   0 2844440 371024  34172 R  91.3  0.1 954:29.04 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  87.0  0.5   5855:38 python
+68097 setzu     20   0 2878332 404840  33836 R  87.0  0.1 671:38.24 python3
+78932 cecconi   22   2 37.274g 254116 198624 R  78.3  0.0   0:00.36 managed.out
+78942 cecconi   22   2   47172   5188   3380 R  21.7  0.0   0:00.12 top
+ 3809 rabbitmq  20   0 41.596g 106596   2400 S   8.7  0.0  14721:32 beam.smp
+ 2354 root      20   0 6342024  30844   4092 S   4.3  0.0 456:23.97 dockerd
+72859 root     -51   0       0      0      0 S   4.3  0.0   1:53.27 irq/60-nvi+
+************************
+Sun Apr 14 02:01:54 CEST 2019
+top - 02:01:54 up 106 days,  5:32, 18 users,  load average: 92.96, 83.06, 82.10
+Tasks: 1378 total,   6 running, 893 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36470156+free, 84888368 used, 78692512 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43733036+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.092g 136108 R  6295  0.2  37163:07 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S  1165  2.7 526:35.38 python
+14515 setzu     20   0 2844440 371024  34172 R 100.0  0.1 954:39.19 python3
+79250 cecconi   22   2 37.274g 251720 196216 R 105.0  0.0   0:01.00 managed.out
+68097 setzu     20   0 2878332 404840  33836 R 100.0  0.1 671:48.40 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  65.0  0.5   5855:47 python
+ 8728 dnsmasq   20   0 5518364 154164   2228 S  30.0  0.0  27974:24 beam.smp
+79265 cecconi   22   2   47172   5212   3400 R  30.0  0.0   0:00.10 top
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.48 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:09.07 kthreadd
+************************
+Sun Apr 14 02:02:04 CEST 2019
+top - 02:02:04 up 106 days,  5:32, 18 users,  load average: 98.31, 84.48, 82.57
+Tasks: 1375 total,   5 running, 893 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36460934+free, 84890144 used, 78782992 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43732851+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.092g 136108 S  5805  0.2  37172:07 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 138.1  2.7 527:42.43 python
+ 6071 nardi     20   0 17.913g 2.279g 221076 S 100.0  0.5   5855:56 python
+14515 setzu     20   0 2844440 371024  34172 R 100.0  0.1 954:49.41 python3
+68097 setzu     20   0 2878332 404840  33836 R 100.0  0.1 671:58.53 python3
+79485 cecconi   22   2 37.275g 253316 197260 R  95.2  0.0   0:03.16 managed.out
+79575 cecconi   22   2   47172   5228   3424 R  23.8  0.0   0:00.11 top
+33058 root      20   0       0      0      0 R   4.8  0.0   0:00.72 kworker/u1+
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.49 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:09.07 kthreadd
+************************
+Sun Apr 14 02:02:14 CEST 2019
+top - 02:02:15 up 106 days,  5:32, 18 users,  load average: 96.25, 84.50, 82.60
+Tasks: 1372 total,   6 running, 889 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36486604+free, 84566168 used, 78850272 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43766265+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.104g 136108 S  6965  0.2  37181:13 python
+67040 attardi   20   0 89.024g 0.013t 2.723g R 670.0  2.6 528:58.47 python
+14515 setzu     20   0 2844440 371024  34172 R 100.0  0.1 954:59.58 python3
+68097 setzu     20   0 2878332 404840  33836 R 100.0  0.1 672:08.52 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  90.0  0.5   5856:05 python
+79881 cecconi   22   2 32.605g  22104  14520 R  40.0  0.0   0:00.08 managed.out
+79876 cecconi   22   2   47200   5136   3332 R  35.0  0.0   0:00.11 top
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.49 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:09.07 kthreadd
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00 kworker/0:+
+************************
+Sun Apr 14 02:02:25 CEST 2019
+top - 02:02:25 up 106 days,  5:33, 18 users,  load average: 88.83, 83.30, 82.23
+Tasks: 1381 total,   6 running, 898 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36456537+free, 84833032 used, 78884080 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43738713+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.096g 136108 S  3995  0.2  37190:09 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 177.3  2.7 530:02.69 python
+ 6071 nardi     20   0 17.913g 2.279g 221076 S 104.5  0.5   5856:14 python
+14515 setzu     20   0 2844440 371024  34172 R 100.0  0.1 955:09.78 python3
+68097 setzu     20   0 2878332 404840  33836 R 100.0  0.1 672:18.86 python3
+80182 cecconi   22   2 37.179g 250148 196344 R 100.0  0.0   0:00.34 managed.out
+ 8728 dnsmasq   20   0 5518000 157128   2228 S  40.9  0.0  27974:28 beam.smp
+80190 cecconi   22   2   47172   5184   3380 R  31.8  0.0   0:00.14 top
+48318 setzu     20   0   42080  11976   2524 R   9.1  0.0   2982:15 htop
+80237 root      20   0   34832   8944   5296 R   9.1  0.0   0:00.02 lsb_release
+************************
+Sun Apr 14 02:02:35 CEST 2019
+top - 02:02:35 up 106 days,  5:33, 18 users,  load average: 82.32, 82.08, 81.85
+Tasks: 1379 total,   7 running, 894 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36452953+free, 84782272 used, 78970664 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43743616+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.092g 136108 S  5300  0.2  37199:08 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 700.0  2.6 531:17.77 python
+68097 setzu     20   0 2878332 404840  33836 R  95.5  0.1 672:29.18 python3
+80412 cecconi   22   2 37.275g 254344 198568 R  95.5  0.0   0:02.16 managed.out
+80520 syslog    20   0  240132  41968  25968 R  95.5  0.0   0:00.87 mono
+14515 setzu     20   0 2844440 371024  34172 R  90.9  0.1 955:19.84 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  72.7  0.5   5856:23 python
+ 3809 rabbitmq  20   0 41.599g 107580   2400 S  31.8  0.0  14721:36 beam.smp
+80526 cecconi   22   2   47176   5232   3428 R  31.8  0.0   0:00.13 top
+48318 setzu     20   0   42080  11976   2524 R  22.7  0.0   2982:16 htop
+************************
+Sun Apr 14 02:02:46 CEST 2019
+top - 02:02:46 up 106 days,  5:33, 18 users,  load average: 82.77, 82.24, 81.90
+Tasks: 1376 total,   5 running, 894 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36465100+free, 84582040 used, 79049440 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43764678+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.096g 136108 S  6132  0.2  37208:14 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 940.9  2.6 532:22.19 python
+68097 setzu     20   0 2878332 404840  33836 R 100.0  0.1 672:39.50 python3
+14515 setzu     20   0 2844440 371024  34172 R  86.4  0.1 955:30.00 python3
+80758 cecconi   22   2 36.843g 114736 105108 R  81.8  0.0   0:00.19 managed.out
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  72.7  0.5   5856:32 python
+48318 setzu     20   0   42080  11976   2524 S  59.1  0.0   2982:17 htop
+ 8728 dnsmasq   20   0 5516976 155524   2228 S  45.5  0.0  27974:31 beam.smp
+80762 cecconi   22   2   47172   5156   3356 R  31.8  0.0   0:00.13 top
+ 7583 syslog    20   0 3590616 490116  16160 S   4.5  0.1 311:29.33 mono
+************************
+Sun Apr 14 02:02:56 CEST 2019
+top - 02:02:56 up 106 days,  5:33, 18 users,  load average: 80.32, 81.71, 81.73
+Tasks: 1383 total,   6 running, 898 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36455462+free, 84653696 used, 79074136 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43757523+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.119g 136108 R  4919  0.2  37217:27 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 138.1  2.7 533:38.17 python
+ 6071 nardi     20   0 17.913g 2.279g 221076 S 100.0  0.5   5856:41 python
+14515 setzu     20   0 2844440 371024  34172 R 100.0  0.1 955:39.97 python3
+68097 setzu     20   0 2878332 404840  33836 R 100.0  0.1 672:49.65 python3
+48318 setzu     20   0   42080  11976   2524 S  42.9  0.0   2982:18 htop
+81005 cecconi   22   2 32.605g  21916  14332 R  42.9  0.0   0:00.09 managed.out
+81000 cecconi   22   2   47176   5092   3288 R  33.3  0.0   0:00.12 top
+81002 cecconi   22   2 32.604g  11920  10344 S   9.5  0.0   0:00.02 nvprof
+ 3301 root      20   0 5900116  14688   1536 S   4.8  0.0 297:09.59 docker-con+
+************************
+Sun Apr 14 02:03:06 CEST 2019
+top - 02:03:07 up 106 days,  5:33, 18 users,  load average: 74.89, 80.50, 81.34
+Tasks: 1384 total,   5 running, 901 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36413308+free, 84985712 used, 79163688 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43723299+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.107g 136108 S  6450  0.2  37226:41 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 122.7  2.7 534:50.43 python
+81262 root      20   0   97612  33600  10864 R 100.0  0.0   0:00.44 landscape-+
+14515 setzu     20   0 2844440 371024  34172 R 100.0  0.1 955:50.31 python3
+68097 setzu     20   0 2878332 404840  33836 R 100.0  0.1 673:00.03 python3
+81230 cecconi   22   2 37.275g 253328 197556 R 100.0  0.0   0:01.90 managed.out
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  77.3  0.5   5856:50 python
+81267 cecconi   22   2   47180   5104   3304 R  31.8  0.0   0:00.13 top
+  486 root      20   0       0      0      0 S   4.5  0.0   1:48.21 ksoftirqd/+
+11088 root      20   0 1824752  15656   3188 S   4.5  0.0 649:07.30 fail2ban-s+
+************************
+Sun Apr 14 02:03:17 CEST 2019
+top - 02:03:17 up 106 days,  5:33, 18 users,  load average: 71.36, 79.48, 80.99
+Tasks: 1380 total,   6 running, 897 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36422470+free, 84801304 used, 79256480 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43741958+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.123g 136108 R  5291  0.2  37235:47 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 278.3  2.7 536:07.96 python
+14515 setzu     20   0 2844440 371024  34172 R 100.0  0.1 956:00.47 python3
+68097 setzu     20   0 2878332 404840  33836 R  95.7  0.1 673:10.23 python3
+81471 cecconi   22   2 37.131g 140340 126020 R  95.7  0.0   0:00.31 managed.out
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  87.0  0.5   5857:00 python
+81479 cecconi   22   2   47176   5176   3372 R  26.1  0.0   0:00.13 top
+    9 root      20   0       0      0      0 I   4.3  0.0 375:46.16 rcu_sched
+ 2190 root      20   0  289756   5852   2568 S   4.3  0.0  15:47.50 accounts-d+
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.53 systemd
+************************
+Sun Apr 14 02:03:27 CEST 2019
+top - 02:03:27 up 106 days,  5:34, 18 users,  load average: 70.67, 79.04, 80.83
+Tasks: 1381 total,   5 running, 898 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36390793+free, 85108608 used, 79265920 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43712016+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.123g 136108 S  4014  0.2  37245:09 python
+67040 attardi   20   0 89.450g 0.013t 2.723g S  1582  2.7 537:15.52 python
+ 6071 nardi     20   0 17.913g 2.279g 221076 S 104.5  0.5   5857:08 python
+14515 setzu     20   0 2844440 371024  34172 R 100.0  0.1 956:10.65 python3
+68097 setzu     20   0 2878588 404868  33836 R 100.0  0.1 673:20.49 python3
+ 3809 rabbitmq  20   0 41.595g 106716   2400 S  40.9  0.0  14721:39 beam.smp
+81736 cecconi   22   2   47176   5172   3376 R  27.3  0.0   0:00.12 top
+81743 cecconi   22   2 32.604g  11940  10356 S  13.6  0.0   0:00.03 nvprof
+ 7666 syslog    20   0 3380016  80300   4868 S   4.5  0.0 134:46.31 mono
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.54 systemd
+************************
+Sun Apr 14 02:03:37 CEST 2019
+top - 02:03:38 up 106 days,  5:34, 18 users,  load average: 69.85, 78.57, 80.66
+Tasks: 1373 total,   5 running, 891 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36406630+free, 84867192 used, 79348960 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43735321+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.123g 136108 S  6600  0.2  37253:58 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 186.4  2.7 538:22.71 python
+ 6071 nardi     20   0 17.913g 2.279g 221076 R 100.0  0.5   5857:18 python
+14515 setzu     20   0 2844440 371024  34172 R 100.0  0.1 956:20.98 python3
+68097 setzu     20   0 2877052 403560  33836 R 100.0  0.1 673:30.73 python3
+  697 cecconi   22   2 37.165g 237196 187516 R  95.5  0.0   0:00.46 managed.out
+  708 cecconi   22   2   47200   5136   3356 R  31.8  0.0   0:00.08 top
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.54 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:09.07 kthreadd
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00 kworker/0:+
+************************
+Sun Apr 14 02:03:48 CEST 2019
+top - 02:03:48 up 106 days,  5:34, 18 users,  load average: 69.13, 78.15, 80.50
+Tasks: 1379 total,   5 running, 895 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36408640+free, 84747264 used, 79448816 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43748172+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.119g 136108 S  6314  0.2  37262:44 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 381.0  2.7 539:28.74 python
+ 6071 nardi     20   0 17.913g 2.279g 221076 R 100.0  0.5   5857:28 python
+14515 setzu     20   0 2844440 371044  34172 R 100.0  0.1 956:31.27 python3
+68097 setzu     20   0 2877052 403560  33836 R 100.0  0.1 673:41.01 python3
+  976 cecconi   22   2 36.842g  27000  18632 R  61.9  0.0   0:00.13 managed.out
+ 3809 rabbitmq  20   0 41.597g 107476   2400 S  33.3  0.0  14721:41 beam.smp
+  979 cecconi   22   2   47176   5208   3420 R  28.6  0.0   0:00.08 top
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.55 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:09.07 kthreadd
+************************
+Sun Apr 14 02:03:58 CEST 2019
+top - 02:03:58 up 106 days,  5:34, 18 users,  load average: 68.89, 77.83, 80.37
+Tasks: 1376 total,   6 running, 890 sleeping,   0 stopped,  78 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36391798+free, 84887760 used, 79476728 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43733033+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.111g 136108 R  6455  0.2  37272:06 python
+ 6071 nardi     20   0 17.913g 2.279g 221076 R 104.5  0.5   5857:38 python
+67040 attardi   20   0 89.024g 0.013t 2.723g R 104.5  2.7 540:36.14 python
+68097 setzu     20   0 2877052 403560  33836 R 100.0  0.1 673:51.24 python3
+14515 setzu     20   0 2844440 371044  34172 R  95.5  0.1 956:41.53 python3
+ 1229 cecconi   22   2       0      0      0 Z  90.9  0.0   0:00.58 managed.out
+ 1240 cecconi   22   2   47172   5184   3404 R  31.8  0.0   0:00.09 top
+ 3809 rabbitmq  20   0 41.596g 107140   2400 S  18.2  0.0  14721:42 beam.smp
+ 1224 cecconi   22   2 32.604g  14424  12256 S   4.5  0.0   0:00.03 nvprof
+ 6030 root      19  -1  328916 157080 143540 S   4.5  0.0   7:35.45 systemd-jo+
+************************
+Sun Apr 14 02:04:09 CEST 2019
+top - 02:04:09 up 106 days,  5:34, 18 users,  load average: 72.90, 78.34, 80.51
+Tasks: 1375 total,   5 running, 891 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36376976+free, 84962520 used, 79550192 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43725622+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.119g 136108 S  5410  0.2  37281:24 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 676.2  2.7 541:49.52 python
+14515 setzu     20   0 2844440 371044  34172 R 100.0  0.1 956:51.78 python3
+68097 setzu     20   0 2877052 403560  33836 R 100.0  0.1 674:01.43 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  95.2  0.5   5857:47 python
+ 1409 cecconi   22   2 37.275g 255756 199252 R  90.5  0.0   0:03.70 managed.out
+ 8728 dnsmasq   20   0 5517232 157404   2228 S  47.6  0.0  27974:43 beam.smp
+ 1515 cecconi   22   2   47172   5184   3400 R  28.6  0.0   0:00.08 top
+ 1406 cecconi   22   2 32.604g  13624  11620 S   4.8  0.0   0:00.03 nvprof
+ 2354 root      20   0 6342024  30844   4092 S   4.8  0.0 456:24.29 dockerd
+************************
+Sun Apr 14 02:04:19 CEST 2019
+top - 02:04:19 up 106 days,  5:34, 18 users,  load average: 73.69, 78.37, 80.50
+Tasks: 1373 total,   5 running, 889 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36381248+free, 84812640 used, 79657360 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43740582+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.119g 136108 S  7340  0.2  37290:26 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 335.0  2.6 542:56.67 python
+14515 setzu     20   0 2844440 371044  34172 R 100.0  0.1 957:01.90 python3
+68097 setzu     20   0 2877052 403560  33836 R 100.0  0.1 674:11.67 python3
+ 1650 cecconi   22   2 37.275g 252056 196012 R 100.0  0.0   0:03.26 managed.out
+48318 setzu     20   0   42080  11976   2524 R  70.0  0.0   2982:27 htop
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  65.0  0.5   5857:56 python
+ 1664 cecconi   22   2   47200   5088   3308 R  25.0  0.0   0:00.06 top
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.56 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:09.07 kthreadd
+************************
+Sun Apr 14 02:04:29 CEST 2019
+top - 02:04:30 up 106 days,  5:35, 18 users,  load average: 72.64, 77.97, 80.34
+Tasks: 1377 total,   5 running, 893 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36390320+free, 84715816 used, 79663448 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43751312+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.123g 136108 R  5571  0.2  37299:08 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 504.8  2.7 544:11.63 python
+68097 setzu     20   0 2877052 403560  33836 R 100.0  0.1 674:21.78 python3
+14515 setzu     20   0 2844440 371044  34172 R 100.0  0.1 957:12.10 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 S 104.8  0.5   5858:05 python
+48318 setzu     20   0   42080  11976   2524 S  33.3  0.0   2982:28 htop
+ 2014 cecconi   22   2   47172   5184   3400 R  23.8  0.0   0:00.08 top
+ 3809 rabbitmq  20   0 41.595g 106364   2400 S  19.0  0.0  14721:44 beam.smp
+ 2016 cecconi   22   2 32.604g  11772  10192 S  14.3  0.0   0:00.03 nvprof
+ 2019 cecconi   22   2  190988  15884  12504 R   9.5  0.0   0:00.02 managed.out
+************************
+Sun Apr 14 02:04:40 CEST 2019
+top - 02:04:40 up 106 days,  5:35, 18 users,  load average: 80.06, 79.34, 80.76
+Tasks: 1375 total,   5 running, 892 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36363580+free, 84897808 used, 79748864 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43732064+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.115g 136108 S  5435  0.2  37308:05 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 485.0  2.7 545:21.81 python
+ 2187 cecconi   22   2 37.275g 251328 195280 R 100.0  0.0   0:02.92 managed.out
+14515 setzu     20   0 2844440 371044  34172 R 100.0  0.1 957:22.34 python3
+68097 setzu     20   0 2877052 403560  33836 R 100.0  0.1 674:32.09 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  65.0  0.5   5858:14 python
+ 8728 dnsmasq   20   0 5517156 155612   2228 S  55.0  0.0  27974:47 beam.smp
+48318 setzu     20   0   42080  11976   2524 S  45.0  0.0   2982:29 htop
+ 2201 cecconi   22   2   47172   5144   3360 R  30.0  0.0   0:00.07 top
+72836 root     -51   0       0      0      0 S   5.0  0.0   1:36.32 irq/58-nvi+
+************************
+Sun Apr 14 02:04:50 CEST 2019
+top - 02:04:50 up 106 days,  5:35, 18 users,  load average: 80.95, 79.60, 80.83
+Tasks: 1375 total,   4 running, 893 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36299417+free, 85429552 used, 79858752 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43678892+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.105g 136108 S  4632  0.2  37316:41 python
+67040 attardi   20   0 89.388g 0.013t 2.723g S  1309  2.7 546:30.56 python
+68097 setzu     20   0 2877052 403560  33836 R 100.0  0.1 674:42.43 python3
+14515 setzu     20   0 2844440 371044  34172 R 100.0  0.1 957:32.67 python3
+ 2430 cecconi   22   2 37.275g 251972 195912 R  95.5  0.0   0:03.04 managed.out
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  81.8  0.5   5858:23 python
+ 2531 cecconi   22   2   47172   5100   3312 R  31.8  0.0   0:00.09 top
+ 2190 root      20   0  289756   5852   2568 S   4.5  0.0  15:47.52 accounts-d+
+16836 pedrelli  20   0  599452 415476   9356 S   4.5  0.1 199:43.53 ZMQbg/1
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.58 systemd
+************************
+Sun Apr 14 02:05:00 CEST 2019
+top - 02:05:01 up 106 days,  5:35, 18 users,  load average: 79.01, 79.21, 80.69
+Tasks: 1380 total,   6 running, 896 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36351193+free, 84896016 used, 79874528 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43732265+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.092g 136108 R  4320  0.2  37326:15 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 150.0  2.7 547:30.83 python
+68097 setzu     20   0 2877052 403560  33836 R 100.0  0.1 674:52.72 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 R 100.0  0.5   5858:32 python
+14515 setzu     20   0 2844440 371044  34172 R 100.0  0.1 957:42.94 python3
+ 2880 cecconi   22   2       0      0      0 R  95.0  0.0   0:00.71 managed.out
+ 2905 cecconi   22   2   47176   5168   3376 R  25.0  0.0   0:00.07 top
+    9 root      20   0       0      0      0 I   5.0  0.0 375:46.36 rcu_sched
+ 2872 cecconi   22   2 32.604g  14368  12192 S   5.0  0.0   0:00.03 nvprof
+ 3809 rabbitmq  20   0 41.595g 106872   2400 S   5.0  0.0  14721:47 beam.smp
+************************
+Sun Apr 14 02:05:11 CEST 2019
+top - 02:05:11 up 106 days,  5:35, 18 users,  load average: 76.89, 78.77, 80.53
+Tasks: 1375 total,   6 running, 891 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36337433+free, 84962216 used, 79945936 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43725619+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.092g 136108 R  4173  0.2  37335:18 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 495.5  2.7 548:40.89 python
+ 3142 cecconi   22   2 37.275g 252668 196620 R 104.5  0.0   0:02.79 managed.out
+ 6071 nardi     20   0 17.913g 2.279g 221076 R 100.0  0.5   5858:41 python
+14515 setzu     20   0 2844440 371044  34172 R 100.0  0.1 957:53.23 python3
+68097 setzu     20   0 2877052 403560  33836 R 100.0  0.1 675:03.04 python3
+ 3156 cecconi   22   2   47172   5068   3288 R  31.8  0.0   0:00.10 top
+11088 root      20   0 1824752  15656   3188 S   4.5  0.0 649:07.77 fail2ban-s+
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.59 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:09.07 kthreadd
+************************
+Sun Apr 14 02:05:21 CEST 2019
+top - 02:05:21 up 106 days,  5:36, 18 users,  load average: 75.19, 78.32, 80.37
+Tasks: 1378 total,   4 running, 895 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36299155+free, 85242960 used, 80047976 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43697552+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.101g 136108 S  6238  0.2  37344:23 python
+67040 attardi   20   0 89.410g 0.013t 2.723g S  1105  2.7 549:54.16 python
+ 3281 cecconi   22   2 37.275g 254120 198340 R 100.0  0.0   0:02.27 managed.out
+68097 setzu     20   0 2877052 403560  33836 R  90.5  0.1 675:13.16 python3
+14515 setzu     20   0 2844440 371044  34172 R  85.7  0.1 958:03.40 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  47.6  0.5   5858:50 python
+ 3809 rabbitmq  20   0 41.595g 106340   2400 S  33.3  0.0  14721:48 beam.smp
+ 3386 cecconi   22   2   47172   5144   3360 R  23.8  0.0   0:00.07 top
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.59 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:09.07 kthreadd
+************************
+Sun Apr 14 02:05:32 CEST 2019
+top - 02:05:32 up 106 days,  5:36, 18 users,  load average: 73.66, 77.91, 80.21
+Tasks: 1375 total,   3 running, 894 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36342883+free, 84791280 used, 80062368 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43743772+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.092g 136108 S  6091  0.2  37353:37 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 218.2  2.7 551:05.07 python
+14515 setzu     20   0 2844440 371044  34172 R  95.5  0.1 958:13.45 python3
+68097 setzu     20   0 2877052 403560  33836 R  95.5  0.1 675:23.13 python3
+ 8728 dnsmasq   20   0 5516976 156456   2228 S  90.9  0.0  27974:54 beam.smp
+ 3627 cecconi   22   2 36.843g 114784 105160 S  68.2  0.0   0:00.15 managed.out
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  63.6  0.5   5858:59 python
+ 3631 cecconi   22   2   47172   5124   3344 R  27.3  0.0   0:00.09 top
+    9 root      20   0       0      0      0 I   4.5  0.0 375:46.42 rcu_sched
+11088 root      20   0 1824752  15656   3188 S   4.5  0.0 649:07.84 fail2ban-s+
+************************
+Sun Apr 14 02:05:42 CEST 2019
+top - 02:05:42 up 106 days,  5:36, 18 users,  load average: 79.65, 78.99, 80.53
+Tasks: 1379 total,   5 running, 896 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36282851+free, 85320944 used, 80133008 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43689779+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.115g 136108 S  5195  0.2  37362:45 python
+67040 attardi   20   0 89.160g 0.013t 2.723g S 595.5  2.7 552:19.35 python
+ 3854 cecconi   22   2 37.275g 251852 196064 R  95.5  0.0   0:01.89 managed.out
+14515 setzu     20   0 2844440 371044  34172 R  95.5  0.1 958:23.64 python3
+68097 setzu     20   0 2877052 403560  33836 R  95.5  0.1 675:33.32 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  81.8  0.5   5859:08 python
+ 3930 cecconi   22   2   47176   5132   3348 R  31.8  0.0   0:00.09 top
+ 2354 root      20   0 6342024  30844   4092 S   4.5  0.0 456:24.53 dockerd
+68364 root      20   0       0      0      0 S   4.5  0.0   0:00.80 UVM GPU2 BH
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.60 systemd
+************************
+Sun Apr 14 02:05:52 CEST 2019
+top - 02:05:53 up 106 days,  5:36, 18 users,  load average: 77.76, 78.58, 80.38
+Tasks: 1376 total,   6 running, 891 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36291699+free, 85127520 used, 80237936 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43709091+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.119g 136108 S  3729  0.2  37371:35 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 509.5  2.7 553:21.96 python
+ 4092 syslog    20   0  229800  31108  21088 R 100.0  0.0   0:00.43 mono
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  95.2  0.5   5859:17 python
+14515 setzu     20   0 2844440 371044  34172 R  95.2  0.1 958:33.64 python3
+68097 setzu     20   0 2877052 403560  33836 R  95.2  0.1 675:43.37 python3
+ 4065 cecconi   22   2 37.275g 253944 198416 R  90.5  0.0   0:01.56 managed.out
+ 3809 rabbitmq  20   0 41.595g 106960   2400 S  28.6  0.0  14721:51 beam.smp
+ 4097 cecconi   22   2   47172   5144   3364 R  23.8  0.0   0:00.08 top
+ 8728 dnsmasq   20   0 5518440 156324   2228 S  23.8  0.0  27974:57 beam.smp
+************************
+Sun Apr 14 02:06:03 CEST 2019
+top - 02:06:03 up 106 days,  5:36, 18 users,  load average: 75.68, 78.13, 80.21
+Tasks: 1379 total,   7 running, 892 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36309280+free, 84921520 used, 80268176 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43729910+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.092g 136108 R  5313  0.2  37380:39 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 765.2  2.7 554:38.07 python
+ 5630 cecconi   22   2 37.161g 222740 177284 R 100.0  0.0   0:00.32 managed.out
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  95.7  0.5   5859:27 python
+14515 setzu     20   0 2844440 371044  34172 R  95.7  0.1 958:43.74 python3
+68097 setzu     20   0 2877052 403560  33836 R  91.3  0.1 675:53.55 python3
+ 8728 dnsmasq   20   0 5517928 156716   2228 S  43.5  0.0  27974:58 beam.smp
+48318 setzu     20   0   42080  11976   2524 R  39.1  0.0   2982:38 htop
+ 5639 cecconi   22   2   47176   5204   3420 R  30.4  0.0   0:00.10 top
+72836 root     -51   0       0      0      0 S   4.3  0.0   1:36.34 irq/58-nvi+
+************************
+Sun Apr 14 02:06:13 CEST 2019
+top - 02:06:13 up 106 days,  5:36, 18 users,  load average: 78.24, 78.55, 80.32
+Tasks: 1378 total,   5 running, 892 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36297232+free, 84973416 used, 80336752 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43724508+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.111g 136108 S  4877  0.2  37389:42 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 286.4  2.7 555:40.20 python
+ 5850 cecconi   22   2 37.275g 252704 196912 R 100.0  0.0   0:01.93 managed.out
+14515 setzu     20   0 2844440 371044  34172 R 100.0  0.1 958:53.95 python3
+68097 setzu     20   0 2877052 403560  33836 R 100.0  0.1 676:03.83 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  90.9  0.5   5859:37 python
+48318 setzu     20   0   42080  11976   2524 S  59.1  0.0   2982:39 htop
+ 5861 cecconi   22   2   47172   5176   3392 R  27.3  0.0   0:00.09 top
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.61 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:09.07 kthreadd
+************************
+Sun Apr 14 02:06:23 CEST 2019
+top - 02:06:24 up 106 days,  5:37, 18 users,  load average: 79.44, 78.79, 80.38
+Tasks: 1378 total,   5 running, 894 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36287683+free, 84970560 used, 80435088 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43724784+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.096g 136108 R  6230  0.2  37398:42 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 317.4  2.7 556:49.10 python
+ 6060 cecconi   22   2 37.275g 254468 198936 R 100.0  0.0   0:01.15 managed.out
+14515 setzu     20   0 2844440 371044  34172 R  95.7  0.1 959:04.06 python3
+68097 setzu     20   0 2877052 403560  33836 R  95.7  0.1 676:14.00 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  65.2  0.5   5859:47 python
+ 6102 cecconi   22   2   47172   5088   3304 R  30.4  0.0   0:00.10 top
+ 3809 rabbitmq  20   0 41.596g 106888   2400 S  17.4  0.0  14721:54 beam.smp
+67489 syslog    20   0  880852  48068   4384 S   4.3  0.0   1:58.78 mono
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.61 systemd
+************************
+Sun Apr 14 02:06:34 CEST 2019
+top - 02:06:34 up 106 days,  5:37, 18 users,  load average: 74.45, 77.75, 80.03
+Tasks: 1374 total,   5 running, 890 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36292400+free, 84898800 used, 80459664 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43733017+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.096g 136108 R  4241  0.2  37408:05 python
+67040 attardi   20   0 89.215g 0.013t 2.723g S 454.5  2.7 558:04.54 python
+ 6071 nardi     20   0 17.913g 2.279g 221076 S 104.5  0.5   5859:56 python
+14515 setzu     20   0 2844440 371044  34172 R  95.5  0.1 959:14.32 python3
+68097 setzu     20   0 2877052 403560  33836 R  90.9  0.1 676:24.10 python3
+ 8728 dnsmasq   20   0 5518000 154616   2228 S  59.1  0.0  27975:03 beam.smp
+ 6415 cecconi   22   2   47200   5116   3336 R  31.8  0.0   0:00.10 top
+ 6417 cecconi   22   2 32.604g  11812  10228 S  13.6  0.0   0:00.03 nvprof
+ 6420 cecconi   22   2 28.528g  16024  12652 R   9.1  0.0   0:00.02 managed.out
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.62 systemd
+************************
+Sun Apr 14 02:06:44 CEST 2019
+top - 02:06:44 up 106 days,  5:37, 18 users,  load average: 82.49, 79.31, 80.51
+Tasks: 1379 total,   5 running, 894 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36277472+free, 84987256 used, 80520480 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43723145+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.123g 136108 S  7126  0.2  37417:29 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 700.0  2.7 559:09.83 python
+14515 setzu     20   0 2844440 371044  34172 R 100.0  0.1 959:24.55 python3
+68097 setzu     20   0 2877052 403560  33836 R 100.0  0.1 676:34.47 python3
+ 6688 cecconi   22   2 37.275g 252676 197176 R 105.3  0.0   0:00.81 managed.out
+ 6071 nardi     20   0 17.913g 2.279g 221076 R 100.0  0.5   5860:05 python
+ 6698 cecconi   22   2   47176   5216   3432 R  26.3  0.0   0:00.07 top
+ 3809 rabbitmq  20   0 41.596g 106388   2400 S  10.5  0.0  14721:56 beam.smp
+ 3205 setzu     20   0   33184   5392   1432 S   5.3  0.0  27:36.93 tmux: serv+
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.63 systemd
+************************
+Sun Apr 14 02:06:54 CEST 2019
+top - 02:06:55 up 106 days,  5:37, 18 users,  load average: 80.00, 78.87, 80.35
+Tasks: 1381 total,   4 running, 899 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36260368+free, 85051808 used, 80626976 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43716691+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.123g 136108 S  3737  0.2  37426:10 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 566.7  2.7 560:16.64 python
+ 6842 cecconi   22   2 37.275g 253592 198088 R  91.7  0.0   0:00.64 managed.out
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  87.5  0.5   5860:14 python
+14515 setzu     20   0 2844440 371044  34172 R  87.5  0.1 959:34.86 python3
+68097 setzu     20   0 2877052 403560  33836 R  87.5  0.1 676:44.79 python3
+ 6853 cecconi   22   2   47176   5156   3372 R  33.3  0.0   0:00.11 top
+ 8645 root      20   0 1095028  84972   1576 S   4.2  0.0 249:39.79 ruby
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.63 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:09.07 kthreadd
+************************
+Sun Apr 14 02:07:05 CEST 2019
+top - 02:07:05 up 106 days,  5:37, 18 users,  load average: 80.84, 79.08, 80.41
+Tasks: 1379 total,   6 running, 893 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36203187+free, 85584048 used, 80666536 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43663683+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.123g 136108 R  3948  0.2  37435:43 python
+67040 attardi   20   0 89.342g 0.013t 2.723g S  1835  2.7 561:25.31 python
+ 6071 nardi     20   0 17.913g 2.279g 221076 R 100.0  0.5   5860:23 python
+14515 setzu     20   0 2844440 371044  34172 R 100.0  0.1 959:45.14 python3
+68097 setzu     20   0 2877052 403560  33836 R  95.7  0.1 676:54.91 python3
+ 7274 cecconi   22   2 37.148g 181540 148748 R  91.3  0.0   0:00.28 managed.out
+ 8728 dnsmasq   20   0 5522544 155096   2228 S  39.1  0.0  27975:08 beam.smp
+ 7294 cecconi   22   2   47172   5152   3368 R  34.8  0.0   0:00.11 top
+ 6938 root      20   0  101560   6712   5744 S   4.3  0.0   0:00.01 sshd
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.64 systemd
+************************
+Sun Apr 14 02:07:15 CEST 2019
+top - 02:07:15 up 106 days,  5:37, 18 users,  load average: 87.66, 80.65, 80.90
+Tasks: 1376 total,   6 running, 891 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36224374+free, 85315296 used, 80723440 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43690345+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.096g 136108 R  4404  0.2  37444:34 python
+67040 attardi   20   0 89.404g 0.013t 2.723g S  1143  2.7 562:26.96 python
+ 7571 cecconi   22   2 37.275g 252592 197104 R  95.7  0.0   0:01.00 managed.out
+14515 setzu     20   0 2844440 371044  34172 R  95.7  0.1 959:55.33 python3
+68097 setzu     20   0 2877052 403560  33836 R  95.7  0.1 677:05.10 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  78.3  0.5   5860:32 python
+ 3809 rabbitmq  20   0 41.595g 106588   2400 S  39.1  0.0  14721:58 beam.smp
+ 7586 cecconi   22   2   47172   5172   3388 R  30.4  0.0   0:00.11 top
+ 3301 root      20   0 5900116  14592   1536 S   4.3  0.0 297:10.04 docker-con+
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.64 systemd
+************************
+Sun Apr 14 02:07:26 CEST 2019
+top - 02:07:26 up 106 days,  5:38, 18 users,  load average: 88.77, 81.17, 81.08
+Tasks: 1380 total,   5 running, 896 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36230876+free, 85144384 used, 80829312 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43707420+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.107g 136108 S  6745  0.2  37453:25 python
+67040 attardi   20   0 89.215g 0.013t 2.723g S 845.0  2.7 563:31.15 python
+ 7812 cecconi   22   2 37.275g 253428 197924 R 105.0  0.0   0:00.73 managed.out
+14515 setzu     20   0 2844440 371044  34172 R  95.0  0.1 960:05.44 python3
+68097 setzu     20   0 2877052 403560  33836 R  95.0  0.1 677:15.30 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  85.0  0.5   5860:41 python
+ 8728 dnsmasq   20   0 5518880 155728   2228 S  60.0  0.0  27975:11 beam.smp
+ 7833 cecconi   22   2   47176   5136   3352 R  25.0  0.0   0:00.08 top
+48318 setzu     20   0   42080  11976   2524 R  25.0  0.0   2982:46 htop
+ 7583 syslog    20   0 3590568 490128  16160 S   5.0  0.1 311:29.64 mono
+************************
+Sun Apr 14 02:07:36 CEST 2019
+top - 02:07:36 up 106 days,  5:38, 18 users,  load average: 84.99, 80.64, 80.90
+Tasks: 1381 total,   5 running, 896 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36220915+free, 85212080 used, 80861232 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43701689+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.123g 136108 R  5100  0.2  37462:28 python
+67040 attardi   20   0 89.474g 0.014t 2.723g S  1196  2.8 564:44.99 python
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  95.7  0.5   5860:50 python
+68097 setzu     20   0 2877052 403560  33836 R  95.7  0.1 677:25.37 python3
+14515 setzu     20   0 2844440 371044  34172 R  91.3  0.1 960:15.66 python3
+48318 setzu     20   0   42080  11976   2524 S  65.2  0.0   2982:48 htop
+ 8218 cecconi   22   2   47176   5196   3408 R  30.4  0.0   0:00.12 top
+ 8223 cecconi   22   2 32.604g  21416  14080 D  17.4  0.0   0:00.04 managed.out
+ 8220 cecconi   22   2 32.604g  11976  10392 S   4.3  0.0   0:00.01 nvprof
+29555 crecchi   20   0  598252  79340  14228 S   4.3  0.0   2:29.39 jupyter-lab
+************************
+Sun Apr 14 02:07:46 CEST 2019
+top - 02:07:47 up 106 days,  5:38, 18 users,  load average: 92.03, 82.24, 81.42
+Tasks: 1379 total,   4 running, 895 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36234940+free, 85006912 used, 80926144 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43721184+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.123g 136108 S  4727  0.2  37471:52 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 686.4  2.7 565:49.59 python
+ 8399 cecconi   22   2 37.275g 254584 199056 R 100.0  0.0   0:01.15 managed.out
+14515 setzu     20   0 2844440 371044  34172 R  95.5  0.1 960:25.57 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  90.9  0.5   5860:59 python
+68097 setzu     20   0 2877052 403560  33836 R  90.9  0.1 677:35.41 python3
+ 8414 cecconi   22   2   47172   5192   3408 R  27.3  0.0   0:00.09 top
+ 3809 rabbitmq  20   0 41.597g 106944   2400 S  18.2  0.0  14722:01 beam.smp
+68364 root      20   0       0      0      0 S   4.5  0.0   0:01.10 UVM GPU2 BH
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.66 systemd
+************************
+Sun Apr 14 02:07:57 CEST 2019
+top - 02:07:57 up 106 days,  5:38, 18 users,  load average: 97.97, 83.83, 81.95
+Tasks: 1378 total,   5 running, 894 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36222796+free, 85023600 used, 81030896 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43719484+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.123g 136108 S  5464  0.2  37480:48 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 663.6  2.7 566:53.67 python
+ 8620 cecconi   22   2 37.275g 252712 197216 R  95.5  0.0   0:00.82 managed.out
+14515 setzu     20   0 2844440 371044  34172 R  95.5  0.1 960:35.73 python3
+68097 setzu     20   0 2877052 403560  33836 R  95.5  0.1 677:45.50 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  72.7  0.5   5861:08 python
+ 8728 dnsmasq   20   0 5516752 155904   2228 S  45.5  0.0  27975:15 beam.smp
+ 8716 cecconi   22   2   47172   5156   3372 R  31.8  0.0   0:00.10 top
+ 3301 root      20   0 5900116  14592   1536 S   4.5  0.0 297:10.10 docker-con+
+25339 pedrelli  20   0  552812  34324    960 S   4.5  0.0   5:01.06 ZMQbg/1
+************************
+Sun Apr 14 02:08:07 CEST 2019
+top - 02:08:07 up 106 days,  5:38, 18 users,  load average: 97.87, 84.50, 82.19
+Tasks: 1378 total,   4 running, 895 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36214912+free, 85072048 used, 81061296 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43715676+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.111g 136108 R  4561  0.2  37490:08 python
+67040 attardi   20   0 89.388g 0.013t 2.723g S  1113  2.7 568:04.10 python
+14515 setzu     20   0 2844440 371044  34172 R  95.7  0.1 960:45.66 python3
+68097 setzu     20   0 2877052 403560  33836 R  95.7  0.1 677:55.66 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  87.0  0.5   5861:17 python
+ 9359 cecconi   22   2   47176   5152   3360 R  34.8  0.0   0:00.12 top
+11088 root      20   0 1824752  15656   3188 S   4.3  0.0 649:08.42 fail2ban-s+
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.67 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:09.07 kthreadd
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00 kworker/0:+
+************************
+Sun Apr 14 02:08:17 CEST 2019
+top - 02:08:18 up 106 days,  5:38, 18 users,  load average: 98.30, 85.01, 82.38
+Tasks: 1379 total,   5 running, 894 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36210547+free, 85051824 used, 81125184 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43716640+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.123g 136108 S  3641  0.2  37499:11 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 259.1  2.7 569:09.50 python
+ 6071 nardi     20   0 17.913g 2.279g 221076 R 100.0  0.5   5861:26 python
+ 9622 cecconi   22   2 37.275g 254492 198956 R 100.0  0.0   0:01.06 managed.out
+14515 setzu     20   0 2844440 371044  34172 R  95.5  0.1 960:55.85 python3
+68097 setzu     20   0 2877052 403560  33836 R  90.9  0.1 678:05.98 python3
+ 8728 dnsmasq   20   0 5517336 155520   2228 S  36.4  0.0  27975:18 beam.smp
+ 9632 cecconi   22   2   47176   5236   3448 R  22.7  0.0   0:00.10 top
+72856 root      20   0       0      0      0 S   4.5  0.0  10:35.64 UVM Tools +
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.68 systemd
+************************
+Sun Apr 14 02:08:28 CEST 2019
+top - 02:08:28 up 106 days,  5:39, 18 users,  load average: 96.18, 84.99, 82.41
+Tasks: 1377 total,   5 running, 890 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36220048+free, 84852528 used, 81229472 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43736595+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.119g 136108 S  5305  0.2  37508:09 python
+67040 attardi   20   0 89.024g 0.013t 2.723g S 572.7  2.6 570:10.14 python
+68097 setzu     20   0 2877052 403560  33836 R 100.0  0.1 678:16.28 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  95.5  0.5   5861:36 python
+14515 setzu     20   0 2844440 371044  34172 R  95.5  0.1 961:06.16 python3
+ 9833 cecconi   22   2 37.275g 253644 198148 R  86.4  0.0   0:00.56 managed.out
+ 3809 rabbitmq  20   0 41.595g 107224   2400 S  45.5  0.0  14722:03 beam.smp
+ 8728 dnsmasq   20   0 5515212 158708   2228 S  45.5  0.0  27975:19 beam.smp
+ 9843 cecconi   22   2   47172   5128   3344 R  27.3  0.0   0:00.10 top
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.69 systemd
+************************
+Sun Apr 14 02:08:38 CEST 2019
+top - 02:08:38 up 106 days,  5:39, 18 users,  load average: 98.00, 85.69, 82.66
+Tasks: 1382 total,   6 running, 894 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36200582+free, 85022384 used, 81254256 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43720662+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.127g 136108 S  3842  0.2  37517:00 python
+67040 attardi   20   0 89.473g 0.013t 2.723g S  1262  2.7 571:19.15 python
+68097 setzu     20   0 2877052 403560  33836 R  91.7  0.1 678:26.56 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  87.5  0.5   5861:46 python
+14515 setzu     20   0 2844440 371044  34172 R  87.5  0.1 961:16.38 python3
+10135 cecconi   22   2   47180   5180   3392 R  33.3  0.0   0:00.12 top
+ 3809 rabbitmq  20   0 41.595g 107288   2400 S  25.0  0.0  14722:04 beam.smp
+10142 cecconi   22   2 32.534g  11740  10156 S  12.5  0.0   0:00.03 nvprof
+ 1209 root      20   0       0      0      0 S   4.2  0.0   8:55.85 jbd2/dm-0-8
+11088 root      20   0 1824752  15656   3188 S   4.2  0.0 649:08.55 fail2ban-s+
+************************
+Sun Apr 14 02:08:48 CEST 2019
+top - 02:08:49 up 106 days,  5:39, 18 users,  load average: 92.79, 85.00, 82.47
+Tasks: 1379 total,   6 running, 892 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36235667+free, 84660304 used, 81265504 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43756870+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.100g 136108 R  6657  0.2  37525:46 python
+67040 attardi   20   0 89.215g 0.013t 2.723g S 461.9  2.7 572:26.62 python
+ 6071 nardi     20   0 17.913g 2.279g 221076 R 100.0  0.5   5861:56 python
+14515 setzu     20   0 2844440 370920  34172 R 100.0  0.1 961:26.62 python3
+68097 setzu     20   0 2877052 403560  33836 R  90.5  0.1 678:36.83 python3
+10680 cecconi   22   2   47176   5208   3420 R  28.6  0.0   0:00.09 top
+10684 cecconi   22   2 32.534g  11832  10252 S   9.5  0.0   0:00.02 nvprof
+48318 setzu     20   0   42080  11976   2524 R   9.5  0.0   2982:55 htop
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.70 systemd
+    2 root      20   0       0      0      0 S   0.0  0.0   0:09.07 kthreadd
+************************
+Sun Apr 14 02:08:59 CEST 2019
+top - 02:08:59 up 106 days,  5:39, 18 users,  load average: 88.56, 84.33, 82.27
+Tasks: 1384 total,   4 running, 899 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36219849+free, 84805648 used, 81278320 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43742332+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.096g 136108 R  4035  0.2  37535:12 python
+67040 attardi   20   0 89.092g 0.013t 2.723g S 495.7  2.7 573:35.15 python
+14515 setzu     20   0 2844440 370920  34172 R  91.3  0.1 961:36.81 python3
+68097 setzu     20   0 2877052 403560  33836 R  87.0  0.1 678:46.98 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 S  82.6  0.5   5862:05 python
+48318 setzu     20   0   42080  11976   2524 S  60.9  0.0   2982:56 htop
+11149 cecconi   22   2   47180   5192   3400 R  26.1  0.0   0:00.10 top
+11152 cecconi   22   2 32.534g  11944  10360 S  13.0  0.0   0:00.03 nvprof
+  348 root      20   0       0      0      0 S   4.3  0.0   2:17.90 ksoftirqd/+
+  474 root      20   0       0      0      0 S   4.3  0.0   1:45.64 ksoftirqd/+
+************************
+Sun Apr 14 02:09:07 CEST 2019
+top - 02:09:07 up 106 days,  5:39, 18 users,  load average: 85.00, 83.66, 82.07
+Tasks: 1372 total,   5 running, 888 sleeping,   0 stopped,  77 zombie
+%Cpu(s): 32.9 us,  5.3 sy,  0.1 ni, 61.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 36192531+free, 85072448 used, 81284720 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 43715651+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+40726 cossu     20   0 16.264g 1.119g 136108 R  6190  0.2  37541:57 python
+67040 attardi   20   0 89.388g 0.013t 2.723g S 557.1  2.7 574:30.20 python
+14515 setzu     20   0 2844440 370920  34172 R 100.0  0.1 961:44.24 python3
+68097 setzu     20   0 2877052 403560  33836 R 100.0  0.1 678:54.44 python3
+ 6071 nardi     20   0 17.913g 2.279g 221076 R  85.7  0.5   5862:12 python
+ 8728 dnsmasq   20   0 5515616 158328   2228 S  52.4  0.0  27975:25 beam.smp
+11547 cecconi   22   2   47200   5148   3360 R  28.6  0.0   0:00.10 top
+ 2354 root      20   0 6342024  30812   4092 S   4.8  0.0 456:24.94 dockerd
+16836 pedrelli  20   0  599452 415476   9356 S   4.8  0.1 199:43.94 ZMQbg/1
+    1 root      20   0  226132   8988   5972 S   0.0  0.0  17:18.71 systemd

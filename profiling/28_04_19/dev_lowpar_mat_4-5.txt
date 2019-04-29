@@ -1,0 +1,31 @@
+==49936== NVPROF is profiling process 49936, command: ./bin/blurboxlow.out 2 4 4
+==49936== Profiling application: ./bin/blurboxlow.out 2 4 4
+==49936== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:  100.00%  14.293ms        40  357.33us  210.46us  859.93us  blurBoxFilterKer(unsigned char*, unsigned char*, int, int)
+      API calls:   83.91%  271.16ms         2  135.58ms  1.2220us  271.16ms  cudaEventCreate
+                    8.15%  26.347ms        80  329.33us  6.6660us  20.557ms  cudaMallocManaged
+                    5.05%  16.321ms        40  408.03us  242.50us  890.34us  cudaEventSynchronize
+                    0.76%  2.4411ms       388  6.2910us     153ns  303.84us  cuDeviceGetAttribute
+                    0.70%  2.2731ms        40  56.826us  22.273us  394.40us  cudaLaunchKernel
+                    0.66%  2.1218ms         4  530.45us  231.48us  877.20us  cuDeviceTotalMem
+                    0.36%  1.1625ms        80  14.531us  3.0110us  171.90us  cudaEventRecord
+                    0.18%  565.96us         1  565.96us  565.96us  565.96us  cudaGetDeviceProperties
+                    0.07%  219.62us         1  219.62us  219.62us  219.62us  cudaDeviceGetAttribute
+                    0.07%  210.67us         4  52.667us  48.900us  56.545us  cuDeviceGetName
+                    0.06%  192.87us        40  4.8210us  2.8150us  21.194us  cudaEventElapsedTime
+                    0.03%  101.48us         4  25.369us  8.3380us  70.341us  cudaStreamDestroy
+                    0.01%  17.429us         4  4.3570us  2.2890us  9.3510us  cudaStreamCreate
+                    0.00%  11.750us         4  2.9370us  2.4280us  3.6980us  cuDeviceGetPCIBusId
+                    0.00%  4.5940us         1  4.5940us  4.5940us  4.5940us  cudaSetDevice
+                    0.00%  3.3620us         8     420ns     193ns     847ns  cuDeviceGet
+                    0.00%  2.2100us         3     736ns     219ns  1.4030us  cuDeviceGetCount
+                    0.00%  1.2430us         4     310ns     234ns     400ns  cuDeviceGetUuid
+
+==49936== Unified Memory profiling result:
+Device "Tesla P100-PCIE-16GB (2)"
+   Count  Avg Size  Min Size  Max Size  Total Size  Total Time  Name
+     179  29.676KB  4.0000KB  60.000KB  5.187500MB  727.6480us  Host To Device
+      90  32.711KB  4.0000KB  64.000KB  2.875000MB  323.0080us  Device To Host
+      83         -         -         -           -  13.46522ms  Gpu page fault groups
+Total CPU Page faults: 1485

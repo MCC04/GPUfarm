@@ -20,7 +20,6 @@ struct my_struct {
     float eventTime;
 };
 
-//M = iterations; N = size
 __global__ void cosGridStride(int M, int N, float *x_d, int offset, int *myclocks){    
     int index = offset+blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
@@ -28,7 +27,6 @@ __global__ void cosGridStride(int M, int N, float *x_d, int offset, int *myclock
     clock_t start =clock();
     for (int i = index; i < N; i += stride)
     {
-        //y[i] = x[i] + y[i];
         for(int j=0;j<M;j+=1)
             x_d[i]=cosf(x_d[i]);  
     }
@@ -52,6 +50,7 @@ __global__ void cosKernel(int M, int N, float *x_d, int offset, int *myclocks){
     if (threadIdx.x == 0) myclocks[blockIdx.x+(offset/blockDim.x)]=(int)(end-start);
     return ;
 }
+
 // Function to check any CUDA runtime API results
 inline cudaError_t checkCuda(cudaError_t result)
 {
@@ -67,7 +66,6 @@ inline cudaError_t checkCuda(cudaError_t result)
 int main(int argc, char **argv){
     std::srand(static_cast <unsigned> (time(NULL)));
 
-    //int BLOCK=32;
     int BLOCK=32;
     int gpu_clk=1;
     float clockSum=0.0, clockAvg=0.0;
@@ -116,7 +114,6 @@ int main(int argc, char **argv){
 
     for(int i=0; i<N_size;i+=1){
         x[i] = LOW + (float) std::rand() * (HIGH-LOW) / RAND_MAX;   
-        //std::cout<< x[i] << ", ";    
     }
 
     for(int i = 0; i < K_exec; ++i) {
@@ -187,10 +184,6 @@ int main(int argc, char **argv){
         msSum+=item.eventTime;
     } 
 
-
-
-
-
 #elif STREAMNEW
     std::cout<<std::endl<<"##########################" <<std::endl;
     std::cout<<"##########STREAM NEW##########" <<std::endl;
@@ -199,7 +192,7 @@ int main(int argc, char **argv){
     
     float *x_d,*cosx,ms=0.0;
     cosx=new float[N_size];
-    const int streamSize = N_size;//*2 ;
+    const int streamSize = N_size;
     const int streamBytes = streamSize* sizeof(float) ;
     GRID=streamSize/BLOCK;    
     clocks=new int[GRID]; 
@@ -226,7 +219,6 @@ int main(int argc, char **argv){
     //random generation of X vector
     for(int i=0; i<N_size;i+=1){
         x[i] = LOW + (float) std::rand() * (HIGH-LOW) / RAND_MAX;   
-       // std::cout<< x[i] << ", ";    
     }
 
     for (int r = 0; r < K_exec; ++r) {  
@@ -316,7 +308,6 @@ int main(int argc, char **argv){
       
         for(int i=0; i<N_size;i+=1){
             x[i] = LOW + (float) std::rand() * (HIGH-LOW) / RAND_MAX;   
-            //x_d[i]=x[i];//std::cout<< x[i] << ", ";    
         }
     
         for (int r = 0; r < K_exec; ++r) {   
@@ -336,7 +327,6 @@ int main(int argc, char **argv){
                 std::cout<<"COSX array : " <<std::endl;  
                 for(int j=0; j<N_size;j+=1) {
                     std::cout << x[j] << ", ";
-                    //x[j]=x_d[j];
                 }
                 std::cout<< std::endl <<"Clocks measures"<< std::endl;  
             #endif
@@ -352,7 +342,6 @@ int main(int argc, char **argv){
                 if(clocks[j]>max) max=clocks[j];
             }
             clockAvg=clockSum/GRID; 
-            //rb_wb=K_exec*(streamBytes*2 + GRID*sizeof(float));
             rb_wb=bytesSize*2 + GRID*sizeof(float);
     
             #ifdef MEASURES
@@ -368,9 +357,6 @@ int main(int argc, char **argv){
         }
         for (int i = 0; i < K_exec; ++i)
             checkCuda(cudaStreamDestroy(stream[i]));
-
-
-
 
     std::cout<<std::endl<<"----Total Events measures: "<< msSum<<"ms"<<std::endl;
 

@@ -1,0 +1,27 @@
+==56804== NVPROF is profiling process 56804, command: ./bin/smallmatmul.out 2 32 4 12 3 14 128
+==56804== Profiling application: ./bin/smallmatmul.out 2 32 4 12 3 14 128
+==56804== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   88.34%  12.477ms       512  24.368us  24.064us  24.736us  matMulKernel(float*, float*, float*, int, int, int)
+                    7.34%  1.0361ms      1024  1.0110us     927ns  11.104us  [CUDA memcpy HtoD]
+                    4.32%  610.10us       512  1.1910us  1.0560us  12.544us  [CUDA memcpy DtoH]
+      API calls:   59.41%  217.98ms         2  108.99ms     860ns  217.98ms  cudaEventCreate
+                   19.48%  71.478ms      1536  46.535us  2.8910us  226.40us  cudaMemcpyAsync
+                   14.04%  51.514ms       512  100.61us  5.4040us  182.58us  cudaEventSynchronize
+                    2.59%  9.5184ms       512  18.590us  8.6700us  65.697us  cudaLaunchKernel
+                    1.50%  5.4999ms      1024  5.3700us  2.2030us  26.616us  cudaEventRecord
+                    0.96%  3.5388ms         4  884.70us  329.03us  1.4632ms  cuDeviceTotalMem
+                    0.84%  3.0878ms       388  7.9580us     262ns  315.27us  cuDeviceGetAttribute
+                    0.60%  2.1895ms       512  4.2760us  2.0580us  22.940us  cudaEventElapsedTime
+                    0.24%  866.33us         1  866.33us  866.33us  866.33us  cudaGetDeviceProperties
+                    0.10%  356.73us         1  356.73us  356.73us  356.73us  cudaDeviceGetAttribute
+                    0.08%  304.80us         3  101.60us  6.5790us  272.49us  cudaFree
+                    0.07%  265.59us         4  66.396us  63.250us  72.183us  cuDeviceGetName
+                    0.06%  211.83us         3  70.608us  4.8120us  200.06us  cudaMalloc
+                    0.01%  26.295us         4  6.5730us  3.3150us  15.277us  cudaStreamDestroy
+                    0.00%  17.097us         3  5.6990us     216ns  15.658us  cuDeviceGetCount
+                    0.00%  16.369us         4  4.0920us  1.8200us  9.3150us  cudaStreamCreate
+                    0.00%  8.2980us         4  2.0740us  1.2290us  3.7460us  cuDeviceGetPCIBusId
+                    0.00%  7.2890us         8     911ns     380ns  2.3230us  cuDeviceGet
+                    0.00%  5.1830us         1  5.1830us  5.1830us  5.1830us  cudaSetDevice
+                    0.00%  1.9540us         4     488ns     400ns     643ns  cuDeviceGetUuid

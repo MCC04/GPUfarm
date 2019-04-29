@@ -1,7 +1,5 @@
 #include <assert.h>
 #include <iostream>
-//#include <cuda_runtime.h>
-
 #include <cudaUtils.h>
 
 // Function to check any CUDA runtime API results

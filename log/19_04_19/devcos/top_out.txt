@@ -1,0 +1,1952 @@
+Thu Apr 18 08:48:16 CEST 2019
+top - 08:48:16 up 110 days, 12:18, 23 users,  load average: 13.68, 13.68
+Tasks: 1316 total,   3 running, 937 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31156550+free, 79094616 used, 13762236+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44110870+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 235.0  3.3  51958:31
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2809:02
+43842 dnsmasq   20   0    4228    640    572 R  90.0  0.0   0:00.18
+48318 setzu     20   0   42080  11976   2524 R  50.0  0.0   3516:09
+43840 cecconi   20   0   47040   5188   3420 R  20.0  0.0   0:00.07
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.43
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.40
+************************
+Thu Apr 18 08:48:26 CEST 2019
+top - 08:48:26 up 110 days, 12:19, 23 users,  load average: 11.89, 13.29
+Tasks: 1318 total,   4 running, 938 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31149961+free, 79156968 used, 13762588+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44104633+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 260.0  3.3  51960:07
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2809:13
+43916 cecconi   20   0  122056  83220  15396 R 100.0  0.0   0:00.43
+43921 dnsmasq   20   0    4228    684    616 R  75.0  0.0   0:00.15
+ 3809 rabbitmq  20   0 41.596g 104072   2504 S  30.0  0.0  15312:18
+43919 cecconi   20   0   47040   5220   3448 R  25.0  0.0   0:00.09
+11088 root      20   0 1824752  15744   3280 S   5.0  0.0 674:42.81
+************************
+Thu Apr 18 08:48:36 CEST 2019
+top - 08:48:37 up 110 days, 12:19, 23 users,  load average: 10.75, 13.00
+Tasks: 1316 total,   3 running, 937 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31128902+free, 79354984 used, 13763846+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44083724+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 260.0  3.3  51961:42
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2809:23
+44141 cecconi   20   0       0      0      0 R 100.0  0.0   0:00.31
+44153 dnsmasq   20   0    4228    648    584 R  90.0  0.0   0:00.18
+44149 cecconi   20   0   47040   5188   3416 R  25.0  0.0   0:00.09
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.44
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.40
+************************
+Thu Apr 18 08:48:47 CEST 2019
+top - 08:48:47 up 110 days, 12:19, 23 users,  load average: 9.49, 12.66,
+Tasks: 1316 total,   4 running, 936 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31153328+free, 79114824 used, 13763436+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44108848+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 125.0  3.3  51963:06
+22092 nardi     20   0 17.561g 2.582g 459760 R  95.0  0.5   2809:33
+44549 dnsmasq   20   0    4228    648    584 R  70.0  0.0   0:00.14
+44547 cecconi   20   0   47040   5148   3376 R  20.0  0.0   0:00.07
+44550 cecconi   20   0  148128  10328   8880 R  10.0  0.0   0:00.02
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.44
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.41
+************************
+Thu Apr 18 08:48:57 CEST 2019
+top - 08:48:57 up 110 days, 12:19, 23 users,  load average: 10.89, 12.84
+Tasks: 1310 total,   3 running, 932 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31154224+free, 79101024 used, 13763921+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44110230+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 126.3  3.3  51964:43
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.3  0.5   2809:43
+44782 dnsmasq   20   0    4228    628    560 R  57.9  0.0   0:00.11
+44779 cecconi   20   0   47040   5084   3316 R  15.8  0.0   0:00.07
+48318 setzu     20   0   42080  11976   2524 S  10.5  0.0   3516:12
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.44
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.41
+************************
+Thu Apr 18 08:49:07 CEST 2019
+top - 08:49:08 up 110 days, 12:19, 23 users,  load average: 9.13, 12.35,
+Tasks: 1323 total,   4 running, 944 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31148691+free, 79149792 used, 13764576+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44105350+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 92.240g 0.017t 4.723g S  1105  3.4  51966:20
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.3  0.5   2809:54
+ 8728 dnsmasq   20   0 5519540 163004   2304 S  63.2  0.0  29092:45
+45174 dnsmasq   20   0    4228    640    576 R  52.6  0.0   0:00.10
+45167 cecconi   20   0   47040   5080   3308 R  31.6  0.0   0:00.09
+45173 cecconi   20   0 32.605g  21056  13744 R  31.6  0.0   0:00.06
+45169 cecconi   20   0 32.604g  11744  10160 S  21.1  0.0   0:00.04
+************************
+Thu Apr 18 08:49:18 CEST 2019
+top - 08:49:18 up 110 days, 12:19, 23 users,  load average: 8.11, 12.03,
+Tasks: 1324 total,   3 running, 944 sleeping,   0 stopped,   1 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31155139+free, 79078816 used, 13765225+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44112448+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 335.0  3.3  51967:52
+22092 nardi     20   0 17.561g 2.582g 459760 R  95.0  0.5   2810:04
+ 8728 dnsmasq   20   0 5519540 164192   2304 S  75.0  0.0  29092:48
+45457 dnsmasq   20   0    4228    628    560 R  30.0  0.0   0:00.06
+45450 cecconi   20   0   47040   5168   3392 R  20.0  0.0   0:00.07
+45452 cecconi   20   0 32.471g  11920  10340 S  15.0  0.0   0:00.03
+    9 root      20   0       0      0      0 I   5.0  0.0 389:21.90
+************************
+Thu Apr 18 08:49:28 CEST 2019
+top - 08:49:28 up 110 days, 12:20, 23 users,  load average: 7.72, 11.81,
+Tasks: 1326 total,   3 running, 946 sleeping,   0 stopped,   1 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31086275+free, 79762032 used, 13765768+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44044128+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 92.053g 0.017t 4.723g S  3270  3.4  51969:26
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2810:14
+48318 setzu     20   0   42080  11976   2524 R  50.0  0.0   3516:15
+45701 cecconi   20   0   47040   5132   3352 R  25.0  0.0   0:00.08
+45703 cecconi   20   0 32.471g  11824  10248 S  25.0  0.0   0:00.05
+45708 dnsmasq   20   0    4228    768    704 R  20.0  0.0   0:00.04
+16836 pedrelli  20   0  599452 415580   9460 S   5.0  0.1 210:19.08
+************************
+Thu Apr 18 08:49:38 CEST 2019
+top - 08:49:39 up 110 days, 12:20, 23 users,  load average: 9.20, 12.01,
+Tasks: 1323 total,   2 running, 945 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31085657+free, 79753928 used, 13767196+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44044131+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.928g 0.017t 4.723g S  3180  3.4  51971:02
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2810:25
+45926 cecconi   20   0 37.139g 149364 126356 R  95.0  0.0   0:00.25
+45934 cecconi   20   0   47040   5192   3416 R  25.0  0.0   0:00.08
+ 3809 rabbitmq  20   0 41.599g 104580   2504 S  20.0  0.0  15312:25
+ 8728 dnsmasq   20   0 5517924 163272   2304 S   5.0  0.0  29092:51
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.45
+************************
+Thu Apr 18 08:49:49 CEST 2019
+top - 08:49:49 up 110 days, 12:20, 23 users,  load average: 21.60, 14.58
+Tasks: 1323 total,   1 running, 946 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31146128+free, 79151704 used, 13766950+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44105158+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.739g 0.016t 4.723g S 915.0  3.3  51972:32
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2810:35
+ 8728 dnsmasq   20   0 5518000 161076   2304 S  90.0  0.0  29092:54
+46159 cecconi   20   0 32.534g  11944  10360 S  25.0  0.0   0:00.05
+46157 cecconi   20   0   47040   5224   3448 R  20.0  0.0   0:00.08
+37428 root      20   0       0      0      0 I   5.0  0.0   0:03.11
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.45
+************************
+Thu Apr 18 08:49:59 CEST 2019
+top - 08:49:59 up 110 days, 12:20, 23 users,  load average: 18.66, 14.18
+Tasks: 1327 total,   3 running, 947 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31109232+free, 79514032 used, 13767612+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44068928+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.997g 0.017t 4.723g S  1139  3.4  51974:06
+22092 nardi     20   0 17.561g 2.582g 459760 S  82.6  0.5   2810:45
+46398 cecconi   20   0 36.848g 132792 120128 R  69.6  0.0   0:00.16
+46401 cecconi   20   0   47040   5228   3448 R  17.4  0.0   0:00.11
+46411 dnsmasq   20   0    4228    640    576 R   8.7  0.0   0:00.02
+    9 root      20   0       0      0      0 I   4.3  0.0 389:22.02
+   60 root      20   0       0      0      0 S   4.3  0.0   2:39.37
+************************
+Thu Apr 18 08:50:09 CEST 2019
+top - 08:50:09 up 110 days, 12:20, 23 users,  load average: 16.34, 13.83
+Tasks: 1323 total,   2 running, 944 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31120624+free, 79385296 used, 13769094+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44080992+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.996g 0.017t 4.723g S  1225  3.4  51975:43
+22092 nardi     20   0 17.561g 2.582g 459760 S  95.0  0.5   2810:55
+46628 cecconi   20   0 37.161g 222800 177344 R  95.0  0.0   0:00.29
+ 3809 rabbitmq  20   0 41.595g 103756   2504 S  30.0  0.0  15312:29
+46637 cecconi   20   0   47040   5168   3392 R  25.0  0.0   0:00.09
+48318 setzu     20   0   42080  11976   2524 S  25.0  0.0   3516:18
+  414 root      20   0       0      0      0 S   5.0  0.0   1:53.62
+************************
+Thu Apr 18 08:50:20 CEST 2019
+top - 08:50:20 up 110 days, 12:20, 23 users,  load average: 20.76, 14.82
+Tasks: 1323 total,   2 running, 944 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31146796+free, 79117240 used, 13769728+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44107750+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.740g 0.016t 4.723g S 731.6  3.3  51977:10
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2811:06
+46865 cecconi   20   0 37.176g 246568 194684 R 100.0  0.0   0:00.27
+46873 cecconi   20   0   47040   5228   3448 R  26.3  0.0   0:00.08
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.45
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.46
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00
+************************
+Thu Apr 18 08:50:30 CEST 2019
+top - 08:50:30 up 110 days, 12:21, 23 users,  load average: 17.95, 14.41
+Tasks: 1325 total,   2 running, 946 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31116419+free, 79423152 used, 13769513+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44078016+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.927g 0.017t 4.723g S  3260  3.4  51978:44
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2811:16
+47194 cecconi   20   0 36.842g 114212 105120 R  95.0  0.0   0:00.19
+ 8728 dnsmasq   20   0 5519540 162004   2304 S  70.0  0.0  29093:02
+47197 cecconi   20   0   47040   5140   3360 R  30.0  0.0   0:00.09
+  240 root      20   0       0      0      0 S   5.0  0.0   2:41.02
+40542 root      20   0       0      0      0 I   5.0  0.0   0:00.24
+************************
+Thu Apr 18 08:50:40 CEST 2019
+top - 08:50:40 up 110 days, 12:21, 23 users,  load average: 21.39, 15.31
+Tasks: 1325 total,   3 running, 945 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31111318+free, 79467856 used, 13770144+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44073542+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.911g 0.017t 4.723g S  3365  3.4  51980:19
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2811:26
+47450 cecconi   20   0 32.613g  22680  14644 R  40.0  0.0   0:00.08
+48318 setzu     20   0   42080  11976   2524 R  35.0  0.0   3516:21
+47445 cecconi   20   0   47040   5216   3440 R  25.0  0.0   0:00.08
+77020 root      20   0       0      0      0 I   5.0  0.0   0:12.55
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.45
+************************
+Thu Apr 18 08:50:50 CEST 2019
+top - 08:50:51 up 110 days, 12:21, 23 users,  load average: 18.73, 14.94
+Tasks: 1324 total,   3 running, 944 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31162067+free, 78954160 used, 13770764+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44124899+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 305.0  3.3  51981:49
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.0  0.5   2811:37
+47678 cecconi   20   0   47040   5176   3400 R  25.0  0.0   0:00.09
+47680 cecconi   20   0 32.604g  11996  10412 S  20.0  0.0   0:00.04
+11088 root      20   0 1824752  15744   3280 S  10.0  0.0 674:43.44
+ 8728 dnsmasq   20   0 5519540 162052   2304 S   5.0  0.0  29093:06
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.45
+************************
+Thu Apr 18 08:51:01 CEST 2019
+top - 08:51:01 up 110 days, 12:21, 23 users,  load average: 21.35, 15.59
+Tasks: 1323 total,   3 running, 942 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31149244+free, 79067904 used, 13772211+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44112681+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 252.6  3.3  51983:22
+47898 cecconi   20   0 37.179g 249292 195908 R 105.3  0.0   0:00.27
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2811:47
+47906 cecconi   20   0   47040   5152   3376 R  26.3  0.0   0:00.08
+   36 root      20   0       0      0      0 S   5.3  0.0   2:46.34
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.45
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.47
+************************
+Thu Apr 18 08:51:11 CEST 2019
+top - 08:51:11 up 110 days, 12:21, 23 users,  load average: 18.61, 15.19
+Tasks: 1322 total,   1 running, 943 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31167744+free, 78885296 used, 13771972+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44131801+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 266.7  3.3  51984:57
+22092 nardi     20   0 17.561g 2.582g 459760 S  95.2  0.5   2811:57
+48152 cecconi   20   0   47040   5096   3312 R  19.0  0.0   0:00.09
+ 6287 root      20   0    8556   1524      0 S   4.8  0.0   7:03.99
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.45
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.47
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00
+************************
+Thu Apr 18 08:51:21 CEST 2019
+top - 08:51:22 up 110 days, 12:22, 23 users,  load average: 16.44, 14.84
+Tasks: 1325 total,   3 running, 944 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31141587+free, 79140368 used, 13772622+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44106291+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.609g 0.016t 4.723g S 294.7  3.3  51986:33
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.3  0.5   2812:08
+48330 cecconi   20   0  192012 156028  19200 R 100.0  0.0   0:01.02
+48318 setzu     20   0   42080  11976   2524 S  31.6  0.0   3516:24
+48333 cecconi   20   0   47040   5216   3436 R  21.1  0.0   0:00.07
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.45
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.47
+************************
+Thu Apr 18 08:51:32 CEST 2019
+top - 08:51:32 up 110 days, 12:22, 23 users,  load average: 20.27, 15.75
+Tasks: 1324 total,   1 running, 944 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31128352+free, 79271248 used, 13772771+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44093203+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 92.302g 0.017t 4.723g S  1916  3.4  51988:02
+22092 nardi     20   0 17.561g 2.582g 459760 S 110.5  0.5   2812:18
+ 8728 dnsmasq   20   0 5518516 161164   2304 S  63.2  0.0  29093:14
+48597 cecconi   20   0   47040   5152   3372 R  31.6  0.0   0:00.09
+48600 cecconi   20   0 32.534g  11964  10380 S  21.1  0.0   0:00.04
+ 7482 message+  20   0  146912   3564   1772 S   5.3  0.0   8:35.68
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.45
+************************
+Thu Apr 18 08:51:42 CEST 2019
+top - 08:51:42 up 110 days, 12:22, 23 users,  load average: 17.54, 15.32
+Tasks: 1327 total,   1 running, 947 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31144534+free, 79102752 used, 13773438+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44110054+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 295.0  3.3  51989:32
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2812:28
+46621 setzu     20   0 2715836 215704  34784 S  20.0  0.0   0:11.15
+48834 cecconi   20   0   47040   5148   3368 R  20.0  0.0   0:00.08
+48849 cecconi   20   0 32.534g  11784  10204 S  20.0  0.0   0:00.04
+ 7732 root      20   0       0      0      0 I   5.0  0.0   0:12.30
+11088 root      20   0 1824752  15744   3280 S   5.0  0.0 674:43.65
+************************
+Thu Apr 18 08:51:52 CEST 2019
+top - 08:51:53 up 110 days, 12:22, 23 users,  load average: 19.93, 15.87
+Tasks: 1325 total,   3 running, 943 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31125388+free, 79278064 used, 13775051+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44091462+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.609g 0.016t 4.723g S 342.9  3.3  51991:08
+22092 nardi     20   0 17.561g 2.582g 459760 R  95.2  0.5   2812:38
+49096 cecconi   20   0       0      0      0 R  85.7  0.0   0:00.33
+ 8728 dnsmasq   20   0 5518516 161412   2304 S  61.9  0.0  29093:18
+48318 setzu     20   0   42080  11976   2524 S  52.4  0.0   3516:27
+ 3809 rabbitmq  20   0 41.596g 103528   2504 S  42.9  0.0  15312:39
+49116 cecconi   20   0   47040   5140   3360 R  23.8  0.0   0:00.09
+************************
+Thu Apr 18 08:52:03 CEST 2019
+top - 08:52:03 up 110 days, 12:22, 23 users,  load average: 22.49, 16.65
+Tasks: 1324 total,   2 running, 943 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31081648+free, 79719152 used, 13774684+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44048396+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 92.568g 0.017t 4.723g S  3089  3.5  51992:40
+22092 nardi     20   0 17.561g 2.582g 459760 S 115.8  0.5   2812:49
+ 8728 dnsmasq   20   0 5520488 162776   2304 S  42.1  0.0  29093:20
+49358 cecconi   20   0   47040   5168   3388 R  31.6  0.0   0:00.10
+49344 cecconi   20   0       0      0      0 R   5.3  0.0   0:00.04
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.47
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.49
+************************
+Thu Apr 18 08:52:13 CEST 2019
+top - 08:52:13 up 110 days, 12:22, 23 users,  load average: 19.27, 16.15
+Tasks: 1324 total,   2 running, 943 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31134953+free, 79169712 used, 13776321+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44102300+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 855.0  3.3  51994:11
+22092 nardi     20   0 17.561g 2.582g 459760 S  95.0  0.5   2812:59
+49579 cecconi   20   0       0      0      0 R  95.0  0.0   0:00.38
+ 3809 rabbitmq  20   0 41.599g 104444   2504 S  35.0  0.0  15312:41
+49592 cecconi   20   0   47040   5168   3392 R  20.0  0.0   0:00.07
+ 7694 syslog    20   0 2906540  82900   9264 S   5.0  0.0 132:32.76
+72859 root     -51   0       0      0      0 S   5.0  0.0   3:27.45
+************************
+Thu Apr 18 08:52:23 CEST 2019
+top - 08:52:23 up 110 days, 12:23, 23 users,  load average: 16.68, 15.70
+Tasks: 1321 total,   3 running, 939 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31156704+free, 78956912 used, 13775852+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44124640+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 770.0  3.3  51995:48
+22092 nardi     20   0 17.561g 2.582g 459760 R  95.0  0.5   2813:09
+49829 cecconi   20   0 36.842g  27700  19148 R  55.0  0.0   0:00.11
+ 3809 rabbitmq  20   0 41.596g 103896   2504 S  35.0  0.0  15312:42
+49832 cecconi   20   0   47040   5156   3380 R  25.0  0.0   0:00.08
+ 9020 uuidd     20   0   42952   4848   1316 S   5.0  0.0 161:31.20
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.47
+************************
+Thu Apr 18 08:52:33 CEST 2019
+top - 08:52:34 up 110 days, 12:23, 23 users,  load average: 14.66, 15.30
+Tasks: 1321 total,   3 running, 939 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31099337+free, 79514592 used, 13777449+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44067846+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.865g 0.016t 4.723g S  1043  3.3  51997:21
+22092 nardi     20   0 17.561g 2.582g 459760 R  95.2  0.5   2813:20
+50093 cecconi   20   0       0      0      0 R  85.7  0.0   0:00.35
+50103 cecconi   20   0   47040   5132   3356 R  23.8  0.0   0:00.10
+ 7666 syslog    20   0 3378832  81184   4868 S   4.8  0.0 141:02.21
+50089 cecconi   20   0 32.604g  14616  12452 S   4.8  0.0   0:00.04
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.47
+************************
+Thu Apr 18 08:52:44 CEST 2019
+top - 08:52:44 up 110 days, 12:23, 23 users,  load average: 13.10, 14.94
+Tasks: 1321 total,   3 running, 939 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31157574+free, 78937328 used, 13776940+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44126595+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 735.0  3.3  51998:48
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2813:30
+50321 cecconi   20   0   47040   5208   3428 R  25.0  0.0   0:00.08
+50323 cecconi   20   0 32.604g  11884  10300 S  15.0  0.0   0:00.03
+50327 cecconi   20   0 32.604g  17772  13340 R  15.0  0.0   0:00.03
+    2 root      20   0       0      0      0 S   5.0  0.0   0:10.51
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.47
+************************
+Thu Apr 18 08:52:54 CEST 2019
+top - 08:52:54 up 110 days, 12:23, 23 users,  load average: 11.39, 14.51
+Tasks: 1323 total,   2 running, 942 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31157225+free, 78935776 used, 13777443+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44126752+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 770.0  3.3  52000:24
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2813:40
+50558 cecconi   20   0 32.534g  11748  10168 S  25.0  0.0   0:00.05
+50556 cecconi   20   0   47040   5152   3376 R  20.0  0.0   0:00.08
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.47
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.51
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00
+************************
+Thu Apr 18 08:53:04 CEST 2019
+top - 08:53:05 up 110 days, 12:23, 23 users,  load average: 10.03, 14.12
+Tasks: 1321 total,   2 running, 940 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31133772+free, 79156960 used, 13778780+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44103827+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 905.0  3.3  52001:56
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2813:51
+50787 cecconi   20   0 37.181g 254424 198568 R 100.0  0.0   0:00.36
+48318 setzu     20   0   42080  11976   2524 S  55.0  0.0   3516:33
+50796 cecconi   20   0   47040   5196   3420 R  25.0  0.0   0:00.09
+ 9020 uuidd     20   0   42952   4848   1316 S   5.0  0.0 161:31.24
+11088 root      20   0 1824752  15744   3280 S   5.0  0.0 674:44.01
+************************
+Thu Apr 18 08:53:15 CEST 2019
+top - 08:53:15 up 110 days, 12:23, 23 users,  load average: 9.10, 13.78,
+Tasks: 1321 total,   3 running, 939 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31135478+free, 79133240 used, 13779443+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44106198+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 250.0  3.3  52003:25
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2814:01
+51020 cecconi   20   0 37.179g 250312 196140 R  95.0  0.0   0:00.28
+ 8728 dnsmasq   20   0 5517928 160844   2304 S  60.0  0.0  29093:33
+51029 cecconi   20   0   47040   5188   3412 R  20.0  0.0   0:00.07
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.47
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.52
+************************
+Thu Apr 18 08:53:25 CEST 2019
+top - 08:53:25 up 110 days, 12:24, 23 users,  load average: 8.24, 13.44,
+Tasks: 1323 total,   1 running, 942 sleeping,   0 stopped,   1 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31155536+free, 78935056 used, 13779206+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44126809+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 295.0  3.3  52004:58
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2814:11
+51241 cecconi   20   0   47040   5200   3420 R  25.0  0.0   0:00.09
+51244 cecconi   20   0 32.471g  11876  10300 S  15.0  0.0   0:00.03
+ 4036 postgres  20   0  319556  22840  20892 S   5.0  0.0   0:15.74
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.47
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.52
+************************
+Thu Apr 18 08:53:35 CEST 2019
+top - 08:53:36 up 110 days, 12:24, 23 users,  load average: 7.42, 13.10,
+Tasks: 1323 total,   3 running, 941 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31161369+free, 78872496 used, 13779628+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44133081+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 265.0  3.3  52006:30
+22092 nardi     20   0 17.561g 2.582g 459760 S  95.0  0.5   2814:21
+ 3809 rabbitmq  20   0 41.596g 103504   2504 S  60.0  0.0  15312:49
+51473 cecconi   20   0   47040   5164   3388 R  25.0  0.0   0:00.08
+51479 cecconi   20   0 32.605g  21936  14412 R  25.0  0.0   0:00.05
+51475 cecconi   20   0 32.604g  11996  10412 S  20.0  0.0   0:00.04
+48318 setzu     20   0   42080  11976   2524 R  10.0  0.0   3516:35
+************************
+Thu Apr 18 08:53:46 CEST 2019
+top - 08:53:46 up 110 days, 12:24, 23 users,  load average: 12.48, 14.04
+Tasks: 1321 total,   2 running, 940 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31131398+free, 79158736 used, 13780974+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44103635+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 130.0  3.3  52007:58
+51737 cecconi   20   0 37.181g 254628 198776 R 105.0  0.0   0:00.30
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2814:32
+ 8728 dnsmasq   20   0 5516976 161280   2304 S  75.0  0.0  29093:38
+51745 cecconi   20   0   47040   5144   3368 R  25.0  0.0   0:00.08
+ 2354 root      20   0 6342024  31104   4124 S   5.0  0.0 475:54.04
+ 2485 redis     20   0   51444   1556    480 S   5.0  0.0 167:39.75
+************************
+Thu Apr 18 08:53:56 CEST 2019
+top - 08:53:56 up 110 days, 12:24, 23 users,  load average: 10.71, 13.61
+Tasks: 1320 total,   1 running, 940 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31159081+free, 78884616 used, 13780704+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44131868+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 136.8  3.3  52009:35
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2814:42
+51979 cecconi   20   0   47040   5236   3460 R  21.1  0.0   0:00.07
+51981 cecconi   20   0 32.534g  11752  10168 S  21.1  0.0   0:00.04
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.47
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.53
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00
+************************
+Thu Apr 18 08:54:06 CEST 2019
+top - 08:54:06 up 110 days, 12:24, 23 users,  load average: 9.53, 13.26,
+Tasks: 1321 total,   1 running, 942 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31163433+free, 78835792 used, 13781233+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44136748+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 315.8  3.3  52011:09
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2814:52
+ 3809 rabbitmq  20   0 41.597g 103664   2504 S  26.3  0.0  15312:52
+52211 cecconi   20   0   47040   5076   3300 R  21.1  0.0   0:00.07
+52213 cecconi   20   0 32.534g  11856  10272 S  15.8  0.0   0:00.03
+43829 cecconi   20   0   14604   3236   2940 S   5.3  0.0   0:00.35
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.47
+************************
+Thu Apr 18 08:54:16 CEST 2019
+top - 08:54:17 up 110 days, 12:24, 23 users,  load average: 8.98, 13.02,
+Tasks: 1322 total,   3 running, 940 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31123043+free, 79232016 used, 13782001+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44097129+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 92.397g 0.017t 4.723g S  3395  3.4  52012:42
+52409 cecconi   20   0  145852 107168  15648 R 100.0  0.0   0:00.63
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.0  0.5   2815:03
+48318 setzu     20   0   42080  11976   2524 S  35.0  0.0   3516:39
+52412 cecconi   20   0   47040   5168   3392 R  35.0  0.0   0:00.10
+ 2354 root      20   0 6342024  31104   4124 S   5.0  0.0 475:54.12
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.48
+************************
+Thu Apr 18 08:54:27 CEST 2019
+top - 08:54:27 up 110 days, 12:25, 23 users,  load average: 8.06, 12.69,
+Tasks: 1320 total,   3 running, 938 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31124732+free, 79214568 used, 13782056+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44098873+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.911g 0.017t 4.723g S 740.0  3.4  52014:17
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2815:13
+52624 cecconi   20   0 36.842g  27544  19004 R  50.0  0.0   0:00.10
+52619 cecconi   20   0   47040   5152   3380 R  30.0  0.0   0:00.09
+11088 root      20   0 1824752  15744   3280 S   5.0  0.0 674:44.37
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.48
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.54
+************************
+Thu Apr 18 08:54:37 CEST 2019
+top - 08:54:37 up 110 days, 12:25, 23 users,  load average: 7.75, 12.47,
+Tasks: 1322 total,   2 running, 941 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31138297+free, 79072336 used, 13782716+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44113094+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 740.0  3.3  52015:46
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2815:23
+52840 cecconi   20   0   47040   5164   3388 R  20.0  0.0   0:00.07
+52842 cecconi   20   0 32.534g  11848  10268 S  20.0  0.0   0:00.04
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.48
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.55
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00
+************************
+Thu Apr 18 08:54:47 CEST 2019
+top - 08:54:48 up 110 days, 12:25, 23 users,  load average: 13.13, 13.51
+Tasks: 1320 total,   3 running, 938 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31136406+free, 79085872 used, 13783252+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44111744+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 821.1  3.3  52017:21
+22092 nardi     20   0 17.561g 2.582g 459760 S 105.3  0.5   2815:33
+ 8728 dnsmasq   20   0 5520056 162536   2304 S  73.7  0.0  29093:49
+53082 cecconi   20   0 32.668g  22708  14664 R  52.6  0.0   0:00.10
+48318 setzu     20   0   42080  11976   2524 R  36.8  0.0   3516:41
+53077 cecconi   20   0   47040   5076   3304 R  26.3  0.0   0:00.08
+  408 root      20   0       0      0      0 S   5.3  0.0   2:13.86
+************************
+Thu Apr 18 08:54:58 CEST 2019
+top - 08:54:58 up 110 days, 12:25, 23 users,  load average: 10.88, 13.00
+Tasks: 1320 total,   2 running, 939 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31155091+free, 78893568 used, 13783798+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44130972+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S  1000  3.3  52018:54
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2815:44
+ 8728 dnsmasq   20   0 5519464 161272   2304 S  45.0  0.0  29093:51
+ 3809 rabbitmq  20   0 41.596g 103864   2504 S  30.0  0.0  15312:57
+53312 cecconi   20   0   47040   5124   3348 R  25.0  0.0   0:00.08
+53314 cecconi   20   0 32.604g  11964  10380 S  15.0  0.0   0:00.03
+53318 cecconi   20   0  191152  15856  12480 R   5.0  0.0   0:00.01
+************************
+Thu Apr 18 08:55:08 CEST 2019
+top - 08:55:08 up 110 days, 12:25, 23 users,  load average: 15.64, 13.99
+Tasks: 1320 total,   1 running, 941 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31148432+free, 78954112 used, 13784404+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44124902+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 200.0  3.3  52020:22
+22092 nardi     20   0 17.561g 2.582g 459760 S  90.5  0.5   2815:54
+53533 cecconi   20   0   47040   5172   3392 R  19.0  0.0   0:00.08
+41546 root      20   0  138244  74612  10884 S   4.8  0.0   0:05.30
+53515 cecconi   20   0 32.604g  14704  12524 S   4.8  0.0   0:00.05
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.48
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.56
+************************
+Thu Apr 18 08:55:18 CEST 2019
+top - 08:55:19 up 110 days, 12:25, 23 users,  load average: 13.70, 13.63
+Tasks: 1318 total,   2 running, 938 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31147478+free, 78957632 used, 13785004+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44124566+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.616g 0.016t 4.723g S 120.0  3.3  52021:59
+22092 nardi     20   0 17.561g 2.582g 459760 R  90.0  0.5   2816:04
+ 3809 rabbitmq  20   0 41.597g 103996   2504 S  30.0  0.0  15312:59
+53750 cecconi   20   0   47040   5128   3356 R  15.0  0.0   0:00.07
+53736 cecconi   20   0 32.604g  14532  12376 S  10.0  0.0   0:00.05
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.48
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.57
+************************
+Thu Apr 18 08:55:29 CEST 2019
+top - 08:55:29 up 110 days, 12:26, 23 users,  load average: 12.05, 13.28
+Tasks: 1319 total,   2 running, 939 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31138521+free, 79032912 used, 13786432+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44116182+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.609g 0.016t 4.723g S 210.0  3.3  52023:33
+22092 nardi     20   0 17.561g 2.582g 459760 S  95.0  0.5   2816:15
+53955 cecconi   20   0 37.144g 164096 136596 R  90.0  0.0   0:00.20
+ 8728 dnsmasq   20   0 5519540 161840   2304 S  55.0  0.0  29093:57
+53958 cecconi   20   0   47040   5172   3400 R  20.0  0.0   0:00.08
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.48
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.57
+************************
+Thu Apr 18 08:55:39 CEST 2019
+top - 08:55:39 up 110 days, 12:26, 23 users,  load average: 10.65, 12.94
+Tasks: 1318 total,   2 running, 938 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31135206+free, 79068160 used, 13786224+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44113497+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 275.0  3.3  52025:08
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2816:25
+54178 cecconi   20   0   47040   5168   3392 R  20.0  0.0   0:00.08
+54164 cecconi   20   0 32.604g  14560  12324 S  10.0  0.0   0:00.05
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.49
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.58
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00
+************************
+Thu Apr 18 08:55:49 CEST 2019
+top - 08:55:49 up 110 days, 12:26, 23 users,  load average: 15.23, 13.89
+Tasks: 1322 total,   4 running, 940 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31142985+free, 78984272 used, 13786833+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44121900+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 92.865g 0.017t 4.723g S  2870  3.5  52026:40
+22092 nardi     20   0 17.561g 2.582g 459760 R 115.0  0.5   2816:35
+54390 cecconi   20   0 36.842g  27640  19080 R  70.0  0.0   0:00.14
+54385 cecconi   20   0   47040   5148   3372 R  45.0  0.0   0:00.13
+54396 root      20   0    4456   1692   1528 S  30.0  0.0   0:00.06
+ 3809 rabbitmq  20   0 41.596g 103872   2504 S  25.0  0.0  15313:02
+ 8645 root      20   0 1095028  86960   1892 S   5.0  0.0 260:29.75
+************************
+Thu Apr 18 08:56:00 CEST 2019
+top - 08:56:00 up 110 days, 12:26, 23 users,  load average: 13.66, 13.59
+Tasks: 1317 total,   1 running, 939 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31121283+free, 79194672 used, 13787496+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44100844+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.677g 0.016t 4.723g S 730.0  3.3  52028:12
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2816:46
+ 8728 dnsmasq   20   0 5516976 160812   2304 S  40.0  0.0  29094:02
+54648 cecconi   20   0   47040   5156   3380 R  25.0  0.0   0:00.09
+ 7666 syslog    20   0 3378824  81192   4868 S   5.0  0.0 141:02.43
+29555 crecchi   20   0  744896  74456  14228 S   5.0  0.0   8:27.81
+54634 cecconi   20   0 32.604g  14624  12468 S   5.0  0.0   0:00.04
+************************
+Thu Apr 18 08:56:10 CEST 2019
+top - 08:56:10 up 110 days, 12:26, 23 users,  load average: 17.99, 14.57
+Tasks: 1315 total,   2 running, 936 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31146966+free, 78932288 used, 13788052+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44127100+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.609g 0.016t 4.723g S 910.0  3.3  52029:43
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2816:56
+ 8728 dnsmasq   20   0 5518000 162956   2304 S  50.0  0.0  29094:04
+54862 cecconi   20   0   47040   5108   3336 R  20.0  0.0   0:00.08
+46291 root      20   0       0      0      0 I   5.0  0.0   0:00.03
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.49
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.59
+************************
+Thu Apr 18 08:56:20 CEST 2019
+top - 08:56:20 up 110 days, 12:27, 23 users,  load average: 15.84, 14.22
+Tasks: 1320 total,   2 running, 941 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31130396+free, 79082672 used, 13789582+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44111052+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 265.0  3.3  52031:18
+22092 nardi     20   0 17.561g 2.582g 459760 R  95.0  0.5   2817:06
+55071 cecconi   20   0 37.274g 252520 197168 S  85.0  0.0   0:00.35
+ 3809 rabbitmq  20   0 41.596g 104372   2504 S  35.0  0.0  15313:05
+55081 cecconi   20   0   47040   5136   3360 R  20.0  0.0   0:00.09
+    9 root      20   0       0      0      0 I   5.0  0.0 389:23.10
+ 2354 root      20   0 6342024  31104   4124 S   5.0  0.0 475:54.52
+************************
+Thu Apr 18 08:56:30 CEST 2019
+top - 08:56:31 up 110 days, 12:27, 23 users,  load average: 13.87, 13.85
+Tasks: 1317 total,   3 running, 938 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31146694+free, 78923176 used, 13789235+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44128012+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 152.6  3.3  52032:46
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2817:16
+48318 setzu     20   0   42080  11976   2524 S  36.8  0.0   3516:50
+55296 cecconi   20   0 32.605g  20876  13560 R  21.1  0.0   0:00.04
+55290 cecconi   20   0   47040   5144   3372 R  15.8  0.0   0:00.06
+55292 cecconi   20   0 32.604g  11784  10204 S  15.8  0.0   0:00.03
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.49
+************************
+Thu Apr 18 08:56:41 CEST 2019
+top - 08:56:41 up 110 days, 12:27, 23 users,  load average: 12.27, 13.51
+Tasks: 1317 total,   3 running, 938 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31138624+free, 78997728 used, 13789849+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44120556+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 163.2  3.3  52034:21
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.3  0.5   2817:27
+55533 cecconi   20   0 36.843g 121216 111256 R  73.7  0.0   0:00.14
+55536 cecconi   20   0   47040   5192   3416 R  26.3  0.0   0:00.09
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.49
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.60
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00
+************************
+Thu Apr 18 08:56:51 CEST 2019
+top - 08:56:51 up 110 days, 12:27, 23 users,  load average: 10.85, 13.16
+Tasks: 1319 total,   3 running, 940 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31152857+free, 78849504 used, 13790438+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44135379+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 273.7  3.3  52035:54
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.3  0.5   2817:37
+55759 cecconi   20   0 36.779g  27576  19036 R  47.4  0.0   0:00.09
+55753 cecconi   20   0   47040   5172   3400 R  26.3  0.0   0:00.08
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.49
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.61
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00
+************************
+Thu Apr 18 08:57:01 CEST 2019
+top - 08:57:02 up 110 days, 12:27, 23 users,  load average: 15.68, 14.16
+Tasks: 1317 total,   4 running, 937 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31138886+free, 78983088 used, 13791052+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44122019+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+22092 nardi     20   0 17.561g 2.582g 459760 S 105.3  0.5   2817:47
+67040 attardi   20   0 91.609g 0.016t 4.723g R 100.0  3.3  52037:36
+55999 cecconi   20   0 36.846g 129780 119724 R  78.9  0.0   0:00.15
+48318 setzu     20   0   42080  11976   2524 R  31.6  0.0   3516:52
+56002 cecconi   20   0   47040   5164   3392 R  21.1  0.0   0:00.07
+  192 root      20   0       0      0      0 S   5.3  0.0   2:35.07
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.49
+************************
+Thu Apr 18 08:57:12 CEST 2019
+top - 08:57:12 up 110 days, 12:27, 23 users,  load average: 19.70, 15.12
+Tasks: 1314 total,   1 running, 937 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31142540+free, 78939824 used, 13791724+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44126348+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.616g 0.016t 4.723g S 300.0  3.3  52039:07
+22092 nardi     20   0 17.561g 2.582g 459760 S 105.3  0.5   2817:58
+ 8728 dnsmasq   20   0 5517484 160964   2304 S  63.2  0.0  29094:16
+56259 cecconi   20   0   47040   5132   3360 R  21.1  0.0   0:00.07
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.49
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.61
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00
+************************
+Thu Apr 18 08:57:22 CEST 2019
+top - 08:57:22 up 110 days, 12:28, 23 users,  load average: 17.14, 14.72
+Tasks: 1317 total,   2 running, 939 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31148422+free, 78874960 used, 13792329+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44132832+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 473.7  3.3  52040:41
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.3  0.5   2818:08
+56631 cecconi   20   0   47040   5124   3348 R  26.3  0.0   0:00.08
+56633 cecconi   20   0 32.534g  11952  10372 S  21.1  0.0   0:00.04
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.62
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00
+************************
+Thu Apr 18 08:57:32 CEST 2019
+top - 08:57:32 up 110 days, 12:28, 23 users,  load average: 16.20, 14.60
+Tasks: 1319 total,   4 running, 939 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31147468+free, 78879808 used, 13792796+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44132348+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2818:18
+67040 attardi   20   0 91.547g 0.016t 4.723g R 100.0  3.3  52042:14
+ 3809 rabbitmq  20   0 41.599g 104596   2504 S  47.4  0.0  15313:12
+57081 cecconi   20   0   47040   5128   3356 R  21.1  0.0   0:00.07
+57084 cecconi   20   0 32.604g  11956  10372 S  15.8  0.0   0:00.03
+ 7435 message+  20   0  291792  13876  12168 S   5.3  0.0   4:31.42
+56667 root      20   0  101560   6796   5832 S   5.3  0.0   0:00.01
+************************
+Thu Apr 18 08:57:43 CEST 2019
+top - 08:57:43 up 110 days, 12:28, 23 users,  load average: 14.08, 14.20
+Tasks: 1316 total,   2 running, 938 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31119942+free, 79145008 used, 13793803+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44105827+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S  1095  3.3  52043:50
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2818:28
+57421 cecconi   20   0   47040   5236   3460 R  26.3  0.0   0:00.08
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.63
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00
+    6 root      20   0       0      0      0 I   0.0  0.0   0:06.11
+************************
+Thu Apr 18 08:57:53 CEST 2019
+top - 08:57:53 up 110 days, 12:28, 23 users,  load average: 11.63, 13.65
+Tasks: 1321 total,   2 running, 941 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31138016+free, 78953616 used, 13794870+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44124966+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 125.0  3.3  52045:17
+22092 nardi     20   0 17.561g 2.582g 459760 S  95.0  0.5   2818:39
+ 3809 rabbitmq  20   0 41.599g 104668   2504 S  45.0  0.0  15313:14
+57975 cecconi   20   0   47040   5160   3384 R  20.0  0.0   0:00.07
+57980 cecconi   20   0 32.604g  11836  10252 S  20.0  0.0   0:00.04
+57984 cecconi   20   0 32.599g  17652  13264 R  15.0  0.0   0:00.03
+ 7694 syslog    20   0 2906604  82908   9264 S   5.0  0.0 132:33.10
+************************
+Thu Apr 18 08:58:03 CEST 2019
+top - 08:58:03 up 110 days, 12:28, 23 users,  load average: 10.75, 13.39
+Tasks: 1321 total,   3 running, 940 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31137673+free, 78954256 used, 13795147+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44124902+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 125.0  3.3  52046:53
+22092 nardi     20   0 17.561g 2.582g 459760 R  95.0  0.5   2818:49
+58400 cecconi   20   0 36.779g  27360  18800 R  45.0  0.0   0:00.09
+58395 cecconi   20   0   47040   5148   3372 R  20.0  0.0   0:00.07
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.63
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00
+************************
+Thu Apr 18 08:58:13 CEST 2019
+top - 08:58:14 up 110 days, 12:28, 23 users,  load average: 15.75, 14.42
+Tasks: 1319 total,   3 running, 938 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31120691+free, 79106560 used, 13796899+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44108652+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 270.0  3.3  52048:27
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2818:59
+59032 cecconi   20   0       0      0      0 R  95.0  0.0   0:00.33
+48318 setzu     20   0   42080  11976   2524 S  55.0  0.0   3516:58
+59042 cecconi   20   0   47040   5144   3368 R  25.0  0.0   0:00.09
+ 2354 root      20   0 6342024  31104   4124 S   5.0  0.0 475:54.92
+ 3301 root      20   0 5973848  17396   2472 S   5.0  0.0 309:37.29
+************************
+Thu Apr 18 08:58:24 CEST 2019
+top - 08:58:24 up 110 days, 12:29, 23 users,  load average: 13.96, 14.08
+Tasks: 1313 total,   4 running, 931 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31116598+free, 79140568 used, 13797593+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44105251+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 285.0  3.3  52050:02
+41546 root      20   0  187680 123176  10884 R 100.0  0.0   0:07.67
+59497 cecconi   20   0       0      0      0 R 100.0  0.0   0:00.35
+22092 nardi     20   0 17.561g 2.582g 459760 R  95.0  0.5   2819:10
+ 8728 dnsmasq   20   0 5519540 161364   2304 S  85.0  0.0  29094:29
+59507 cecconi   20   0   47040   5160   3392 R  25.0  0.0   0:00.09
+ 2354 root      20   0 6342024  31104   4124 S   5.0  0.0 475:54.96
+************************
+Thu Apr 18 08:58:34 CEST 2019
+top - 08:58:34 up 110 days, 12:29, 23 users,  load average: 12.12, 13.68
+Tasks: 1309 total,   3 running, 928 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31123808+free, 79063632 used, 13798076+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44113158+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 92.694g 0.017t 4.723g S  2510  3.5  52051:34
+59816 cecconi   20   0 37.179g 251252 196300 R 120.0  0.0   0:00.31
+22092 nardi     20   0 17.561g 2.582g 459760 R 115.0  0.5   2819:20
+59824 cecconi   20   0   47040   5104   3336 R  40.0  0.0   0:00.12
+11088 root      20   0 1824752  15744   3280 S   5.0  0.0 674:45.39
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.64
+************************
+Thu Apr 18 08:58:44 CEST 2019
+top - 08:58:45 up 110 days, 12:29, 23 users,  load average: 10.72, 13.33
+Tasks: 1309 total,   2 running, 929 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31137148+free, 78924128 used, 13798686+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44127059+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 400.0  3.3  52053:03
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2819:30
+60038 cecconi   20   0 37.160g 220068 175412 R  90.0  0.0   0:00.25
+60045 cecconi   20   0   47040   5204   3436 R  25.0  0.0   0:00.09
+ 3809 rabbitmq  20   0 41.597g 103832   2504 S   5.0  0.0  15313:19
+15542 syslog    20   0  744016  46548   4148 S   5.0  0.0   2:27.93
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+************************
+Thu Apr 18 08:58:55 CEST 2019
+top - 08:58:55 up 110 days, 12:29, 23 users,  load average: 16.09, 14.35
+Tasks: 1305 total,   1 running, 926 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31161046+free, 78688912 used, 13798310+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44151436+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 520.0  3.3  52054:37
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2819:41
+ 8728 dnsmasq   20   0 5518516 161496   2304 S  80.0  0.0  29094:35
+60275 cecconi   20   0   47040   5076   3316 R  20.0  0.0   0:00.08
+60277 cecconi   20   0 32.471g  11996  10412 S  15.0  0.0   0:00.03
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.64
+************************
+Thu Apr 18 08:59:05 CEST 2019
+top - 08:59:05 up 110 days, 12:29, 23 users,  load average: 19.45, 15.09
+Tasks: 1307 total,   3 running, 926 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31040732+free, 79877264 used, 13799787+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44031782+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 92.428g 0.017t 4.723g S  3040  3.4  52056:10
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.0  0.5   2819:51
+60488 cecconi   20   0 37.159g 217032 173164 R 100.0  0.0   0:00.29
+ 8728 dnsmasq   20   0 5518516 161388   2304 S  70.0  0.0  29094:37
+60496 cecconi   20   0   47040   5140   3380 R  30.0  0.0   0:00.10
+72859 root     -51   0       0      0      0 S   5.0  0.0   3:28.31
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+************************
+Thu Apr 18 08:59:15 CEST 2019
+top - 08:59:15 up 110 days, 12:29, 23 users,  load average: 17.30, 14.77
+Tasks: 1308 total,   1 running, 929 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31072608+free, 78731200 used, 13882520+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44147161+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+22092 nardi     20   0 17.561g 2.582g 459760 S  95.0  0.5   2820:01
+67040 attardi   20   0 91.547g 0.016t 4.723g S  95.0  3.3  52057:16
+ 3809 rabbitmq  20   0 41.596g 104488   2504 S  85.0  0.0  15313:22
+60762 cecconi   20   0   47040   5100   3332 R  25.0  0.0   0:00.08
+60764 cecconi   20   0 32.534g  11784  10204 S  20.0  0.0   0:00.04
+29418 root      20   0       0      0      0 I   5.0  0.0   0:00.04
+29555 crecchi   20   0  744896  74456  14228 S   5.0  0.0   8:27.88
+************************
+Thu Apr 18 08:59:26 CEST 2019
+top - 08:59:26 up 110 days, 12:30, 23 users,  load average: 15.02, 14.37
+Tasks: 1308 total,   2 running, 927 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31124396+free, 78987904 used, 13805060+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44120681+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.801g 0.016t 4.723g S 930.0  3.3  52058:11
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2820:11
+61011 cecconi   20   0 37.140g 149216 126204 R  90.0  0.0   0:00.22
+61015 cecconi   20   0   47040   5128   3364 R  25.0  0.0   0:00.08
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.65
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00
+************************
+Thu Apr 18 08:59:36 CEST 2019
+top - 08:59:36 up 110 days, 12:30, 23 users,  load average: 13.17, 13.99
+Tasks: 1311 total,   2 running, 929 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31122553+free, 79009040 used, 13804787+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44119424+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.863g 0.016t 4.723g S 936.8  3.3  52059:48
+22092 nardi     20   0 17.561g 2.582g 459760 S 105.3  0.5   2820:22
+61324 cecconi   20   0 32.605g  21876  14352 R  31.6  0.0   0:00.06
+61317 cecconi   20   0   47040   5104   3344 R  15.8  0.0   0:00.07
+61319 cecconi   20   0 32.604g  11956  10380 S  15.8  0.0   0:00.03
+ 8645 root      20   0 1095028  86964   1892 S   5.3  0.0 260:30.13
+49020 root      20   0  328452  70476  13720 S   5.3  0.0   4:32.25
+************************
+Thu Apr 18 08:59:46 CEST 2019
+top - 08:59:46 up 110 days, 12:30, 23 users,  load average: 24.94, 16.51
+Tasks: 1311 total,   3 running, 928 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31133728+free, 78893472 used, 13805172+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44130982+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 910.0  3.3  52061:24
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2820:32
+61127 setzu     20   0 2650020 182768  33508 R  95.0  0.0   0:09.27
+61550 cecconi   20   0   47040   5168   3400 R  20.0  0.0   0:00.08
+61552 cecconi   20   0 32.471g  11880  10296 S  20.0  0.0   0:00.04
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.66
+************************
+Thu Apr 18 08:59:56 CEST 2019
+top - 08:59:57 up 110 days, 12:30, 23 users,  load average: 21.72, 16.10
+Tasks: 1312 total,   3 running, 928 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31093126+free, 79282656 used, 13806854+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44091056+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 119.0  3.3  52062:50
+22092 nardi     20   0 17.561g 2.582g 459760 R  95.2  0.5   2820:42
+61772 cecconi   20   0       0      0      0 R  95.2  0.0   0:00.33
+48318 setzu     20   0   42080  11976   2524 S  52.4  0.0   3517:06
+61781 cecconi   20   0   47040   5200   3436 R  19.0  0.0   0:00.09
+61768 cecconi   20   0 32.604g  14664  12504 S   9.5  0.0   0:00.06
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+************************
+Thu Apr 18 09:00:07 CEST 2019
+top - 09:00:07 up 110 days, 12:30, 23 users,  load average: 24.59, 16.94
+Tasks: 1313 total,   2 running, 930 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31110614+free, 79111248 used, 13806507+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44109203+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 135.0  3.3  52064:27
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2820:53
+61995 cecconi   20   0 36.843g 119796 109580 R  75.0  0.0   0:00.15
+ 8728 dnsmasq   20   0 5518516 160600   2304 S  70.0  0.0  29094:50
+61998 cecconi   20   0   47040   5072   3304 R  25.0  0.0   0:00.08
+    9 root      20   0       0      0      0 I   5.0  0.0 389:23.74
+  336 root      20   0       0      0      0 S   5.0  0.0   2:17.21
+************************
+Thu Apr 18 09:00:17 CEST 2019
+top - 09:00:17 up 110 days, 12:30, 23 users,  load average: 21.73, 16.58
+Tasks: 1313 total,   2 running, 930 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31121904+free, 78991392 used, 13807203+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44121190+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 275.0  3.3  52066:01
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2821:03
+62484 cecconi   20   0 32.605g  21988  14472 R  30.0  0.0   0:00.06
+62470 cecconi   20   0   47040   5224   3460 R  20.0  0.0   0:00.08
+62472 cecconi   20   0 32.604g  11704  10120 S  20.0  0.0   0:00.04
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.67
+************************
+Thu Apr 18 09:00:27 CEST 2019
+top - 09:00:28 up 110 days, 12:31, 23 users,  load average: 24.59, 17.40
+Tasks: 1315 total,   3 running, 931 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31117494+free, 79020376 used, 13808715+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44117433+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.803g 0.016t 4.723g S 257.9  3.3  52067:27
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.3  0.5   2821:13
+ 8728 dnsmasq   20   0 5518516 160788   2304 S  94.7  0.0  29094:54
+62962 cecconi   20   0 37.156g 205332 165156 R  94.7  0.0   0:00.23
+ 3809 rabbitmq  20   0 41.596g 104112   2504 S  31.6  0.0  15313:29
+62966 cecconi   20   0   47040   5128   3356 R  26.3  0.0   0:00.09
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+************************
+Thu Apr 18 09:00:38 CEST 2019
+top - 09:00:38 up 110 days, 12:31, 23 users,  load average: 21.12, 16.90
+Tasks: 1312 total,   2 running, 929 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 31072032+free, 79476464 used, 13808566+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 44072681+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 92.052g 0.017t 4.723g S  3458  3.4  52069:09
+22092 nardi     20   0 17.561g 2.582g 459760 S  89.5  0.5   2821:23
+ 8728 dnsmasq   20   0 5517564 162596   2304 S  47.4  0.0  29094:56
+48318 setzu     20   0   42080  11976   2524 S  47.4  0.0   3517:10
+63194 cecconi   20   0   47040   5128   3360 R  21.1  0.0   0:00.07
+63196 cecconi   20   0 32.534g  11852  10272 S  21.1  0.0   0:00.04
+62567 setzu     20   0 2736460 277764  32328 R  15.8  0.1   0:10.11
+************************
+Thu Apr 18 09:00:48 CEST 2019
+top - 09:00:48 up 110 days, 12:31, 23 users,  load average: 18.83, 16.58
+Tasks: 1317 total,   2 running, 934 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30797712+free, 82196864 used, 13810849+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43799836+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 2.861g  26728 S  1120  0.6   0:38.08
+67040 attardi   20   0 91.609g 0.016t 4.723g S 450.0  3.3  52070:35
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2821:34
+63551 cecconi   20   0 37.131g 140804 126248 R  90.0  0.0   0:00.23
+ 3809 rabbitmq  20   0 41.597g 104032   2504 S  25.0  0.0  15313:31
+63559 cecconi   20   0   47040   5156   3384 R  20.0  0.0   0:00.08
+ 9020 uuidd     20   0   42952   4848   1316 S   5.0  0.0 161:31.76
+************************
+Thu Apr 18 09:00:58 CEST 2019
+top - 09:00:58 up 110 days, 12:31, 23 users,  load average: 24.79, 17.93
+Tasks: 1321 total,   2 running, 938 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30663654+free, 83529048 used, 13811688+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43666403+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.677g 0.016t 4.723g S 157.1  3.3  52071:59
+22092 nardi     20   0 17.561g 2.582g 459760 S  90.5  0.5   2821:44
+63343 setzu     20   0 14.072g 3.913g  26728 S  90.5  0.8   2:34.62
+63767 cecconi   20   0 37.181g 255320 198404 R  90.5  0.0   0:00.34
+ 3809 rabbitmq  20   0 41.598g 104608   2504 S  28.6  0.0  15313:32
+63777 cecconi   20   0   47040   5192   3416 R  23.8  0.0   0:00.09
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+************************
+Thu Apr 18 09:01:08 CEST 2019
+top - 09:01:09 up 110 days, 12:31, 23 users,  load average: 32.32, 19.69
+Tasks: 1316 total,   2 running, 933 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30650540+free, 83649664 used, 13812740+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43654355+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.115g  26728 S  1800  0.8   4:37.35
+67040 attardi   20   0 91.547g 0.016t 4.723g S 652.4  3.3  52073:31
+64010 cecconi   20   0 37.181g 253888 198556 R  95.2  0.0   0:00.36
+22092 nardi     20   0 17.561g 2.582g 459760 S  90.5  0.5   2821:54
+64020 cecconi   20   0   47040   5172   3400 R  23.8  0.0   0:00.09
+11088 root      20   0 1824752  15744   3280 S   4.8  0.0 674:46.07
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+************************
+Thu Apr 18 09:01:19 CEST 2019
+top - 09:01:19 up 110 days, 12:31, 23 users,  load average: 28.45, 19.28
+Tasks: 1316 total,   4 running, 931 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30637856+free, 83762672 used, 13814121+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43643036+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.155g  26728 S  2630  0.8   6:38.97
+67040 attardi   20   0 91.615g 0.016t 4.723g S 130.0  3.3  52074:52
+22092 nardi     20   0 17.561g 2.582g 459760 S 110.0  0.5   2822:04
+64243 syslog    20   0  234600  39120  23584 R 105.0  0.0   0:00.60
+64247 cecconi   20   0       0      0      0 R  90.0  0.0   0:00.43
+48318 setzu     20   0   42080  11976   2524 R  55.0  0.0   3517:14
+64259 cecconi   20   0   47040   5092   3316 R  30.0  0.0   0:00.10
+************************
+Thu Apr 18 09:01:29 CEST 2019
+top - 09:01:29 up 110 days, 12:32, 23 users,  load average: 34.67, 20.93
+Tasks: 1317 total,   3 running, 933 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30658723+free, 83561936 used, 13813329+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43664134+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.163g  26728 S  1955  0.8   8:37.32
+67040 attardi   20   0 91.615g 0.016t 4.723g S 255.0  3.3  52076:21
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2822:15
+64635 cecconi   20   0   47040   5136   3364 R  25.0  0.0   0:00.09
+64637 cecconi   20   0 32.534g  11924  10340 S  15.0  0.0   0:00.03
+ 2485 redis     20   0   51444   1556    480 S   5.0  0.0 167:40.26
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+************************
+Thu Apr 18 09:01:39 CEST 2019
+top - 09:01:40 up 110 days, 12:32, 23 users,  load average: 40.57, 22.63
+Tasks: 1314 total,   2 running, 931 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30658483+free, 83557152 used, 13814049+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43664601+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S  1024  3.3  52077:49
+63343 setzu     20   0 14.072g 4.164g  26728 S 809.5  0.8  10:36.63
+22092 nardi     20   0 17.561g 2.582g 459760 R  90.5  0.5   2822:25
+64860 cecconi   20   0   47040   5152   3380 R  19.0  0.0   0:00.08
+ 2354 root      20   0 6342024  31104   4124 S   4.8  0.0 475:55.70
+ 8728 dnsmasq   20   0 5516388 161584   2304 S   4.8  0.0  29095:06
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+************************
+Thu Apr 18 09:01:50 CEST 2019
+top - 09:01:50 up 110 days, 12:32, 23 users,  load average: 34.95, 22.02
+Tasks: 1317 total,   3 running, 933 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30554972+free, 84578392 used, 13815433+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43561683+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 92.240g 0.017t 4.723g S  2705  3.4  52079:20
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2822:35
+63343 setzu     20   0 14.072g 4.164g  26728 S 100.0  0.8  12:34.83
+65068 cecconi   20   0 37.162g 228816 181516 R  95.2  0.0   0:00.33
+ 8728 dnsmasq   20   0 5519540 160260   2304 S  57.1  0.0  29095:08
+65080 cecconi   20   0   47040   5160   3388 R  28.6  0.0   0:00.10
+   48 root      20   0       0      0      0 S   4.8  0.0   2:41.46
+************************
+Thu Apr 18 09:02:00 CEST 2019
+top - 09:02:00 up 110 days, 12:32, 23 users,  load average: 35.27, 22.55
+Tasks: 1318 total,   3 running, 934 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30660908+free, 83512376 used, 13816099+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43668284+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 485.0  3.3  52080:43
+63343 setzu     20   0 14.072g 4.164g  26728 S 105.0  0.8  14:32.48
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2822:46
+65722 cecconi   20   0 37.142g 160652 134460 R  95.0  0.0   0:00.22
+65725 cecconi   20   0   47040   5148   3376 R  20.0  0.0   0:00.08
+ 2485 redis     20   0   51444   1556    480 S   5.0  0.0 167:40.30
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.50
+************************
+Thu Apr 18 09:02:10 CEST 2019
+top - 09:02:11 up 110 days, 12:32, 23 users,  load average: 36.94, 23.28
+Tasks: 1319 total,   4 running, 934 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30660764+free, 83515912 used, 13815891+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43668739+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  2329  0.8  16:38.37
+67040 attardi   20   0 91.615g 0.016t 4.723g S 281.0  3.3  52082:04
+22092 nardi     20   0 17.561g 2.582g 459760 R  90.5  0.5   2822:56
+ 3809 rabbitmq  20   0 41.595g 103892   2504 S  66.7  0.0  15313:39
+48318 setzu     20   0   42080  11976   2524 R  52.4  0.0   3517:18
+65938 cecconi   20   0 32.605g  21944  14420 R  28.6  0.0   0:00.06
+65932 cecconi   20   0   47040   5156   3384 R  19.0  0.0   0:00.08
+************************
+Thu Apr 18 09:02:21 CEST 2019
+top - 09:02:21 up 110 days, 12:33, 23 users,  load average: 32.98, 22.89
+Tasks: 1316 total,   2 running, 933 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30667548+free, 83442976 used, 13816400+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43676032+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  1819  0.8  18:34.48
+67040 attardi   20   0 91.547g 0.016t 4.723g S 281.0  3.3  52083:36
+22092 nardi     20   0 17.561g 2.582g 459760 S  95.2  0.5   2823:06
+ 8728 dnsmasq   20   0 5519540 161160   2304 S  52.4  0.0  29095:13
+66144 cecconi   20   0   47040   5132   3364 R  19.0  0.0   0:00.09
+66146 cecconi   20   0 32.604g  11992  10412 S  19.0  0.0   0:00.04
+66150 cecconi   20   0   60964  13912  11504 R   4.8  0.0   0:00.01
+************************
+Thu Apr 18 09:02:31 CEST 2019
+top - 09:02:31 up 110 days, 12:33, 23 users,  load average: 29.56, 22.50
+Tasks: 1314 total,   1 running, 932 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30631648+free, 83785504 used, 13818048+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43640755+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  1160  0.8  20:36.38
+67040 attardi   20   0 91.738g 0.016t 4.723g S 935.0  3.3  52085:02
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2823:16
+66387 cecconi   20   0   47040   5168   3400 R  25.0  0.0   0:00.09
+ 3809 rabbitmq  20   0 41.595g 103620   2504 S   5.0  0.0  15313:42
+11088 root      20   0 1824752  15744   3280 S   5.0  0.0 674:46.48
+40542 root      20   0       0      0      0 I   5.0  0.0   0:00.47
+************************
+Thu Apr 18 09:02:41 CEST 2019
+top - 09:02:41 up 110 days, 12:33, 23 users,  load average: 32.16, 23.28
+Tasks: 1317 total,   2 running, 934 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30646304+free, 83643392 used, 13817603+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43655990+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  2530  0.8  22:36.19
+67040 attardi   20   0 91.615g 0.016t 4.723g S 175.0  3.3  52086:26
+22092 nardi     20   0 17.561g 2.582g 459760 S  95.0  0.5   2823:26
+66607 cecconi   20   0 36.851g 140064 125224 R  85.0  0.0   0:00.17
+66610 cecconi   20   0   47040   5156   3384 R  30.0  0.0   0:00.09
+ 3809 rabbitmq  20   0 41.597g 103864   2504 S  25.0  0.0  15313:43
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.51
+************************
+Thu Apr 18 09:02:51 CEST 2019
+top - 09:02:52 up 110 days, 12:33, 23 users,  load average: 28.14, 22.71
+Tasks: 1314 total,   2 running, 932 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30661680+free, 83483120 used, 13818254+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43672019+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  1219  0.8  24:34.26
+67040 attardi   20   0 91.547g 0.016t 4.723g S 261.9  3.3  52087:56
+22092 nardi     20   0 17.561g 2.582g 459760 R  95.2  0.5   2823:37
+48318 setzu     20   0   42080  11976   2524 S  57.1  0.0   3517:22
+66818 cecconi   20   0   47040   5092   3324 R  23.8  0.0   0:00.10
+66821 cecconi   20   0 32.534g  11832  10248 S  14.3  0.0   0:00.03
+ 2354 root      20   0 6342024  31104   4124 S   4.8  0.0 475:55.97
+************************
+Thu Apr 18 09:03:02 CEST 2019
+top - 09:03:02 up 110 days, 12:33, 23 users,  load average: 28.18, 22.92
+Tasks: 1314 total,   2 running, 932 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30643875+free, 83644656 used, 13819905+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43654803+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.738g 0.016t 4.723g S  1127  3.3  52089:18
+63343 setzu     20   0 14.072g 4.164g  26728 S 818.2  0.8  26:38.14
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2823:47
+67015 cecconi   20   0       0      0      0 R  95.5  0.0   0:00.37
+67024 cecconi   20   0   47040   5156   3384 R  27.3  0.0   0:00.13
+   96 root      20   0       0      0      0 S   4.5  0.0   2:37.67
+ 3301 root      20   0 5973848  17260   2472 S   4.5  0.0 309:37.91
+************************
+Thu Apr 18 09:03:12 CEST 2019
+top - 09:03:12 up 110 days, 12:33, 23 users,  load average: 32.62, 24.05
+Tasks: 1315 total,   4 running, 932 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30666320+free, 83424560 used, 13819470+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43677872+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2823:57
+63343 setzu     20   0 14.072g 4.164g  26728 S 100.0  0.8  28:34.65
+67040 attardi   20   0 91.547g 0.016t 4.723g R 100.0  3.3  52090:50
+67311 cecconi   20   0 36.842g  27316  18756 R  47.4  0.0   0:00.09
+ 3809 rabbitmq  20   0 41.597g 103988   2504 S  26.3  0.0  15313:46
+67306 cecconi   20   0   47040   5156   3388 R  21.1  0.0   0:00.07
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.51
+************************
+Thu Apr 18 09:03:22 CEST 2019
+top - 09:03:23 up 110 days, 12:34, 23 users,  load average: 28.29, 23.40
+Tasks: 1312 total,   2 running, 931 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30646518+free, 83616192 used, 13820110+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43658710+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  1665  0.8  30:39.22
+67040 attardi   20   0 91.738g 0.016t 4.723g S 870.0  3.3  52092:14
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.0  0.5   2824:08
+67527 cecconi   20   0   47040   5128   3360 R  30.0  0.0   0:00.10
+ 2354 root      20   0 6342024  31104   4124 S   5.0  0.0 475:56.05
+67510 cecconi   20   0 32.604g  14468  12304 S   5.0  0.0   0:00.05
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.51
+************************
+Thu Apr 18 09:03:33 CEST 2019
+top - 09:03:33 up 110 days, 12:34, 23 users,  load average: 34.85, 24.98
+Tasks: 1313 total,   2 running, 932 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30654304+free, 83532336 used, 13820710+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43667097+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S 790.0  0.8  32:39.47
+67040 attardi   20   0 91.678g 0.016t 4.723g S 140.0  3.3  52093:36
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2824:18
+67764 cecconi   20   0 36.842g 113912 104988 R  70.0  0.0   0:00.14
+67767 cecconi   20   0   47040   5208   3436 R  30.0  0.0   0:00.10
+ 3809 rabbitmq  20   0 41.597g 104052   2504 S  20.0  0.0  15313:48
+ 7694 syslog    20   0 2906512  82912   9264 S   5.0  0.0 132:33.48
+************************
+Thu Apr 18 09:03:43 CEST 2019
+top - 09:03:43 up 110 days, 12:34, 23 users,  load average: 29.77, 24.33
+Tasks: 1313 total,   3 running, 931 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30640908+free, 83650384 used, 13822299+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43654233+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  2195  0.8  34:43.37
+67040 attardi   20   0 91.670g 0.016t 4.723g S 509.5  3.3  52095:17
+67960 cecconi   20   0       0      0      0 R 100.0  0.0   0:00.38
+22092 nardi     20   0 17.561g 2.582g 459760 R 104.8  0.5   2824:28
+48318 setzu     20   0   42080  11976   2524 S  42.9  0.0   3517:27
+67970 cecconi   20   0   47040   5176   3408 R  33.3  0.0   0:00.13
+ 3809 rabbitmq  20   0 41.595g 103700   2504 S  19.0  0.0  15313:49
+************************
+Thu Apr 18 09:03:53 CEST 2019
+top - 09:03:54 up 110 days, 12:34, 23 users,  load average: 29.95, 24.52
+Tasks: 1313 total,   2 running, 932 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30657641+free, 83487488 used, 13821857+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43671580+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S 695.0  0.8  36:46.90
+67040 attardi   20   0 91.615g 0.016t 4.723g S 155.0  3.3  52096:40
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2824:39
+68177 cecconi   20   0   47040   5148   3372 R  30.0  0.0   0:00.10
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.51
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.72
+    4 root       0 -20       0      0      0 I   0.0  0.0   0:00.00
+************************
+Thu Apr 18 09:04:04 CEST 2019
+top - 09:04:04 up 110 days, 12:34, 23 users,  load average: 34.94, 25.80
+Tasks: 1315 total,   3 running, 933 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30572931+free, 84329072 used, 13822409+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43587420+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 92.349g 0.017t 4.723g S  3190  3.4  52098:07
+63343 setzu     20   0 14.072g 4.164g  26728 S  2290  0.8  38:50.52
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.0  0.5   2824:49
+68638 cecconi   20   0 32.605g  21844  14316 R  35.0  0.0   0:00.07
+68632 cecconi   20   0   47040   5132   3360 R  30.0  0.0   0:00.09
+ 8645 root      20   0 1095028  86968   1892 S  10.0  0.0 260:30.60
+68634 cecconi   20   0 32.604g  11924  10340 S   5.0  0.0   0:00.04
+************************
+Thu Apr 18 09:04:14 CEST 2019
+top - 09:04:14 up 110 days, 12:34, 23 users,  load average: 33.28, 25.77
+Tasks: 1313 total,   2 running, 932 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30631353+free, 83731184 used, 13823776+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43646201+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  1532  0.8  40:58.72
+67040 attardi   20   0 91.615g 0.016t 4.723g S 594.7  3.3  52099:37
+22092 nardi     20   0 17.561g 2.582g 459760 S 105.3  0.5   2824:59
+68842 cecconi   20   0       0      0      0 R 100.0  0.0   0:00.41
+68852 cecconi   20   0   47040   5084   3316 R  26.3  0.0   0:00.08
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.51
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.73
+************************
+Thu Apr 18 09:04:24 CEST 2019
+top - 09:04:25 up 110 days, 12:35, 23 users,  load average: 30.12, 25.33
+Tasks: 1313 total,   2 running, 932 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30656195+free, 83487216 used, 13823331+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43671619+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  1545  0.8  43:00.77
+67040 attardi   20   0 91.615g 0.016t 4.723g S 120.0  3.3  52100:59
+22092 nardi     20   0 17.561g 2.582g 459760 S  95.0  0.5   2825:09
+48318 setzu     20   0   42080  11976   2524 R  20.0  0.0   3517:31
+69064 cecconi   20   0   47040   5120   3352 R  20.0  0.0   0:00.07
+69066 cecconi   20   0 32.534g  11888  10304 S  20.0  0.0   0:00.04
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.51
+************************
+Thu Apr 18 09:04:35 CEST 2019
+top - 09:04:35 up 110 days, 12:35, 23 users,  load average: 26.73, 24.76
+Tasks: 1312 total,   4 running, 930 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30660336+free, 83439728 used, 13823939+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43676358+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  2000  0.8  45:05.54
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.0  0.5   2825:20
+67040 attardi   20   0 91.547g 0.016t 4.723g R 105.0  3.3  52102:29
+ 8728 dnsmasq   20   0 5518000 161784   2304 S  75.0  0.0  29095:36
+69271 cecconi   20   0   47040   5228   3464 R  30.0  0.0   0:00.09
+69273 cecconi   20   0 32.604g  11992  10412 S  15.0  0.0   0:00.03
+69277 cecconi   20   0  190884  15368  12240 R  10.0  0.0   0:00.02
+************************
+Thu Apr 18 09:04:45 CEST 2019
+top - 09:04:45 up 110 days, 12:35, 23 users,  load average: 23.47, 24.13
+Tasks: 1311 total,   2 running, 932 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30638118+free, 83648992 used, 13825228+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43654572+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S 555.0  0.8  47:07.84
+67040 attardi   20   0 91.803g 0.016t 4.723g S 320.0  3.3  52103:54
+22092 nardi     20   0 17.561g 2.582g 459760 S  95.0  0.5   2825:30
+69486 cecconi   20   0 37.161g 222864 177416 R  90.0  0.0   0:00.25
+69494 cecconi   20   0   47040   5156   3388 R  25.0  0.0   0:00.08
+16836 pedrelli  20   0  599452 415580   9460 S   5.0  0.1 210:20.88
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.51
+************************
+Thu Apr 18 09:04:55 CEST 2019
+top - 09:04:56 up 110 days, 12:35, 23 users,  load average: 29.82, 25.42
+Tasks: 1310 total,   2 running, 931 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30660704+free, 83426544 used, 13824889+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43677654+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  2245  0.8  49:12.55
+67040 attardi   20   0 91.547g 0.016t 4.723g S 220.0  3.3  52105:18
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2825:40
+ 3809 rabbitmq  20   0 41.599g 104412   2504 S  65.0  0.0  15313:55
+69698 cecconi   20   0   47040   5132   3364 R  20.0  0.0   0:00.08
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.51
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.74
+************************
+Thu Apr 18 09:05:06 CEST 2019
+top - 09:05:06 up 110 days, 12:35, 23 users,  load average: 34.07, 26.48
+Tasks: 1312 total,   2 running, 934 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30544796+free, 84572040 used, 13826246+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43562268+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 92.302g 0.017t 4.723g S  2505  3.4  52106:47
+63343 setzu     20   0 14.072g 4.164g  26728 S 636.4  0.8  51:23.04
+69885 cecconi   20   0 37.181g 254640 198796 R  95.5  0.0   0:00.37
+22092 nardi     20   0 17.561g 2.582g 459760 S  90.9  0.5   2825:50
+ 8728 dnsmasq   20   0 5520056 161148   2304 S  54.5  0.0  29095:41
+69895 cecconi   20   0   47040   5140   3372 R  27.3  0.0   0:00.12
+  306 root      20   0       0      0      0 S   4.5  0.0   1:45.05
+************************
+Thu Apr 18 09:05:16 CEST 2019
+top - 09:05:16 up 110 days, 12:35, 23 users,  load average: 33.91, 26.72
+Tasks: 1312 total,   2 running, 934 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30658166+free, 83444096 used, 13825672+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43675920+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 466.7  3.3  52108:12
+22092 nardi     20   0 17.561g 2.582g 459760 S  95.2  0.5   2826:01
+63343 setzu     20   0 14.072g 4.164g  26728 S  95.2  0.8  53:23.09
+70063 cecconi   20   0 36.842g  27476  18924 R  42.9  0.0   0:00.09
+70058 cecconi   20   0   47040   5080   3316 R  23.8  0.0   0:00.09
+11088 root      20   0 1824752  15744   3280 S   4.8  0.0 674:47.32
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.51
+************************
+Thu Apr 18 09:05:26 CEST 2019
+top - 09:05:27 up 110 days, 12:36, 23 users,  load average: 29.62, 26.03
+Tasks: 1310 total,   2 running, 932 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30644598+free, 83566768 used, 13826972+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43662880+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  2027  0.8  55:26.77
+67040 attardi   20   0 91.547g 0.016t 4.723g S 272.7  3.3  52109:44
+22092 nardi     20   0 17.561g 2.582g 459760 S  86.4  0.5   2826:11
+70256 cecconi   20   0 37.141g 155228 130356 R  77.3  0.0   0:00.25
+ 3809 rabbitmq  20   0 41.598g 104412   2504 S  36.4  0.0  15313:58
+48318 setzu     20   0   42080  11976   2524 S  36.4  0.0   3517:37
+70263 cecconi   20   0   47040   5152   3388 R  18.2  0.0   0:00.09
+************************
+Thu Apr 18 09:05:37 CEST 2019
+top - 09:05:37 up 110 days, 12:36, 23 users,  load average: 33.44, 26.92
+Tasks: 1312 total,   3 running, 933 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30641008+free, 83604784 used, 13826760+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43659852+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  1862  0.8  57:34.02
+67040 attardi   20   0 91.738g 0.016t 4.723g S 519.0  3.3  52111:07
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2826:21
+70480 cecconi   20   0 36.842g  27436  18880 R  66.7  0.0   0:00.14
+ 8728 dnsmasq   20   0 5517924 160200   2304 S  47.6  0.0  29095:46
+70483 cecconi   20   0   47040   5144   3380 R  28.6  0.0   0:00.10
+    9 root      20   0       0      0      0 I   4.8  0.0 389:24.75
+************************
+Thu Apr 18 09:05:47 CEST 2019
+top - 09:05:47 up 110 days, 12:36, 23 users,  load average: 30.18, 26.43
+Tasks: 1312 total,   3 running, 933 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30618707+free, 83821920 used, 13827347+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43638188+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.974g 0.017t 4.723g S  3062  3.4  52112:37
+22092 nardi     20   0 17.561g 2.582g 459760 R  95.2  0.5   2826:32
+63343 setzu     20   0 14.072g 4.164g  26728 S  95.2  0.8  59:36.75
+70719 cecconi   20   0 36.842g  27248  18688 R  52.4  0.0   0:00.11
+70723 cecconi   20   0   47040   5212   3444 R  23.8  0.0   0:00.09
+  156 root      20   0       0      0      0 S   4.8  0.0   2:34.08
+ 9020 uuidd     20   0   42952   4848   1316 S   4.8  0.0 161:32.15
+************************
+Thu Apr 18 09:05:57 CEST 2019
+top - 09:05:57 up 110 days, 12:36, 23 users,  load average: 26.54, 25.77
+Tasks: 1312 total,   2 running, 934 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30649843+free, 83505216 used, 13827883+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43669808+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  2421  0.8  61:40.66
+67040 attardi   20   0 91.615g 0.016t 4.723g S 136.8  3.3  52114:05
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2826:42
+ 3809 rabbitmq  20   0 41.597g 103960   2504 S  36.8  0.0  15314:00
+70934 cecconi   20   0   47040   5172   3408 R  26.3  0.0   0:00.08
+70937 cecconi   20   0 32.534g  11964  10380 S  26.3  0.0   0:00.05
+ 7600 syslog    20   0  257608  19312      4 S   5.3  0.0   4:24.28
+************************
+Thu Apr 18 09:06:08 CEST 2019
+top - 09:06:08 up 110 days, 12:36, 23 users,  load average: 24.27, 25.30
+Tasks: 1313 total,   1 running, 936 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30615068+free, 83846504 used, 13828529+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43635664+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 945.0  3.3  52115:36
+63343 setzu     20   0 14.072g 4.164g  26728 S 625.0  0.8  63:46.32
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2826:52
+71141 cecconi   20   0   47040   5132   3364 R  20.0  0.0   0:00.08
+ 7583 syslog    20   0 3328848 226752  16160 S  15.0  0.0 323:07.01
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.52
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.76
+************************
+Thu Apr 18 09:06:18 CEST 2019
+top - 09:06:18 up 110 days, 12:36, 23 users,  load average: 31.68, 26.87
+Tasks: 1310 total,   3 running, 931 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30650816+free, 83483432 used, 13829088+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43671971+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 105.0  3.3  52117:05
+22092 nardi     20   0 17.561g 2.582g 459760 R  95.0  0.5   2827:02
+63343 setzu     20   0 14.072g 4.164g  26728 S  95.0  0.8  65:48.33
+ 3809 rabbitmq  20   0 41.598g 104568   2504 S  45.0  0.0  15314:02
+48318 setzu     20   0   42080  11976   2524 S  35.0  0.0   3517:42
+71340 cecconi   20   0   47040   5192   3428 R  20.0  0.0   0:00.08
+71325 cecconi   20   0       0      0      0 R  15.0  0.0   0:00.06
+************************
+Thu Apr 18 09:06:28 CEST 2019
+top - 09:06:28 up 110 days, 12:37, 23 users,  load average: 30.66, 26.92
+Tasks: 1311 total,   1 running, 934 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30618902+free, 83796904 used, 13829654+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43640624+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.934g 0.016t 4.723g S  1579  3.3  52118:30
+63343 setzu     20   0 14.072g 4.164g  26728 S 925.0  0.8  67:58.37
+22092 nardi     20   0 17.561g 2.582g 459760 S  91.7  0.5   2827:13
+ 3809 rabbitmq  20   0 41.598g 104740   2504 S  37.5  0.0  15314:03
+71544 cecconi   20   0   47040   5160   3392 R  20.8  0.0   0:00.13
+11088 root      20   0 1824752  15744   3280 S   4.2  0.0 674:47.68
+71528 cecconi   20   0 32.604g  14552  12396 S   4.2  0.0   0:00.06
+************************
+Thu Apr 18 09:06:38 CEST 2019
+top - 09:06:39 up 110 days, 12:37, 23 users,  load average: 27.61, 26.38
+Tasks: 1310 total,   3 running, 931 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30656880+free, 83411472 used, 13830219+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43679152+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  1540  0.8  70:02.31
+67040 attardi   20   0 91.547g 0.016t 4.723g S 420.0  3.3  52119:56
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.0  0.5   2827:23
+71746 cecconi   20   0   47040   5128   3364 R  25.0  0.0   0:00.09
+15050 root      20   0       0      0      0 I   5.0  0.0   0:14.75
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.52
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.77
+************************
+Thu Apr 18 09:06:49 CEST 2019
+top - 09:06:49 up 110 days, 12:37, 23 users,  load average: 24.22, 25.69
+Tasks: 1314 total,   3 running, 935 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30643270+free, 83533832 used, 13831593+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43666140+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S 678.9  0.8  71:57.74
+67040 attardi   20   0 91.547g 0.016t 4.723g S 342.1  3.3  52121:27
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.3  0.5   2827:33
+71971 cecconi   20   0 37.153g 196488 158952 R 105.3  0.0   0:00.28
+71979 cecconi   20   0   47040   5084   3316 R  26.3  0.0   0:00.09
+27375 root      20   0       0      0      0 I   5.3  0.0   0:10.10
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.52
+************************
+Thu Apr 18 09:06:59 CEST 2019
+top - 09:06:59 up 110 days, 12:37, 23 users,  load average: 31.90, 27.22
+Tasks: 1312 total,   3 running, 933 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30645459+free, 83515008 used, 13831288+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43668828+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  1011  0.8  74:01.54
+67040 attardi   20   0 91.615g 0.016t 4.723g S 263.2  3.3  52122:49
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.3  0.5   2827:43
+72181 cecconi   20   0 36.842g  27500  18944 R  52.6  0.0   0:00.10
+72176 cecconi   20   0   47040   5216   3448 R  26.3  0.0   0:00.09
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.52
+    2 root      20   0       0      0      0 S   0.0  0.0   0:10.77
+************************
+Thu Apr 18 09:07:09 CEST 2019
+top - 09:07:10 up 110 days, 12:37, 23 users,  load average: 27.84, 26.50
+Tasks: 1310 total,   4 running, 930 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30652499+free, 83439512 used, 13831796+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43676361+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2827:54
+63343 setzu     20   0 14.072g 4.164g  26728 S 100.0  0.8  76:03.23
+67040 attardi   20   0 91.547g 0.016t 4.723g R 100.0  3.3  52124:17
+48318 setzu     20   0   42080  11976   2524 S  63.2  0.0   3517:47
+72375 cecconi   20   0   47040   5088   3324 R  21.1  0.0   0:00.07
+ 7666 syslog    20   0 3378780  81196   4868 S   5.3  0.0 141:03.11
+73428 crecchi   20   0  646388  47316  14124 S   5.3  0.0   0:05.99
+************************
+Thu Apr 18 09:07:20 CEST 2019
+top - 09:07:20 up 110 days, 12:38, 23 users,  load average: 34.40, 27.96
+Tasks: 1314 total,   2 running, 936 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30620608+free, 83742048 used, 13833433+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43645065+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  1989  0.8  78:09.68
+67040 attardi   20   0 91.615g 0.016t 4.723g S 126.3  3.3  52125:41
+22092 nardi     20   0 17.561g 2.582g 459760 S 105.3  0.5   2828:04
+72574 cecconi   20   0       0      0      0 R  84.2  0.0   0:00.33
+ 8728 dnsmasq   20   0 5518516 160144   2304 S  52.6  0.0  29096:03
+72587 cecconi   20   0   47040   5132   3364 R  26.3  0.0   0:00.09
+11088 root      20   0 1824752  15744   3280 S   5.3  0.0 674:47.93
+************************
+Thu Apr 18 09:07:30 CEST 2019
+top - 09:07:30 up 110 days, 12:38, 23 users,  load average: 30.92, 27.42
+Tasks: 1311 total,   3 running, 932 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30631712+free, 83627184 used, 13833817+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43656755+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 385.0  3.3  52127:15
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2828:14
+63343 setzu     20   0 14.072g 4.164g  26728 S 100.0  0.8  80:08.89
+72781 cecconi   20   0 37.162g 228792 181492 R  95.0  0.0   0:00.26
+72789 cecconi   20   0   47040   5072   3308 R  25.0  0.0   0:00.09
+    9 root      20   0       0      0      0 I   5.0  0.0 389:25.11
+  456 root      20   0       0      0      0 S   5.0  0.0   2:12.27
+************************
+Thu Apr 18 09:07:40 CEST 2019
+top - 09:07:41 up 110 days, 12:38, 23 users,  load average: 31.02, 27.53
+Tasks: 1310 total,   3 running, 931 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30644912+free, 83497776 used, 13833558+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43670553+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.547g 0.016t 4.723g S 835.0  3.3  52128:45
+63343 setzu     20   0 14.072g 4.164g  26728 S 540.0  0.8  82:14.11
+22092 nardi     20   0 17.561g 2.582g 459760 R 100.0  0.5   2828:25
+72996 cecconi   20   0 36.842g  27572  19036 R  55.0  0.0   0:00.11
+ 3809 rabbitmq  20   0 41.597g 103940   2504 S  45.0  0.0  15314:10
+72991 cecconi   20   0   47040   5140   3376 R  25.0  0.0   0:00.09
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.52
+************************
+Thu Apr 18 09:07:51 CEST 2019
+top - 09:07:51 up 110 days, 12:38, 23 users,  load average: 26.87, 26.75
+Tasks: 1311 total,   3 running, 932 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30631424+free, 83626768 used, 13834147+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43657638+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 91.615g 0.016t 4.723g S 580.0  3.3  52130:11
+63343 setzu     20   0 14.072g 4.164g  26728 S 100.0  0.8  84:15.76
+22092 nardi     20   0 17.561g 2.582g 459760 R  95.0  0.5   2828:35
+ 8728 dnsmasq   20   0 5517928 160960   2304 S  50.0  0.0  29096:08
+48318 setzu     20   0   42080  11976   2524 R  30.0  0.0   3517:51
+73196 cecconi   20   0   47040   5088   3324 R  20.0  0.0   0:00.08
+  108 root      20   0       0      0      0 S   5.0  0.0   2:38.40
+************************
+Thu Apr 18 09:08:01 CEST 2019
+top - 09:08:01 up 110 days, 12:38, 23 users,  load average: 30.07, 27.49
+Tasks: 1310 total,   2 running, 932 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30647635+free, 83459320 used, 13834680+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43674396+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  1868  0.8  86:20.13
+67040 attardi   20   0 91.547g 0.016t 4.723g S 878.9  3.3  52131:38
+22092 nardi     20   0 17.561g 2.582g 459760 S 100.0  0.5   2828:45
+73422 cecconi   20   0 36.842g  27412  18864 R  57.9  0.0   0:00.11
+48318 setzu     20   0   42080  11976   2524 S  31.6  0.0   3517:52
+73418 cecconi   20   0   47040   5168   3400 R  26.3  0.0   0:00.09
+   23 root      rt   0       0      0      0 S   5.3  0.0   0:36.74
+************************
+Thu Apr 18 09:08:11 CEST 2019
+top - 09:08:12 up 110 days, 12:38, 23 users,  load average: 27.33, 27.00
+Tasks: 1310 total,   1 running, 933 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30619891+free, 83720192 used, 13836336+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43647302+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  1043  0.8  88:19.79
+67040 attardi   20   0 91.678g 0.016t 4.723g S 214.3  3.3  52133:02
+22092 nardi     20   0 17.561g 2.582g 459760 S  95.2  0.5   2828:55
+73624 cecconi   20   0 37.212g 253792 198456 S  90.5  0.0   0:00.30
+73632 cecconi   20   0   47040   5152   3388 R  23.8  0.0   0:00.09
+ 3809 rabbitmq  20   0 41.596g 104284   2504 S  14.3  0.0  15314:12
+  450 root      20   0       0      0      0 S   4.8  0.0   1:42.52
+************************
+Thu Apr 18 09:08:22 CEST 2019
+top - 09:08:22 up 110 days, 12:39, 23 users,  load average: 28.30, 27.18
+Tasks: 1310 total,   2 running, 932 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30649011+free, 83433040 used, 13835929+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43677024+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  2395  0.8  90:23.69
+67040 attardi   20   0 91.547g 0.016t 4.723g S  1616  3.3  52134:33
+22092 nardi     20   0 17.561g 2.582g 459760 R 105.3  0.5   2829:06
+ 8728 dnsmasq   20   0 5518436 160444   2304 S  26.3  0.0  29096:13
+73816 cecconi   20   0   47040   5080   3316 R  26.3  0.0   0:00.08
+73818 cecconi   20   0 32.604g  11924  10340 S  21.1  0.0   0:00.04
+73822 cecconi   20   0 32.605g  20788  13476 S  15.8  0.0   0:00.03
+************************
+Thu Apr 18 09:08:32 CEST 2019
+top - 09:08:32 up 110 days, 12:39, 23 users,  load average: 28.56, 27.30
+Tasks: 1312 total,   1 running, 935 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30542700+free, 84490288 used, 13836518+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43571299+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 92.350g 0.017t 4.723g S  2233  3.4  52136:04
+63343 setzu     20   0 14.072g 4.164g  26728 S  1495  0.8  92:23.91
+22092 nardi     20   0 17.561g 2.582g 459760 S  90.5  0.5   2829:16
+74011 cecconi   20   0 32.605g  22220  14696 S  42.9  0.0   0:00.09
+74006 cecconi   20   0   47040   5276   3508 R  23.8  0.0   0:00.10
+    2 root      20   0       0      0      0 S   4.8  0.0   0:10.80
+16836 pedrelli  20   0  599452 415580   9460 S   4.8  0.1 210:21.38
+************************
+Thu Apr 18 09:08:42 CEST 2019
+top - 09:08:42 up 110 days, 12:39, 23 users,  load average: 30.84, 27.88
+Tasks: 1310 total,   3 running, 931 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30624172+free, 83658776 used, 13838195+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43653427+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  1510  0.8  94:22.05
+67040 attardi   20   0 91.547g 0.016t 4.723g S 360.0  3.3  52137:33
+22092 nardi     20   0 17.561g 2.582g 459760 S 105.0  0.5   2829:26
+74208 cecconi   20   0 37.275g 254348 198556 R  95.0  0.0   0:00.37
+74218 cecconi   20   0   47040   5048   3284 R  25.0  0.0   0:00.09
+ 3809 rabbitmq  20   0 41.597g 104724   2504 S  20.0  0.0  15314:15
+48318 setzu     20   0   42080  11976   2524 R   5.0  0.0   3517:56
+************************
+Thu Apr 18 09:08:53 CEST 2019
+top - 09:08:53 up 110 days, 12:39, 23 users,  load average: 31.19, 28.02
+Tasks: 1310 total,   3 running, 931 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30617136+free, 83724480 used, 13838662+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43646867+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+63343 setzu     20   0 14.072g 4.164g  26728 S  1609  0.8  96:24.27
+67040 attardi   20   0 91.615g 0.016t 4.723g S 256.5  3.3  52138:59
+22092 nardi     20   0 17.561g 2.582g 459760 R  91.3  0.5   2829:36
+74384 cecconi   20   0       0      0      0 R  73.9  0.0   0:00.48
+74394 cecconi   20   0   47040   5256   3492 R  21.7  0.0   0:00.12
+74380 cecconi   20   0 32.604g  14700  12324 S   4.3  0.0   0:00.05
+    1 root      20   0  226132   8992   5972 S   0.0  0.0  17:49.52
+************************
+Thu Apr 18 09:09:03 CEST 2019
+top - 09:09:03 up 110 days, 12:39, 23 users,  load average: 33.49, 28.57
+Tasks: 1311 total,   2 running, 933 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.4 us,  5.4 sy,  0.1 ni, 62.0 id,  0.0 wa,  0.0 hi,  0.0 si, 
+KiB Mem : 52828246+total, 30571558+free, 84184208 used, 13838265+buff/ca
+KiB Swap:        0 total,        0 free,        0 used. 43601891+avail M
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+
+67040 attardi   20   0 92.053g 0.017t 4.723g S  2355  3.4  52140:23
+63343 setzu     20   0 14.072g 4.164g  26728 S  2225  0.8  98:31.81
+22092 nardi     20   0 17.561g 2.582g 459760 R  95.0  0.5   2829:47
+ 3809 rabbitmq  20   0 41.598g 105276   2504 S  25.0  0.0  15314:17
+74602 cecconi   20   0   47040   5224   3460 R  25.0  0.0   0:00.09
+74586 cecconi   20   0 32.604g  14652  12304 S  10.0  0.0   0:00.06
+ 8728 dnsmasq   20   0 5516460 159512   2304 S   5.0  0.0  29096:20
+************************

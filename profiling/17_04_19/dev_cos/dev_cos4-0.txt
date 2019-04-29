@@ -1,0 +1,15 @@
+==42449== NVPROF is profiling process 42449, command: ./bin/empty.out 2 512 4 0 7168
+==42449== Profiling application: ./bin/empty.out 2 512 4 0 7168
+==42449== Profiling result:
+No kernels were profiled.
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+      API calls:   45.69%  2.7811ms       388  7.1670us     213ns  300.29us  cuDeviceGetAttribute
+                   33.79%  2.0570ms         4  514.26us  237.37us  843.48us  cuDeviceTotalMem
+                   10.93%  665.09us         1  665.09us  665.09us  665.09us  cudaGetDeviceProperties
+                    4.78%  291.00us         4  72.750us  56.711us  112.20us  cuDeviceGetName
+                    4.41%  268.42us         1  268.42us  268.42us  268.42us  cudaDeviceGetAttribute
+                    0.14%  8.4900us         4  2.1220us  1.4600us  3.8260us  cuDeviceGetPCIBusId
+                    0.12%  7.2550us         1  7.2550us  7.2550us  7.2550us  cudaSetDevice
+                    0.08%  4.6290us         8     578ns     280ns  1.2690us  cuDeviceGet
+                    0.04%  2.3430us         4     585ns     422ns     838ns  cuDeviceGetUuid
+                    0.03%  1.7900us         3     596ns     162ns     967ns  cuDeviceGetCount

@@ -1,4 +1,3 @@
-//#include <cuda_runtime.h>
 #include <iostream>
 #include <math.h>
 #include <stdlib.h>
@@ -11,20 +10,9 @@
 #include <iterator>
 #include <cudaUtils.h>
 #include <imageMatrix.h>
-//#include <cosFutStr.h>
 
 #define HIGH 500.0f
 #define LOW -500.0f
-
-/*auto getMatrixVal(auto *mat, int row, int col, int width)
-{
-    return mat[row + col*width];
-}
-
-void setMatrixVal(auto *mat, int row, int col, int width, auto val)
-{   
-    mat[row + col*width] = val;
-}*/
 
 template<typename T> T getMatrixVal(T *mat, int row, int col, int width)
 {
@@ -58,7 +46,6 @@ void randomMatrix(const int m, int n,float *mat){
 
 float* getGaussian(int dim, float sigma)
 {
-    //Matrix kernel(height, Array(width));
     float *ker=new float[dim*dim];
     float sum=0.0;
     int i,j;
@@ -156,6 +143,51 @@ const float* filter, const int filterWidth)
     outputChannel[idx] = blur;
 }
 
+float smallMatMulKer(
+    float *Ad, float *Bd, float *Cd, float *C,
+    int m, int k, int n, 
+    cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
+{
+
+    float ms;
+    int bytesA=m*k*sizeof(float);
+    int bytesB=k*n*sizeof(float);
+    int bytesC=m*n*sizeof(float);
+    float  *A=(float*)calloc(1,bytesA);//new float[M_iter*K_exec];
+    float *B=(float*)calloc(1,bytesB);//new float[K_exec*N_size] ;
+    //float * C=(float*)calloc(bytesC);//new float[M_iter*N_size];  
+
+    randomMatrix(m,k, A);
+    randomMatrix(k,n, B);     
+
+    dim3 dimBlock(BLOCK,BLOCK,1);
+    dim3 dimGrid(GRIDx, GRIDy,1); 
+
+    checkCuda( cudaEventRecord(start,0) );
+
+    cudaMemcpyAsync(Ad, A, bytesA, cudaMemcpyHostToDevice, strm);    
+    cudaMemcpyAsync(Bd, B, bytesB, cudaMemcpyHostToDevice, strm);   
+
+    matMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
+
+    cudaMemcpyAsync( C, Cd, bytesC, cudaMemcpyDeviceToHost, strm);
+
+
+
+    //cudaFree(clocks_d);
+ 
+
+    checkCuda( cudaEventRecord(stop, 0) );
+    checkCuda( cudaEventSynchronize(stop) );
+    checkCuda( cudaEventElapsedTime(&ms, start, stop) );
+
+    //delete [] A;
+    //delete [] B;
+    free(A);
+    free(B);
+
+    return ms;
+}
 
 //KERNEL LAUNCERS
 float matMulKer(
@@ -163,23 +195,18 @@ float matMulKer(
     int m, int k, int n, 
     cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
 {
+    float ms;    
 
-    float ms;
-    /*#ifdef LOWPAR
+    randomMatrix(m,k, Ad);
+    randomMatrix(k,n, Bd);     
+    
+    #ifdef LOWPAR
         dim3 dimBlock(4,4,1);
         dim3 dimGrid(1,1,1); 
     #else
         dim3 dimBlock(BLOCK,BLOCK,1);
-        dim3 dimGrid((m+dimBlock.x-1)/dimBlock.x, (n+dimBlock.y-1)/dimBlock.y,1); 
-    #endif*/
-
-    dim3 dimBlock(BLOCK,BLOCK,1);
-    dim3 dimGrid(GRIDx, GRIDy,1); 
-
-    
-
-    randomMatrix(m,k, Ad);
-    randomMatrix(k,n, Bd); 
+        dim3 dimGrid(GRIDx, GRIDy,1); 
+    #endif
 
     checkCuda( cudaEventRecord(start,0) );
 
@@ -189,34 +216,6 @@ float matMulKer(
     checkCuda( cudaEventSynchronize(stop) );
     checkCuda( cudaEventElapsedTime(&ms, start, stop) );
 
-
-
-
-/*
-    std::cout<<"Product of the two matrices is:"<<std::endl;
-    for(int i=0; i<m; ++i){
-        for(int j=0; j<n; ++j){
-            for(int r=0; r<k; ++r) {
-                float a=getMatrixVal(Ad,i,r,k);
-                float b = getMatrixVal(Bd,r,j,n);
-                setMatrixVal(Cd,i,j,n,a*b);
-                //Cd[i][j]+=Ad[i][r]*Bd[r][j];
-            }
-            std::cout<<getMatrixVal(Cd,i,j,n)<<" ";
-        }
-        std::cout<< std::endl;
-    }
-        
-       */      
-
-    
-
-
-
-
-
-
-
     return ms;
 }
 
@@ -225,28 +224,17 @@ float blurBoxFilter (
     int width, int height,
     cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
 {    
-    /*for(int i = 0; i < 100; ++i) {
-           
-    //input_image[where] = in.at(i);
-       // std::cout<<std::endl<<"kernel img at "<<i<<": "<< (int)img_in[i];
-
-       // ++where;
-    }  */
-
     float ms=0;
     int bytes=width*height*3*sizeof(unsigned char);
        
     #ifdef LOWPAR
-        dim3 dimBlock(32,1,1);
-        dim3 dimGrid(1,1,1); 
+        dim3 blockDims(16,1,1);
+        dim3 gridDims(1,1,1); 
     #else
         dim3 blockDims(BLOCK,1,1);
         dim3 gridDims((unsigned int) ceil((double)(width*height*3/blockDims.x)), 1, 1 );
     #endif
     checkCuda( cudaEventRecord(start,0) ); 
-
-    //checkCuda(cudaMallocManaged(&img_in, bytes));
-    //checkCuda(cudaMallocManaged(&img_out, bytes));
 
     blurBoxFilterKer<<<gridDims, blockDims, 0, strm>>>(img_in, img_out, width, height); 
 
@@ -274,10 +262,18 @@ float blurGaussianfilter (
 
     float ms=0;
        
-    dim3 blockDims(16,16,1);
-    //dim3 gridDims((unsigned int) ceil((double)(bytes/blockDims.x)), 1, 1 );
-    dim3 gridDims((width*3)/blockDims.x, (height*3)/blockDims.y, 1 );
-
+    #ifdef LOWPAR
+        dim3 blockDims(4,4,1);
+        //dim3 gridDims((unsigned int) ceil((double)(bytes/blockDims.x)), 1, 1 );
+        dim3 gridDims(1,1, 1 );
+        //BLOCK=4;
+        //GRIDx= 1;
+        //GRIDy= 1;
+    #else
+        dim3 blockDims(16,16,1);
+        //dim3 gridDims((unsigned int) ceil((double)(bytes/blockDims.x)), 1, 1 );
+        dim3 gridDims((width*3)/blockDims.x, (height*3)/blockDims.y, 1 );
+    #endif
     checkCuda( cudaEventRecord(start,0) ); 
 
     /*checkCuda(cudaMallocManaged(&img_in, bytes));

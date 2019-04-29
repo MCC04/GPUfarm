@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import glob
 import matplotlib.pyplot as plt
 import numpy as np
 import math
@@ -9,28 +10,43 @@ def getDatas(str):
 	linesSeq = open(str, 'r')	
 	charsSeq = [line.rstrip('\n') for line in linesSeq]
 	
+	inputParams=[]
 	tokens=[]
 	evTimes=[]
+	chronoTimes=[]
+
 	for line in charsSeq:
 		#print line
-		if line[:1]=='*':
-			tokens= line.split(',',6)
+		#if line[:1]=='*':
+		if line[:1]=='$': #TOTAL ELAPSED
+			tokens= line.split(',',2)
 			#print tokens
-			if str[-9:]=="oneSm.txt":
-				evTimes.append(float(tokens[3]))
+			#if str[-9:]=="oneSm.txt":
+			#	evTimes.append(float(tokens[3]))
+			#else:
+			#	evTimes.append(float(tokens[4])) #Time measured by events
+			if str[-15:]=="host_cosMat.txt" or str[-22:]=="host_cosMat_invert.txt":
+				chronoTimes.append(float(tokens[0]))
 			else:
-				evTimes.append(float(tokens[4])) #Time measured by events
-		elif line[:1]=='#':
-			tokens= line.split(',',6)
-			#print tokens
-			if str[-9:]=="oneSm.txt":
-				evTimes.append(float(tokens[3]))
-			else:
-				evTimes.append(float(tokens[4])) #Time measured by events
-	
-	print(evTimes)
+				evTimes.append(float(tokens[0]))
+				chronoTimes.append(float(tokens[1]))
 
-	return evTimes
+		elif line[:1]=='#': #INPUT PARAMS
+			tokens= line.split(',',8)
+			inputParams.append(int(tokens[1:]))
+			print("\nInput params: ")
+			print inputParams
+			#if str[-9:]=="oneSm.txt":
+			#	evTimes.append(float(tokens[3]))
+			#else:
+			#	evTimes.append(float(tokens[4])) #Time measured by events
+	
+	print(inputParams)
+	print(evTimes)
+	print(chronoTimes)
+
+	return inputParams, evTimes, chronoTimes
+
 	
 def getAvgTimes(times1, times2):
 	
@@ -39,65 +55,93 @@ def getAvgTimes(times1, times2):
 	
 	return l1,l2
 	
-def getAvgTimes2(times1):
-	#elems=[]
-	avgList=[]
 	
-	count=0
-	j=1
-	while j<=32:
-		print ("J: ",j)
-		
-		m=0
-		while(m<5):
-			i = 0
-			tmp=0
-			
-			while(i<j):			
-				tmp+=times1[count]
-				count+=1
-				i+=1
-				print ("i: ",i)
-				print ("count: ",count)
-				print ("tmp: ",tmp)
+def divideDatas(evTimes,chronoTimes):
+	i=0
+	j=0
+	c=0
+	ev=[][]
+	ch=[][]
+	while i<12:
+		maxEv=evTimes[c]
+		minEV=evTimes[c]
+		while i<5:
+			while j<5:
+				ev[i,j]+=evTimes[c]
+				ch[i,j]+=chronoTimes[c]
+				c+=1
+	ev[:][:]/=12
+	ch[:][:]/=12
+	
+def divideDatasInverted(evTimes,chronoTimes):
+	i=0
+	j=0
+	c=0
+	ev=[][]
+	ch=[][]
+	eAvg=[]
+	cAvg=[]
+	for e,c in zip(evTimes,chronoTimes):
+		if i<12:
+			ev.append(e)
+			ch.append(c)			
+			i+=1
+		tmp1,tmp2=getAvgTimes2(ev,ch)
+		eAvg.append(tmp1)
+		cAvg.append(tmp2)
+		ev=[]
+		ch=[]
+		i=0
+					
+	
+def getAvgTimes2(evTimes,chronoTimes):
 
-			avgList.append(tmp/j)
+
+	evTimes.remove(max(evTimes))
+	evTimes.remove(min(evTimes))
+
+	chronoTimes.remove(max(chronoTimes))
+	chronoTimes.remove(min(chronoTimes))
+
+	eventAvg = sum(evTimes)/len(evTimes)
+	chronoAvg = sum(chronoTimes)/len(chronoTimes)
 		
-			m+=1
-		j*=2
-	print (avgList)
 	
-	return avgList
+		
+	return eventAvg,chronoAvg
 	
 ##########
 ###MAIN###
 ##########
 def main():
+	path = '../results/'
 
-	#elem_num=[7168, 14336, 28672]	
+	files = [f for f in glob.glob(path + "**/*.txt", recursive=True)]
 
-	print("\nStream Times: ")
-	stream1 = getDatas('../results/stream.txt')
-	#print("\nStream 1000 Times: ")
-	#stream2 = getDatas('../results/stream_m2.txt')
-
-	print("\nFuture Times: ")
-	future1 = getDatas('../results/future.txt')
-	#print("\nFuture 1000 Times: ")
-	#future2 = getDatas('../results/future_m2.txt')
+	for f in files:
+		print("\n***** Datas of ***** ")
+		print(f)
+		datas = getDatas(f)
 	
-	print("\nManaged Times: ")
-	managed1 = getDatas('../results/managed.txt')
-	#print("\nManaged 1000 Times: ")
-	#managed2 = getDatas('../results/managed_m2.txt')
+	#print("\nStream Times: ")
+	#stream1 = getDatas('../results/stream.txt')
 
-	print("\nOne SM Times: ")
-	oneSm = getDatas('../results/oneSm.txt')
 
-	elems=[1792,3584,7168,14336,28672,57344]
-	iterNum=[10,50,250,1250,2500]
-	#for j in range(1,16,2):
-	#	elems.append(56*256*j)
+	#print("\nFuture Times: ")
+	#future1 = getDatas('../results/future.txt')
+
+	
+	#print("\nManaged Times: ")
+	#managed1 = getDatas('../results/managed.txt')
+
+
+	#print("\nOne SM Times: ")
+	#oneSm = getDatas('../results/oneSm.txt')
+
+	#elems=[1792,3584,7168,14336,28672,57344]
+	#iterNum=[10,50,250,1250,2500]
+
+
 	s1 = getAvgTimes2(stream1)
 	f1 = getAvgTimes2(future1)
 	m1 = getAvgTimes2(managed1)	

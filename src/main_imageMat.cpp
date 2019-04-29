@@ -9,13 +9,9 @@
 #include <vector>
 #include <future>
 #include <iterator>
-
 #include <experimental/filesystem>
-
 #include <lodepng.h>
 #include <imageMatrix.h>
-
-//#define STREAM: is the same as compile with -DSTREAM flag
 
 cudaDeviceProp prop;
 int BLOCK=0;
@@ -25,7 +21,6 @@ int GRIDy=0;
 int K_exec=0;
 int M_iter=0;
 int N_size=0;
-
 int bytesSize;
 
 void printInfos(){
@@ -85,14 +80,15 @@ int main(int argc, char **argv){
 
     int gpu_clk=1;
     float clockSum=0.0, clockAvg=0.0;
-    float msSum=0.0, rb_wb=0.0; // elapsed time in milliseconds
+    float msSum=0.0, rb_wb=0.0; 
     std::chrono::system_clock::time_point start,end;
 
     int devId = atoi(argv[1]);
-    #ifdef LOWPAR
-        BLOCK=32;
-        GRID=1;
-    #else
+    //#ifdef LOWPAR
+       // BLOCK=32;
+       // GRID=1;
+    //#else
+    #ifndef LOWPAR
         BLOCK = atoi(argv[2]);
     #endif
     int Nstr = atoi(argv[3]);
@@ -130,10 +126,17 @@ int main(int argc, char **argv){
     checkCuda( cudaEventCreate(&startEvent) );
     checkCuda( cudaEventCreate(&stopEvent) );
  
-    GRIDx= (M_iter+BLOCK-1)/BLOCK;
-    GRIDy= (N_size+BLOCK)/BLOCK; 
+    /*GRIDx= (M_iter+BLOCK-1)/BLOCK;
+    GRIDy= (N_size+BLOCK)/BLOCK; */
 
-
+    #ifdef LOWPAR
+        BLOCK=4;
+        GRIDx= 1;
+        GRIDy= 1;
+    #else
+        GRIDx= (M_iter/BLOCK)+56;
+        GRIDy= (N_size/BLOCK)+57;
+    #endif
 
     std::cout<<std::endl<<std::endl<<"#MATMUL,";
     printInfos();
@@ -189,18 +192,26 @@ int main(int argc, char **argv){
     int bytesA=M_iter*K_exec*sizeof(float);
     int bytesB=K_exec*N_size*sizeof(float);
     int bytesC=M_iter*N_size*sizeof(float);
-    float  *A=(float*)calloc(matN, bytesA);//new float[M_iter*K_exec];
-    float *B=(float*)calloc(matN, bytesB);//new float[K_exec*N_size] ;
-    float * C=(float*)calloc(matN, bytesC);//new float[M_iter*N_size];
+    float *Ad=(float*)calloc(1,bytesA);//new float[M_iter*K_exec];
+    float *Bd=(float*)calloc(1,bytesB);//new float[K_exec*N_size] ;
+    float *Cd=(float*)calloc(1,bytesC);//new float[M_iter*N_size];
+    float *C=(float*)calloc(1,bytesC);//new float[M_iter*N_size];
 
     cudaEvent_t startEvent, stopEvent;
     checkCuda( cudaEventCreate(&startEvent) );
     checkCuda( cudaEventCreate(&stopEvent) );
  
-    GRIDx= (M_iter+BLOCK-1)/BLOCK;
-    GRIDy= (N_size+BLOCK)/BLOCK; 
+    //GRIDx= (M_iter+BLOCK-1)/BLOCK;
+    //GRIDy= (N_size+BLOCK)/BLOCK; 
 
-
+    #ifdef LOWPAR
+        BLOCK=4;
+        GRIDx= 1;
+        GRIDy= 1;
+    #else
+        GRIDx= (M_iter/BLOCK)+56;
+        GRIDy= (N_size/BLOCK)+57;
+    #endif
 
     std::cout<<std::endl<<std::endl<<"#MATMUL,";
     printInfos();
@@ -208,9 +219,9 @@ int main(int argc, char **argv){
   
     start=std::chrono::system_clock::now();
     
-    checkCuda( cudaMallocManaged(&A, bytesA*matN) );
-    checkCuda( cudaMallocManaged(&B, bytesB*matN) );
-    checkCuda( cudaMallocManaged(&C, bytesC*matN) );
+    checkCuda( cudaMalloc(&Ad, bytesA) );
+    checkCuda( cudaMalloc(&Bd, bytesB) );
+    checkCuda( cudaMalloc(&Cd, bytesC) );
 
     cudaStream_t *stream=streamCreate(Nstr);
 
@@ -218,13 +229,20 @@ int main(int argc, char **argv){
         for (int i = 0; i < matN; ++i) {  
             //ms=matMulKer(A, B, C, M_iter, K_exec, N_size, 
             //            stream[i], startEvent, stopEvent);
-            ms=matMulKer(&A[i*M_iter*K_exec], &B[i*K_exec*N_size], &C[i*M_iter*N_size], 
+
+             
+            //ms=smallMatMulKer(&Ad, &Bd, &Cd, &C,
+              //          M_iter, K_exec, N_size, stream[j], startEvent, stopEvent);
+
+
+            ms=smallMatMulKer(Ad, Bd, Cd, C,
                         M_iter, K_exec, N_size, stream[j], startEvent, stopEvent);
-      
-                        
+                                  
         
             #if !defined(MEASURES)
-                printMatrix(&C[i*M_iter*N_size], M_iter, N_size, ms);
+                //printMatrix(&C, M_iter, N_size, ms);
+                printMatrix(C, M_iter, N_size, ms);
+
             #else
                 printResults(ms);
             #endif
@@ -233,9 +251,12 @@ int main(int argc, char **argv){
         }   
     }
     streamDestroy(stream,Nstr);
-   // delete [] A;
-   // delete [] B;
-   // delete [] C;
+    //delete [] A;
+    //delete [] B;
+    free(C);
+    cudaFree(Ad);
+    cudaFree(Bd);
+    cudaFree(Cd);
     end=std::chrono::system_clock::now();
 
 #elif BLURBOX
