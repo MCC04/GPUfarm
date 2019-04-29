@@ -55,7 +55,6 @@ float* getGaussian(int dim, float sigma)
             float val = exp((float)(-(i*i+j*j))/(2*sigma*sigma))
                         /(2*M_PI*sigma*sigma);
             setMatrixVal<float>(ker,i,j,dim, val);
-            //kernel[i][j] = exp(-(i*i+j*j)/(2*sigma*sigma))/(2*M_PI*sigma*sigma);
             sum += val;
         }
     }
@@ -64,7 +63,6 @@ float* getGaussian(int dim, float sigma)
         for (j=0 ; j<dim ; j++) {
             float val=getMatrixVal<float>(ker,i,j,dim)/sum;
             setMatrixVal<float>(ker,i,j,dim, val);
-            //kernel[i][j] /= sum;
         }
     }
 
@@ -155,7 +153,6 @@ float smallMatMulKer(
     int bytesC=m*n*sizeof(float);
     float  *A=(float*)calloc(1,bytesA);//new float[M_iter*K_exec];
     float *B=(float*)calloc(1,bytesB);//new float[K_exec*N_size] ;
-    //float * C=(float*)calloc(bytesC);//new float[M_iter*N_size];  
 
     randomMatrix(m,k, A);
     randomMatrix(k,n, B);     
@@ -172,17 +169,10 @@ float smallMatMulKer(
 
     cudaMemcpyAsync( C, Cd, bytesC, cudaMemcpyDeviceToHost, strm);
 
-
-
-    //cudaFree(clocks_d);
- 
-
     checkCuda( cudaEventRecord(stop, 0) );
     checkCuda( cudaEventSynchronize(stop) );
     checkCuda( cudaEventElapsedTime(&ms, start, stop) );
 
-    //delete [] A;
-    //delete [] B;
     free(A);
     free(B);
 
@@ -255,44 +245,23 @@ float blurGaussianfilter (
 
     float *ker;
     int bytes=kerdim*kerdim*sizeof(unsigned char);
+    float ms=0;
 
     checkCuda(cudaMallocManaged(&ker, bytes));
-    ker=getGaussian(kerdim, sigma);
-    
-
-    float ms=0;
+    ker=getGaussian(kerdim, sigma);        
        
     #ifdef LOWPAR
         dim3 blockDims(4,4,1);
-        //dim3 gridDims((unsigned int) ceil((double)(bytes/blockDims.x)), 1, 1 );
         dim3 gridDims(1,1, 1 );
-        //BLOCK=4;
-        //GRIDx= 1;
-        //GRIDy= 1;
     #else
         dim3 blockDims(16,16,1);
-        //dim3 gridDims((unsigned int) ceil((double)(bytes/blockDims.x)), 1, 1 );
-        dim3 gridDims((width*3)/blockDims.x, (height*3)/blockDims.y, 1 );
+        
+        dim3 gridDims((width*3)/blockDims.x, (height*3)/blockDims.y, 1 ); //dim3 gridDims((unsigned int) ceil((double)(bytes/blockDims.x)), 1, 1 );
     #endif
     checkCuda( cudaEventRecord(start,0) ); 
 
-    /*checkCuda(cudaMallocManaged(&img_in, bytes));
-    checkCuda(cudaMallocManaged(&img_out, bytes));*/
-    
-
-    //blurKernel<<<gridDims, blockDims, 0, strm>>>(img_in, img_out, width, height); 
-
-    /*gaussianBlurKer<<<gridDims, blockDims, 0, strm>>>(
-    const unsigned char* const inputChannel,
-unsigned char* const outputChannel,
-int numRows, int numCols,
-const float* const filter, const int filterWidth)*/
-
     gaussianBlurKer<<<gridDims, blockDims, 0, strm>>>(
         img_in, img_out, height, width, ker, kerdim);
-   
-
-
 
     checkCuda( cudaEventRecord(stop, 0) );
     checkCuda( cudaEventSynchronize(stop) );

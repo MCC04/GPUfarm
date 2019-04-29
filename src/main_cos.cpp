@@ -13,7 +13,6 @@
 
 #include <lodepng.h>
 #include <cosFutStr.h>
-
 //#define STREAM: is the same as compile with -DSTREAM flag
 
 cudaDeviceProp prop;
@@ -84,7 +83,7 @@ int main(int argc, char **argv){
 
     int gpu_clk=1;
     float clockSum=0.0, clockAvg=0.0;
-    float msSum=0.0, rb_wb=0.0; // elapsed time in milliseconds
+    float msSum=0.0, rb_wb=0.0; 
     std::chrono::system_clock::time_point start,end;
 
     int devId = atoi(argv[1]);

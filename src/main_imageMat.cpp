@@ -84,17 +84,12 @@ int main(int argc, char **argv){
     std::chrono::system_clock::time_point start,end;
 
     int devId = atoi(argv[1]);
-    //#ifdef LOWPAR
-       // BLOCK=32;
-       // GRID=1;
-    //#else
-    #ifndef LOWPAR
+     #ifndef LOWPAR
         BLOCK = atoi(argv[2]);
     #endif
     int Nstr = atoi(argv[3]);
 
     bytesSize = N_size*sizeof(float); 
-    //float *x=new float [N_size];      
      
     checkCuda(cudaDeviceGetAttribute(&gpu_clk, cudaDevAttrClockRate, devId));    
     checkCuda( cudaSetDevice(devId) );
@@ -111,10 +106,6 @@ int main(int argc, char **argv){
     const int streamBytes = streamSize* sizeof(float);
     float ms=0.0;
 
-    /*float  *A=new float[M_iter*K_exec];
-    float *B=new float[K_exec*N_size] ;
-    float * C=new float[M_iter*N_size];*/
-
     int bytesA=M_iter*K_exec*sizeof(float);
     int bytesB=K_exec*N_size*sizeof(float);
     int bytesC=M_iter*N_size*sizeof(float);
@@ -126,9 +117,6 @@ int main(int argc, char **argv){
     checkCuda( cudaEventCreate(&startEvent) );
     checkCuda( cudaEventCreate(&stopEvent) );
  
-    /*GRIDx= (M_iter+BLOCK-1)/BLOCK;
-    GRIDy= (N_size+BLOCK)/BLOCK; */
-
     #ifdef LOWPAR
         BLOCK=4;
         GRIDx= 1;
@@ -152,13 +140,9 @@ int main(int argc, char **argv){
 
     for (int j = 0; j < Nstr; ++j) {  
         for (int i = 0; i < matN; ++i) {  
-            //ms=matMulKer(A, B, C, M_iter, K_exec, N_size, 
-            //            stream[i], startEvent, stopEvent);
             ms=matMulKer(&A[i*M_iter*K_exec], &B[i*K_exec*N_size], &C[i*M_iter*N_size], 
                         M_iter, K_exec, N_size, stream[j], startEvent, stopEvent);
-      
-                        
-        
+
             #if !defined(MEASURES)
                 printMatrix(&C[i*M_iter*N_size], M_iter, N_size, ms);
             #else
@@ -169,13 +153,9 @@ int main(int argc, char **argv){
         }   
     }
     streamDestroy(stream,Nstr);
-   // delete [] A;
-   // delete [] B;
-   // delete [] C;
     end=std::chrono::system_clock::now();
 
-#elif SMALLMATMUL
-    
+#elif SMALLMATMUL    
     M_iter = atoi(argv[4]);
     K_exec = atoi(argv[5]);
     N_size = atoi(argv[6]);
@@ -184,10 +164,6 @@ int main(int argc, char **argv){
     const int streamSize = N_size ;
     const int streamBytes = streamSize* sizeof(float);
     float ms=0.0;
-
-    /*float  *A=new float[M_iter*K_exec];
-    float *B=new float[K_exec*N_size] ;
-    float * C=new float[M_iter*N_size];*/
 
     int bytesA=M_iter*K_exec*sizeof(float);
     int bytesB=K_exec*N_size*sizeof(float);
@@ -200,9 +176,6 @@ int main(int argc, char **argv){
     cudaEvent_t startEvent, stopEvent;
     checkCuda( cudaEventCreate(&startEvent) );
     checkCuda( cudaEventCreate(&stopEvent) );
- 
-    //GRIDx= (M_iter+BLOCK-1)/BLOCK;
-    //GRIDy= (N_size+BLOCK)/BLOCK; 
 
     #ifdef LOWPAR
         BLOCK=4;
@@ -227,22 +200,12 @@ int main(int argc, char **argv){
 
     for (int j = 0; j < Nstr; ++j) {  
         for (int i = 0; i < matN; ++i) {  
-            //ms=matMulKer(A, B, C, M_iter, K_exec, N_size, 
-            //            stream[i], startEvent, stopEvent);
-
-             
-            //ms=smallMatMulKer(&Ad, &Bd, &Cd, &C,
-              //          M_iter, K_exec, N_size, stream[j], startEvent, stopEvent);
-
 
             ms=smallMatMulKer(Ad, Bd, Cd, C,
                         M_iter, K_exec, N_size, stream[j], startEvent, stopEvent);
-                                  
-        
+                      
             #if !defined(MEASURES)
-                //printMatrix(&C, M_iter, N_size, ms);
                 printMatrix(C, M_iter, N_size, ms);
-
             #else
                 printResults(ms);
             #endif
@@ -251,8 +214,6 @@ int main(int argc, char **argv){
         }   
     }
     streamDestroy(stream,Nstr);
-    //delete [] A;
-    //delete [] B;
     free(C);
     cudaFree(Ad);
     cudaFree(Bd);
@@ -265,7 +226,7 @@ int main(int argc, char **argv){
     const char* input_path = "/home/cecconi/GPUfarm/images/in/";
     const char* output_path = "/home/cecconi/GPUfarm/images/out/";
 
-    std::cout<<std::endl<<std::endl<<"#BLURBOX,";// <<std::endl;
+    std::cout<<std::endl<<std::endl<<"#BLURBOX,";
     #ifndef MEASURES
     printInfos();
     #endif
@@ -298,9 +259,6 @@ int main(int argc, char **argv){
             bytesSize=width*height*sizeof(unsigned char);
 
             // Prepare the data
-            //unsigned char* input_image = new unsigned char[(in.size()*3)/4];
-            //unsigned char* output_image = new unsigned char[(in.size()*3)/4];
-
             unsigned char* input_image = new unsigned char[in.size()];
             unsigned char* output_image = new unsigned char[in.size()];
 
@@ -308,33 +266,22 @@ int main(int argc, char **argv){
             checkCuda(cudaMallocManaged(&output_image, in.size()));
 
             unsigned char* alphaChannel = new unsigned char[in.size()/4];
-            // int where = 0, count=0;
             int count=0,where=0;
             for(int i = 0; i < in.size(); ++i) {
                 if((i+1) % 4 != 0) {
                     input_image[where] = in.at(i);
-                    // std::cout<<std::endl<<"img at "<<i<<": "<< in.at(i)<<" - "<< input_image[where];
-
                     ++where;
-                    }                
+                }                
                 else
                 {
-
                     alphaChannel[count] = in.at(i);
-                    // std::cout<<std::endl<<"alpha at "<<i<<": "<< in.at(i)<<" - "<< alphaChannel[count];
-
                     ++count;
                 }
                 output_image[i] = 255;
             }
 
-            //checkCuda(cudaMallocManaged(&alphaChannel, bytes));
-            // Run the filter on it
-            // ms = filter( input_image, output_image, width, height, 
-            // stream[i],startEvent,stopEvent);
             ms = blurBoxFilter( input_image, output_image, width, height, 
-            stream[j],startEvent,stopEvent);
-
+                                stream[j],startEvent,stopEvent);
 
             // Prepare data for output
             count=0;
@@ -347,16 +294,7 @@ int main(int argc, char **argv){
                 }
             }
 
-            /*for(int i = 0; i < 100; ++i) {
-
-            //input_image[where] = in.at(i);
-            //std::cout<<std::endl<<"out img at "<<i<<": "<< (int)out.at(i);
-
-            // ++where;
-            }*/
-
             // Output the data
-            //auto out_fname=((std::string)output_path + (std::string)"/" + fname).c_str();
             std::string s(output_path);
             s.append(fname.c_str());
             const char * out_fname=s.c_str();
@@ -366,25 +304,12 @@ int main(int argc, char **argv){
                 std::cout << "encoder error " << error << ": "//<< lodepng_error_text(error) 
                     << std::endl;
 
-
-
             printResults(ms);
-
-            //delete[] input_image;
-            //delete[] output_image;
-            //delete[] alphaChannel;
-
-            //++j;
             msSum+=ms;
-
-
         }
-
-    }
-    
+    }    
     streamDestroy(stream,Nstr);
     end=std::chrono::system_clock::now();  
-
 
 #elif BLURGAUSS
     unsigned int width, height;
@@ -394,7 +319,7 @@ int main(int argc, char **argv){
     const char* input_path = "/home/cecconi/GPUfarm/images/in/";
     const char* output_path = "/home/cecconi/GPUfarm/images/out/";
 
-    std::cout<<std::endl<<std::endl<<"#BLURFILTER,";// <<std::endl;
+    std::cout<<std::endl<<std::endl<<"#BLURFILTER,";
     #ifndef MEASURES
     printInfos();
     #endif
@@ -425,44 +350,23 @@ int main(int argc, char **argv){
             bytesSize=width*height*sizeof(unsigned char);
     
             // Prepare the data
-            //unsigned char* input_image = new unsigned char[(in.size()*3)/4];
-            //unsigned char* output_image = new unsigned char[(in.size()*3)/4];
-
             unsigned char* input_image = new unsigned char[in.size()];
             unsigned char* output_image = new unsigned char[in.size()];
 
             checkCuda(cudaMallocManaged(&input_image, bytesSize));
             checkCuda(cudaMallocManaged(&output_image, bytesSize));
-        //checkCuda(cudaMallocManaged(&ker, bytes));
 
             int where = 0;
             for(int i = 0; i < in.size(); ++i) {
                 if((i+1) % 4 != 0) {
                     input_image[i] = in.at(i);
                     output_image[i] = 255;
-                //   where++;
+                }   
             }
-            }
 
-            
-
-            // Run the filter on it
-        // ms = filter( input_image, output_image, width, height, 
-                    // stream[i],startEvent,stopEvent);
-            //ms = blurBoxFilter( input_image, output_image, width, height, 
-            //         stream[i],startEvent,stopEvent);
-
-
-
-            ms =  blurGaussianfilter (
-                    input_image, output_image,
+            ms =  blurGaussianfilter (input_image, output_image,
                     width, height, 5, 4.0,//int kerdim, float sigma,
                     stream[j],startEvent,stopEvent);
-
-
-
-
-            
 
             // Prepare data for output
             std::vector<unsigned char> out;
@@ -474,25 +378,16 @@ int main(int argc, char **argv){
             }
         
             // Output the data
-            //auto out_fname=((std::string)output_path + (std::string)"/" + fname).c_str();
-        std::string s(output_path);
-        s.append(fname.c_str());
-        const char * out_fname=s.c_str();
+            std::string s(output_path);
+            s.append(fname.c_str());
+            const char * out_fname=s.c_str();
 
             error = lodepng::encode(out_fname, out, width, height);
             if(error) std::cout << "encoder error " << error << ": "<< lodepng_error_text(error) << std::endl;
 
-    
-
             printResults(ms);
-
-            //delete[] input_image;
-            //delete[] output_image;
-        
-            //++j;
             msSum+=ms;
         }
-
     }
     
     streamDestroy(stream,Nstr);
@@ -501,14 +396,6 @@ int main(int argc, char **argv){
 
     std::chrono::duration<double, std::milli> millis = end - start;   
     printTotalTimes(msSum,  millis.count() );
-
-   /* #if defined(STREAM)
-        cudaFree(x_d);
-        cudaFree(clocks_d);
-    #elif defined(STREAMMANAGED)
-        cudaFree(x);
-        cudaFree(clocks);
-    #endif*/
 
     return 0;
 }
