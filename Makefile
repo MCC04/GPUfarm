@@ -1,6 +1,5 @@
 # -*- Makefile -*-
 
-#NEW_VERSION
 CC:= nvcc
 CFLAGS:= -std=c++14 -g -DMEASURES
 ALLFLAGS:= $(CFLAGS) -Iinclude/ 
@@ -89,9 +88,6 @@ $(BIN)imageMatKernels_low.o:  $(SRC)imageMatKernels.cu $(INCLUDE)imageMatrix.h $
 $(BIN)main_mat_low.o: $(SRC)main_imageMat.cpp $(INCLUDE)imageMatrix.h $(INCLUDE)cudaUtils.h
 	$(CC) $(LOWPAR) -c $(SRC)main_imageMat.cpp -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z | rev | cut -c 4- | rev) -o $(BIN)main_mat_low.o
 	
-#$(BIN)lodepng.o: $(SRC)lodepng.cpp  $(INCLUDE)lodepng.h
-	#$(CC) $(LOWPAR) -c $(SRC)lodepng.cpp -o $(BIN)lodepng.o
-	
 
 #cos future, stream, managed
 futurelow: $(BIN)main_cos_low.o $(BIN)farmkernels_low.o $(BIN)cudaUtils.o
@@ -108,9 +104,6 @@ $(BIN)main_cos_low.o: $(SRC)main_cos.cpp $(INCLUDE)cosFutStr.h $(INCLUDE)cudaUti
 
 $(BIN)farmkernels_low.o:  $(SRC)farmkernels.cu $(INCLUDE)cosFutStr.h $(INCLUDE)cudaUtils.h
 	$(CC) $(LOWPAR) -c $(SRC)farmkernels.cu -o $(BIN)farmkernels_low.o
-
-#$(BIN)cudaUtils.o: $(SRC)cudaUtils.cpp  $(INCLUDE)cudaUtils.h
-	#$(CC) $(LOWPAR) -c $(SRC)cudaUtils.cpp -o $(BIN)cudaUtils.o
 
 
 ####HOST####
