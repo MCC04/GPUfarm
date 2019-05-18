@@ -75,7 +75,7 @@ def divideDatasInv(chrono):
 	for c in chrono:
 		
 		if k<testNum:
-			print(k)
+			#print(k)
 			temp.append(c)
 			k+=1
 
@@ -83,8 +83,8 @@ def divideDatasInv(chrono):
 			k=0
 			temp.remove(max(temp))
 			temp.remove(min(temp))
-			print("i: ",i,"j: ",j)
-			print("temp: ",temp)
+			#print("i: ",i,"j: ",j)
+			#print("temp: ",temp)
 			avgT[i,j]=sum(temp)/len(temp)
 			
 			temp=[]
@@ -125,73 +125,169 @@ def main():
 			inputs,chronoTimes = getDatas(f)
 						
 			
-			print("\nchrono len: ")
-			print(len(chronoTimes))			
-			print("\ninputs len: ")
-			print(len(inputs))
+			print("\nchrono len: ",len(chronoTimes))
+			print("\ninputs len: ",len(inputs))
 			
 			
-			chAvg=np.zeros((5,5))
-			half = len(chronoTimes)//2
-		
-			if file[-10:]=="invert.txt":
-				inv=1
-								
-				chSeqAvg=divideDatasInv(chronoTimes[:half])
-				chParAvg=divideDatasInv(chronoTimes[half:])
-				
-				print("\nSEQ INV Avg chronoTimes : ")
-				print(chSeqAvg)
-				print("\nPAR INV Avg chronoTimes : ")
-				print(chParAvg)
-				
-			else:
-				inv=0
-				chSeq,minSeqT,maxSeqT=divideDatas(chronoTimes[:half])
-				chPar,minParT,maxParT=divideDatas(chronoTimes[half:])
-				print("\nSEQ chronoTimes: ")
-				print(chSeq)
-				print("\nPAR chronoTimes: ")
-				print(chPar)
-					
-				chSeqAvg = getAvgTimes(chSeq,minSeqT,maxSeqT)
-				chParAvg = getAvgTimes(chPar,minParT,maxParT)
-		
-				print("\nSEQ Chrono AVG: ")
-				print(chSeqAvg)			
-				print("\nPAR Chrono AVG: ")
-				print(chParAvg)
-		
-	
-			#####SPEED UP#####
-			speedUp=chSeqAvg/chParAvg
-			print("\nSpeedup: ")
-			print(speedUp)
+			
 
 
 
 			if file[5:8]=="mat":  
+			
+			
+			
+			
+			
+			
+				chAvg=np.zeros((5,5))
+				part = len(chronoTimes)//4
+		
+				if file[-10:]=="invert.txt":
+					inv=1
+								
+					chMMSeqAvg=divideDatasInv(chronoTimes[0:part])
+					chMMParAvg=divideDatasInv(chronoTimes[part:(part*2)])				
+					chLMMSeqAvg=divideDatasInv(chronoTimes[(part*2):(part*3)])
+					chLMMParAvg=divideDatasInv(chronoTimes[(part*3):(part*4)])
+				
+				
+					print("\nMATMUL SEQ INV Avg chronoTimes : ", chMMSeqAvg)
+					print("\nMATMUL PAR INV Avg chronoTimes : ",chMMParAvg)
+					print("\nLOT MATMUL SEQ INV Avg chronoTimes : ", chLMMSeqAvg)
+					print("\nLOT MATMUL PAR INV Avg chronoTimes : ",chLMMParAvg)
+
+				
+				else:
+					inv=0
+					chMMSeq,minMMSeqT,maxMMSeqT=divideDatas(chronoTimes[0:part])
+					chMMPar,minMMParT,maxMMParT=divideDatas(chronoTimes[part:(part*2)])
+					chLMMSeq,minLMMSeqT,maxLMMSeqT=divideDatas(chronoTimes[(part*2):(part*3)])
+					chLMMPar,minLMMParT,maxLMMParT=divideDatas(chronoTimes[(part*3):(part*4)])
+					print("\nLOT MATMUL SEQ chronoTimes: ", chLMMSeq)
+					print("\nLOT MATMUL PAR chronoTimes: ", chLMMPar)
+					print("\nMATMUL SEQ chronoTimes: ", chMMSeq)
+					print("\nMATMUL PAR chronoTimes: ", chMMPar)
+
+					
+					chMMSeqAvg = getAvgTimes(chMMSeq,minMMSeqT,maxMMSeqT)
+					chMMParAvg = getAvgTimes(chMMPar,minMMParT,maxMMParT)
+					chLMMSeqAvg = getAvgTimes(chLMMSeq,minLMMSeqT,maxLMMSeqT)
+					chLMMParAvg = getAvgTimes(chLMMPar,minLMMParT,maxLMMParT)
+					
+					print("\nMATMUL SEQ Chrono AVG: ", chMMSeqAvg)
+					print("\nMATMUL PAR Chrono AVG: ", chMMParAvg)
+					print("\nLOT MATMUL SEQ Chrono AVG: ", chLMMSeqAvg)
+					print("\nLOT MATMUL PAR Chrono AVG: ", chLMMParAvg)
+					
+				# sec -> millisec 
+				chMMSeqAvg = chMMSeqAvg*1000
+				chMMParAvg = chMMParAvg*1000
+				chLMMSeqAvg = chLMMSeqAvg*1000
+				chLMMParAvg = chLMMParAvg*1000
+				#####SPEED UP#####
+				speedUpMM=chMMSeqAvg/chMMParAvg
+				speedUpLMM=chLMMSeqAvg/chLMMParAvg
+				print("\nMATMUL Speedup: ", speedUpMM)
+				print("\nLOT MATMUL Speedup: ", speedUpLMM)
+
+			
+			
+			
+			
+			
+			
 				if inv==0:
 					with open("./output/host_mat.csv",  "wb") as fcsv:
 						writer = csv.writer(fcsv)
 									
 						writer.writerow(['MAT MUL','SEQ'])
-						writer.writerows(chSeqAvg)
+						writer.writerows(chMMSeqAvg)
 						writer.writerow(['MAT MUL','PAR'])
-						writer.writerows(chParAvg)
+						writer.writerows(chMMParAvg)
 						writer.writerow(['MAT MUL','SPEEDUP'])
-						writer.writerows(speedUp)
+						writer.writerows(speedUpMM)
+						
+						writer.writerow(['LOT MAT MUL','SEQ'])
+						writer.writerows(chLMMSeqAvg)
+						writer.writerow(['LOT MAT MUL','PAR'])
+						writer.writerows(chLMMParAvg)
+						writer.writerow(['LOT MAT MUL','SPEEDUP'])
+						writer.writerows(speedUpLMM)
 				else:
 					with open("./output/host_mat_inv.csv",  "wb") as fcsv:
 						writer = csv.writer(fcsv)
 						writer.writerow(['INV MM','SEQ'])
-						writer.writerows(chSeqAvg)
+						writer.writerows(chMMSeqAvg)
 						writer.writerow(['INV MM','PAR'])
-						writer.writerows(chParAvg)
+						writer.writerows(chMMParAvg)
 						writer.writerow(['INV MM','SPEEDUP'])
-						writer.writerows(speedUp)
+						writer.writerows(speedUpMM)
+						
+						writer = csv.writer(fcsv)
+						writer.writerow(['INV LOT MM','SEQ'])
+						writer.writerows(chLMMSeqAvg)
+						writer.writerow(['INV LOT MM','PAR'])
+						writer.writerows(chLMMParAvg)
+						writer.writerow(['INV LOT MM','SPEEDUP'])
+						writer.writerows(speedUpLMM)
+				
+				
+				
+				
+				for i in range(0,5):			
+					plotCompTimeGraph(speedUpMM[i,:], speedUpMM[:,i],i,file[5:8],inv,1)
+				for i in range(0,5):			
+					plotCompTimeGraph(chMMParAvg[i,:], chMMParAvg[:,i],i,file[5:8],inv,0)
+					
+				for i in range(0,5):			
+					plotCompTimeGraph(speedUpLMM[i,:], speedUpLMM[:,i],i,file[5:8],inv,1)
+				for i in range(0,5):			
+					plotCompTimeGraph(chLMMParAvg[i,:], chLMMParAvg[:,i],i,file[5:8],inv,0)
 			
 			elif file[5:8]=="cos":
+			
+			
+			
+			
+			
+				chAvg=np.zeros((5,5))
+				half = len(chronoTimes)//2
+		
+				if file[-10:]=="invert.txt":
+					inv=1
+								
+					chSeqAvg=divideDatasInv(chronoTimes[:half])
+					chParAvg=divideDatasInv(chronoTimes[half:])
+				
+					print("\nSEQ INV Avg chronoTimes : ", chSeqAvg)
+					print("\nPAR INV Avg chronoTimes : ", chParAvg)
+				
+				else:
+					inv=0
+					chSeq,minSeqT,maxSeqT=divideDatas(chronoTimes[:half])
+					chPar,minParT,maxParT=divideDatas(chronoTimes[half:])
+					print("\nSEQ chronoTimes: ", chSeq)
+					print("\nPAR chronoTimes: ", chPar)
+					
+					chSeqAvg = getAvgTimes(chSeq,minSeqT,maxSeqT)
+					chParAvg = getAvgTimes(chPar,minParT,maxParT)
+		
+					print("\nSEQ Chrono AVG: ", chSeqAvg)
+					print("\nPAR Chrono AVG: ", chParAvg)
+					
+				# sec -> millisec	
+				chSeqAvg = chSeqAvg*1000
+				chParAvg = chParAvg*1000
+				#####SPEED UP#####
+				speedUp=chSeqAvg/chParAvg
+				print("\nSpeedup: ", speedUp)
+		
+			
+			
+			
+			
+			
 				if inv==0:	
 					with open("./output/host_cos.csv",  "wb") as fcsv:
 						writer = csv.writer(fcsv)
@@ -214,12 +310,12 @@ def main():
 			
 			
 			#plotCompTimeGraph(speedUp[0,:], speedUp[:,0],0,file[5:8],inv,1)	
-			for i in range(0,5):			
-				plotCompTimeGraph(speedUp[i,:], speedUp[:,i],i,file[5:8],inv,1)
+				for i in range(0,5):			
+					plotCompTimeGraph(speedUp[i,:], speedUp[:,i],i,file[5:8],inv,1)
 			
-			#farei il grafico su comp time anche per inverted, mentre lo speed up solo per la versione normale, per adesso
-			for i in range(0,5):			
-				plotCompTimeGraph(chParAvg[i,:], chParAvg[:,i],i,file[5:8],inv,0)
+				#farei il grafico su comp time anche per inverted, mentre lo speed up solo per la versione normale, per adesso
+				for i in range(0,5):			
+					plotCompTimeGraph(chParAvg[i,:], chParAvg[:,i],i,file[5:8],inv,0)
 			
 								
 				
@@ -266,6 +362,13 @@ def plotCompTimeGraph(y1, y2, num, gType, inv, spUp):
 	plt.suptitle(title,  fontsize=16)
 	plt.tight_layout()
 	plt.show()
+	
+	#img_name='./plt_img/'+ gType+fname+str(plotId)
+	#plt.savefig(img_name)
+	#plotId+=1
+	
+	#figId+=1
+	#plt.close(fig)
 
 
 	

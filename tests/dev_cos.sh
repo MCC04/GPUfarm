@@ -10,7 +10,8 @@ NC='\033[0m'
 #let GPU=2
 let GPU=1
 
-let BLOCK=512
+let BLOCK=256
+let SM=56
 
 #########
 make clean
@@ -24,7 +25,7 @@ do
 	for((k=2; k<=32; k*=2));
 	do
 		echo running with k = $k
-		let "N = $k*56*32"
+		let "N = $k*$SM*$BLOCK"
 	
 		for((i=10; i<=1250; i*=5));
 		do
@@ -47,7 +48,7 @@ do
 	for((k=2; k<=32; k*=2));
 	do
 		echo running with k = $k
-		let "N = $k*56*32"
+		let "N = $k*$SM*$BLOCK"
 	
 		for((i=10; i<=1250; i*=5));
 		do
@@ -70,7 +71,7 @@ do
 	for((k=2; k<=32; k*=2));
 	do
 		echo running with k = $k
-		let "N = $k*56*32"
+		let "N = $k*$SM*$BLOCK"
 	
 		for((i=10; i<=1250; i*=5));
 		do
@@ -93,7 +94,7 @@ do
 	for((k=2; k<=32; k*=2));
 	do
 		echo running with k = $k
-		let "N = $k*56*32"	
+		let "N = $k*$SM*$BLOCK"	
 		nvprof --log-file ./profiling/dev_cos$k-0.txt ./bin/empty.out $GPU $BLOCK $k 0 $N >> ./results/dev_cos.txt
 	done
 done

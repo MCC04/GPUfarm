@@ -1,0 +1,6 @@
+***host_cos.sh***
+start: Mon Apr 29 23:18:29 CEST 2019
+end: Mon Apr 29 23:44:31 CEST 2019
+***host_cos_invert.sh***
+start: Mon Apr 29 23:44:32 CEST 2019
+end: Tue Apr 30 00:10:26 CEST 2019

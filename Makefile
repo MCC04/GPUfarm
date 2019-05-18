@@ -3,7 +3,7 @@
 CC:= nvcc
 CFLAGS:= -std=c++14 -g -DMEASURES
 ALLFLAGS:= $(CFLAGS) -Iinclude/ 
-#FF_FLAGS:= -O3 -Ihome/maria/fastflow -pthread #-lstdc++fs 
+#FF_FLAGS:= -O3 -I/home/maria/fastflow/ -pthread #-lstdc++fs 
 LOWPAR:= $(ALLFLAGS) -DLOWPAR
 
 
@@ -12,22 +12,28 @@ SRC:=src/
 INCLUDE:=include/
 
 FF_FLAGS:= -O3 -I$(INCLUDE)fastflow/ -pthread #-lstdc++fs 
+#FF_FLAGS:=  -I$(INCLUDE)fastflow/ -pthread #-lstdc++fs 
 
 
 .PHONY: matmul blurbox blurgauss future managed stream hcosseq hcospar hmmseq hmmpar clean
 
 ####DEVICE####
 #mat,imaging
-matmul: $(BIN)main_mat.o $(BIN)imageMatKernels.o $(BIN)cudaUtils.o
+matmul: $(BIN)matmul.out
+smallmatmul: $(BIN)smallmatmul.out
+blurbox: $(BIN)blurbox.out
+blurgauss: $(BIN)blurgauss.out
+
+$(BIN)matmul.out: $(BIN)main_mat.o $(BIN)imageMatKernels.o $(BIN)cudaUtils.o
 	$(CC) $(ALLFLAGS) $(BIN)main_mat.o $(BIN)imageMatKernels.o $(BIN)cudaUtils.o -o $(BIN)matmul.out
 
-smallmatmul: $(BIN)main_mat.o $(BIN)imageMatKernels.o $(BIN)cudaUtils.o
+$(BIN)smallmatmul.out: $(BIN)main_mat.o $(BIN)imageMatKernels.o $(BIN)cudaUtils.o
 	$(CC) $(ALLFLAGS) $(BIN)main_mat.o $(BIN)imageMatKernels.o $(BIN)cudaUtils.o -o $(BIN)smallmatmul.out
 
-blurbox: $(BIN)main_imageMat.o $(BIN)imageMatKernels.o $(BIN)lodepng.o $(BIN)cudaUtils.o
+$(BIN)blurbox.out: $(BIN)main_imageMat.o $(BIN)imageMatKernels.o $(BIN)lodepng.o $(BIN)cudaUtils.o
 	$(CC) $(ALLFLAGS) $(BIN)main_imageMat.o $(BIN)imageMatKernels.o $(BIN)lodepng.o $(BIN)cudaUtils.o -lstdc++fs -o $(BIN)blurbox.out
 
-blurgauss: $(BIN)main_imageMat.o $(BIN)imageMatKernels.o $(BIN)lodepng.o $(BIN)cudaUtils.o
+$(BIN)blurgauss.out: $(BIN)main_imageMat.o $(BIN)imageMatKernels.o $(BIN)lodepng.o $(BIN)cudaUtils.o
 	$(CC) $(ALLFLAGS) $(BIN)main_imageMat.o $(BIN)imageMatKernels.o $(BIN)lodepng.o $(BIN)cudaUtils.o -lstdc++fs -o $(BIN)blurgauss.out
 
 $(BIN)main_imageMat.o: $(SRC)main_imageMat.cpp $(INCLUDE)imageMatrix.h $(INCLUDE)lodepng.h $(INCLUDE)cudaUtils.h
@@ -44,17 +50,24 @@ $(BIN)lodepng.o: $(SRC)lodepng.cpp  $(INCLUDE)lodepng.h
 	
 
 #cos future, stream, managed
-future: $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
+future: $(BIN)future.out
+managed: $(BIN)managed.out
+stream: $(BIN)stream.out
+empty: $(BIN)empty.out
+
+
+$(BIN)future.out: $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
 	$(CC) $(ALLFLAGS) $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o -o $(BIN)future.out
 
-managed: $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
+$(BIN)managed.out: $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
 	$(CC) $(ALLFLAGS) $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o -o $(BIN)managed.out
 
-stream: $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
+$(BIN)stream.out: $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
 	$(CC) $(ALLFLAGS) $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o -o $(BIN)stream.out
 
-empty: $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
+$(BIN)empty.out: $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
 	$(CC) $(ALLFLAGS) $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o -o $(BIN)empty.out
+
 
 $(BIN)main_cos.o: $(SRC)main_cos.cpp $(INCLUDE)cosFutStr.h $(INCLUDE)cudaUtils.h
 	$(CC) $(ALLFLAGS) -c $(SRC)main_cos.cpp -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z) -o $(BIN)main_cos.o
@@ -67,13 +80,18 @@ $(BIN)cudaUtils.o: $(SRC)cudaUtils.cpp  $(INCLUDE)cudaUtils.h
 
 ####DEV LOW PARALLELISM####
 #mat,imaging
-matmullow: $(BIN)main_mat_low.o $(BIN)imageMatKernels_low.o $(BIN)cudaUtils.o
+matmullow: $(BIN)matmullow.out
+smallmatmullow: $(BIN)smallmatmullow.out
+blurboxlow: $(BIN)blurboxlow.out
+
+
+$(BIN)matmullow.out: $(BIN)main_mat_low.o $(BIN)imageMatKernels_low.o $(BIN)cudaUtils.o
 	$(CC) $(LOWPAR) $(BIN)main_mat_low.o $(BIN)imageMatKernels_low.o $(BIN)cudaUtils.o -o $(BIN)matmullow.out
 
-smallmatmullow: $(BIN)main_mat_low.o $(BIN)imageMatKernels_low.o $(BIN)cudaUtils.o
+$(BIN)smallmatmullow.out: $(BIN)main_mat_low.o $(BIN)imageMatKernels_low.o $(BIN)cudaUtils.o
 	$(CC) $(LOWPAR) $(BIN)main_mat_low.o $(BIN)imageMatKernels_low.o $(BIN)cudaUtils.o -o $(BIN)smallmatmullow.out
 
-blurboxlow: $(BIN)main_imageMat_low.o $(BIN)imageMatKernels_low.o $(BIN)lodepng.o $(BIN)cudaUtils.o
+$(BIN)blurboxlow.out: $(BIN)main_imageMat_low.o $(BIN)imageMatKernels_low.o $(BIN)lodepng.o $(BIN)cudaUtils.o
 	$(CC) $(LOWPAR) $(BIN)main_imageMat_low.o $(BIN)imageMatKernels_low.o $(BIN)lodepng.o $(BIN)cudaUtils.o -lstdc++fs -o $(BIN)blurboxlow.out
 
 #blurgauss: $(BIN)main_imageMat_low.o $(BIN)imageMatKernels_low.o $(BIN)lodepng.o $(BIN)cudaUtils.o
@@ -90,13 +108,18 @@ $(BIN)main_mat_low.o: $(SRC)main_imageMat.cpp $(INCLUDE)imageMatrix.h $(INCLUDE)
 	
 
 #cos future, stream, managed
-futurelow: $(BIN)main_cos_low.o $(BIN)farmkernels_low.o $(BIN)cudaUtils.o
+futurelow: $(BIN)futurelow.out
+managedlow: $(BIN)managedlow.out
+streamlow: $(BIN)streamlow.out
+
+
+$(BIN)futurelow.out: $(BIN)main_cos_low.o $(BIN)farmkernels_low.o $(BIN)cudaUtils.o
 	$(CC) $(LOWPAR) $(BIN)main_cos_low.o $(BIN)farmkernels_low.o $(BIN)cudaUtils.o -o $(BIN)futurelow.out
 
-managedlow: $(BIN)main_cos_low.o $(BIN)farmkernels_low.o $(BIN)cudaUtils.o
+$(BIN)managedlow.out: $(BIN)main_cos_low.o $(BIN)farmkernels_low.o $(BIN)cudaUtils.o
 	$(CC) $(LOWPAR) $(BIN)main_cos_low.o $(BIN)farmkernels_low.o $(BIN)cudaUtils.o -o $(BIN)managedlow.out
 
-streamlow: $(BIN)main_cos_low.o $(BIN)farmkernels_low.o $(BIN)cudaUtils.o
+$(BIN)streamlow.out: $(BIN)main_cos_low.o $(BIN)farmkernels_low.o $(BIN)cudaUtils.o
 	$(CC) $(LOWPAR) $(BIN)main_cos_low.o $(BIN)farmkernels_low.o $(BIN)cudaUtils.o -o $(BIN)streamlow.out
 
 $(BIN)main_cos_low.o: $(SRC)main_cos.cpp $(INCLUDE)cosFutStr.h $(INCLUDE)cudaUtils.h
@@ -107,16 +130,22 @@ $(BIN)farmkernels_low.o:  $(SRC)farmkernels.cu $(INCLUDE)cosFutStr.h $(INCLUDE)c
 
 
 ####HOST####
-hcosseq: $(BIN)hostfarm.o
+hcosseq: $(BIN)hcosseq.out
+hcospar: $(BIN)hcospar.out
+hmmseq: $(BIN)hmmseq.out
+hmmpar: $(BIN)hmmpar.out
+
+
+$(BIN)hcosseq.out: $(BIN)hostfarm.o
 	g++ $(CFLAGS) $(BIN)hostfarm.o $(FF_FLAGS) -o $(BIN)hcosseq.out
 
-hcospar: $(BIN)hostfarm.o
+$(BIN)hcospar.out: $(BIN)hostfarm.o
 	g++ $(CFLAGS) $(BIN)hostfarm.o $(FF_FLAGS) -o $(BIN)hcospar.out
 
-hmmseq: $(BIN)hostfarm.o 
+$(BIN)hmmseq.out: $(BIN)hostfarm.o 
 	g++ $(CFLAGS) $(BIN)hostfarm.o $(FF_FLAGS) -o $(BIN)hmmseq.out
 
-hmmpar: $(BIN)hostfarm.o 
+$(BIN)hmmpar.out: $(BIN)hostfarm.o 
 	g++ $(CFLAGS) $(BIN)hostfarm.o $(FF_FLAGS) -o $(BIN)hmmpar.out
 
 $(BIN)hostfarm.o: $(SRC)hostfarm.cpp

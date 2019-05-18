@@ -1,0 +1,672 @@
+Fri May 10 19:33:41 CEST 2019
+top - 19:33:41 up 132 days, 23:04, 35 users,  load average: 162.62, 156.26, 152.35
+Tasks: 1564 total,   9 running, 1182 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25308620+free, 21513036+used, 60065896 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30873452+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+35109 gallicch  20   0 5221308 1.007g 195048 S 103.6  0.2 133:13.61 MATLAB
+35094 gallicch  20   0 5094504 988.9m 194912 S 100.0  0.2 132:46.05 MATLAB
+35102 gallicch  20   0 5095532 983.7m 193776 S 100.0  0.2 131:57.73 MATLAB
+35103 gallicch  20   0 5261892 1.016g 193420 S 100.0  0.2 133:10.12 MATLAB
+35108 gallicch  20   0 5230152 1.007g 193108 S 100.0  0.2 136:46.07 MATLAB
+35127 gallicch  20   0 5159680 0.995g 192004 S 100.0  0.2 127:37.88 MATLAB
+35135 gallicch  20   0 5229128 1.039g 192072 S 100.0  0.2 135:47.51 MATLAB
+************************
+Fri May 10 19:33:51 CEST 2019
+top - 19:33:52 up 132 days, 23:04, 35 users,  load average: 163.42, 156.69, 152.54
+Tasks: 1562 total,  11 running, 1178 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25308128+free, 21513491+used, 60066284 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30872998+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+47188 castell+  20   0 46.176g 2.347g 445944 R 541.2  0.5   4832:30 python
+35091 gallicch  20   0 5225220 1.039g 193164 S  94.1  0.2 128:02.53 MATLAB
+35088 gallicch  20   0 5157320 0.998g 193328 S  91.2  0.2 132:30.60 MATLAB
+35154 gallicch  20   0 5094504 989.3m 192376 S  91.2  0.2 133:16.12 MATLAB
+35174 gallicch  20   0 5229500 0.982g 192464 S  91.2  0.2 133:32.35 MATLAB
+48937 setzu     20   0 2873608 398792  34620 R  91.2  0.1   1349:09 python3
+35093 gallicch  20   0 5193476 1.003g 193384 S  88.2  0.2 133:07.82 MATLAB
+************************
+Fri May 10 19:34:02 CEST 2019
+top - 19:34:03 up 132 days, 23:04, 35 users,  load average: 161.90, 156.61, 152.56
+Tasks: 1560 total,   9 running, 1178 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25305651+free, 21515974+used, 60066220 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30870515+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+47188 castell+  20   0 46.176g 2.347g 445944 R 823.1  0.5   4833:14 python
+46857 castell+  20   0 46.121g 2.323g 445836 S 717.9  0.5   4954:01 python
+35111 gallicch  20   0 5163588 1.004g 193328 S 105.1  0.2 127:24.89 MATLAB
+35119 gallicch  20   0 5159680 0.999g 192824 S 105.1  0.2 128:01.26 MATLAB
+35136 gallicch  20   0 5256264 1.049g 192496 S  94.9  0.2 133:41.60 MATLAB
+35100 gallicch  20   0 5299976 1.081g 193600 S  87.2  0.2 128:19.11 MATLAB
+35149 gallicch  20   0 5229128 1.034g 193308 S  87.2  0.2 127:49.18 MATLAB
+************************
+Fri May 10 19:34:13 CEST 2019
+top - 19:34:13 up 132 days, 23:04, 35 users,  load average: 165.30, 157.53, 152.92
+Tasks: 1563 total,  11 running, 1178 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25301286+free, 21520328+used, 60066316 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30866163+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+46857 castell+  20   0 46.121g 2.323g 445836 R 960.6  0.5   4954:25 python
+47188 castell+  20   0 46.176g 2.347g 445944 R 351.5  0.5   4833:58 python
+35180 gallicch  20   0 5229128 1.041g 192804 S  90.9  0.2 134:07.83 MATLAB
+35103 gallicch  20   0 5261892 1.016g 193420 S  81.8  0.2 133:30.74 MATLAB
+35161 gallicch  20   0 5155772 0.995g 193612 S  78.8  0.2 128:10.04 MATLAB
+59339 nardi     20   0 60.538g 4.027g 951508 R  78.8  0.8 386:51.17 python
+35098 gallicch  20   0 5094504 984.2m 195128 S  75.8  0.2 128:02.01 MATLAB
+************************
+Fri May 10 19:34:23 CEST 2019
+top - 19:34:24 up 132 days, 23:05, 35 users,  load average: 160.42, 156.74, 152.71
+Tasks: 1561 total,  11 running, 1176 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25302232+free, 21519371+used, 60066440 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30867120+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+46946 castell+  20   0 46.288g 2.428g 445852 R 257.1  0.5   5069:47 python
+35099 gallicch  20   0 5225220 0.997g 193096 S 103.6  0.2 134:14.03 MATLAB
+35088 gallicch  20   0 5157320 0.998g 193328 S 100.0  0.2 132:51.21 MATLAB
+35089 gallicch  20   0 5226248 1.034g 192860 S 100.0  0.2 128:07.85 MATLAB
+35113 gallicch  20   0 5094776 990.5m 193536 S 100.0  0.2 134:13.56 MATLAB
+35114 gallicch  20   0 5152192 1.017g 192216 S 100.0  0.2 130:27.69 MATLAB
+35131 gallicch  20   0 5156292 1.000g 194160 S 100.0  0.2 138:54.24 MATLAB
+************************
+Fri May 10 19:34:34 CEST 2019
+top - 19:34:34 up 132 days, 23:05, 35 users,  load average: 155.81, 155.88, 152.47
+Tasks: 1559 total,   9 running, 1178 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25296110+free, 21525478+used, 60066588 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30861014+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+47188 castell+  20   0 46.176g 2.347g 445944 S 555.6  0.5   4835:04 python
+46946 castell+  20   0 46.288g 2.428g 445852 R 174.1  0.5   5070:28 python
+35165 gallicch  20   0 5160040 986.0m 192500 S 103.7  0.2 134:01.35 MATLAB
+35146 gallicch  20   0 5225220 1.038g 192192 S 100.0  0.2 134:21.50 MATLAB
+35174 gallicch  20   0 5229500 0.979g 192464 S 100.0  0.2 134:01.71 MATLAB
+35181 gallicch  20   0 5156292 0.997g 192888 S 100.0  0.2 134:21.55 MATLAB
+35099 gallicch  20   0 5225220 0.997g 193096 S  96.3  0.2 134:22.23 MATLAB
+************************
+Fri May 10 19:34:44 CEST 2019
+top - 19:34:45 up 132 days, 23:05, 35 users,  load average: 157.92, 156.33, 152.65
+Tasks: 1559 total,  10 running, 1177 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25296963+free, 21524601+used, 60066820 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30861888+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+46857 castell+  20   0 46.121g 2.323g 445836 R 938.2  0.5   4955:59 python
+35149 gallicch  20   0 5229128 1.034g 193308 S  97.1  0.2 128:16.54 MATLAB
+35180 gallicch  20   0 5229128 1.041g 192804 S  97.1  0.2 134:30.48 MATLAB
+35170 gallicch  20   0 5094504 987.3m 192608 S  94.1  0.2 129:05.38 MATLAB
+35142 gallicch  20   0 5192808 998.7m 192480 S  91.2  0.2 128:26.06 MATLAB
+35173 gallicch  20   0 5229128 1.039g 191968 S  91.2  0.2 128:18.14 MATLAB
+35101 gallicch  20   0 5156292 0.998g 193816 S  85.3  0.2 128:27.06 MATLAB
+************************
+Fri May 10 19:34:55 CEST 2019
+top - 19:34:55 up 132 days, 23:05, 35 users,  load average: 154.57, 155.66, 152.48
+Tasks: 1563 total,  11 running, 1180 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25280904+free, 21540686+used, 60066564 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30845804+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+35096 gallicch  20   0 5196356 1.005g 193268 S 100.0  0.2 128:24.28 MATLAB
+35102 gallicch  20   0 5095532 983.7m 193776 S 100.0  0.2 132:43.17 MATLAB
+35108 gallicch  20   0 5230152 1.008g 193108 S 100.0  0.2 137:34.04 MATLAB
+35109 gallicch  20   0 5221308 1.007g 195048 S 100.0  0.2 134:01.35 MATLAB
+35112 gallicch  20   0 5123520 990.4m 194364 S 100.0  0.2 131:43.72 MATLAB
+35114 gallicch  20   0 5152192 1.017g 192216 S 100.0  0.2 130:48.45 MATLAB
+35116 gallicch  20   0 5196356 1.010g 195152 S 100.0  0.2 133:49.42 MATLAB
+************************
+Fri May 10 19:35:05 CEST 2019
+top - 19:35:06 up 132 days, 23:05, 35 users,  load average: 150.79, 154.81, 152.23
+Tasks: 1560 total,   8 running, 1179 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25294000+free, 21527344+used, 60069028 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30859145+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+47188 castell+  20   0 46.176g 2.347g 445944 R 854.3  0.5   4836:53 python
+35100 gallicch  20   0 5299976 1.081g 193600 S 108.6  0.2 129:02.90 MATLAB
+35153 gallicch  20   0 5163588 1.002g 193560 S 108.6  0.2 133:53.40 MATLAB
+35094 gallicch  20   0 5160040 989.9m 194912 S 105.7  0.2 133:39.64 MATLAB
+35102 gallicch  20   0 5095532 983.7m 193776 S 105.7  0.2 132:50.14 MATLAB
+35181 gallicch  20   0 5156292 0.997g 192888 S 105.7  0.2 134:42.92 MATLAB
+80038 pandelea  20   0 24.292g 0.021t  17556 R 100.0  4.3 332:05.31 python3
+************************
+Fri May 10 19:35:16 CEST 2019
+top - 19:35:16 up 132 days, 23:05, 35 users,  load average: 150.06, 154.52, 152.17
+Tasks: 1564 total,  11 running, 1180 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25287844+free, 21533500+used, 60069012 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30852988+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+35090 gallicch  20   0 5197384 1.005g 193576 S 100.0  0.2 139:25.65 MATLAB
+35100 gallicch  20   0 5299976 1.081g 193600 S 100.0  0.2 129:11.68 MATLAB
+35111 gallicch  20   0 5163588 1.004g 193328 S 100.0  0.2 128:14.23 MATLAB
+35146 gallicch  20   0 5225220 1.038g 192192 S 100.0  0.2 134:47.47 MATLAB
+35171 gallicch  20   0 5123520 986.4m 193408 S 100.0  0.2 134:22.80 MATLAB
+35092 gallicch  20   0 5205580 1.019g 193572 S  96.0  0.2 135:24.47 MATLAB
+35095 gallicch  20   0 5261892 1.008g 193396 S  92.0  0.2 138:52.44 MATLAB
+************************
+Fri May 10 19:35:26 CEST 2019
+top - 19:35:27 up 132 days, 23:06, 35 users,  load average: 152.97, 154.96, 152.33
+Tasks: 1566 total,  13 running, 1180 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25286899+free, 21534448+used, 60069000 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30852041+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+46946 castell+  20   0 46.288g 2.428g 445852 R  1321  0.5   5073:00 python
+35170 gallicch  20   0 5094504 987.4m 192608 S 102.6  0.2 129:33.82 MATLAB
+35090 gallicch  20   0 5197384 1.005g 193576 S 100.0  0.2 139:33.46 MATLAB
+35096 gallicch  20   0 5196356 1.005g 193268 S  97.4  0.2 128:46.55 MATLAB
+35124 gallicch  20   0 5094504 988.7m 191544 S  97.4  0.2 128:42.06 MATLAB
+35098 gallicch  20   0 5094504 984.2m 195128 S  94.7  0.2 128:51.15 MATLAB
+35141 gallicch  20   0 5094504 986.4m 192880 S  94.7  0.2 134:56.30 MATLAB
+************************
+Fri May 10 19:35:37 CEST 2019
+top - 19:35:38 up 132 days, 23:06, 35 users,  load average: 160.73, 156.48, 152.85
+Tasks: 1559 total,   9 running, 1177 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25286476+free, 21534870+used, 60069000 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30851619+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+47188 castell+  20   0 46.176g 2.347g 445944 S 332.3  0.5   4837:58 python
+47952 nardi     20   0 16.486g 2.233g 431528 R  90.3  0.4 438:09.09 python
+35101 gallicch  20   0 5156292 0.998g 193816 S  87.1  0.2 128:59.49 MATLAB
+35141 gallicch  20   0 5094504 986.5m 192880 S  87.1  0.2 135:03.96 MATLAB
+35165 gallicch  20   0 5160040 986.1m 192500 S  87.1  0.2 134:40.30 MATLAB
+35090 gallicch  20   0 5197384 1.005g 193576 S  83.9  0.2 139:40.98 MATLAB
+35122 gallicch  20   0 5094504 986.8m 192404 S  83.9  0.2 139:05.06 MATLAB
+************************
+Fri May 10 19:35:48 CEST 2019
+top - 19:35:48 up 132 days, 23:06, 35 users,  load average: 160.69, 156.75, 153.00
+Tasks: 1562 total,   9 running, 1179 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25285528+free, 21535804+used, 60069136 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30850684+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+57226 cecconi   20   0  616836   6328   3500 S  1132  0.0   0:03.51 hmmpar.out
+35141 gallicch  20   0 5094504 986.5m 192880 S  93.5  0.2 135:09.73 MATLAB
+35095 gallicch  20   0 5196356 1.007g 193396 S  90.3  0.2 139:12.89 MATLAB
+35134 gallicch  20   0 5262168 1.043g 191900 S  83.9  0.2 134:28.46 MATLAB
+35136 gallicch  20   0 5289032 1.049g 192496 S  83.9  0.2 134:48.31 MATLAB
+35167 gallicch  20   0 5229128 1.043g 193756 S  83.9  0.2 134:30.99 MATLAB
+35173 gallicch  20   0 5229128 1.040g 191968 S  83.9  0.2 128:59.43 MATLAB
+************************
+Fri May 10 19:35:58 CEST 2019
+top - 19:35:59 up 132 days, 23:06, 35 users,  load average: 162.35, 157.23, 153.20
+Tasks: 1562 total,   9 running, 1179 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25285984+free, 21535342+used, 60069212 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30851148+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+47188 castell+  20   0 46.176g 2.347g 445944 R 860.0  0.5   4839:14 python
+46857 castell+  20   0 46.121g 2.323g 445836 R 726.7  0.5   4959:30 python
+46946 castell+  20   0 46.288g 2.428g 445852 R 533.3  0.5   5074:31 python
+35166 gallicch  20   0 5094504 989.0m 193916 S  96.7  0.2 128:45.17 MATLAB
+35111 gallicch  20   0 5163588 1.004g 193328 S  93.3  0.2 128:40.37 MATLAB
+35183 gallicch  20   0 5113792 985.1m 191900 S  90.0  0.2 130:14.50 MATLAB
+35141 gallicch  20   0 5094504 986.5m 192880 S  86.7  0.2 135:15.73 MATLAB
+************************
+Fri May 10 19:36:09 CEST 2019
+top - 19:36:09 up 132 days, 23:06, 35 users,  load average: 169.28, 158.91, 153.79
+Tasks: 1564 total,  10 running, 1180 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25281713+free, 21539584+used, 60069492 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30846905+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+47188 castell+  20   0 46.176g 2.347g 445944 R 948.5  0.5   4839:42 python
+61774 cecconi   20   0  221584   4188   3628 S 303.0  0.0   0:01.00 hmmpar.out
+35128 gallicch  20   0 5155772 0.998g 194128 S  90.9  0.2 128:43.25 MATLAB
+35131 gallicch  20   0 5156292 1.000g 194160 S  87.9  0.2 140:01.39 MATLAB
+35148 gallicch  20   0 5225220 1.037g 191568 S  87.9  0.2 129:00.62 MATLAB
+35179 gallicch  20   0 5159680 0.999g 192524 S  87.9  0.2 129:50.24 MATLAB
+35182 gallicch  20   0 5134336 988.0m 193564 S  87.9  0.2 129:32.85 MATLAB
+************************
+Fri May 10 19:36:19 CEST 2019
+top - 19:36:20 up 132 days, 23:06, 35 users,  load average: 176.26, 160.81, 154.47
+Tasks: 1562 total,   9 running, 1179 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25272675+free, 21548616+used, 60069560 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30837875+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+64128 cecconi   20   0  468284 103548   3488 S 200.0  0.0   0:17.91 hmmpar.out
+47188 castell+  20   0 46.176g 2.347g 445944 R 471.1  0.5   4840:04 python
+46857 castell+  20   0 46.121g 2.323g 445836 R 294.7  0.5   4960:44 python
+35179 gallicch  20   0 5159680 0.999g 192524 S  92.1  0.2 129:57.41 MATLAB
+35186 gallicch  20   0 5163588 1.004g 192484 S  92.1  0.2 129:01.48 MATLAB
+35158 gallicch  20   0 5155772 0.998g 192264 S  78.9  0.2 129:26.42 MATLAB
+35164 gallicch  20   0 5155772 0.998g 193440 S  78.9  0.2 129:21.50 MATLAB
+************************
+Fri May 10 19:36:30 CEST 2019
+top - 19:36:30 up 132 days, 23:07, 35 users,  load average: 180.35, 162.17, 154.98
+Tasks: 1562 total,  10 running, 1178 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25277820+free, 21543436+used, 60069904 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30843056+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+66654 cecconi   20   0  328524  53788   3448 S 300.0  0.0   0:10.95 hmmpar.out
+46946 castell+  20   0 46.288g 2.428g 445852 R 963.3  0.5   5075:53 python
+46857 castell+  20   0 46.121g 2.323g 445836 R 296.7  0.5   4961:12 python
+35157 gallicch  20   0 5156292 0.993g 192076 S 123.3  0.2 138:46.76 MATLAB
+35095 gallicch  20   0 5196356 1.007g 193396 S 120.0  0.2 139:39.99 MATLAB
+35112 gallicch  20   0 5123520 990.6m 194364 S 120.0  0.2 132:40.55 MATLAB
+35113 gallicch  20   0 5094776 990.8m 193536 S 110.0  0.2 135:29.51 MATLAB
+************************
+Fri May 10 19:36:40 CEST 2019
+top - 19:36:41 up 132 days, 23:07, 35 users,  load average: 186.00, 164.01, 155.65
+Tasks: 1567 total,   7 running, 1186 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25278649+free, 21542595+used, 60070008 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30843894+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+35087 gallicch  20   0 5189568 0.997g 193800 S 100.0  0.2 128:52.97 MATLAB
+35123 gallicch  20   0 5196356 1.006g 192424 S  96.9  0.2 134:05.98 MATLAB
+35141 gallicch  20   0 5094504 986.5m 192880 S  96.9  0.2 135:42.05 MATLAB
+35145 gallicch  20   0 5155772 0.995g 191968 S  96.9  0.2 128:40.87 MATLAB
+35153 gallicch  20   0 5163588 1.003g 193560 S  96.9  0.2 134:49.62 MATLAB
+35171 gallicch  20   0 5123520 986.5m 193408 S  96.9  0.2 135:14.00 MATLAB
+46842 setzu     20   0 2873980 399256  34896 R  96.9  0.1   1376:27 python3
+************************
+Fri May 10 19:36:51 CEST 2019
+top - 19:36:52 up 132 days, 23:07, 35 users,  load average: 177.55, 162.92, 155.39
+Tasks: 1567 total,   8 running, 1185 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25285484+free, 21535732+used, 60070292 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30850758+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+46946 castell+  20   0 46.288g 2.428g 445852 R 911.8  0.5   5077:02 python
+72274 cecconi   20   0  246020  26988   3492 S 376.5  0.0   0:01.28 hmmpar.out
+35120 gallicch  20   0 5163588 1.002g 191884 S  88.2  0.2 130:22.07 MATLAB
+35111 gallicch  20   0 5163588 1.004g 193328 S  85.3  0.2 129:14.14 MATLAB
+35149 gallicch  20   0 5229128 1.034g 193308 S  85.3  0.2 129:36.32 MATLAB
+46842 setzu     20   0 2873980 399256  34896 R  85.3  0.1   1376:35 python3
+35113 gallicch  20   0 5160312 991.7m 193536 S  79.4  0.2 135:42.92 MATLAB
+************************
+Fri May 10 19:37:02 CEST 2019
+top - 19:37:02 up 132 days, 23:07, 35 users,  load average: 175.55, 163.01, 155.50
+Tasks: 1563 total,   9 running, 1180 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25289003+free, 21532209+used, 60070348 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30854281+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+47188 castell+  20   0 46.176g 2.347g 445944 S 493.9  0.5   4841:44 python
+74889 cecconi   20   0  129116  10012   3520 S 124.2  0.0   0:00.41 hmmpar.out
+35098 gallicch  20   0 5094504 984.3m 195128 S  97.0  0.2 129:52.50 MATLAB
+35114 gallicch  20   0 5152192 1.017g 192216 S  90.9  0.2 132:04.55 MATLAB
+35120 gallicch  20   0 5163588 1.002g 191884 S  87.9  0.2 130:28.62 MATLAB
+35152 gallicch  20   0 5135104 996.9m 191756 S  87.9  0.2 136:48.10 MATLAB
+35168 gallicch  20   0 5196356 1.006g 192104 S  87.9  0.2 135:11.88 MATLAB
+************************
+Fri May 10 19:37:12 CEST 2019
+top - 19:37:13 up 132 days, 23:07, 35 users,  load average: 175.35, 163.39, 155.71
+Tasks: 1563 total,   9 running, 1180 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25285088+free, 21536124+used, 60070344 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30850364+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+46857 castell+  20   0 46.121g 2.323g 445836 S 205.7  0.5   4963:15 python
+35150 gallicch  20   0 5156292 0.999g 193412 S  77.1  0.2 130:19.06 MATLAB
+35089 gallicch  20   0 5226248 1.034g 192860 S  74.3  0.2 129:55.54 MATLAB
+35123 gallicch  20   0 5261892 1.008g 192424 S  74.3  0.2 134:26.02 MATLAB
+35171 gallicch  20   0 5123520 986.6m 193408 S  74.3  0.2 135:32.08 MATLAB
+35174 gallicch  20   0 5229500 0.982g 192464 S  74.3  0.2 135:40.87 MATLAB
+35135 gallicch  20   0 5229128 1.040g 192072 S  71.4  0.2 138:04.38 MATLAB
+************************
+Fri May 10 19:37:23 CEST 2019
+top - 19:37:23 up 132 days, 23:08, 35 users,  load average: 168.66, 162.49, 155.53
+Tasks: 1564 total,  10 running, 1180 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25285411+free, 21535806+used, 60070292 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30850684+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+79622 cecconi   20   0  202920  10208   3496 S 223.5  0.0   0:00.76 hmmpar.out
+46857 castell+  20   0 46.121g 2.323g 445836 R 126.5  0.5   4963:54 python
+35131 gallicch  20   0 5156292 1.000g 194160 S  97.1  0.2 140:46.66 MATLAB
+35155 gallicch  20   0 5155772 0.997g 191904 S  97.1  0.2 135:00.90 MATLAB
+35165 gallicch  20   0 5094504 984.1m 192500 S  97.1  0.2 135:42.93 MATLAB
+35167 gallicch  20   0 5229128 1.044g 193756 S  97.1  0.2 135:24.94 MATLAB
+35168 gallicch  20   0 5196356 1.006g 192104 S  97.1  0.2 135:25.71 MATLAB
+************************
+Fri May 10 19:37:33 CEST 2019
+top - 19:37:34 up 132 days, 23:08, 35 users,  load average: 167.24, 162.38, 155.57
+Tasks: 1561 total,   7 running, 1180 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25286700+free, 21534739+used, 60068076 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30851753+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+46946 castell+  20   0 46.288g 2.428g 445852 R 857.6  0.5   5078:58 python
+47188 castell+  20   0 46.176g 2.347g 445944 S 733.3  0.5   4843:11 python
+35110 gallicch  20   0 5156292 1.000g 193500 S  93.9  0.2 129:53.07 MATLAB
+35117 gallicch  20   0 5196356 1.003g 192592 S  93.9  0.2 130:20.02 MATLAB
+35121 gallicch  20   0 5225216 1.006g 192332 S  93.9  0.2 130:42.92 MATLAB
+35087 gallicch  20   0 5189568 0.997g 193800 S  90.9  0.2 129:28.89 MATLAB
+35150 gallicch  20   0 5156292 0.999g 193412 S  90.9  0.2 130:33.60 MATLAB
+************************
+Fri May 10 19:37:44 CEST 2019
+top - 19:37:45 up 132 days, 23:08, 35 users,  load average: 165.51, 162.14, 155.57
+Tasks: 1562 total,  10 running, 1178 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25287809+free, 21533558+used, 60068780 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30852931+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+47188 castell+  20   0 46.176g 2.347g 445944 R 750.0  0.5   4843:46 python
+35186 gallicch  20   0 5163588 1.004g 192484 S 100.0  0.2 129:55.74 MATLAB
+35137 gallicch  20   0 5156292 0.998g 193444 S  96.7  0.2 130:43.37 MATLAB
+35089 gallicch  20   0 5226248 1.034g 192860 S  93.3  0.2 130:15.26 MATLAB
+35147 gallicch  20   0 5294668 1.076g 191648 S  93.3  0.2 131:05.50 MATLAB
+35156 gallicch  20   0 5152192 1.016g 193504 S  93.3  0.2 130:53.05 MATLAB
+35159 gallicch  20   0 5094504 986.4m 192088 S  93.3  0.2 130:28.00 MATLAB
+************************
+Fri May 10 19:37:55 CEST 2019
+top - 19:37:55 up 132 days, 23:08, 35 users,  load average: 166.35, 162.43, 155.73
+Tasks: 1564 total,  10 running, 1180 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25289259+free, 21532088+used, 60069008 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30854403+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+47188 castell+  20   0 46.176g 2.347g 445944 S 261.9  0.5   4844:17 python
+35090 gallicch  20   0 5197384 1.005g 193576 S  83.3  0.2 141:04.11 MATLAB
+35106 gallicch  20   0 5123520 989.7m 193836 S  83.3  0.2 130:28.70 MATLAB
+35142 gallicch  20   0 5037156 958940 192480 S  81.0  0.2 130:26.59 MATLAB
+35122 gallicch  20   0 5160040 988.1m 192404 S  78.6  0.2 140:27.37 MATLAB
+35133 gallicch  20   0 5289032 1.048g 193844 S  73.8  0.2 140:59.76 MATLAB
+46842 setzu     20   0 2873980 399256  34896 R  73.8  0.1   1377:14 python3
+************************
+Fri May 10 19:38:05 CEST 2019
+top - 19:38:06 up 132 days, 23:08, 35 users,  load average: 161.24, 161.46, 155.49
+Tasks: 1562 total,  11 running, 1177 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25288497+free, 21532833+used, 60069160 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30853657+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+47188 castell+  20   0 46.176g 2.347g 445944 R 812.8  0.5   4844:44 python
+46946 castell+  20   0 46.288g 2.428g 445852 R 417.9  0.5   5081:05 python
+35158 gallicch  20   0 5155772 0.998g 192264 S  69.2  0.2 130:33.07 MATLAB
+35161 gallicch  20   0 5155772 0.995g 193612 S  69.2  0.2 130:40.85 MATLAB
+35175 gallicch  20   0 5229128 1.038g 192256 S  66.7  0.2 129:42.50 MATLAB
+35179 gallicch  20   0 5159680 0.999g 192524 S  66.7  0.2 131:04.29 MATLAB
+35151 gallicch  20   0 5229124 1.011g 191936 S  61.5  0.2 130:23.21 MATLAB
+************************
+Fri May 10 19:38:16 CEST 2019
+top - 19:38:16 up 132 days, 23:08, 35 users,  load average: 159.31, 161.06, 155.42
+Tasks: 1562 total,   9 running, 1179 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25286075+free, 21535248+used, 60069236 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30851241+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+35088 gallicch  20   0 5157320 0.999g 193328 S  97.1  0.2 135:11.76 MATLAB
+35093 gallicch  20   0 5193476 1.003g 193384 S  97.1  0.2 135:54.32 MATLAB
+35175 gallicch  20   0 5229128 1.038g 192256 S  97.1  0.2 129:50.26 MATLAB
+35178 gallicch  20   0 5159680 1.001g 192120 S  97.1  0.2 135:47.46 MATLAB
+46842 setzu     20   0 2873980 399256  34896 R  97.1  0.1   1377:28 python3
+35094 gallicch  20   0 5094504 989.1m 194912 S  94.1  0.2 135:35.66 MATLAB
+35112 gallicch  20   0 5123520 990.7m 194364 S  91.2  0.2 133:44.88 MATLAB
+************************
+Fri May 10 19:38:27 CEST 2019
+top - 19:38:27 up 132 days, 23:09, 35 users,  load average: 158.01, 160.71, 155.36
+Tasks: 1562 total,  11 running, 1177 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25293315+free, 21528006+used, 60069264 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30858483+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+46946 castell+  20   0 46.288g 2.428g 445852 R 152.9  0.5   5082:04 python
+46857 castell+  20   0 46.121g 2.323g 445836 R 117.6  0.5   4967:06 python
+35093 gallicch  20   0 5193476 1.003g 193384 S  97.1  0.2 136:01.48 MATLAB
+35094 gallicch  20   0 5094504 989.2m 194912 S  97.1  0.2 135:42.24 MATLAB
+35122 gallicch  20   0 5094504 986.9m 192404 S  97.1  0.2 140:48.59 MATLAB
+35135 gallicch  20   0 5229128 1.040g 192072 S  97.1  0.2 138:52.70 MATLAB
+35142 gallicch  20   0 5045348 965320 192480 S  97.1  0.2 130:48.41 MATLAB
+************************
+Fri May 10 19:38:37 CEST 2019
+top - 19:38:38 up 132 days, 23:09, 35 users,  load average: 153.77, 159.71, 155.10
+Tasks: 1566 total,  11 running, 1181 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25278193+free, 21543164+used, 60068880 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30843324+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+47188 castell+  20   0 46.176g 2.347g 445944 R 922.9  0.5   4846:11 python
+35179 gallicch  20   0 5159680 0.999g 192524 S  85.7  0.2 131:26.32 MATLAB
+35120 gallicch  20   0 5163588 1.002g 191884 S  82.9  0.2 131:29.75 MATLAB
+35141 gallicch  20   0 5094504 986.7m 192880 S  82.9  0.2 136:54.94 MATLAB
+35089 gallicch  20   0 5226248 1.034g 192860 S  80.0  0.2 130:50.73 MATLAB
+35099 gallicch  20   0 5290756 0.999g 193096 S  80.0  0.2 136:53.72 MATLAB
+35131 gallicch  20   0 5156292 1.000g 194160 S  77.1  0.2 141:35.57 MATLAB
+************************
+Fri May 10 19:38:48 CEST 2019
+top - 19:38:48 up 132 days, 23:09, 35 users,  load average: 154.94, 159.68, 155.16
+Tasks: 1562 total,   6 running, 1182 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25291500+free, 21529582+used, 60071644 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30856908+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+35122 gallicch  20   0 5094504 987.0m 192404 S 102.9  0.2 141:02.66 MATLAB
+35139 gallicch  20   0 5159680 1.000g 193332 S 102.9  0.2 136:09.44 MATLAB
+35145 gallicch  20   0 5155772 0.996g 191968 S 102.9  0.2 130:02.69 MATLAB
+35173 gallicch  20   0 5229128 1.040g 191968 S 102.9  0.2 130:54.77 MATLAB
+35123 gallicch  20   0 5196356 1.006g 192424 S 100.0  0.2 135:28.59 MATLAB
+35125 gallicch  20   0 5094504 993656 191820 S 100.0  0.2 135:36.38 MATLAB
+35141 gallicch  20   0 5094504 986.7m 192880 S 100.0  0.2 137:02.82 MATLAB
+************************
+Fri May 10 19:38:58 CEST 2019
+top - 19:38:59 up 132 days, 23:09, 35 users,  load average: 161.16, 160.80, 155.57
+Tasks: 1562 total,   9 running, 1179 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25286932+free, 21534144+used, 60071708 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30852345+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+ 2925 cecconi   20   0  352828   4584   3616 S 412.2  0.0   0:01.69 hmmpar.out
+46946 castell+  20   0 46.288g 2.428g 445852 R 339.0  0.5   5083:48 python
+35087 gallicch  20   0 5189568 0.997g 193800 S  85.4  0.2 130:27.44 MATLAB
+35150 gallicch  20   0 5156292 0.999g 193412 S  85.4  0.2 131:28.81 MATLAB
+35101 gallicch  20   0 5156292 0.998g 193816 S  82.9  0.2 131:10.33 MATLAB
+35110 gallicch  20   0 5156292 1.000g 193500 S  78.0  0.2 130:51.51 MATLAB
+35149 gallicch  20   0 5229128 1.035g 193308 S  75.6  0.2 130:57.44 MATLAB
+************************
+Fri May 10 19:39:09 CEST 2019
+top - 19:39:09 up 132 days, 23:09, 35 users,  load average: 162.52, 161.11, 155.73
+Tasks: 1562 total,   8 running, 1181 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25286822+free, 21534224+used, 60072020 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30852268+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+46857 castell+  20   0 46.121g 2.323g 445836 S 876.5  0.5   4969:27 python
+35137 gallicch  20   0 5156292 0.998g 193444 S  91.2  0.2 131:41.98 MATLAB
+35151 gallicch  20   0 5261892 1.011g 191936 S  88.2  0.2 131:06.37 MATLAB
+ 6071 cecconi   20   0  155984   4088   3496 S  85.3  0.0   0:00.29 hmmpar.out
+35170 gallicch  20   0 5094504 987.7m 192608 S  85.3  0.2 131:52.48 MATLAB
+35120 gallicch  20   0 5163588 1.002g 191884 S  82.4  0.2 131:51.87 MATLAB
+35152 gallicch  20   0 5135104 997.0m 191756 S  79.4  0.2 138:10.61 MATLAB
+************************
+Fri May 10 19:39:20 CEST 2019
+top - 19:39:20 up 132 days, 23:10, 35 users,  load average: 161.49, 160.92, 155.72
+Tasks: 1559 total,   9 running, 1177 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25284668+free, 21536382+used, 60071968 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30850108+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+46857 castell+  20   0 46.121g 2.323g 445836 R 375.0  0.5   4970:02 python
+46946 castell+  20   0 46.288g 2.428g 445852 R 195.5  0.5   5084:43 python
+35117 gallicch  20   0 5196356 1.003g 192592 S  93.2  0.2 131:30.67 MATLAB
+35087 gallicch  20   0 5189568 0.997g 193800 S  90.9  0.2 130:41.86 MATLAB
+35094 gallicch  20   0 5094504 989.2m 194912 S  88.6  0.2 136:13.64 MATLAB
+35144 gallicch  20   0 5196356 1.005g 191840 S  88.6  0.2 132:13.53 MATLAB
+47952 nardi     20   0 16.486g 2.233g 431528 R  88.6  0.4 440:31.73 python
+************************
+Fri May 10 19:39:30 CEST 2019
+top - 19:39:31 up 132 days, 23:10, 35 users,  load average: 168.51, 162.44, 156.28
+Tasks: 1563 total,   9 running, 1180 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25281894+free, 21536376+used, 60099764 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30847337+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+59339 nardi     20   0 60.600g 4.058g 979284 R  1389  0.8 392:19.95 python
+11127 cecconi   20   0  222992   5452   3468 S 180.0  0.0   0:00.63 hmmpar.out
+35090 gallicch  20   0 5197384 1.006g 193576 S  94.3  0.2 142:05.36 MATLAB
+35106 gallicch  20   0 5123520 989.8m 193836 S  88.6  0.2 131:32.98 MATLAB
+35167 gallicch  20   0 5229128 1.044g 193756 S  88.6  0.2 136:47.03 MATLAB
+35101 gallicch  20   0 5156292 0.999g 193816 S  85.7  0.2 131:28.15 MATLAB
+35114 gallicch  20   0 5152192 1.017g 192216 S  85.7  0.2 133:35.61 MATLAB
+************************
+Fri May 10 19:39:41 CEST 2019
+top - 19:39:41 up 132 days, 23:10, 35 users,  load average: 177.75, 164.64, 157.06
+Tasks: 1560 total,   9 running, 1177 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25280838+free, 21537427+used, 60099808 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30846284+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+59339 nardi     20   0 60.600g 4.058g 979284 R  1636  0.8 395:11.84 python
+47188 castell+  20   0 46.176g 2.347g 445944 R 430.8  0.5   4848:54 python
+46857 castell+  20   0 46.121g 2.323g 445836 R 305.1  0.5   4970:52 python
+35131 gallicch  20   0 5221828 1.001g 194160 S  97.4  0.2 142:13.37 MATLAB
+35135 gallicch  20   0 5294664 1.041g 192072 S  92.3  0.2 139:41.49 MATLAB
+35181 gallicch  20   0 5156292 0.997g 192888 S  84.6  0.2 137:33.86 MATLAB
+35094 gallicch  20   0 5094504 989.3m 194912 S  82.1  0.2 136:26.62 MATLAB
+************************
+Fri May 10 19:39:51 CEST 2019
+top - 19:39:52 up 132 days, 23:10, 35 users,  load average: 183.34, 166.27, 157.67
+Tasks: 1562 total,   9 running, 1179 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25280166+free, 21538080+used, 60100004 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30845632+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+59339 nardi     20   0 60.600g 4.058g 979284 R  1682  0.8 398:09.28 python
+35106 gallicch  20   0 5123520 989.8m 193836 S 108.8  0.2 131:46.05 MATLAB
+35154 gallicch  20   0 5094504 989.7m 192376 S 108.8  0.2 137:05.09 MATLAB
+35122 gallicch  20   0 5160040 988.3m 192404 S 105.9  0.2 141:46.00 MATLAB
+35125 gallicch  20   0 5094504 993804 191820 S 105.9  0.2 136:14.67 MATLAB
+35135 gallicch  20   0 5294664 1.041g 192072 S 105.9  0.2 139:48.05 MATLAB
+35139 gallicch  20   0 5159680 1.000g 193332 S 102.9  0.2 136:48.58 MATLAB
+************************
+Fri May 10 19:40:02 CEST 2019
+top - 19:40:02 up 132 days, 23:10, 35 users,  load average: 186.73, 167.56, 158.18
+Tasks: 1561 total,   9 running, 1178 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25279084+free, 21539160+used, 60100020 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30844553+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+59339 nardi     20   0 60.600g 4.058g 979284 R  1646  0.8 400:59.52 python
+35121 gallicch  20   0 5225216 1.006g 192332 S 100.0  0.2 132:17.42 MATLAB
+35129 gallicch  20   0 5290756 1.035g 191988 S 100.0  0.2 137:27.91 MATLAB
+35133 gallicch  20   0 5289032 1.048g 193844 S 100.0  0.2 142:23.54 MATLAB
+35139 gallicch  20   0 5225216 1.002g 193332 S 100.0  0.2 136:56.17 MATLAB
+35140 gallicch  20   0 5229500 0.978g 192460 S 100.0  0.2 137:26.86 MATLAB
+35155 gallicch  20   0 5155772 0.997g 191904 S 100.0  0.2 136:43.85 MATLAB
+************************
+Fri May 10 19:40:13 CEST 2019
+top - 19:40:13 up 132 days, 23:10, 35 users,  load average: 184.32, 167.68, 158.32
+Tasks: 1560 total,   9 running, 1178 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25286502+free, 21531747+used, 60099980 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30851964+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+59339 nardi     20   0 60.600g 4.058g 979284 R  1427  0.8 404:01.92 python
+47188 castell+  20   0 46.176g 2.347g 445944 S 448.8  0.5   4850:28 python
+46857 castell+  20   0 46.121g 2.323g 445836 R 329.3  0.5   4972:15 python
+17841 cecconi   20   0  129116   9884   3392 S 109.8  0.0   0:00.55 hmmpar.out
+35147 gallicch  20   0 5294668 1.076g 191648 S  63.4  0.2 132:29.76 MATLAB
+35088 gallicch  20   0 5222856 1.001g 193328 S  61.0  0.2 136:22.77 MATLAB
+35103 gallicch  20   0 5261892 1.017g 193420 S  61.0  0.2 137:17.18 MATLAB
+************************
+Fri May 10 19:40:23 CEST 2019
+top - 19:40:24 up 132 days, 23:11, 35 users,  load average: 187.97, 169.29, 159.00
+Tasks: 1559 total,   9 running, 1177 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25286907+free, 21531360+used, 60099796 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30852352+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+59339 nardi     20   0 60.600g 4.058g 979284 R  1628  0.8 406:56.60 python
+47188 castell+  20   0 46.176g 2.347g 445944 S 489.7  0.5   4850:57 python
+35116 gallicch  20   0 5196356 1.010g 195152 S  96.6  0.2 137:09.21 MATLAB
+35154 gallicch  20   0 5094504 989.8m 192376 S  96.6  0.2 137:23.81 MATLAB
+35113 gallicch  20   0 5094776 991.2m 193536 S  93.1  0.2 137:58.13 MATLAB
+35165 gallicch  20   0 5094504 984.4m 192500 S  93.1  0.2 137:33.63 MATLAB
+35153 gallicch  20   0 5163588 1.003g 193560 S  86.2  0.2 137:07.09 MATLAB
+************************
+Fri May 10 19:40:34 CEST 2019
+top - 19:40:34 up 132 days, 23:11, 35 users,  load average: 185.87, 169.47, 159.17
+Tasks: 1562 total,  10 running, 1179 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25284505+free, 21533761+used, 60099800 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30849952+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+59339 nardi     20   0 60.600g 4.058g 979284 R  1486  0.8 409:46.35 python
+18627 cecconi   20   0  246020  21228   3380 S 242.9  0.0   0:00.85 hmmpar.out
+46857 castell+  20   0 46.121g 2.323g 445836 R 220.0  0.5   4973:14 python
+35103 gallicch  20   0 5261892 1.017g 193420 S  94.3  0.2 137:28.83 MATLAB
+35185 gallicch  20   0 5163588 1.001g 191544 S  94.3  0.2 137:40.97 MATLAB
+35126 gallicch  20   0 5196356 1.007g 192448 S  91.4  0.2 137:07.92 MATLAB
+35112 gallicch  20   0 5123520 990.8m 194364 S  88.6  0.2 135:10.13 MATLAB
+************************
+Fri May 10 19:40:44 CEST 2019
+top - 19:40:45 up 132 days, 23:11, 35 users,  load average: 185.52, 169.93, 159.43
+Tasks: 1561 total,   8 running, 1179 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25281968+free, 21536275+used, 60100032 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30847436+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+59339 nardi     20   0 60.600g 4.058g 979284 R  1697  0.8 412:33.09 python
+19321 cecconi   20   0  180452  28688   3504 S 200.0  0.0   0:02.44 hmmpar.out
+35125 gallicch  20   0 5160040 994940 191820 S 109.4  0.2 136:45.87 MATLAB
+35129 gallicch  20   0 5225220 1.034g 191988 S 109.4  0.2 137:53.71 MATLAB
+35133 gallicch  20   0 5289032 1.048g 193844 S 109.4  0.2 142:52.31 MATLAB
+35165 gallicch  20   0 5094504 984.4m 192500 S 109.4  0.2 137:48.04 MATLAB
+49096 setzu     20   0 2873980 398952  34456 R 100.0  0.1   1354:08 python3
+************************
+Fri May 10 19:40:55 CEST 2019
+top - 19:40:56 up 132 days, 23:11, 35 users,  load average: 186.27, 170.59, 159.76
+Tasks: 1562 total,   8 running, 1181 sleeping,   0 stopped,   0 zombie
+%Cpu(s): 32.9 us,  5.2 sy,  0.1 ni, 61.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem : 52828246+total, 25278902+free, 21539348+used, 60099968 buff/cache
+KiB Swap:        0 total,        0 free,        0 used. 30844364+avail Mem 
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+59339 nardi     20   0 60.600g 4.058g 979284 R  1263  0.8 415:18.08 python
+20338 cecconi   20   0  402024  53588   3496 S 728.9  0.0   0:02.77 hmmpar.out
+46946 castell+  20   0 46.288g 2.428g 445852 R 618.4  0.5   5089:23 python
+35104 gallicch  20   0 5094504 990.7m 194168 S 100.0  0.2 131:52.17 MATLAB
+35132 gallicch  20   0 5196356 1.006g 192240 S  94.7  0.2 131:58.37 MATLAB
+35126 gallicch  20   0 5196356 1.007g 192448 S  81.6  0.2 137:20.70 MATLAB
+35090 gallicch  20   0 5262920 1.008g 193576 S  78.9  0.2 142:58.48 MATLAB
+************************

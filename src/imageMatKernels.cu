@@ -86,6 +86,48 @@ __global__ void matMulKernel(float* Ad, float* Bd, float* Cd, int m, int k, int 
     }
 }
 
+__global__ void matMulGridStride(float* Ad, float* Bd, float* Cd, int m, int k, int n)//(int M, int N, float *x_d, int *myclocks, int offset){    
+{
+    int indexRow = blockIdx.x*blockDim.x + threadIdx.x;
+    int strideRow = blockDim.x*gridDim.x;
+
+    int indexCol = blockIdx.y*blockDim.y + threadIdx.y;
+    int strideCol = blockDim.y*gridDim.y;
+
+    /* A [M x K]
+    *  B [K x N]
+    *  C [M x N]
+    */
+
+
+    for (int i = indexRow; i < m; i += strideRow) //M
+    {
+        for (int j = indexCol; j < n; j += strideCol) //N
+        {
+            //if(row<m && col<n) {
+            float sum = 0;
+            for(int l=0; l<k; l++) //K
+            {
+                sum += Ad[i*k + l] * Bd[l*n + j];
+            //}
+          
+            }
+            Cd[i*n + j] = sum;
+        }
+    }
+
+    // Multiplying matrix a and b and storing in array mult.
+    /*for(i = 0; i < r1; ++i)
+        for(j = 0; j < c2; ++j)
+            for(k = 0; k < c1; ++k)
+            {
+                mult[i][j] += a[i][k] * b[k][j];
+            }
+    */
+    return ;
+}
+
+
 __global__ void blurBoxFilterKer(unsigned char* input_image, unsigned char* output_image, int width, int height) {
 
     const unsigned int offset = blockIdx.x*blockDim.x + threadIdx.x;
@@ -139,7 +181,89 @@ const float* filter, const int filterWidth)
         }
     }
     outputChannel[idx] = blur;
+    return ;
 }
+
+
+
+__global__ void blurBoxGridStride(unsigned char* input_image, unsigned char* output_image, int width, int height) {
+
+    const unsigned int offset = blockIdx.x*blockDim.x + threadIdx.x;
+    const unsigned int stride = gridDim.x * blockDim.x;
+
+    //int x = offset % width;
+    //int y = (offset-x)/width;
+    int fsize = 5; // Filter size
+    //if(offset < width*height) {
+
+    for(int i=offset; i<width*height; i+=stride)
+    {    
+        int x = offset % width;
+        int y = (offset-x)/width;
+
+        float output_red = 0;
+        float output_green = 0;
+        float output_blue = 0;
+        int hits = 0;
+        for(int ox = -fsize; ox < fsize+1; ++ox) {
+            for(int oy = -fsize; oy < fsize+1; ++oy) {
+                if((x+ox) > -1 && (x+ox) < width && (y+oy) > -1 && (y+oy) < height) {
+                    const int currentoffset = ( i +ox+oy*width)*3;
+                    output_red += input_image[currentoffset]; 
+                    output_green += input_image[currentoffset+1];
+                    output_blue += input_image[currentoffset+2];
+                    hits++;
+                }
+            }
+        }
+        output_image[i *3] = output_red/hits;
+        output_image[i *3+1] = output_green/hits;
+        output_image[i *3+2] = output_blue/hits;
+    }
+    return ;
+}
+
+__global__ void gaussianBlurGridStride(
+ const unsigned char* const inputChannel,
+unsigned char* outputChannel,
+int numRows, int numCols,
+const float* filter, const int filterWidth)
+{
+    const unsigned int indexX = blockDim.x * blockIdx.x + threadIdx.x;
+    const unsigned int indexY = blockDim.y * blockIdx.y + threadIdx.y;
+
+    const unsigned int strideX = blockDim.x * gridDim.x;
+    const unsigned int strideY = blockDim.y * gridDim.y;
+
+    //if (x >= numCols || y >= numRows)
+      //  return;
+
+    for(int k=indexX; k<numCols; k+=strideX)
+    {
+        for(int l=indexY; l<numRows; l+=strideY)
+        {
+            int idx = l * numCols + k;
+            float blur = 0.0f;
+            for (int i = 0; i < filterWidth; i++) {
+                for (int j = 0; j < filterWidth; j++) {
+                    int p_x = k + i - filterWidth/2;
+                    int p_y = l + j - filterWidth/2;
+                    p_x = min(max(p_x, 0), numCols - 1);
+                    p_y = min(max(p_y, 0), numRows - 1);
+                    float filter_value = filter[i * filterWidth + j];
+                    blur += filter_value *
+                    static_cast<float>(inputChannel[p_y * numCols + p_x]);
+                }
+            }
+            outputChannel[idx] = blur;
+        }
+    }
+    return ;
+}
+
+
+
+
 
 float smallMatMulKer(
     float *Ad, float *Bd, float *Cd, float *C,
@@ -165,7 +289,11 @@ float smallMatMulKer(
     cudaMemcpyAsync(Ad, A, bytesA, cudaMemcpyHostToDevice, strm);    
     cudaMemcpyAsync(Bd, B, bytesB, cudaMemcpyHostToDevice, strm);   
 
-    matMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
+    #ifdef LOWPAR
+        matMulGridStride<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
+    #else
+        matMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
+    #endif
 
     cudaMemcpyAsync( C, Cd, bytesC, cudaMemcpyDeviceToHost, strm);
 
@@ -190,17 +318,22 @@ float matMulKer(
     randomMatrix(m,k, Ad);
     randomMatrix(k,n, Bd);     
     
-    #ifdef LOWPAR
+    /*#ifdef LOWPAR
         dim3 dimBlock(4,4,1);
         dim3 dimGrid(1,1,1); 
-    #else
+    #else*/
         dim3 dimBlock(BLOCK,BLOCK,1);
         dim3 dimGrid(GRIDx, GRIDy,1); 
-    #endif
+   // #endif
 
     checkCuda( cudaEventRecord(start,0) );
 
-    matMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
+
+    #ifdef LOWPAR
+        matMulGridStride<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
+    #else
+        matMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
+    #endif
 
     checkCuda( cudaEventRecord(stop, 0) );
     checkCuda( cudaEventSynchronize(stop) );
@@ -218,7 +351,7 @@ float blurBoxFilter (
     int bytes=width*height*3*sizeof(unsigned char);
        
     #ifdef LOWPAR
-        dim3 blockDims(16,1,1);
+        dim3 blockDims(2,1,1);
         dim3 gridDims(1,1,1); 
     #else
         dim3 blockDims(BLOCK,1,1);
@@ -226,7 +359,11 @@ float blurBoxFilter (
     #endif
     checkCuda( cudaEventRecord(start,0) ); 
 
-    blurBoxFilterKer<<<gridDims, blockDims, 0, strm>>>(img_in, img_out, width, height); 
+    #ifdef LOWPAR
+        blurBoxGridStride<<<gridDims, blockDims, 0, strm>>>(img_in, img_out, width, height); 
+    #else
+        blurBoxFilterKer<<<gridDims, blockDims, 0, strm>>>(img_in, img_out, width, height); 
+    #endif
 
     checkCuda( cudaEventRecord(stop, 0) );
     checkCuda( cudaEventSynchronize(stop) );
@@ -251,17 +388,19 @@ float blurGaussianfilter (
     ker=getGaussian(kerdim, sigma);        
        
     #ifdef LOWPAR
-        dim3 blockDims(4,4,1);
+        dim3 blockDims(2,2,1);
         dim3 gridDims(1,1, 1 );
     #else
-        dim3 blockDims(16,16,1);
-        
+        dim3 blockDims(BLOCK,BLOCK,1);        
         dim3 gridDims((width*3)/blockDims.x, (height*3)/blockDims.y, 1 ); //dim3 gridDims((unsigned int) ceil((double)(bytes/blockDims.x)), 1, 1 );
     #endif
     checkCuda( cudaEventRecord(start,0) ); 
 
-    gaussianBlurKer<<<gridDims, blockDims, 0, strm>>>(
-        img_in, img_out, height, width, ker, kerdim);
+    #ifdef LOWPAR
+        gaussianBlurGridStride<<<gridDims, blockDims, 0, strm>>>(img_in, img_out, height, width, ker, kerdim);
+    #else
+        gaussianBlurKer<<<gridDims, blockDims, 0, strm>>>(img_in, img_out, height, width, ker, kerdim);
+    #endif
 
     checkCuda( cudaEventRecord(stop, 0) );
     checkCuda( cudaEventSynchronize(stop) );

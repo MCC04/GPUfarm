@@ -65,7 +65,7 @@ do
 		for((j=0; j<=12; j+=1));
 		do
 			echo test num = $j
-			./bin/hcospar.out $k $k $i $N >> ./results/host_cos_invert.txt
+			./bin/hcospar.out $k $k $k $i $N >> ./results/host_cos_invert.txt
 
 			#nvprof --log-file ./profiling/host_cos_inv$k-$i.txt ./bin/hcospar.out $k $k $i $N >> ./results/host_cos_invert.txt
 		done
@@ -75,7 +75,7 @@ do
 	for((j=0; j<=12; j+=1));
 	do
 		echo test num = $j
-		./bin/hcospar.out $k $k 2500 $N  >> ./results/host_cos_invert.txt
+		./bin/hcospar.out $k $k $k 2500 $N  >> ./results/host_cos_invert.txt
 
 		#nvprof --log-file ./profiling/host_cos_inv$k-2500.txt ./bin/hcospar.out $k $k 2500 $N  >> ./results/host_cos_invert.txt
 	done

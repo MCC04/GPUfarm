@@ -1,8 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
-#include <ff/pipeline.hpp>
+//#include <ff/pipeline.hpp>
 #include <ff/farm.hpp>
+#include <ff/map.hpp>
 
 #define HIGH 500.0f
 #define LOW -500.0f
@@ -63,7 +64,7 @@ private:
 
 class Worker: public ff_node {
 public:
-    Worker(long m,long k,long n):_m(m), _k(k), _n(n) {
+    Worker(long m,long k,long n, int nT):_m(m), _k(k), _n(n), nThreads(nT) {
     }
     
     void* svc(void* task) {
@@ -74,12 +75,49 @@ public:
         float* _B = &B[taskid*_k*_n];
         float* _C = &C[taskid*_m*_n];
 
-        for (register int c1 = 0; c1 < _k; ++c1) 
+
+        
+           for (register int r1 = 0; r1 < _m; ++r1) {
+                for (register int c2 = 0; c2 < _n; ++c2) {
+                    for (register int c1 = 0; c1 < _k; ++c1) 
+                        _C[(r1*_n) + c2] +=
+                            _A[(r1*_k) + c1] * _B[(c1*_n) + c2];
+                }
+            }
+
+
+
+
+
+
+
+        /*for (register int c1 = 0; c1 < _k; ++c1) 
             for (register int r1 = 0; r1 < _m; ++r1) {
                 for (register int c2 = 0; c2 < _n; ++c2)
                     _C[(c2*_n)+r1] +=
                         _A[(r1 * _k) + c1] * _B[(c1 * _n) + c2];
-            }
+            }*/
+
+        /*    auto matMult = [&](long i){
+                for (register int c1 = 0; c1 < _k; ++c1) 
+                    for (register int c2 = 0; c2 < _n; ++c2)
+                        _C[(c2*_n)+i] +=
+                            _A[(i * _k) + c1] * _B[(c1 * _n) + c2];
+            };
+        parallel_for(0, _m, matMult, nThreads);*/
+
+         //auto matMult = [&](long i){    
+             /*i  -> M
+             * c1 -> K
+             * c2 -> N
+             */                
+           /*     for (register int c2 = 0; c2 < _n; ++c2)
+                    for (register int c1 = 0; c1 < _k; ++c1) 
+                        _C[(i *_n)+ c2] +=
+                            _A[(i * _k) + c1] * _B[(c1 * _n) + c2];
+                             
+            };
+        parallel_for(0, _m, matMult, nThreads);*/
 
         return GO_ON;
     }
@@ -87,14 +125,15 @@ public:
     long _m;
     long _k;
     long _n;
+    int nThreads;
 };
 
 /*********************/
 /*****COS_FF_FARM****/
 #elif HCOSPAR
 struct Worker: ff_node_t<float> {
-
     int M_itr;
+    
     Worker(int m){
         M_itr=m;
     }
@@ -102,6 +141,27 @@ struct Worker: ff_node_t<float> {
     float *svc(float *t) {  
         float res=cosf(*t);
 
+
+
+
+
+
+
+        // Map phase
+        /*auto mapF = [&](long i){
+            double rnd = (double) rand_r(&localSeed) / RAND_MAX;
+            double rndPoint = rnd * (ub - lb) + lb;
+            outputs[i] = integrandF(rndPoint);
+        };
+        parallel_for(0, nPoints, mapF, nThreads); //(first,last, bodyF, nworkers); step=1,grain=FF_AUTO
+*/
+
+        // Map phase
+        /*auto cosX = [&](long i){
+            res=cosf(res);
+        };
+        parallel_for(0, N_elements, cosX, nThreads); //(first,last, bodyF, nworkers); step=1,grain=FF_AUTO
+        */
         for(int j=0;j<M_itr-1;j+=1)
             res=cosf(res);
 
@@ -111,15 +171,28 @@ struct Worker: ff_node_t<float> {
 
 struct firstStage: ff_node_t<float> {
     long N_elements;
+    int nThreads;
     
-    firstStage(int n){
+    firstStage(int n, int t){
         N_elements=n;
+        nThreads=t;
     }
 
     firstStage(){
     }
 
     float *svc(float *) { 
+        /*auto xGenerator = [&](long i){
+            float val=LOW + (float) std::rand() * (HIGH-LOW) / RAND_MAX; 
+            #ifndef MEASURES  
+            std::cout << "-Generated X: "<< val << std::endl;
+            #endif
+            ff_send_out(new float(val));
+
+        };
+        parallel_for(0, N_elements, xGenerator, nThreads); //(first,last, bodyF, nworkers); step=1,grain=FF_AUTO
+        */ 
+
         for(int i=0; i<N_elements;i+=1){
             float val=LOW + (float) std::rand() * (HIGH-LOW) / RAND_MAX; 
             #ifndef MEASURES  
@@ -206,11 +279,12 @@ int main(int argc, char *argv[]) {
 #elif HCOSPAR
     assert(argc>1);
     int nworkers = atoi(argv[2]);
-    int M = atoi(argv[3]);
-    int N = atoi(argv[4]);
+    int nThreads = atoi(argv[3]);
+    int M = atoi(argv[4]);
+    int N = atoi(argv[5]);
 
     std::cout<<std::endl<<"#HCOSPAR," ;
-    std::cout<<Nstr<<","<<nworkers<<","<<M<<","<<N;
+    std::cout<<Nstr<<","<<nworkers<<","<<nThreads<<","<<M<<","<<N;
 
     #ifndef MEASURES
     std::cout<<std::endl<<"##########################" <<std::endl;
@@ -221,13 +295,31 @@ int main(int argc, char *argv[]) {
 
     startTot = std::chrono::system_clock::now();  
     Emitter.N_elements=N;
+    Emitter.nThreads=nThreads;
     for (int r = 0; r < Nstr; ++r) {
-        ff_Farm<float> farm([nworkers,M](){
+       /* #ifdef MEASURES
+            ff_Farm<float> farm([nworkers,M,nThreads](){
+                    std::vector<std::unique_ptr<ff_node> > Workers;
+                    for(int i=0;i<nworkers;++i) 
+                        Workers.push_back(std::unique_ptr<ff_node_t<float> >(new Worker(M)));
+                    return Workers;
+                }(),
+                Emitter
+                
+                //,Collector
+                //std::unique_ptr<ff_node>(nullptr)
+
+                  );
+                farm.remove_collector();
+        #else*/
+            ff_Farm<float> farm([nworkers,M,nThreads](){
                 std::vector<std::unique_ptr<ff_node> > Workers;
                 for(int i=0;i<nworkers;++i) 
                     Workers.push_back(std::unique_ptr<ff_node_t<float> >(new Worker(M)));
                 return Workers;
             }(), Emitter, Collector);
+
+        //#endif
 
         start = std::chrono::system_clock::now();  
         if (farm.run_and_wait_end()<0) error("running farm"); 
@@ -251,9 +343,9 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    int n = atoi(argv[2]);
+    int m = atoi(argv[2]);
     int k = atoi(argv[3]);
-    int m = atoi(argv[4]);
+    int n = atoi(argv[4]);
     int matN = atoi(argv[5]);
     
 
@@ -279,11 +371,11 @@ int main(int argc, char *argv[]) {
         {
             start = std::chrono::system_clock::now();
             for (int r1 = 0; r1 < m; ++r1)
-                for (int c1 = 0; c1 < k; ++c1) {
-                    for (int c2 = 0; c2 < n; ++c2)
+                for (int c2 = 0; c2 < n; ++c2){
+                    for (int c1 = 0; c1 < k; ++c1) 
                     {
-                        C[(i*m*n) +(r1 * n) + c2] += 
-                            A[(i*m*k) + (r1*k) + c1] * B[(i*k*n)+(c1*n)+c2];
+                        C[(i*m*n) + (r1*n) + c2] += 
+                            A[(i*m*k) + (r1*k) + c1] * B[(i*k*n) + (c1*n) + c2];
                     }
                 }           
             end = std::chrono::system_clock::now(); 
@@ -300,6 +392,8 @@ int main(int argc, char *argv[]) {
             std::cout<<std::endl<<"----------------"<<std::endl;
             printMat(C,matN,m,n);
         #endif  
+
+        memset(C,0,matN*m*n*sizeof(float));
     }
     endTot = std::chrono::system_clock::now();
     elapsedTot=endTot-startTot;
@@ -317,15 +411,16 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    int n = atoi(argv[2]);
+    int m = atoi(argv[2]);
     int k = atoi(argv[3]);
-    int m = atoi(argv[4]);
+    int n = atoi(argv[4]);
     int mxw = atoi(argv[5]);
     int nworkers = atoi(argv[6]);
+    int nThreads = atoi(argv[7]);
     int matN = mxw * nworkers;
 
     std::cout<<std::endl<<"#HMMPAR," ;
-    std::cout<<Nstr<<","<<n<<","<<k<<","<<m<<","<<mxw<<","<<nworkers;
+    std::cout<<Nstr<<","<<n<<","<<k<<","<<m<<","<<mxw<<","<<nworkers<<","<<nThreads;
     #ifndef MEASURES
         std::cout<<std::endl<<"##########################" <<std::endl;    
     #else
@@ -342,9 +437,9 @@ int main(int argc, char *argv[]) {
 
     #ifndef MEASURES
         std::cout<<"A MATRIX " <<std::endl;
-        printMat(A,matN,m,n);
+        printMat(A,matN,m,k);
         std::cout<<"B MATRIX "<< std::endl;
-        printMat(B,matN,m,n);
+        printMat(B,matN,k,n);
         std::cout<<std::endl<<"##########################"<<std::endl<< "Single matmul elapsed time:"<<std::endl;
     #endif
 
@@ -354,7 +449,7 @@ int main(int argc, char *argv[]) {
         farm.add_emitter(&E);
         std::vector<ff_node *> w;
         for(int i=0;i<nworkers;++i) 
-            w.push_back(new Worker(m,k,n));
+            w.push_back(new Worker(m,k,n,nThreads));
         farm.add_workers(w);    
 
         start = std::chrono::system_clock::now();  
@@ -379,16 +474,18 @@ int main(int argc, char *argv[]) {
             for(int i=0;i<matN;++i)
             {
                 for (int r1 = 0; r1 < m; ++r1)
-                    for (int c1 = 0; c1 < k; ++c1) {                   
-                        for (int c2 = 0; c2 < n; ++c2)
-                            C[(i*m*n) +(r1 * n) + c2] += 
-                                A[(i*m*k) + (r1*k) + c1] * B[(i*k*n)+(c1*n)+c2];
+                    for (int c2 = 0; c2 < n; ++c2) {                   
+                        for (int c1 = 0; c1 < k; ++c1)
+                            C[(i*m*n) + (r1*n) + c2] += 
+                                A[(i*m*k) + (r1*k) + c1] * B[(i*k*n) + (c1*n) + c2];
                     }
             }
             printMat(C,matN,m,n);
         #else
             std::cout<<elapsed.count()<<", ";        
         #endif
+
+        memset(C,0,matN*m*n*sizeof(float));
     }
     
     endTot = std::chrono::system_clock::now();  

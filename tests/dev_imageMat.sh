@@ -154,7 +154,7 @@ do
 done
 
 ##########
-#amek clean
+#make clean
 #echo "compiling blurgauss executable..."
 #echo ""
 #make blurgauss
@@ -169,8 +169,8 @@ done
 #		for((i=10; i<=1250; i*=5));
 #		do
 #			echo iterations M = $i
-#                        nvprof --log-file ./profiling/dev_mat$k-$i.txt ./blurgauss.out $GPU $BLOCK >> ./results/dev_mat.txt
+#                        nvprof --log-file ./profiling/dev_mat$k-$i.txt ./blurgauss.out $GPU $BLOCK 4 >> ./results/dev_mat.txt
 #		done
-#		nvprof --log-file ./profiling/dev_mat$k-2500.txt ./blurgauss.out $GPU $BLOCK >> ./results/dev_mat.txt
+#		nvprof --log-file ./profiling/dev_mat$k-2500.txt ./blurgauss.out $GPU $BLOCK 4 >> ./results/dev_mat.txt
 #	done
 #done

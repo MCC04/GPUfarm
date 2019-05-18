@@ -9,8 +9,9 @@ BLUE='\033[1;34m'
 NC='\033[0m'
 #let GPU=2
 let GPU=1
-let BLOCK=512
-
+#let BLOCK=512
+let BLOCK=256
+let SM=56
 ###########
 make clean
 
@@ -18,10 +19,12 @@ echo -e "${BLUE}compiling future...${NC}"
 echo ""
 make future
 echo ***FUTURE_test***
-for((k=2; k<=32; k*=2));
+for((k=4; k<=64; k*=2));
 do
 	echo running with k = $k
-	let "N = $k*56*32"
+	#let "N = $k*56*32"
+	let "N = $k*$SM*$BLOCK"
+
 
 	for((i=10; i<=1250; i*=5));
 	do
@@ -44,10 +47,11 @@ echo ""
 make stream
 
 echo ***STREAM_test***
-for((k=2; k<=32; k*=2));
+for((k=4; k<=64; k*=2));
 do
 	echo running with k = $k
-	let "N = $k*56*32"
+	#let "N = $k*56*32"
+	let "N = $k*$SM*$BLOCK"
 
 	for((i=10; i<=1250; i*=5));
 	do
@@ -74,7 +78,8 @@ echo ***MANAGED_test***
 for((k=2; k<=32; k*=2));
 do
 	echo running with k = $k
-	let "N = $k*56*32"
+	#let "N = $k*56*32"
+	let "N = $k*$SM*$BLOCK"
 
 	for((i=10; i<=1250; i*=5));
 	do

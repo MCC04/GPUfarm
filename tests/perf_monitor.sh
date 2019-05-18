@@ -6,7 +6,7 @@ rm -f ./log/nvidia_smi_out.log
 touch ./log/nvidia_smi_out.log
 
 #ENDALL=0
-let GPU=2
+let GPU=1
 #let GPU=3
 
 

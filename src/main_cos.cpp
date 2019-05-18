@@ -88,7 +88,7 @@ int main(int argc, char **argv){
 
     int devId = atoi(argv[1]);
     #ifdef LOWPAR
-        BLOCK=16;
+        BLOCK=2;//BLOCK=8;
         GRID=1;
     #else
         BLOCK = atoi(argv[2]);
@@ -104,6 +104,7 @@ int main(int argc, char **argv){
             float ms=emptyKer();
             std::cout <<ms<< ",";     
         }
+        std::cout <<std::endl; 
 
         return 0;
     #endif
@@ -210,6 +211,7 @@ int main(int argc, char **argv){
     const int streamBytes = streamSize* sizeof(float) ;
 
     float ms=0.0;
+    float msTot=0.0;
     #ifndef LOWPAR
         GRID=streamSize/BLOCK;
     #endif
@@ -226,13 +228,23 @@ int main(int argc, char **argv){
     
     cudaEvent_t startEvent, stopEvent;  
     checkCuda( cudaEventCreate(&startEvent) );
-    checkCuda( cudaEventCreate(&stopEvent) );
+    checkCuda( cudaEventCreate(&stopEvent) );  
 
+    cudaEvent_t startTot, stopTot;  
+    checkCuda( cudaEventCreate(&startTot) );
+    checkCuda( cudaEventCreate(&stopTot) ); 
+
+    cudaStream_t *stream=streamCreate(K_exec);
+
+    checkCuda( cudaEventRecord(startTot,0) );
     cudaMallocManaged(&x, bytesX);
     cudaMallocManaged(&cosx, bytesX);
     cudaMallocManaged(&clocks, bytesClocks);
 
-    cudaStream_t *stream=streamCreate(K_exec);
+    checkCuda( cudaEventRecord(stopTot, 0) );
+    checkCuda( cudaEventSynchronize(stopTot) );
+    checkCuda( cudaEventElapsedTime(&msSum, startTot, stopTot) );
+
 
     for (int i = 0; i < K_exec; ++i) {   
         ms=cosKerStream(startEvent,stopEvent,M_iter, N_size,
@@ -244,8 +256,12 @@ int main(int argc, char **argv){
             printResults(ms);
         #endif
 
-        msSum+=ms;
+        msTot+=ms;
     }
+
+  
+    msSum+=msTot;
+
     streamDestroy(stream,K_exec);
     end=std::chrono::system_clock::now();
 

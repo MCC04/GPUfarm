@@ -79,12 +79,12 @@ int main(int argc, char **argv){
     std::srand(static_cast <unsigned> (time(NULL)));
 
     int gpu_clk=1;
-    float clockSum=0.0, clockAvg=0.0;
+    float clockSum=0.0, clockAvg=0.0, msTot=0.0;
     float msSum=0.0, rb_wb=0.0; 
     std::chrono::system_clock::time_point start,end;
 
     int devId = atoi(argv[1]);
-     #ifndef LOWPAR
+    #ifndef LOWPAR
         BLOCK = atoi(argv[2]);
     #endif
     int Nstr = atoi(argv[3]);
@@ -116,14 +116,20 @@ int main(int argc, char **argv){
     cudaEvent_t startEvent, stopEvent;
     checkCuda( cudaEventCreate(&startEvent) );
     checkCuda( cudaEventCreate(&stopEvent) );
+
+    cudaEvent_t startTot, stopTot;
+    checkCuda( cudaEventCreate(&startTot) );
+    checkCuda( cudaEventCreate(&stopTot) );
  
     #ifdef LOWPAR
-        BLOCK=4;
+        BLOCK=2;
         GRIDx= 1;
         GRIDy= 1;
     #else
-        GRIDx= (M_iter/BLOCK)+56;
-        GRIDy= (N_size/BLOCK)+57;
+        /*GRIDx= (M_iter/BLOCK)+56;
+        GRIDy= (N_size/BLOCK)+57;*/
+        GRIDx= ceil(M_iter/BLOCK)+1;
+        GRIDy= ceil(N_size/BLOCK)+1;
     #endif
 
     std::cout<<std::endl<<std::endl<<"#MATMUL,";
@@ -132,11 +138,14 @@ int main(int argc, char **argv){
   
     start=std::chrono::system_clock::now();
     
+    cudaStream_t *stream=streamCreate(Nstr);
+    
+    checkCuda( cudaEventRecord(startTot,0) );
     checkCuda( cudaMallocManaged(&A, bytesA*matN) );
     checkCuda( cudaMallocManaged(&B, bytesB*matN) );
     checkCuda( cudaMallocManaged(&C, bytesC*matN) );
 
-    cudaStream_t *stream=streamCreate(Nstr);
+    
 
     for (int j = 0; j < Nstr; ++j) {  
         for (int i = 0; i < matN; ++i) {  
@@ -145,13 +154,34 @@ int main(int argc, char **argv){
 
             #if !defined(MEASURES)
                 printMatrix(&C[i*M_iter*N_size], M_iter, N_size, ms);
-            #else
-                printResults(ms);
+            
+                std::cout<< std::endl<< "CHECK FOR - C - MATRIX "<<std::endl;
+                float *tmpA = &A[i*M_iter*K_exec];
+                float *tmpB = &B[i*K_exec*N_size];
+                float *tmpC = (float*)malloc(bytesC);
+                for(int ii = 0; ii < M_iter; ++ii) //M = r1
+                    for(int jj = 0; jj < N_size; ++jj) //N = c2
+                    {
+                        float sum=0.0;
+                        for(int kk = 0; kk < K_exec; ++kk) //K = c1
+                        {                            
+                            sum += getMatrixVal<float>(tmpA,ii,kk,K_exec) * getMatrixVal<float>(tmpB,kk,jj,N_size);
+                        }
+                        setMatrixVal(tmpC, ii, jj, N_size, sum);
+                    }    
+                printMatrix(tmpC, M_iter, N_size, ms);
             #endif
 
-            msSum+=ms;
-        }   
+            msTot+=ms;
+        }  
+                    
+        
+        printResults(msTot); 
     }
+    checkCuda( cudaEventRecord(stopTot, 0) );
+    checkCuda( cudaEventSynchronize(stopTot) );
+    checkCuda( cudaEventElapsedTime(&msSum, startTot, stopTot) );
+
     streamDestroy(stream,Nstr);
     end=std::chrono::system_clock::now();
 
@@ -178,12 +208,14 @@ int main(int argc, char **argv){
     checkCuda( cudaEventCreate(&stopEvent) );
 
     #ifdef LOWPAR
-        BLOCK=4;
+        BLOCK=2;
         GRIDx= 1;
         GRIDy= 1;
     #else
-        GRIDx= (M_iter/BLOCK)+56;
-        GRIDy= (N_size/BLOCK)+57;
+        /*GRIDx= (M_iter/BLOCK)+56;
+        GRIDy= (N_size/BLOCK)+57;*/
+        GRIDx= ceil(M_iter/BLOCK)+1;
+        GRIDy= ceil(N_size/BLOCK)+1;
     #endif
 
     std::cout<<std::endl<<std::endl<<"#MATMUL,";
@@ -206,13 +238,15 @@ int main(int argc, char **argv){
                       
             #if !defined(MEASURES)
                 printMatrix(C, M_iter, N_size, ms);
-            #else
-                printResults(ms);
+            //#else
+               // printResults(ms);
             #endif
 
             msSum+=ms;
         }   
+        printResults(msSum);
     }
+
     streamDestroy(stream,Nstr);
     free(C);
     cudaFree(Ad);
@@ -222,7 +256,7 @@ int main(int argc, char **argv){
 
 #elif BLURBOX
     unsigned int width, height;
-    float ms=0, elapsed=0;
+    float ms=0, elapsed=0, tmp=0.0;
     const char* input_path = "/home/cecconi/GPUfarm/images/in/";
     const char* output_path = "/home/cecconi/GPUfarm/images/out/";
 
@@ -237,6 +271,10 @@ int main(int argc, char **argv){
     cudaEvent_t startEvent, stopEvent;  
     checkCuda( cudaEventCreate(&startEvent) );
     checkCuda( cudaEventCreate(&stopEvent) );
+
+    cudaEvent_t startTot, stopTot;
+    checkCuda( cudaEventCreate(&startTot) );
+    checkCuda( cudaEventCreate(&stopTot) );
 
     cudaStream_t *stream=streamCreate(Nstr);
 
@@ -262,6 +300,9 @@ int main(int argc, char **argv){
             unsigned char* input_image = new unsigned char[in.size()];
             unsigned char* output_image = new unsigned char[in.size()];
 
+
+            checkCuda( cudaEventRecord(startTot,0) );
+
             checkCuda(cudaMallocManaged(&input_image, in.size()));
             checkCuda(cudaMallocManaged(&output_image, in.size()));
 
@@ -280,8 +321,14 @@ int main(int argc, char **argv){
                 output_image[i] = 255;
             }
 
+
             ms = blurBoxFilter( input_image, output_image, width, height, 
                                 stream[j],startEvent,stopEvent);
+
+
+            checkCuda( cudaEventRecord(stopTot, 0) );
+            checkCuda( cudaEventSynchronize(stopTot) );
+            checkCuda( cudaEventElapsedTime(&tmp, startTot, stopTot) );
 
             // Prepare data for output
             count=0;
@@ -305,7 +352,8 @@ int main(int argc, char **argv){
                     << std::endl;
 
             printResults(ms);
-            msSum+=ms;
+            msSum+=tmp;
+            msTot+=ms;
         }
     }    
     streamDestroy(stream,Nstr);
@@ -313,7 +361,7 @@ int main(int argc, char **argv){
 
 #elif BLURGAUSS
     unsigned int width, height;
-    float ms=0, elapsed=0;
+    float ms=0, elapsed=0,tmp=0;
     //const char* input_path = "/home/cecconi/GPUfarm/gpu_farm/images/in/";
     //const char* output_path = "/home/cecconi/GPUfarm/gpu_farm/images/out/";
     const char* input_path = "/home/cecconi/GPUfarm/images/in/";
@@ -329,6 +377,10 @@ int main(int argc, char **argv){
     cudaEvent_t startEvent, stopEvent;  
     checkCuda( cudaEventCreate(&startEvent) );
     checkCuda( cudaEventCreate(&stopEvent) );
+
+    cudaEvent_t startTot, stopTot;
+    checkCuda( cudaEventCreate(&startTot) );
+    checkCuda( cudaEventCreate(&stopTot) );
 
 
 
@@ -353,8 +405,13 @@ int main(int argc, char **argv){
             unsigned char* input_image = new unsigned char[in.size()];
             unsigned char* output_image = new unsigned char[in.size()];
 
-            checkCuda(cudaMallocManaged(&input_image, bytesSize));
-            checkCuda(cudaMallocManaged(&output_image, bytesSize));
+
+            checkCuda( cudaEventRecord(startTot,0) );
+
+            //checkCuda(cudaMallocManaged(&input_image, bytesSize));
+            //checkCuda(cudaMallocManaged(&output_image, bytesSize));
+            checkCuda(cudaMallocManaged(&input_image, in.size()));
+            checkCuda(cudaMallocManaged(&output_image, in.size()));
 
             int where = 0;
             for(int i = 0; i < in.size(); ++i) {
@@ -367,6 +424,10 @@ int main(int argc, char **argv){
             ms =  blurGaussianfilter (input_image, output_image,
                     width, height, 5, 4.0,//int kerdim, float sigma,
                     stream[j],startEvent,stopEvent);
+
+            checkCuda( cudaEventRecord(stopTot, 0) );
+            checkCuda( cudaEventSynchronize(stopTot) );
+            checkCuda( cudaEventElapsedTime(&tmp, startTot, stopTot) );
 
             // Prepare data for output
             std::vector<unsigned char> out;

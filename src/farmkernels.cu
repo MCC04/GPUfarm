@@ -45,7 +45,7 @@ __global__ void cosKernel(int M, int N, float *x_d, int *myclocks, int offset){
     return ;
 }
 
-__global__ void cosGridStride(int M, int N, float *x_d, int offset, int *myclocks){    
+__global__ void cosGridStride(int M, int N, float *x_d, int *myclocks, int offset){    
     int index = offset+blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
 
@@ -76,7 +76,7 @@ float emptyKer(){
 
     checkCuda( cudaEventRecord(stopEvent, 0) );
     checkCuda( cudaEventSynchronize(stopEvent) );
-    checkCuda( cudaEventElapsedTime(ms, startEvent, stopEvent) );
+    checkCuda( cudaEventElapsedTime(&ms, startEvent, stopEvent) );
 
     return ms;    
 }
@@ -106,8 +106,9 @@ void cosKer(std::vector<my_struct> &getDatas,int bytesSize )
 
                 checkCuda(cudaMemcpy(x_d, _xs.x_vect, bytesSize, cudaMemcpyHostToDevice)); 
 
-                #ifdef STRIDE
-                    cosGridStride<<<GRID, BLOCK>>>(M_iter, N_size, x_d, 0, clocks_d);
+                //#ifdef STRIDE
+                #ifdef LOWPAR
+                    cosGridStride<<<GRID, BLOCK>>>(M_iter, N_size, x_d, clocks_d, 0);
                 #else
                     cosKernel<<<GRID, BLOCK>>>(M_iter, N_size, x_d,clocks_d, 0);
                 #endif
@@ -131,7 +132,8 @@ void cosKerStream(
     float *x, int *clocks, 
     int offset, cudaStream_t strm)
 {
-        #ifdef STRIDE
+        //#ifdef STRIDE
+        #ifdef LOWPAR
             cosGridStride<<<GRID, BLOCK, offset, strm>>>(m, n, x, clocks, offset);
         #else
             cosKernel<<<GRID, BLOCK, offset, strm>>>(m, n, x, clocks, offset);
@@ -149,7 +151,8 @@ float  cosKerStream(
     memcpy(cosx,x,N_size);
     checkCuda( cudaEventRecord(start,0) );
 
-    #ifdef STRIDE
+    //#ifdef STRIDE
+    #ifdef LOWPAR
         cosGridStride<<<GRID, BLOCK, offset, strm>>>(m, n, cosx, clocks, offset);
     #else
         cosKernel<<<GRID, BLOCK, offset, strm>>>(m, n, cosx, clocks, offset);

@@ -1,0 +1,6 @@
+***dev_lowpar_cos.sh***
+start: Fri May 10 03:12:25 CEST 2019
+end: Fri May 10 07:35:30 CEST 2019
+***dev_lowpar_mat.sh***
+start: Fri May 10 07:35:30 CEST 2019
+end: Fri May 10 08:41:50 CEST 2019

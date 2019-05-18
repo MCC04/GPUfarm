@@ -53,10 +53,10 @@ do
 		for((i=10; i<=1250; i*=5));
 		do
 			echo iterations M = $i
-			./bin/hcospar.out $k $k $i $N >> ./results/host_cos.txt
+			./bin/hcospar.out $k $k $k $i $N >> ./results/host_cos.txt
 		done
 		echo iterations M = 2500
-		./bin/hcospar.out $k $k 2500 $N  >> ./results/host_cos.txt
+		./bin/hcospar.out $k $k $k 2500 $N  >> ./results/host_cos.txt
 	done
 done
 

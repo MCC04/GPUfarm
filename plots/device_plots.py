@@ -9,9 +9,10 @@ import math
 import csv
 
 
-singleResSize = testNum*5*5
+
 testNum=13
-	
+singleResSize = testNum*5*5	
+
 def getDatas(str):
 	linesSeq = open(str, 'r')	
 	charsSeq = [line.rstrip('\n') for line in linesSeq]
@@ -87,6 +88,9 @@ def divideDatasInv(chrono):
 	j=0
 	i=0
 	
+	print("CHRONO DIV DATA INV: ",chrono)
+	
+	
 	avgT=np.zeros((5,5))
 	temp=[]
 	
@@ -111,7 +115,8 @@ def divideDatasInv(chrono):
 				j=0
 				if i<(5-1):
 					i+=1
-	avgT[4,4]=sum(temp)/len(temp)
+	if len(temp)!=0:
+		avgT[4,4]=sum(temp)/len(temp)
 	
 	return avgT
 					
@@ -275,10 +280,17 @@ def main():
 					plotCompTimeGraph(managedEvAvg[i,:], managedEvAvg[:,i],i,file[4:7],inv,0,'Event')
 				
 							
+				#for i in range(0,5):			
+					#plotCompTimeGraph(speedUpEvF[i,:], speedUpEvF[:,i],i,file[4:7],inv,1,'Event')
+					#plotCompTimeGraph(speedUpEvS[i,:], speedUpEvS[:,i],i,file[4:7],inv,1,'Event')
+					#plotCompTimeGraph(speedUpEvM[i,:], speedUpEvM[:,i],i,file[4:7],inv,1,'Event')	
+					
 				for i in range(0,5):			
-					plotCompTimeGraph(speedUpEvF[i,:], speedUpEvF[:,i],i,file[4:7],inv,1,'Event')
-					plotCompTimeGraph(speedUpEvS[i,:], speedUpEvS[:,i],i,file[4:7],inv,1,'Event')
-					plotCompTimeGraph(speedUpEvM[i,:], speedUpEvM[:,i],i,file[4:7],inv,1,'Event')		
+					plotSpeedup(speedUpEvF[i,:], speedUpEvF[:,i],i,file[4:7],inv,'Event')
+					plotSpeedup(speedUpEvS[i,:], speedUpEvS[:,i],i,file[4:7],inv,'Event')
+					plotSpeedup(speedUpEvM[i,:], speedUpEvM[:,i],i,file[4:7],inv,'Event')
+					
+				#plotSpeedup(y1, y2, num, gType, inv,lblMeasure)	
 		
 
 			elif file[4:7]=="mat":
@@ -287,24 +299,24 @@ def main():
 				############
 				inLowMat,evLowMat,chLowMat=getDatas('../results/dev_lowpar_mat.txt')
 				
+								
 				#EVENT AVG
 				print("\nLowPar MAT EventTimes: ",evLowMat)
 				print("\nLowPar Event len: ",len(evLowMat))			
-				evLowMm,minLowMm,maxLowMm=divideDatas(evLowMat[0:singleResSize])
-				evLowSmm,minLowSmm,maxLowSmm=divideDatas(evLowMat[singleResSize:(singleResSize*2)])
-				evLowLsmm,minLowLsmm,maxLowLsmm=divideDatas(evLowMat[(singleResSize*2):(singleResSize*3)])
-				#evLowBb,minLowBb,maxLowBb=divideDatas(evLowMat[(singleResSize*3):])
+				evLowMm,minLowMm,maxLowMm = divideDatas(evLowMat[0:singleResSize])
+				evLowSmm,minLowSmm,maxLowSmm = divideDatas(evLowMat[singleResSize:(singleResSize*2)])
+				evLowLsmm,minLowLsmm,maxLowLsmm = divideDatas(evLowMat[(singleResSize*2):(singleResSize*3)])
 				
 				mmLowEvAvg = getAvgTimes(evLowMm,minLowMm,maxLowMm)
 				smmLowEvAvg = getAvgTimes(evLowSmm,minLowSmm,maxLowSmm)
 				lsmmLowEvAvg = getAvgTimes(evLowLsmm,minLowLsmm,maxLowLsmm)
-				#bbLowAvg = getAvgTimes(evLowBb,minLowBb,maxLowBb)
-				bbLowEvAvg=getAvgBlur(evLowMat[(singleResSize*3):])				
+				#bbLowEvAvg = getAvgBlur(evLowMat[(singleResSize*3):])				
 				
 				print("\nmmLowAvg Event AVG: ", mmLowEvAvg)
 				print("\nsmmLowAvg Event AVG: ",smmLowEvAvg)
 				print("\nlsmmLowAvg Event AVG: ", lsmmLowEvAvg)	
-				print("\nbbLowAvg Event AVG: ", bbLowEvAvg)
+				#print("\nbbLowAvg Event AVG: ", bbLowEvAvg)
+						
 								
 				#CHRONO AVG
 				print("\nLowPar MAT chronoTimes: ",chLowMat)
@@ -312,67 +324,61 @@ def main():
 				chLowMm,minLowMm,maxLowMm=divideDatas(chLowMat[0:singleResSize])
 				chLowSmm,minLowSmm,maxLowSmm=divideDatas(chLowMat[singleResSize:(singleResSize*2)])
 				chLowLsmm,minLowLsmm,maxLowLsmm=divideDatas(chLowMat[(singleResSize*2):(singleResSize*3)])
-				#chLowBb,minLowBb,maxLowBb=divideDatas(chLowMat[(singleResSize*3):])
-				
-							
+					
 				mmLowChAvg = getAvgTimes(chLowMm,minLowMm,maxLowMm)
 				smmLowChAvg = getAvgTimes(chLowSmm,minLowSmm,maxLowSmm)
 				lsmmLowChAvg = getAvgTimes(chLowLsmm,minLowLsmm,maxLowLsmm)
-				#bbLowAvg = getAvgTimes(chLowBb,minLowBb,maxLowBb)
-				bbLowChAvg=getAvgBlur(chLowMat[(singleResSize*3):])
-				
+				#bbLowChAvg=getAvgBlur(chLowMat[(singleResSize*3):])				
 				
 				print("\nmmLowAvg Chrono AVG: ",mmLowChAvg)
 				print("\nsmmLowAvg Chrono AVG: ",smmLowChAvg)
 				print("\nlsmmLowAvg Chrono AVG: ",lsmmLowChAvg)	
-				print("\nbbLowAvg Chrono AVG: ",bbLowChAvg)	
+				#print("\nbbLowAvg Chrono AVG: ",bbLowChAvg)	
 				
 			
 				if file[8:-4]=="invert":				
 					inv=1
 					
+					print("\nLEN ARRAY EventTimes : ",len(evTimes))
 					#EVENT AVG AND SPEEDUP
 					mmEvAvg=divideDatasInv(evTimes[0:singleResSize])
 					smmEvAvg=divideDatasInv(evTimes[singleResSize:(singleResSize*2)])
-					lsmmEvAvg=divideDatasInv(evTimes[(singleResSize*2):])
-			
-					#divideDatasInv(chronoTimes)
-					#chronoTimes.append(float(tokens[0]))
+					lsmmEvAvg=divideDatasInv(evTimes[(singleResSize*2):(singleResSize*3)])
+					#bbEvAvg=getAvgBlur(evTimes[(singleResSize*3):])
 					print("\nMM INV Avg EventTimes : ",mmEvAvg)
 					print("\nSMALL MM INV Avg EventTimes : ",smmEvAvg)
 					print("\nLOT SMALL MM INV Avg EventTimes : ",lsmmEvAvg)
+					#print("\nBB INV Avg EventTimes : ",bbEvAvg)
 				
 					speedUpEvMM = mmLowEvAvg/mmEvAvg
 					speedUpEvSMM = smmLowEvAvg/smmEvAvg
 					speedUpEvLSMM = lsmmLowEvAvg/lsmmEvAvg
-					#speedUpBB = bbLowAvg/bbAvg
+					#speedUpEvBB = bbLowEvAvg/bbEvAvg
 					print("\nEvent speedUpMM: ",speedUpEvMM)
 					print("\nEvent speedUpSMM: ",speedUpEvSMM)
 					print("\nEvent speedUpLSMM: ",speedUpEvLSMM)		
-					#print("\nspeedUpBB: ")
-					#print(speedUpBB)
-					
-					
+					#print("\nEvent speedUpBB: ",speedUpEvBB)
+				
+										
 					
 					#CHRONO AVG AND SPEEDUP
-					mmChAvg=divideDatasInv(chronoTimes[0:singleResSize])
-					smmChAvg=divideDatasInv(chronoTimes[singleResSize:(singleResSize*2)])
-					lsmmChAvg=divideDatasInv(chronoTimes[(singleResSize*2):])
-			
-					#divideDatasInv(chronoTimes)
-					#chronoTimes.append(float(tokens[0]))
+					mmChAvg = divideDatasInv(chronoTimes[0:singleResSize])
+					smmChAvg = divideDatasInv(chronoTimes[singleResSize:(singleResSize*2)])
+					lsmmChAvg = divideDatasInv(chronoTimes[(singleResSize*2):(singleResSize*3)])
+					#bbChAvg = getAvgBlur(chronoTimes[(singleResSize*3):])
 					print("\nMM INV Avg chronoTimes : ",mmChAvg)
 					print("\nSMALL MM INV Avg chronoTimes : ",smmChAvg)
 					print("\nLOT SMALL MM INV Avg chronoTimes : ",lsmmChAvg)
-				
+					#print("\nBLUR BOX INV Avg chronoTimes : ",bbChAvg)
+					
 					speedUpChMM = mmLowChAvg/mmChAvg
 					speedUpChSMM = smmLowChAvg/smmChAvg
 					speedUpChLSMM = lsmmLowChAvg/lsmmChAvg
-					#speedUpBB = bbLowAvg/bbAvg
+					#speedUpChBB = bbLowChAvg/bbChAvg
 					print("\nspeedUpMM: ",speedUpChMM)
 					print("\nspeedUpSMM: ",speedUpChSMM)
 					print("\speedUpLSMM: ",speedUpChLSMM)
-						
+					#print("\speedUpBB: ",speedUpChBB)	
 								
 				else:
 					inv=0
@@ -382,13 +388,13 @@ def main():
 					speedUpEvMM = mmLowEvAvg/mmEvAvg
 					speedUpEvSMM = smmLowEvAvg/smmEvAvg
 					speedUpEvLSMM = lsmmLowEvAvg/lsmmEvAvg
-					speedUpEvBB = []
-					speedUpEvBB.append(bbLowEvAvg/bbEvAvg[0])
-					speedUpEvBB.append(bbLowEvAvg/bbEvAvg[1])
+					#speedUpEvBB = []
+					#speedUpEvBB.append(bbLowEvAvg/bbEvAvg[0])
+					#speedUpEvBB.append(bbLowEvAvg/bbEvAvg[1])
 					print("\nspeedUpMM: ",speedUpEvMM)
 					print("\nspeedUpSMM: ",speedUpEvSMM)
 					print("\nspeedUpLSMM: ",speedUpEvLSMM)		
-					print("\nspeedUpBB: ",speedUpEvBB)
+					#print("\nspeedUpBB: ",speedUpEvBB)
 					
 					
 					#CHRONO						
@@ -397,20 +403,20 @@ def main():
 					speedUpChMM = mmLowChAvg/mmChAvg
 					speedUpChSMM = smmLowChAvg/smmChAvg
 					speedUpChLSMM = lsmmLowChAvg/lsmmChAvg
-					speedUpChBB = []
-					speedUpChBB.append(bbLowChAvg/bbChAvg[0])
-					speedUpChBB.append(bbLowChAvg/bbChAvg[1])
+					#speedUpChBB = []
+					#speedUpChBB.append(bbLowChAvg/bbChAvg[0])
+					#speedUpChBB.append(bbLowChAvg/bbChAvg[1])
 					print("\nspeedUpMM: ",speedUpChMM)
 					print("\nspeedUpSMM: ",speedUpChSMM)
 					print("\nspeedUpLSMM: ",speedUpChLSMM)		
-					print("\nspeedUpBB: ",speedUpChBB)		
+					#print("\nspeedUpBB: ",speedUpChBB)		
 						
 					
 				#WRITE TO CSV
 				lbl1='MAT MUL'
 				lbl2='SMALL MM'
 				lbl3='LOT SMALL MM'
-				lbl4='BLUR BOX'					
+				#lbl4='BLUR BOX'					
 				
 				if inv==1:			
 					csvPath="./output/dev_mat_inv.csv"
@@ -432,10 +438,10 @@ def main():
 					writeToCSV(writer,lbl1,mmLowEvAvg,mmEvAvg,speedUpEvMM)
 					writeToCSV(writer,lbl2,lsmmLowEvAvg,lsmmEvAvg,speedUpEvSMM)
 					writeToCSV(writer,lbl3,lsmmLowEvAvg,lsmmEvAvg,speedUpEvLSMM)
-					if inv==0:
-						lbl4+=' EVENT'	
-						writeToCSV(writer,lbl4,bbLowEvAvg,bbEvAvg,speedUpEvBB)
-						writeToCSV(writer,lbl4,bbLowEvAvg,bbEvAvg,speedUpEvBB)
+					#if inv==0:
+					#	lbl4+=' EVENT'	
+					#	writeToCSV(writer,lbl4,bbLowEvAvg,bbEvAvg,speedUpEvBB)
+					#	writeToCSV(writer,lbl4,bbLowEvAvg,bbEvAvg,speedUpEvBB)
 
 					#write chrono
 					lbl1+=' CHRONO'
@@ -445,9 +451,9 @@ def main():
 					writeToCSV(writer,lbl1,mmLowChAvg,mmChAvg,speedUpChMM)
 					writeToCSV(writer,lbl2,lsmmLowChAvg,lsmmChAvg,speedUpChSMM)
 					writeToCSV(writer,lbl3,lsmmLowChAvg,lsmmChAvg,speedUpChLSMM)
-					if inv==0:
-						lbl4+=' CHRONO'
-						writeToCSV(writer,lbl4,bbLowChAvg,bbChAvg,speedUpChBB)
+					#if inv==0:
+					#	lbl4+=' CHRONO'
+					#	writeToCSV(writer,lbl4,bbLowChAvg,bbChAvg,speedUpChBB)
 					
 
 					####PLOTS ON MAT####		
@@ -464,19 +470,30 @@ def main():
 						##plotCompTimeGraph(speedUpChBB[i,:], speedUpChBB[:,i],i,file[4:7],inv,1,' Chrono')
 		
 					#farei il grafico su comp time anche per inverted, mentre lo speed up solo per la versione normale, per adesso
-					#for i in range(0,5):
+					for i in range(0,5):
 						##event			
-						#plotCompTimeGraph(mmEvAvg[i,:], mmEvAvg[:,i],i,file[4:7],inv,0,' Event')
-						#plotCompTimeGraph(smmEvAvg[i,:], smmEvAvg[:,i],i,file[4:7],inv,0,' Event')
-						#plotCompTimeGraph(lsmmEvAvg[i,:], lsmmEvAvg[:,i],i,file[4:7],inv,0,' Event')
+						plotCompTimeGraph(mmEvAvg[i,:], mmEvAvg[:,i],i,file[4:7],inv,0,' Event')
+						plotCompTimeGraph(smmEvAvg[i,:], smmEvAvg[:,i],i,file[4:7],inv,0,' Event')
+						plotCompTimeGraph(lsmmEvAvg[i,:], lsmmEvAvg[:,i],i,file[4:7],inv,0,' Event')
 						##plotCompTimeGraph(bbEvAvg[i,:], bbEvAvg[:,i],i,file[4:7],inv,0,' Event')
 						
 						##chrono
-						#plotCompTimeGraph(mmChAvg[i,:], mmChAvg[:,i],i,file[4:7],inv,0,' Chrono')
-						#plotCompTimeGraph(smmChAvg[i,:], smmChAvg[:,i],i,file[4:7],inv,0,' Chrono')
-						#plotCompTimeGraph(lsmmChAvg[i,:], lsmmChAvg[:,i],i,file[4:7],inv,0,' Chrono')
+						plotCompTimeGraph(mmChAvg[i,:], mmChAvg[:,i],i,file[4:7],inv,0,' Chrono')
+						plotCompTimeGraph(smmChAvg[i,:], smmChAvg[:,i],i,file[4:7],inv,0,' Chrono')
+						plotCompTimeGraph(lsmmChAvg[i,:], lsmmChAvg[:,i],i,file[4:7],inv,0,' Chrono')
 						##plotCompTimeGraph(bbChAvg[i,:], bbChAvg[:,i],i,file[4:7],inv,0,' Chrono')
 					
+					for i in range(0,5):	
+						##event		
+						plotSpeedup(speedUpEvMM[i,:], speedUpEvMM[:,i],i,file[4:7],inv,' Event')
+						plotSpeedup(speedUpEvLSMM[i,:], speedUpEvLSMM[:,i],i,file[4:7],inv,' Event')
+						##plotCompTimeGraph(speedUpEvBB[i,:], speedUpEvBB[:,i],i,file[4:7],inv,1,' Event')
+						
+						##chrono
+						plotSpeedup(speedUpChMM[i,:], speedUpChMM[:,i],i,file[4:7],inv,' Chrono')
+						plotSpeedup(speedUpChLSMM[i,:], speedUpChLSMM[:,i],i,file[4:7],inv,' Chrono')
+					
+					#plotSpeedup(y1, y2, num, gType, inv,lblMeasure)	
 						
 def avgCosMeasures(label,measures):
 	future,minF,maxF=divideDatas(measures[0:singleResSize])
@@ -552,9 +569,13 @@ def writeToCSV(writer,label,lowAvg,parAvg,spUp):
 		writer.writerow([label,'SPEEDUP'])
 		writer.writerows(spUp)	
 	
+plotId=0
+figId=0
 	
-	
-def plotCompTimeGraph(y1, y2, num, gType, inv, spUp,lblMeasure):			
+def plotCompTimeGraph(y1, y2, num, gType, inv, spUp,lblMeasure):
+
+	global plotId	
+	global figId		
 
 	if gType=="mat":
 		x1=(4,16,32,64,128) #nMat
@@ -569,15 +590,18 @@ def plotCompTimeGraph(y1, y2, num, gType, inv, spUp,lblMeasure):
 		
 	if spUp==0:
 		lbly="Comp Time (ms)" + lblMeasure
+		fname= 'comp'
 	elif spUp==1:
 		lbly="Speed Up" + lblMeasure
+		fname = 'spup'
 		
 	title=str(gType)
 	title=title.upper()
 	if inv==1:
 		title+="-INVERTED"
+		fname+='_inv'
 
-	fig=plt.figure(num)
+	fig=plt.figure(figId)
 
 	ay = fig.add_subplot(111)
 	ay.plot(x1, y1, '-', label = lblx1, marker='o', linestyle='-', color='black', linewidth=1)
@@ -595,9 +619,125 @@ def plotCompTimeGraph(y1, y2, num, gType, inv, spUp,lblMeasure):
 	
 	ay2.set_xticks(np.linspace(ay2.get_xticks()[0], ay2.get_xticks()[-1], len(ay.get_xticks())))
 
-	plt.suptitle(title,  fontsize=16)
+	plt.suptitle(title,  fontsize=16,horizontalalignment='left')
 	plt.tight_layout()
-	plt.show()	
+	#plt.show()	
+	
+	img_name='./plt_img/'+ gType+fname+str(plotId)
+	plt.savefig(img_name)
+	plotId+=1
+	
+	figId+=1
+	plt.close(fig)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+def plotSpeedup(y1, y2, num, gType, inv,lblMeasure):			
+
+	global plotId
+	global figId
+	
+	if gType=="mat":
+		x1=(4,16,32,64,128) #nMat
+		x2=(32,64,128,256,512) #dimMat			
+		lblx1="N mat"
+		lblx2="DIM mat"
+	elif gType=="cos":
+		x1=(10,50,250,1250,2500)
+		x2=(3584,7168,14336,28672,57344)
+		lblx1="M"
+		lblx2="N"
+		
+	#if spUp==0:
+	#	lbly="Comp Time (ms)" + lblMeasure
+	#elif spUp==1:
+	lbly="Speed Up" + lblMeasure
+		
+	title=str(gType)
+	title=title.upper()
+	if inv==1:
+		title+="-INVERTED"
+
+	plt.figure(figId)
+
+	#ay = fig.add_subplot(111)
+	plt.plot(x1, y1, '-', label = 'Speedup', marker='o', linestyle='-', color='black', linewidth=1)
+	plt.plot(x1, x1, marker='.',label='Ideal speed up',color='black',linestyle='--')
+	plt.xlabel(lblx1)
+	plt.ylabel(lbly)
+	#ay2 = ay.twiny()
+	#ay2.plot(x2, y2, '-r', label = lblx2, marker='o', linestyle='-', color='black', linewidth=3)	
+	plt.legend(loc="upper right")
+	#ay.legend(loc="lower right")
+	#ay.grid()
+	
+	#ay.set_ylabel(lbly)
+	#ay.set_xlabel(lblx1)	
+	#ay2.set_xlabel(lblx2)
+
+	
+	#ay2.set_xticks(np.linspace(ay2.get_xticks()[0], ay2.get_xticks()[-1], len(ay.get_xticks())))
+
+	plt.suptitle(title,  fontsize=16, horizontalalignment='left')
+	plt.tight_layout()
+	#plt.show()	
+	
+	#if inv:
+	#	img_name='./plt_img/'+ gType+'Inv_speedup'+lblMeasure+str(num)
+	#else:
+	#	img_name='./plt_img/'+ gType+'_speedup'+lblMeasure+str(num)
+	img_name='./plt_img/'+ gType+'Inv_spup'+str(plotId)
+	plt.savefig(img_name)
+	plotId+=1
+	figId+=1
+	plt.close()
+	
+	plt.figure(figId)
+	#ay = fig.add_subplot(111)
+	plt.plot(x2, y2, '-', label = lblx2, marker='o', linestyle='-', color='black', linewidth=1)
+	plt.plot(x2, x2, marker='.',label='Ideal speed up',color='black',linestyle='--')
+
+	#ay2 = ay.twiny()
+	#ay2.plot(x2, y2, '-r', label = lblx2, marker='o', linestyle='-', color='black', linewidth=3)	
+	plt.legend(loc="upper right")
+	plt.xlabel(lblx2)
+	plt.ylabel(lbly)
+	#ay.legend(loc="lower right")
+	#ay.grid()
+	
+	#ay.set_ylabel(lbly)
+	#ay.set_xlabel(lblx1)	
+	#ay2.set_xlabel(lblx2)
+
+	
+	#ay2.set_xticks(np.linspace(ay2.get_xticks()[0], ay2.get_xticks()[-1], len(ay.get_xticks())))
+
+	plt.suptitle(title,  fontsize=16, horizontalalignment='left')
+	plt.tight_layout()
+	#plt.show()
+	img_name='./plt_img/'+ gType+'Inv_spup'+str(plotId)
+	plt.savefig(img_name)
+	plotId+=1
+	
+	figId+=1
+	plt.close()
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
