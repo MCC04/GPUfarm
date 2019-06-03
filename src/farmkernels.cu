@@ -185,8 +185,8 @@ void cosKer(std::vector<my_struct> &getDatas, int chunk, int bytesSize )
     checkCuda( cudaEventCreate(&startEvent) );
     checkCuda( cudaEventCreate(&stopEvent) );    
 
-    checkCuda(cudaMalloc((void **)&x_d, bytesSize)); 
-    checkCuda(cudaMalloc((void **)&clocks_d, GRID*sizeof(int)));
+    checkCuda( cudaMalloc((void **)&x_d, N_size*sizeof(float)) ); 
+    checkCuda( cudaMalloc((void **)&clocks_d, GRID*K_exec*sizeof(int)) );
 
 
     checkCuda( cudaEventRecord(startEvent,0) );
@@ -205,17 +205,17 @@ void cosKer(std::vector<my_struct> &getDatas, int chunk, int bytesSize )
 
                 //checkCuda( cudaEventRecord(startEvent,0) );
 
-                checkCuda(cudaMemcpy(x_d, &x[i*chunk], bytesSize, cudaMemcpyHostToDevice)); 
+                checkCuda( cudaMemcpy(&x_d[i*chunk], &x[i*chunk], bytesSize, cudaMemcpyHostToDevice) ); 
                 //checkCuda(cudaMemcpy(x_d, &x[i*chunk], bytesSize, cudaMemcpyHostToDevice)); 
 
                 #ifdef LOWPAR
-                    cosGridStride<<<GRID, BLOCK>>>(M_iter, chunk, x_d, clocks_d, 0);
+                    cosGridStride<<<GRID, BLOCK>>>(M_iter, chunk, &x_d[i*chunk], clocks_d, 0);
                 #else
-                    cosKernel<<<GRID, BLOCK>>>(M_iter, chunk, x_d,clocks_d, 0);
+                    cosKernel<<<GRID, BLOCK>>>(M_iter, chunk, &x_d[i*chunk],clocks_d, 0);
                 #endif
                               
-                checkCuda(cudaMemcpy( _xs.x_vect, x_d, bytesSize, cudaMemcpyDeviceToHost));
-                checkCuda(cudaMemcpy(_xs.clocks, clocks_d, GRID*sizeof(int), cudaMemcpyDeviceToHost));
+                checkCuda( cudaMemcpy( _xs.x_vect, &x_d[i*chunk], bytesSize, cudaMemcpyDeviceToHost) );
+                checkCuda( cudaMemcpy(_xs.clocks, &clocks_d[i*GRID], GRID*sizeof(int), cudaMemcpyDeviceToHost) );
 
                 /*checkCuda( cudaEventRecord(stopEvent, 0) );
                 checkCuda( cudaEventSynchronize(stopEvent) );
