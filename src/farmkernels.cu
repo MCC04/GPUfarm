@@ -209,12 +209,12 @@ void cosKer(std::vector<my_struct> &getDatas, int chunk, int bytesSize )
                 //checkCuda(cudaMemcpy(x_d, &x[i*chunk], bytesSize, cudaMemcpyHostToDevice)); 
 
                 #ifdef LOWPAR
-                    cosGridStride<<<GRID, BLOCK>>>(M_iter, chunk, &x_d[i*chunk], clocks_d, 0);
+                    cosGridStride<<<GRID, BLOCK>>>(M_iter, chunk, &x_d[i*chunk], &clocks_d[i*chunk], 0);
                 #else
-                    cosKernel<<<GRID, BLOCK>>>(M_iter, chunk, &x_d[i*chunk],clocks_d, 0);
+                    cosKernel<<<GRID, BLOCK>>>(M_iter, chunk, &x_d[i*chunk],&clocks_d[i*chunk], 0);
                 #endif
                               
-                checkCuda( cudaMemcpy( _xs.x_vect, &x_d[i*chunk], bytesSize, cudaMemcpyDeviceToHost) );
+                checkCuda( cudaMemcpy( _xs.x_vect, &x_d[i*chunk], chunk*sizeof(float), cudaMemcpyDeviceToHost) );
                 checkCuda( cudaMemcpy(_xs.clocks, &clocks_d[i*GRID], GRID*sizeof(int), cudaMemcpyDeviceToHost) );
 
                 /*checkCuda( cudaEventRecord(stopEvent, 0) );
