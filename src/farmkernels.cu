@@ -226,14 +226,19 @@ void cosKer(std::vector<my_struct> &getDatas, int chunk, int bytesSize )
             }));          
     }
     float ms=0.0f;
+
+    
+    
+    
+    for(auto &e : futures) 
+        getDatas.push_back(e.get());    
+        
     checkCuda( cudaEventRecord(stopEvent, 0) );
     checkCuda( cudaEventSynchronize(stopEvent) );
     checkCuda( cudaEventElapsedTime(&ms, startEvent, stopEvent) );
-    
+
     std::cout << "EVENT TIME FUTURE: "<< ms<<std::endl;
-    
-    for(auto &e : futures) 
-        getDatas.push_back(e.get());
+
 }
 
 
