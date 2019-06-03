@@ -104,26 +104,56 @@ __global__ void matMulGridStride(float* Ad, float* Bd, float* Cd, int m, int k, 
     {
         for (int j = indexCol; j < n; j += strideCol) //N
         {
-            //if(row<m && col<n) {
             float sum = 0;
             for(int l=0; l<k; l++) //K
             {
                 sum += Ad[i*k + l] * Bd[l*n + j];
-            //}
-          
             }
             Cd[i*n + j] = sum;
         }
     }
 
-    // Multiplying matrix a and b and storing in array mult.
-    /*for(i = 0; i < r1; ++i)
-        for(j = 0; j < c2; ++j)
-            for(k = 0; k < c1; ++k)
-            {
-                mult[i][j] += a[i][k] * b[k][j];
-            }
-    */
+    return ;
+}
+
+__global__ void squareMatMulKer(float* A, float* B, float* C, int N) {
+
+    int ROW = blockIdx.y*blockDim.y+threadIdx.y;
+    int COL = blockIdx.x*blockDim.x+threadIdx.x;
+
+    float tmpSum = 0;
+
+    if (ROW < N && COL < N) {
+        // each thread computes one element of the block sub-matrix
+        for (int i = 0; i < N; i++) {
+            tmpSum += A[ROW * N + i] * B[i * N + COL];
+        }
+    }
+    C[ROW * N + COL] = tmpSum;
+}
+
+__global__ void squareMatMulGridStrideKer(float* A, float* B, float* C, int N) {
+
+    int ROW = blockIdx.y*blockDim.y+threadIdx.y;
+    int Rstride = blockDim.y*gridDim.y;
+
+    int COL = blockIdx.x*blockDim.x+threadIdx.x;
+    int Cstride = blockDim.x*gridDim.x;
+
+    float tmpSum = 0;
+
+    for (int i = ROW; i < N; i+=Rstride) {
+
+        // if (ROW < N && COL < N) {
+        // each thread computes one element of the block sub-matrix
+        //for (int i = 0; i < N; i++) {
+        for (int j = COL; i < N; i+=Cstride) {
+            tmpSum += A[i * N + j] * B[j * N + i];
+        }
+        //}
+        C[i * N + COL] = tmpSum;
+    }
+    
     return ;
 }
 
@@ -262,6 +292,85 @@ const float* filter, const int filterWidth)
 }
 
 
+/*******************
+**KERNEL LAUNCHERS**
+********************/
+
+float smallSquareMatMulKer(
+    float *Ad, float *Bd, float *Cd, float *C,
+    int n, 
+    cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
+{
+
+    float ms;
+    int bytesA=n*n*sizeof(float);
+    int bytesB=n*n*sizeof(float);
+    int bytesC=n*n*sizeof(float);
+    float  *A=(float*)calloc(1,bytesA);//new float[M*K];
+    float *B=(float*)calloc(1,bytesB);//new float[K*N] ;
+
+    randomMatrix(n,n, A);
+    randomMatrix(n,n, B);     
+
+    dim3 dimBlock(BLOCK,BLOCK,1);
+    dim3 dimGrid(GRIDx, GRIDy,1); 
+
+    checkCuda( cudaEventRecord(start,0) );
+
+    cudaMemcpyAsync(Ad, A, bytesA, cudaMemcpyHostToDevice, strm);    
+    cudaMemcpyAsync(Bd, B, bytesB, cudaMemcpyHostToDevice, strm);   
+
+    #ifdef LOWPAR
+        squareMatMulGridStrideKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n);
+    #else
+        squareMatMulKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n);
+    #endif
+
+    cudaMemcpyAsync( C, Cd, bytesC, cudaMemcpyDeviceToHost, strm);
+
+    checkCuda( cudaEventRecord(stop, 0) );
+    checkCuda( cudaEventSynchronize(stop) );
+    checkCuda( cudaEventElapsedTime(&ms, start, stop) );
+
+    free(A);
+    free(B);
+
+    return ms;
+}
+
+
+float squareMatMulKer(
+    float *Ad, float *Bd, float *Cd, 
+    int n,
+    cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
+{
+    float ms;    
+
+    randomMatrix(n,n, Ad);
+    randomMatrix(n,n, Bd);  
+  
+    dim3 dimBlock(BLOCK,BLOCK,1);
+    dim3 dimGrid(GRIDx, GRIDy,1); 
+
+
+    checkCuda( cudaEventRecord(start,0) );
+
+
+    #ifdef LOWPAR
+        squareMatMulGridStrideKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n);
+    #else
+        squareMatMulKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n);
+    #endif
+
+    checkCuda( cudaEventRecord(stop, 0) );
+    checkCuda( cudaEventSynchronize(stop) );
+    checkCuda( cudaEventElapsedTime(&ms, start, stop) );
+
+    return ms;
+}
+
+
+
 
 
 
@@ -275,8 +384,8 @@ float smallMatMulKer(
     int bytesA=m*k*sizeof(float);
     int bytesB=k*n*sizeof(float);
     int bytesC=m*n*sizeof(float);
-    float  *A=(float*)calloc(1,bytesA);//new float[M_iter*K_exec];
-    float *B=(float*)calloc(1,bytesB);//new float[K_exec*N_size] ;
+    float  *A=(float*)calloc(1,bytesA);//new float[M*K];
+    float *B=(float*)calloc(1,bytesB);//new float[K*N] ;
 
     randomMatrix(m,k, A);
     randomMatrix(k,n, B);     
@@ -307,7 +416,7 @@ float smallMatMulKer(
     return ms;
 }
 
-//KERNEL LAUNCERS
+
 float matMulKer(
     float *Ad, float *Bd, float *Cd, 
     int m, int k, int n, 
@@ -341,6 +450,158 @@ float matMulKer(
 
     return ms;
 }
+
+
+
+
+
+
+
+
+/*float smallMatMulKer(
+    float *Ad, float *Bd, float *Cd, float *C,
+    int m, int k, int n, 
+    cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
+{
+
+    float ms;
+    int bytesA=m*k*sizeof(float);
+    int bytesB=k*n*sizeof(float);
+    int bytesC=m*n*sizeof(float);
+    float  *A=(float*)calloc(1,bytesA);//new float[M*K];
+    float *B=(float*)calloc(1,bytesB);//new float[K*N] ;
+
+    randomMatrix(m,k, A);
+    randomMatrix(k,n, B);     
+
+    dim3 dimBlock(BLOCK,BLOCK,1);
+    dim3 dimGrid(GRIDx, GRIDy,1); 
+
+    checkCuda( cudaEventRecord(start,0) );
+
+    cudaMemcpyAsync(Ad, A, bytesA, cudaMemcpyHostToDevice, strm);    
+    cudaMemcpyAsync(Bd, B, bytesB, cudaMemcpyHostToDevice, strm);   
+
+    #ifdef LOWPAR
+        matMulGridStride<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
+    #else
+        matMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
+    #endif
+
+    cudaMemcpyAsync( C, Cd, bytesC, cudaMemcpyDeviceToHost, strm);
+
+    checkCuda( cudaEventRecord(stop, 0) );
+    checkCuda( cudaEventSynchronize(stop) );
+    checkCuda( cudaEventElapsedTime(&ms, start, stop) );
+
+    free(A);
+    free(B);
+
+    return ms;
+}*/
+
+
+float newMatMulKer(
+    float *Ad, float *Bd, float *Cd, float *C,
+    int m, int k, int n, int chunk,
+    cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
+{
+
+    float ms;
+    int bytesA=m*k*sizeof(float);
+    int bytesB=k*n*sizeof(float);
+    int bytesC=m*n*sizeof(float);
+    float  *A=(float*)calloc(chunk,bytesA);//new float[M*K];
+    float *B=(float*)calloc(chunk,bytesB);//new float[K*N] ;
+
+    for(int i=0; i<chunk; ++i){
+        randomMatrix(m, k, &A[i*m*k]);
+        randomMatrix(k, n, &B[i*k*n]);  
+    }
+   
+
+    dim3 dimBlock(BLOCK,BLOCK,1);
+    dim3 dimGrid(GRIDx, GRIDy,1); 
+
+    checkCuda( cudaEventRecord(start,0) );
+
+    cudaMemcpyAsync(Ad, A, bytesA, cudaMemcpyHostToDevice, strm);    
+    cudaMemcpyAsync(Bd, B, bytesB, cudaMemcpyHostToDevice, strm);   
+
+    #ifdef LOWPAR
+        matMulGridStride<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
+    #else
+        matMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
+    #endif
+
+    cudaMemcpyAsync( C, Cd, bytesC, cudaMemcpyDeviceToHost, strm);
+
+    checkCuda( cudaEventRecord(stop, 0) );
+    checkCuda( cudaEventSynchronize(stop) );
+    checkCuda( cudaEventElapsedTime(&ms, start, stop) );
+
+    free(A);
+    free(B);
+
+    return ms;
+}
+
+
+
+
+float newSquareMatMulKer(
+    float *Ad, float *Bd, float *Cd, float *C,
+    int n, int chunk,
+    cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
+{
+
+    float ms;
+    int size=n*n;
+    int bytesMat=size*sizeof(float);
+    //int bytesB=n*n*sizeof(float);
+    //int bytesC=n*n*sizeof(float);
+    float  *A=(float*)calloc(chunk, bytesMat);//new float[M*K];
+    float *B=(float*)calloc(chunk, bytesMat);//new float[K*N] ;
+
+    for(int i=0; i<chunk; ++i){
+        randomMatrix(n, n, &A[i*size]);
+        randomMatrix(n, n, &B[i*size]);
+    }
+
+
+    dim3 dimBlock(BLOCK,BLOCK,1);
+    dim3 dimGrid(GRIDx, GRIDy,1); 
+
+    checkCuda( cudaEventRecord(start,0) );
+
+    cudaMemcpyAsync(Ad, A, bytesMat, cudaMemcpyHostToDevice, strm);    
+    cudaMemcpyAsync(Bd, B, bytesMat, cudaMemcpyHostToDevice, strm);   
+
+    #ifdef LOWPAR
+        squareMatMulGridStrideKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n);
+    #else
+        squareMatMulKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n);
+    #endif
+
+    cudaMemcpyAsync( C, Cd, bytesMat, cudaMemcpyDeviceToHost, strm);
+
+    checkCuda( cudaEventRecord(stop, 0) );
+    checkCuda( cudaEventSynchronize(stop) );
+    checkCuda( cudaEventElapsedTime(&ms, start, stop) );
+
+    free(A);
+    free(B);
+
+    return ms;
+}
+
+
+
+
+
+
+
+
 
 float blurBoxFilter (
     unsigned char *img_in, unsigned char *img_out,

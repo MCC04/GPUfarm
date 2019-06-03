@@ -55,6 +55,10 @@ managed: $(BIN)managed.out
 stream: $(BIN)stream.out
 empty: $(BIN)empty.out
 
+autosched: $(BIN)autosched.out
+
+$(BIN)autosched.out: $(BIN)autoScheduler.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
+	$(CC) $(ALLFLAGS) $(BIN)autoScheduler.o $(BIN)farmkernels.o $(BIN)cudaUtils.o -o $(BIN)autosched.out
 
 $(BIN)future.out: $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
 	$(CC) $(ALLFLAGS) $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o -o $(BIN)future.out
@@ -68,6 +72,10 @@ $(BIN)stream.out: $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
 $(BIN)empty.out: $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
 	$(CC) $(ALLFLAGS) $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o -o $(BIN)empty.out
 
+
+
+$(BIN)autoScheduler.o: $(SRC)autoScheduler.cpp $(INCLUDE)cosFutStr.h $(INCLUDE)cudaUtils.h
+	$(CC) $(ALLFLAGS) -c $(SRC)autoScheduler.cpp -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z) -o $(BIN)autoScheduler.o
 
 $(BIN)main_cos.o: $(SRC)main_cos.cpp $(INCLUDE)cosFutStr.h $(INCLUDE)cudaUtils.h
 	$(CC) $(ALLFLAGS) -c $(SRC)main_cos.cpp -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z) -o $(BIN)main_cos.o

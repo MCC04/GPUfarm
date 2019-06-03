@@ -26,7 +26,15 @@ void randomArray(float *x, int n);
 /*****Kernel launcers*****/
 float emptyKer();
 
-void cosKer(std::vector<my_struct> &getDatas,int bytesSize );
+
+
+void cosKer(my_struct *_xs, float *x_d, int *clocks_d, int chunkBytes,
+            cudaEvent_t start, cudaEvent_t stop, cudaStream_t strm);
+
+
+
+
+void cosKer(std::vector<my_struct> &getDatas, int chunk, int bytesSize );
 
 void cosKerStream(
     int m, int n,

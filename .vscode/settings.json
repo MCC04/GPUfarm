@@ -58,7 +58,8 @@
         "cstdarg": "cpp",
         "codecvt": "cpp",
         "filesystem": "cpp",
-        "string_view": "cpp"
+        "string_view": "cpp",
+        "iomanip": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled",
     "C_Cpp.dimInactiveRegions": false,

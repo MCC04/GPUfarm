@@ -88,7 +88,7 @@ done
 
 ############
 make clean
-echo -e "${BLUE}compiling smallmatmul LOW...${NC}"
+echo -e "${BLUE}compiling lot smallmatmul LOW...${NC}"
 echo ""
 make smallmatmullow
 let "BLOCK=4"

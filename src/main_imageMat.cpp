@@ -18,22 +18,27 @@ int BLOCK=0;
 int GRIDx=0;
 int GRIDy=0;
 
-int K_exec=0;
-int M_iter=0;
-int N_size=0;
+int K=0;
+int M=0;
+int N=0;
 int bytesSize;
 
-void printInfos(){
+void printInfos(bool square){
     #if !defined(MEASURES) 
         std::cout<<"Device : "<< prop.name <<std::endl;
         std::cout<<"multiproc num : "<< prop.multiProcessorCount <<std::endl;
         std::cout<<"warp size : "<< prop.warpSize <<std::endl;
             
         std::cout << "Items number \t Host iterations \t Kernel iterations " << std::endl;
-        std::cout << N_size<<" \t \t \t " << K_exec<< " \t \t \t " << M_iter << std::endl;
+        std::cout << N<<" \t \t \t " << K<< " \t \t \t " << M << std::endl;
     #else
-        std::cout<<BLOCK<<","<<GRIDx<<","<<GRIDy<<","<< N_size<<"," << K_exec<< "," << M_iter;
-    #endif     
+    if(square)
+        std::cout<< N <<","<< BLOCK <<","<< GRIDx;
+    else  
+        std::cout<< N <<","<< K <<","<< M <<","<< BLOCK <<","<< GRIDx <<","<< GRIDy;
+    #endif  
+
+       
 }
 
 void printResults(float ms){
@@ -75,44 +80,51 @@ void printMatrix(float *Cmat,int m, int n, float ms){
 }
 
 
+void checkMatMul(float *A, float *B, float *C, int M, int K, int N){
+    std::cout<< std::endl<< "CHECK FOR - C - MATRIX "<<std::endl;
+    //float *tmpA = &A[i*M*K];
+    //float *tmpB = &B[i*K*N];
+    //float *tmpC = (float*)malloc(bytesC);
+    for(int i=0; i<M; ++i) //M = r1
+    {
+        for(int j=0; j<N; ++j) //N = c2
+        {
+            float sum=0.0f;
+            for(int l=0; l<K; ++l) //K = c1                            
+                sum += getMatrixVal<float>( A,i,l,K )*getMatrixVal<float>( B,l,j,N );
+
+            setMatrixVal( C,i,j,N,sum );
+        } 
+    }
+    printMatrix(C, M, N, 0); 
+}
+
+
 int main(int argc, char **argv){
     std::srand(static_cast <unsigned> (time(NULL)));
 
-    int gpu_clk=1;
-    float clockSum=0.0, clockAvg=0.0, msTot=0.0;
-    float msSum=0.0, rb_wb=0.0; 
-    std::chrono::system_clock::time_point start,end;
+    int gpu_clk = 1;
+    float clockSum = 0.0, clockAvg = 0.0, msTot = 0.0;
+    float msSum = 0.0, rb_wb = 0.0; 
+    int nStream = 3;
+    std::chrono::system_clock::time_point start, end;
+    std::chrono::duration<double, std::milli> millis;  
+
+
 
     int devId = atoi(argv[1]);
     #ifndef LOWPAR
         BLOCK = atoi(argv[2]);
     #endif
-    int Nstr = atoi(argv[3]);
+    int iters = atoi(argv[3]);
 
-    bytesSize = N_size*sizeof(float); 
+    bytesSize = N*sizeof(float); 
      
     checkCuda(cudaDeviceGetAttribute(&gpu_clk, cudaDevAttrClockRate, devId));    
     checkCuda( cudaSetDevice(devId) );
     checkCuda( cudaGetDeviceProperties(&prop, devId));     
 
-#ifdef MATMUL
-    
-    M_iter = atoi(argv[4]);
-    K_exec = atoi(argv[5]);
-    N_size = atoi(argv[6]);
-    int matN = atoi(argv[7]);
-
-    const int streamSize = N_size ;
-    const int streamBytes = streamSize* sizeof(float);
-    float ms=0.0;
-
-    int bytesA=M_iter*K_exec*sizeof(float);
-    int bytesB=K_exec*N_size*sizeof(float);
-    int bytesC=M_iter*N_size*sizeof(float);
-    float  *A=(float*)calloc(matN, bytesA);//new float[M_iter*K_exec];
-    float *B=(float*)calloc(matN, bytesB);//new float[K_exec*N_size] ;
-    float * C=(float*)calloc(matN, bytesC);//new float[M_iter*N_size];
-
+    //EVENT creation
     cudaEvent_t startEvent, stopEvent;
     checkCuda( cudaEventCreate(&startEvent) );
     checkCuda( cudaEventCreate(&stopEvent) );
@@ -120,107 +132,175 @@ int main(int argc, char **argv){
     cudaEvent_t startTot, stopTot;
     checkCuda( cudaEventCreate(&startTot) );
     checkCuda( cudaEventCreate(&stopTot) );
+
+    //STREAM creation
+    cudaStream_t *stream=streamCreate(nStream);
+
+/*********
+* MATMUL *
+**********/
+#ifdef MATMUL
+    int matN;
+    bool square = atoi(argv[4]);
+    if(square){
+        N = atoi(argv[5]);
+        matN = atoi(argv[6]);
+        M = N;
+        K = N;
+    }
+    else{
+        M = atoi(argv[5]);
+        K = atoi(argv[6]);
+        N = atoi(argv[7]);
+        matN = atoi(argv[8]);
+    }
+
+
+    //const int streamSize = N ;
+    //const int streamBytes = streamSize* sizeof(float);
+    int chunk = matN/iters;
+    //const int streamBytes = chunk*sizeof(float);
+    float ms=0.0;
+
+    int bytesA = M*K*sizeof(float);
+    int bytesB = K*N*sizeof(float);
+    int bytesC = M*N*sizeof(float);
+    //const int streamBytes = chunk*(bytesA+bytesB+bytesA);
+    
+    /*float *A = (float*)calloc(matN, bytesA);
+    float *B = (float*)calloc(matN, bytesB);
+    float *C = (float*)calloc(matN, bytesC);*/
+
+    float *Ad = (float*)calloc(chunk, bytesA);
+    float *Bd = (float*)calloc(chunk, bytesB);
+    float *Cd = (float*)calloc(chunk, bytesC);
+
+
+    float *C = (float*)calloc(chunk, bytesC);
+
  
     #ifdef LOWPAR
-        BLOCK=2;
+        BLOCK=8;
         GRIDx= 1;
         GRIDy= 1;
     #else
-        /*GRIDx= (M_iter/BLOCK)+56;
-        GRIDy= (N_size/BLOCK)+57;*/
-        GRIDx= ceil(M_iter/BLOCK)+1;
-        GRIDy= ceil(N_size/BLOCK)+1;
+        GRIDx= ceil(M/BLOCK)+1;
+        GRIDy= ceil(N/BLOCK)+1;
     #endif
 
-    std::cout<<std::endl<<std::endl<<"#MATMUL,";
-    printInfos();
-    std::cout<<","<<Nstr<<","<<matN<<std::endl;
+
   
     start=std::chrono::system_clock::now();
     
-    cudaStream_t *stream=streamCreate(Nstr);
+    
     
     checkCuda( cudaEventRecord(startTot,0) );
-    checkCuda( cudaMallocManaged(&A, bytesA*matN) );
+    /*checkCuda( cudaMallocManaged(&A, bytesA*matN) );
     checkCuda( cudaMallocManaged(&B, bytesB*matN) );
-    checkCuda( cudaMallocManaged(&C, bytesC*matN) );
+    checkCuda( cudaMallocManaged(&C, bytesC*matN) );*/
+    checkCuda( cudaMalloc(&Ad, bytesA*chunk) );
+    checkCuda( cudaMalloc(&Bd, bytesB*chunk) );
+    checkCuda( cudaMalloc(&Cd, bytesC*chunk) );
 
-    
 
-    for (int j = 0; j < Nstr; ++j) {  
-        for (int i = 0; i < matN; ++i) {  
-            ms=matMulKer(&A[i*M_iter*K_exec], &B[i*K_exec*N_size], &C[i*M_iter*N_size], 
-                        M_iter, K_exec, N_size, stream[j], startEvent, stopEvent);
+    //for (int j = 0; j < Nstr; ++j) {  
+      //  for (int i = 0; i < matN; ++i) { 
+    for (int i = 0; i < iters; ++i) { 
+        int j = i%nStream;
+            if(square){
+                /*ms = matMulKer(&A[i*M*K], &B[i*K*N], &C[i*M*N], 
+                        M, K, N, stream[j], startEvent, stopEvent);*/
+                /*ms = newMatMulKer(&Ad[i*M*K], &Bd[i*K*N], &Cd[i*M*N], 
+                        M, K, N, chunk, stream[j], startEvent, stopEvent);*/
+                ms = newMatMulKer(Ad, Bd, Cd, C,
+                        M, K, N, chunk, stream[j], startEvent, stopEvent);
+            
+           
+            }
+            else{
+                int size = N*N;
+                /*ms = squareMatMulKer(&A[i*size], &B[i*size], &C[i*size], N,
+                        stream[j], startEvent, stopEvent);
+                ms = newSquareMatMulKer(&Ad[i*size], &Bd[i*size], &Cd[i*size], N, chunk,
+                        stream[j], startEvent, stopEvent);*/
+                ms = newSquareMatMulKer(Ad, Bd, Cd, C, N, chunk,
+                        stream[j], startEvent, stopEvent);
+            }
+            
 
             #if !defined(MEASURES)
-                printMatrix(&C[i*M_iter*N_size], M_iter, N_size, ms);
-            
-                std::cout<< std::endl<< "CHECK FOR - C - MATRIX "<<std::endl;
-                float *tmpA = &A[i*M_iter*K_exec];
-                float *tmpB = &B[i*K_exec*N_size];
+                printMatrix(C, M, N, ms);
                 float *tmpC = (float*)malloc(bytesC);
-                for(int ii = 0; ii < M_iter; ++ii) //M = r1
-                    for(int jj = 0; jj < N_size; ++jj) //N = c2
-                    {
-                        float sum=0.0;
-                        for(int kk = 0; kk < K_exec; ++kk) //K = c1
-                        {                            
-                            sum += getMatrixVal<float>(tmpA,ii,kk,K_exec) * getMatrixVal<float>(tmpB,kk,jj,N_size);
-                        }
-                        setMatrixVal(tmpC, ii, jj, N_size, sum);
-                    }    
-                printMatrix(tmpC, M_iter, N_size, ms);
+                checkMatMul(A, B, tmpC, M, K, N);              
             #endif
 
             msTot+=ms;
         }  
-                    
         
-        printResults(msTot); 
-    }
-    checkCuda( cudaEventRecord(stopTot, 0) );
+        //printResults(msTot); 
+    //}
+    /*checkCuda( cudaEventRecord(stopTot, 0) );
     checkCuda( cudaEventSynchronize(stopTot) );
-    checkCuda( cudaEventElapsedTime(&msSum, startTot, stopTot) );
+    checkCuda( cudaEventElapsedTime(&msSum, startTot, stopTot) );*/
 
-    streamDestroy(stream,Nstr);
-    end=std::chrono::system_clock::now();
+    end = std::chrono::system_clock::now();
 
-#elif SMALLMATMUL    
-    M_iter = atoi(argv[4]);
-    K_exec = atoi(argv[5]);
-    N_size = atoi(argv[6]);
-    int matN = atoi(argv[7]);
+    millis = end - start;
+    #ifdef MEASURES
+        std::cout<<std::endl<<"CHUNKMATMUL,"<< msSum <<","<< millis.count() <<",";
+        std::cout<< devId <<","<< iters <<","<< matN <<",";
+        printInfos(square);
+    #endif 
+    
 
-    const int streamSize = N_size ;
-    const int streamBytes = streamSize* sizeof(float);
+#elif SMALLMATMUL  
+
+    int square = atoi(argv[4]);
+    int matN = 0;
+    if(square){
+        N = atoi(argv[5]);
+        matN = atoi(argv[6]);
+        M = N;
+        K = N;
+    }
+    else{
+        M = atoi(argv[5]);
+        K = atoi(argv[6]);
+        N = atoi(argv[7]);
+        matN = atoi(argv[8]);
+    }
+
+
+    //const int streamSize = N ;
+    //int chunk = matN/iters;
+    //const int streamBytes = streamSize* sizeof(float);
     float ms=0.0;
 
-    int bytesA=M_iter*K_exec*sizeof(float);
-    int bytesB=K_exec*N_size*sizeof(float);
-    int bytesC=M_iter*N_size*sizeof(float);
-    float *Ad=(float*)calloc(1,bytesA);//new float[M_iter*K_exec];
-    float *Bd=(float*)calloc(1,bytesB);//new float[K_exec*N_size] ;
-    float *Cd=(float*)calloc(1,bytesC);//new float[M_iter*N_size];
-    float *C=(float*)calloc(1,bytesC);//new float[M_iter*N_size];
+    int bytesA=M*K*sizeof(float);
+    int bytesB=K*N*sizeof(float);
+    int bytesC=M*N*sizeof(float);
+    float *Ad=(float*)calloc(1,bytesA);//new float[M*K];
+    float *Bd=(float*)calloc(1,bytesB);//new float[K*N] ;
+    float *Cd=(float*)calloc(1,bytesC);//new float[M*N];
+    float *C=(float*)calloc(1,bytesC);//new float[M*N];
 
-    cudaEvent_t startEvent, stopEvent;
+    /*cudaEvent_t startEvent, stopEvent;
     checkCuda( cudaEventCreate(&startEvent) );
-    checkCuda( cudaEventCreate(&stopEvent) );
+    checkCuda( cudaEventCreate(&stopEvent) );*/
 
     #ifdef LOWPAR
-        BLOCK=2;
+        BLOCK=8;
         GRIDx= 1;
         GRIDy= 1;
     #else
-        /*GRIDx= (M_iter/BLOCK)+56;
-        GRIDy= (N_size/BLOCK)+57;*/
-        GRIDx= ceil(M_iter/BLOCK)+1;
-        GRIDy= ceil(N_size/BLOCK)+1;
+        GRIDx= ceil(M/BLOCK)+1;
+        GRIDy= ceil(N/BLOCK)+1;
     #endif
 
-    std::cout<<std::endl<<std::endl<<"#MATMUL,";
-    printInfos();
-    std::cout<<","<<Nstr<<","<<matN<<std::endl;
+    std::cout<<std::endl<<std::endl<<"ONEMATMUL,";
+    printInfos(square);
+    std::cout<<//","<<Nstr<<
+    ","<<matN<<std::endl;
   
     start=std::chrono::system_clock::now();
     
@@ -228,31 +308,57 @@ int main(int argc, char **argv){
     checkCuda( cudaMalloc(&Bd, bytesB) );
     checkCuda( cudaMalloc(&Cd, bytesC) );
 
-    cudaStream_t *stream=streamCreate(Nstr);
+    //cudaStream_t *stream=streamCreate(nStream);
 
-    for (int j = 0; j < Nstr; ++j) {  
-        for (int i = 0; i < matN; ++i) {  
+    //for (int j = 0; j < Nstr; ++j) {  
+    //    for (int i = 0; i < matN; ++i) {  
+    for (int i = 0; i < matN; ++i) { 
+        int j = i%nStream;
 
-            ms=smallMatMulKer(Ad, Bd, Cd, C,
-                        M_iter, K_exec, N_size, stream[j], startEvent, stopEvent);
+            if(square){
+                /*ms = smallSquareMatMulKer(Ad, Bd, Cd, C,
+                        N, stream[j], startEvent, stopEvent);
+                ms = newSquareMatMulKer(&Ad[i*size], &Bd[i*size], &Cd[i*size], C, N, 1,
+                        stream[j], startEvent, stopEvent);*/
+
+                ms = newSquareMatMulKer(Ad, Bd, Cd, C, N, 1,
+                        stream[j], startEvent, stopEvent);
+                
+            }
+            else{
+                /*ms=smallMatMulKer(Ad, Bd, Cd, C,
+                        M, K, N, stream[j], startEvent, stopEvent);*/
+                ms = newMatMulKer(Ad, Bd, Cd, C,
+                        M, K, N, 1, stream[j], startEvent, stopEvent);
+            }
+            
                       
             #if !defined(MEASURES)
-                printMatrix(C, M_iter, N_size, ms);
-            //#else
-               // printResults(ms);
+                printMatrix(C, M, N, ms);
+                float *tmpC = (float*)malloc(bytesC);
+                checkMatMul(A, B, tmpC, M, K, N);
             #endif
 
             msSum+=ms;
-        }   
-        printResults(msSum);
+    //    }   
+        //printResults(msSum);
     }
 
-    streamDestroy(stream,Nstr);
+    //streamDestroy(stream,nStream);
+    
     free(C);
     cudaFree(Ad);
     cudaFree(Bd);
     cudaFree(Cd);
     end=std::chrono::system_clock::now();
+
+
+    millis = end - start;
+    #ifdef MEASURES
+        std::cout<<std::endl<<"ONEMATMUL,"<< msSum <<","<< millis.count() <<",";
+        std::cout<< devId <<","<< iters <<","<< matN <<",";
+        printInfos(square);
+    #endif 
 
 #elif BLURBOX
     unsigned int width, height;
@@ -262,13 +368,13 @@ int main(int argc, char **argv){
 
     std::cout<<std::endl<<std::endl<<"#BLURBOX,";
     #ifndef MEASURES
-    printInfos();
+    printInfos(square);
     #endif
     std::cout<<std::endl;
 
     start=std::chrono::system_clock::now();
 
-    cudaEvent_t startEvent, stopEvent;  
+    /*cudaEvent_t startEvent, stopEvent;  
     checkCuda( cudaEventCreate(&startEvent) );
     checkCuda( cudaEventCreate(&stopEvent) );
 
@@ -276,7 +382,7 @@ int main(int argc, char **argv){
     checkCuda( cudaEventCreate(&startTot) );
     checkCuda( cudaEventCreate(&stopTot) );
 
-    cudaStream_t *stream=streamCreate(Nstr);
+    cudaStream_t *stream=streamCreate(nStream);*/
 
     int j;
     for (j=0; j<Nstr; ++j){
@@ -356,7 +462,7 @@ int main(int argc, char **argv){
             msTot+=ms;
         }
     }    
-    streamDestroy(stream,Nstr);
+    //streamDestroy(stream,nStream);
     end=std::chrono::system_clock::now();  
 
 #elif BLURGAUSS
@@ -369,12 +475,12 @@ int main(int argc, char **argv){
 
     std::cout<<std::endl<<std::endl<<"#BLURFILTER,";
     #ifndef MEASURES
-    printInfos();
+    printInfos(square);
     #endif
 
     start=std::chrono::system_clock::now();
 
-    cudaEvent_t startEvent, stopEvent;  
+    /*cudaEvent_t startEvent, stopEvent;  
     checkCuda( cudaEventCreate(&startEvent) );
     checkCuda( cudaEventCreate(&stopEvent) );
 
@@ -384,7 +490,7 @@ int main(int argc, char **argv){
 
 
 
-    cudaStream_t *stream=streamCreate(Nstr);
+    cudaStream_t *stream=streamCreate(nStream);*/
 
     int j;
     for (j=0; j<Nstr; ++j){
@@ -451,12 +557,17 @@ int main(int argc, char **argv){
         }
     }
     
-    streamDestroy(stream,Nstr);
+    //streamDestroy(stream,nStream);
     end=std::chrono::system_clock::now();     
 #endif
 
-    std::chrono::duration<double, std::milli> millis = end - start;   
-    printTotalTimes(msSum,  millis.count() );
+    //STREAM destruction
+    streamDestroy(stream,nStream);
+
+    //std::chrono::duration<double, std::milli> millis = end - start;  
+    #ifndef MESURES 
+        printTotalTimes(msSum,  millis.count() );
+    #endif
 
     return 0;
 }

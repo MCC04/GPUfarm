@@ -63,7 +63,9 @@ __global__ void cosGridStride(int M, int N, float *x_d, int *myclocks, int offse
 }
 
 
-//KERNEL LAUNCERS
+/******************
+* KERNEL LAUNCERS *
+*******************/
 float emptyKer(){
     float ms=0;
     cudaEvent_t startEvent, stopEvent;
@@ -81,7 +83,32 @@ float emptyKer(){
     return ms;    
 }
 
-void cosKer(std::vector<my_struct> &getDatas,int bytesSize )
+
+
+/*void cosKer(my_struct *_xs, float *x_d, int *clocks_d, int chunkBytes,
+            cudaEvent_t start, cudaEvent_t stop, cudaStream_t strm)
+{    
+    checkCuda( cudaEventRecord(start,0) );
+
+    checkCuda(cudaMemcpyAsync(x_d, _xs->x_vect, chunkBytes, cudaMemcpyHostToDevice, strm));
+    #ifdef LOWPAR
+        //cosGridStride<<<GRID, BLOCK, 0, strm>>>(M_iter, N_size, x_d, clocks_d, 0);
+        cosGridStride<<<GRID, BLOCK, 0, strm>>>(M_iter, chunk, x_d, clocks_d, 0);
+    #else
+        //cosKernel<<<GRID, BLOCK, 0, strm>>>(M_iter, N_size, x_d, clocks_d, 0);
+        cosKernel<<<GRID, BLOCK, 0, strm>>>(M_iter, chunk, x_d, clocks_d, 0);
+    #endif
+    checkCuda(cudaMemcpyAsync( _xs->x_vect, x_d, chunkBytes, cudaMemcpyDeviceToHost, strm));
+    checkCuda(cudaMemcpyAsync( _xs->clocks, clocks_d, GRID*sizeof(int), cudaMemcpyDeviceToHost, strm));
+
+    checkCuda( cudaEventRecord(stop, 0) );
+    checkCuda( cudaEventSynchronize(stop) );
+    checkCuda( cudaEventElapsedTime(&_xs->eventTime, start, stop) );            
+}*/
+
+
+
+void cosKer(std::vector<my_struct> &getDatas, int chunk, int bytesSize )
 {
     std::vector<std::future<my_struct>> futures;
     int *clocks_d;
@@ -99,18 +126,17 @@ void cosKer(std::vector<my_struct> &getDatas,int bytesSize )
             [&]() { 
                 my_struct _xs;
                 _xs.clocks=new int[GRID];
-                _xs.x_vect=new float[N_size];
-                randomArray(_xs.x_vect, N_size);
+                _xs.x_vect=new float[chunk];
+                randomArray(_xs.x_vect, chunk);
 
                 checkCuda( cudaEventRecord(startEvent,0) );
 
                 checkCuda(cudaMemcpy(x_d, _xs.x_vect, bytesSize, cudaMemcpyHostToDevice)); 
 
-                //#ifdef STRIDE
                 #ifdef LOWPAR
-                    cosGridStride<<<GRID, BLOCK>>>(M_iter, N_size, x_d, clocks_d, 0);
+                    cosGridStride<<<GRID, BLOCK>>>(M_iter, chunk, x_d, clocks_d, 0);
                 #else
-                    cosKernel<<<GRID, BLOCK>>>(M_iter, N_size, x_d,clocks_d, 0);
+                    cosKernel<<<GRID, BLOCK>>>(M_iter, chunk, x_d,clocks_d, 0);
                 #endif
                               
                 checkCuda(cudaMemcpy( _xs.x_vect, x_d, bytesSize, cudaMemcpyDeviceToHost));
@@ -128,34 +154,43 @@ void cosKer(std::vector<my_struct> &getDatas,int bytesSize )
 }
 
 void cosKerStream(
-    int m, int n,
+    int m, int chunk,
     float *x, int *clocks, 
     int offset, cudaStream_t strm)
 {
-        //#ifdef STRIDE
-        #ifdef LOWPAR
+       /* #ifdef LOWPAR
             cosGridStride<<<GRID, BLOCK, offset, strm>>>(m, n, x, clocks, offset);
         #else
             cosKernel<<<GRID, BLOCK, offset, strm>>>(m, n, x, clocks, offset);
+        #endif*/
+        #ifdef LOWPAR
+            cosGridStride<<<GRID, BLOCK, offset, strm>>>(m, chunk, x, clocks, offset);
+        #else
+            cosKernel<<<GRID, BLOCK, offset, strm>>>(m, chunk, x, clocks, offset);
         #endif
 }
 
 float  cosKerStream(
     cudaEvent_t start, cudaEvent_t stop,
-    int m, int n,
+    int m, int chunk,//int n,
     float *x, float *cosx,  int *clocks, 
     int offset, cudaStream_t strm)
 {
     float ms;  
-    randomArray(x, n);
-    memcpy(cosx,x,N_size);
+    //randomArray(x, n);
+    //memcpy(cosx,x,N_size);
+    randomArray(x,chunk);
+    memcpy(cosx,x,chunk);
+    
     checkCuda( cudaEventRecord(start,0) );
 
     //#ifdef STRIDE
     #ifdef LOWPAR
-        cosGridStride<<<GRID, BLOCK, offset, strm>>>(m, n, cosx, clocks, offset);
+        //cosGridStride<<<GRID, BLOCK, offset, strm>>>(m, n, cosx, clocks, offset);
+        cosGridStride<<<GRID, BLOCK, offset, strm>>>(m, chunk, cosx, clocks, offset);
     #else
-        cosKernel<<<GRID, BLOCK, offset, strm>>>(m, n, cosx, clocks, offset);
+        //cosKernel<<<GRID, BLOCK, offset, strm>>>(m, n, cosx, clocks, offset);
+        cosKernel<<<GRID, BLOCK, offset, strm>>>(m, chunk, cosx, clocks, offset);
     #endif
 
     checkCuda( cudaEventRecord(stop, 0) );
