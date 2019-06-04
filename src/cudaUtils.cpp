@@ -23,6 +23,6 @@ void streamDestroy(cudaStream_t *stream, int nStreams){
 cudaStream_t* streamCreate(int nStreams){
     cudaStream_t *stream=new cudaStream_t[nStreams];
     for (int i = 0; i < nStreams; ++i)
-        checkCuda(cudaStreamCreate(&stream[i]));
+        checkCuda( cudaStreamCreate(&stream[i]) );
     return stream;
 }

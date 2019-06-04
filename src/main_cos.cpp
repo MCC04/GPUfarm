@@ -59,6 +59,8 @@ void printAll(float *cosx, int *clocks, float ms){
     std::cout<<std::endl<<"COSX array : " <<std::endl;  
     int chunk = N_size/K_exec;
     for(int j=0; j<chunk;j+=1) 
+    //for(int j=0; j<N_size;j+=1) 
+
         std::cout << cosx[j] << ", ";    
     std::cout << std::endl;
     std::cout <<"Clocks measures"<< std::endl;
@@ -117,7 +119,8 @@ int main(int argc, char **argv){
     int chunk = N_size/K_exec;
     bytesSize = chunk*sizeof(float); 
 
-    float *x=new float [N_size];      
+    //float *x=new float [N_size]; 
+
      
     checkCuda(cudaDeviceGetAttribute(&gpu_clk, cudaDevAttrClockRate, devId));    
     checkCuda( cudaSetDevice(devId) );
@@ -159,20 +162,29 @@ int main(int argc, char **argv){
     #endif*/
     end=std::chrono::system_clock::now();
 
+    //cudaFreeHost(x);
 #elif STREAM
     int nStream= 3;
     int *clocks_d,*clocks;
-    float *cosx=new float[N_size];
+    float *cosx;
+    //float *cosx=new float[N_size];
+    checkCuda( cudaMallocHost((void **)&cosx, N_size*sizeof(float)) ); //pinned cosx
+
     //float *cosx=new float[chunk];
     //const int streamSize = N_size;
     //const int streamBytes = streamSize* sizeof(float) ;
     const int streamBytes = chunk*sizeof(float) ;
     #ifndef LOWPAR
         //GRID=streamSize/BLOCK; 
-        GRID=chunk/BLOCK; 
+        GRID=ceil(chunk/BLOCK); 
 
     #endif
-    clocks=new int[GRID]; 
+    //clocks=new int[GRID];
+        float *x;     
+
+    checkCuda( cudaMallocHost((void **)&x, N_size*sizeof(float)) ); //pinned x
+    checkCuda( cudaMallocHost((void **)&clocks, GRID*sizeof(float)) ); //pinned clocks
+ 
 
     std::cout<<std::endl<<"STREAM,";
     printInfos();    
@@ -190,35 +202,54 @@ int main(int argc, char **argv){
    
     cudaStream_t *stream=streamCreate(nStream);
 
+    checkCuda( cudaEventRecord(startEvent,0) );
+
     for (int i = 0; i < K_exec; ++i) {  
         int k = i%nStream;
-        ms=0;   
+        //ms=0;   
         //randomArray(x,N_size);
         randomArray(&x[i*chunk],chunk);
 
-        checkCuda( cudaEventRecord(startEvent,0) );
+       //// checkCuda( cudaEventRecord(startEvent,0) );
         
         checkCuda( cudaMemcpyAsync(x_d, &x[i*chunk], streamBytes, cudaMemcpyHostToDevice, stream[k]) );          
         //cosKerStream(M_iter,N_size, x_d, clocks_d, 0, stream[k]);
         cosKerStream(M_iter,chunk, x_d, clocks_d, 0, stream[k]);
+        
         checkCuda( cudaMemcpyAsync( &cosx[i*chunk], x_d, streamBytes, cudaMemcpyDeviceToHost, stream[k]) );
         checkCuda( cudaMemcpyAsync( clocks, clocks_d, GRID*sizeof(int), cudaMemcpyDeviceToHost, stream[k]) );
 
-        checkCuda( cudaEventRecord(stopEvent, 0) );
-        checkCuda( cudaEventSynchronize(stopEvent) );
-        checkCuda( cudaEventElapsedTime(&ms, startEvent, stopEvent) );
+       /// checkCuda( cudaEventRecord(stopEvent, 0) );
+       /// checkCuda( cudaEventSynchronize(stopEvent) );
+       /// checkCuda( cudaEventElapsedTime(&ms, startEvent, stopEvent) );
    
         #ifndef MEASURES
-            printAll(&cosx[i*chunk], clocks, ms);
+           // printAll(&cosx[i*chunk], clocks, ms);
         //#else
           //  printResults(ms);
         #endif   
 
-        msSum+=ms;
+       // msSum+=ms;
     }    
+    //cudaDeviceSynchronize();
+
+    checkCuda( cudaEventRecord(stopEvent, 0) );
+    checkCuda( cudaEventSynchronize(stopEvent) );
+    checkCuda( cudaEventElapsedTime(&ms, startEvent, stopEvent) );
+
+    printAll(cosx, clocks, ms);
+
     streamDestroy(stream,nStream);    
-    delete [] cosx;
-    delete [] clocks;
+    //delete [] cosx;
+    //delete [] clocks;
+    cudaFreeHost(x);
+
+    cudaFreeHost(cosx);
+    cudaFreeHost(clocks);
+
+    cudaFree(x_d);
+    cudaFree(clocks_d);
+
     end=std::chrono::system_clock::now();
 
 #elif MANAGED
@@ -293,14 +324,14 @@ int main(int argc, char **argv){
     printTotalTimes(msSum,  (end-start).count() );
 
     #ifndef MANAGED
-        delete [] x;
+        //delete [] x;
     #endif
     #ifdef STREAM 
         cudaFree(x_d);
         cudaFree(clocks_d);
-    #elif STREAMMANAGED
-        cudaFree(x);
-        cudaFree(clocks);
+    //#elif STREAMMANAGED
+      //  cudaFree(x);
+       // cudaFree(clocks);
     #endif
 
     return 0;

@@ -54,12 +54,14 @@ float blurBoxFilter (
 //NEW MAT MUL KERNELS
 
 float newMatMulKer(
-    float *Ad, float *Bd, float *Cd, float *C,
+    float *A, float *B, float *C,
+    float *Ad, float *Bd, float *Cd, 
     int m, int k, int n, int chunk,
     cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop);
 
 
     float newSquareMatMulKer(
-    float *Ad, float *Bd, float *Cd, float *C,
+    float *A, float *B, float *C,
+    float *Ad, float *Bd, float *Cd, 
     int n, int chunk,
     cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop);

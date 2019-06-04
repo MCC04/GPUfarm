@@ -176,8 +176,12 @@ int main(int argc, char **argv){
     float *Cd = (float*)calloc(chunk, bytesC);
 
 
-    float *C = (float*)calloc(chunk, bytesC);
+    //float *C = (float*)calloc(chunk, bytesC);
 
+    float *A, *B, *C;
+    checkCuda( cudaMallocHost((void **)&A, bytesA*chunk) );
+    checkCuda( cudaMallocHost((void **)&B, bytesB*chunk) );
+    checkCuda( cudaMallocHost((void **)&C, bytesC*chunk) );
  
     #ifdef LOWPAR
         BLOCK=8;
@@ -194,7 +198,7 @@ int main(int argc, char **argv){
     
     
     
-    checkCuda( cudaEventRecord(startTot,0) );
+  //  checkCuda( cudaEventRecord(startTot,0) );
     /*checkCuda( cudaMallocManaged(&A, bytesA*matN) );
     checkCuda( cudaMallocManaged(&B, bytesB*matN) );
     checkCuda( cudaMallocManaged(&C, bytesC*matN) );*/
@@ -207,12 +211,12 @@ int main(int argc, char **argv){
       //  for (int i = 0; i < matN; ++i) { 
     for (int i = 0; i < iters; ++i) { 
         int j = i%nStream;
-            if(square){
+            if(!square){
                 /*ms = matMulKer(&A[i*M*K], &B[i*K*N], &C[i*M*N], 
                         M, K, N, stream[j], startEvent, stopEvent);*/
                 /*ms = newMatMulKer(&Ad[i*M*K], &Bd[i*K*N], &Cd[i*M*N], 
                         M, K, N, chunk, stream[j], startEvent, stopEvent);*/
-                ms = newMatMulKer(Ad, Bd, Cd, C,
+                ms = newMatMulKer(A, B, C, Ad, Bd, Cd, 
                         M, K, N, chunk, stream[j], startEvent, stopEvent);
             
            
@@ -223,15 +227,15 @@ int main(int argc, char **argv){
                         stream[j], startEvent, stopEvent);
                 ms = newSquareMatMulKer(&Ad[i*size], &Bd[i*size], &Cd[i*size], N, chunk,
                         stream[j], startEvent, stopEvent);*/
-                ms = newSquareMatMulKer(Ad, Bd, Cd, C, N, chunk,
+                ms = newSquareMatMulKer(A, B, C, Ad, Bd, Cd, N, chunk,
                         stream[j], startEvent, stopEvent);
             }
             
 
             #if !defined(MEASURES)
-                printMatrix(C, M, N, ms);
-                float *tmpC = (float*)malloc(bytesC);
-                checkMatMul(A, B, tmpC, M, K, N);              
+               // printMatrix(C, M, N, ms);
+                //float *tmpC = (float*)malloc(bytesC);
+                //checkMatMul(A, B, tmpC, M, K, N);              
             #endif
 
             msTot+=ms;
@@ -252,7 +256,12 @@ int main(int argc, char **argv){
         printInfos(square);
     #endif 
     
-
+    cudaFreeHost(A);
+    cudaFreeHost(B);
+    cudaFreeHost(C);
+    cudaFree(Ad);
+    cudaFree(Bd);
+    cudaFree(Cd);
 #elif SMALLMATMUL  
 
     int square = atoi(argv[4]);
@@ -274,15 +283,23 @@ int main(int argc, char **argv){
     //const int streamSize = N ;
     //int chunk = matN/iters;
     //const int streamBytes = streamSize* sizeof(float);
-    float ms=0.0;
+    float ms = 0.0f;
 
-    int bytesA=M*K*sizeof(float);
-    int bytesB=K*N*sizeof(float);
-    int bytesC=M*N*sizeof(float);
-    float *Ad=(float*)calloc(1,bytesA);//new float[M*K];
-    float *Bd=(float*)calloc(1,bytesB);//new float[K*N] ;
-    float *Cd=(float*)calloc(1,bytesC);//new float[M*N];
-    float *C=(float*)calloc(1,bytesC);//new float[M*N];
+    int bytesA = M*K*sizeof(float);
+    int bytesB = K*N*sizeof(float);
+    int bytesC = M*N*sizeof(float);
+    float *Ad = (float*)calloc(1,bytesA);//new float[M*K];
+    float *Bd = (float*)calloc(1,bytesB);//new float[K*N] ;
+    float *Cd = (float*)calloc(1,bytesC);//new float[M*N];
+
+   /* float *A = (float*)calloc(chunk,bytesA);
+    float *B = (float*)calloc(chunk,bytesB);
+    float *C = (float*)calloc(1,bytesC);*/
+
+    float *A, *B, *C;
+    checkCuda( cudaMallocHost((void **)&A, bytesA) );
+    checkCuda( cudaMallocHost((void **)&B, bytesB) );
+    checkCuda( cudaMallocHost((void **)&C, bytesC) );
 
     /*cudaEvent_t startEvent, stopEvent;
     checkCuda( cudaEventCreate(&startEvent) );
@@ -310,9 +327,8 @@ int main(int argc, char **argv){
 
     //cudaStream_t *stream=streamCreate(nStream);
 
-    //for (int j = 0; j < Nstr; ++j) {  
+    for (int i = 0; i < Nstr; ++i) {  
     //    for (int i = 0; i < matN; ++i) {  
-    for (int i = 0; i < matN; ++i) { 
         int j = i%nStream;
 
             if(square){
@@ -321,22 +337,22 @@ int main(int argc, char **argv){
                 ms = newSquareMatMulKer(&Ad[i*size], &Bd[i*size], &Cd[i*size], C, N, 1,
                         stream[j], startEvent, stopEvent);*/
 
-                ms = newSquareMatMulKer(Ad, Bd, Cd, C, N, 1,
+                ms = newSquareMatMulKer(A, B, C, Ad, Bd, Cd, N, 1,
                         stream[j], startEvent, stopEvent);
                 
             }
             else{
                 /*ms=smallMatMulKer(Ad, Bd, Cd, C,
                         M, K, N, stream[j], startEvent, stopEvent);*/
-                ms = newMatMulKer(Ad, Bd, Cd, C,
+                ms = newMatMulKer(A, B, C, Ad, Bd, Cd,
                         M, K, N, 1, stream[j], startEvent, stopEvent);
             }
             
                       
             #if !defined(MEASURES)
-                printMatrix(C, M, N, ms);
-                float *tmpC = (float*)malloc(bytesC);
-                checkMatMul(A, B, tmpC, M, K, N);
+                //printMatrix(C, M, N, ms);
+                //float *tmpC = (float*)malloc(bytesC);
+                //checkMatMul(A, B, tmpC, M, K, N);
             #endif
 
             msSum+=ms;
@@ -346,10 +362,7 @@ int main(int argc, char **argv){
 
     //streamDestroy(stream,nStream);
     
-    free(C);
-    cudaFree(Ad);
-    cudaFree(Bd);
-    cudaFree(Cd);
+ 
     end=std::chrono::system_clock::now();
 
 
@@ -359,7 +372,12 @@ int main(int argc, char **argv){
         std::cout<< devId <<","<< iters <<","<< matN <<",";
         printInfos(square);
     #endif 
-
+   cudaFreeHost(A);
+    cudaFreeHost(B);
+    cudaFreeHost(C);
+    cudaFree(Ad);
+    cudaFree(Bd);
+    cudaFree(Cd);
 #elif BLURBOX
     unsigned int width, height;
     float ms=0, elapsed=0, tmp=0.0;
