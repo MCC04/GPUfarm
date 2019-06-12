@@ -55,11 +55,11 @@ void printTotalTimes(float eventsTime,  float hostTime ){
     #endif
 }
 
-void printAll(float *cosx, int *clocks, float ms){    
+void printAll(float *cosx, int size, int *clocks, float ms){    
     std::cout<<std::endl<<"COSX array : " <<std::endl;  
-    int chunk = N_size/K_exec;
-    for(int j=0; j<chunk;j+=1) 
-    //for(int j=0; j<N_size;j+=1) 
+    //int chunk = N_size/K_exec;
+    //for(int j=0; j<chunk;j+=1) 
+    for(int j=0; j<size;j+=1) 
 
         std::cout << cosx[j] << ", ";    
     std::cout << std::endl;
@@ -83,25 +83,35 @@ void printAll(float *cosx, int *clocks, float ms){
     std::cout<<std::endl<<"----Effective Bandwidth: "<< (rb_wb/ms/1e6)<<"GB/s"<<std::endl;      
 }
 
-int main(int argc, char **argv){   
-
+int main(int argc, char **argv){  
     std::srand(static_cast <unsigned> (time(NULL)));
 
     int gpu_clk=1;
     float clockSum=0.0, clockAvg=0.0;
-    float msSum=0.0, rb_wb=0.0; 
+    float msSum=0.0, rb_wb=0.0;     
+    float ms=0;
+    std::string label;
     std::chrono::system_clock::time_point start,end;
+    std::chrono::duration<double, std::milli> millis;  
 
-    int devId = atoi(argv[1]);
-    #ifdef LOWPAR
-        BLOCK=64;//BLOCK=8;
-        GRID=1;
-    #else
-        BLOCK = atoi(argv[2]);
-    #endif
+    //args
+    int devId = atoi(argv[1]); 
+    BLOCK = atoi(argv[2]);
     K_exec = atoi(argv[3]);
     M_iter = atoi(argv[4]);
     N_size = atoi(argv[5]);
+
+    int chunk = N_size/K_exec;
+    bytesSize = chunk*sizeof(float); //bytesSize = N_size*sizeof(float); 
+
+    //grid setting
+    #ifdef LOWPAR
+        GRID=1;
+        label = "LOW";
+    #else
+        label = "";
+        GRID = ceil(chunk/BLOCK); //then make test on non divisible factors 
+    #endif
 
 
     #ifdef EMPTY
@@ -111,147 +121,128 @@ int main(int argc, char **argv){
             std::cout <<ms<< ",";     
         }
         std::cout <<std::endl; 
-
         return 0;
     #endif
 
-    //bytesSize = N_size*sizeof(float); 
-    int chunk = N_size/K_exec;
-    bytesSize = chunk*sizeof(float); 
 
-    //float *x=new float [N_size]; 
-
-     
+    //device id setting
     checkCuda(cudaDeviceGetAttribute(&gpu_clk, cudaDevAttrClockRate, devId));    
     checkCuda( cudaSetDevice(devId) );
     checkCuda( cudaGetDeviceProperties(&prop, devId));     
 
+/*** FUTURE ***/
 #ifdef FUTURE
-    std::cout<<std::endl<<"FUTURE,"<<devId;
-    #ifndef LOWPAR
-        //GRID=N_size/BLOCK; 
-        GRID = chunk/BLOCK; 
-    #endif
-    
-    printInfos();
+    std::vector<double> bandW;
     std::vector<my_struct> getDatas;   
+
+    #ifndef MEASURES
+        printInfos(); 
+    #endif
+
+    //chrono start
     start=std::chrono::system_clock::now();
 
-    cosKer(getDatas,chunk, bytesSize);
+    //kernels launcher
+    ms = cosKer(getDatas,chunk, bytesSize);
 
-    std::vector<double> bandW;
-
-    /*#ifdef MEASURES
-        std::cout << std::endl << "*";
-    #endif*/
+    //data gathering
+    #ifndef MEASURES
     for(auto item : getDatas){  
-        #ifndef MEASURES
-            printAll(item.x_vect, item.clocks, item.eventTime);
-        #else
-            //std::cout<< item.eventTime <<",";
+        
+            printAll(item.x_vect, chunk, item.clocks, item.eventTime);
             float rb_wb=bytesSize*2 + GRID*sizeof(float); 
             bandW.push_back(rb_wb/item.eventTime/1e6);
-        #endif 
-        msSum+=item.eventTime;
+        
+       // ms+=item.eventTime;
     } 
-    /*#ifdef MEASURES
-    std::cout <<std::endl<<"@";
-    for(auto b : bandW){ 
-        std::cout<< b <<",";
-    }
-    #endif*/
+    #endif 
+
+    //chrono end
     end=std::chrono::system_clock::now();
 
-    //cudaFreeHost(x);
-#elif STREAM
-    int nStream= 3;
-    int *clocks_d,*clocks;
-    float *cosx;
-    //float *cosx=new float[N_size];
-    checkCuda( cudaMallocHost((void **)&cosx, N_size*sizeof(float)) ); //pinned cosx
-
-    //float *cosx=new float[chunk];
-    //const int streamSize = N_size;
-    //const int streamBytes = streamSize* sizeof(float) ;
-    const int streamBytes = chunk*sizeof(float) ;
-    #ifndef LOWPAR
-        //GRID=streamSize/BLOCK; 
-        GRID=ceil(chunk/BLOCK); 
-
+    //print results
+    #ifdef MEASURES
+        millis = end-start;
+        label += "FUTURE";
+        std::cout<< label << ","<< ms <<","<< millis.count() <<","             //outputs
+                            << M_iter <<","<< N_size <<"," << K_exec <<","      //inputs
+                            << devId <<","<< BLOCK <<","<< GRID << std::endl;   //GPU infos
     #endif
-    //clocks=new int[GRID];
-        float *x;     
 
-    checkCuda( cudaMallocHost((void **)&x, N_size*sizeof(float)) ); //pinned x
-    checkCuda( cudaMallocHost((void **)&clocks, GRID*sizeof(float)) ); //pinned clocks
- 
-
-    std::cout<<std::endl<<"STREAM,";
-    printInfos();    
-
+/*** STREAM ***/
+#elif STREAM
+    const int nStream= 3;
+    const int streamBytes = chunk*sizeof(float) ;
+   
+    //chrono start
     start=std::chrono::system_clock::now();
 
-    cudaEvent_t startEvent, stopEvent;
-    checkCuda( cudaEventCreate(&startEvent) );
-    checkCuda( cudaEventCreate(&stopEvent) );
-
-    float *x_d;
-    float ms=0;
+    //allocate host pinned memory
+    float *x;         
+    float *cosx;
+    int *clocks;
+    checkCuda( cudaMallocHost((void **)&x, N_size*sizeof(float)) ); //pinned x    
+    checkCuda( cudaMallocHost((void **)&cosx, N_size*sizeof(float)) ); //pinned cosx
+    checkCuda( cudaMallocHost((void **)&clocks, GRID*sizeof(float)) ); //pinned clocks
+    //allocate device memory
+    float *x_d; 
+    int *clocks_d;
     checkCuda( cudaMalloc((void**)&x_d, streamBytes) );
     checkCuda( cudaMalloc((void**)&clocks_d, GRID*sizeof(int)) );
    
+    //stream array create
     cudaStream_t *stream=streamCreate(nStream);
-
+    //events creation and start
+    cudaEvent_t startEvent, stopEvent;
+    checkCuda( cudaEventCreate(&startEvent) );
+    checkCuda( cudaEventCreate(&stopEvent) );
     checkCuda( cudaEventRecord(startEvent,0) );
 
     for (int i = 0; i < K_exec; ++i) {  
         int k = i%nStream;
-        //ms=0;   
-        //randomArray(x,N_size);
         randomArray(&x[i*chunk],chunk);
-
-       //// checkCuda( cudaEventRecord(startEvent,0) );
         
-        checkCuda( cudaMemcpyAsync(x_d, &x[i*chunk], streamBytes, cudaMemcpyHostToDevice, stream[k]) );          
-        //cosKerStream(M_iter,N_size, x_d, clocks_d, 0, stream[k]);
-        cosKerStream(M_iter,chunk, x_d, clocks_d, 0, stream[k]);
+        checkCuda( cudaMemcpyAsync(x_d, &x[i*chunk], streamBytes, cudaMemcpyHostToDevice, stream[k]) ); 
+        //cos kernel call, move memcpy there then
+        cosKerStream(M_iter,chunk, x_d, clocks_d, stream[k],0);
         
         checkCuda( cudaMemcpyAsync( &cosx[i*chunk], x_d, streamBytes, cudaMemcpyDeviceToHost, stream[k]) );
         checkCuda( cudaMemcpyAsync( clocks, clocks_d, GRID*sizeof(int), cudaMemcpyDeviceToHost, stream[k]) );
-
-       /// checkCuda( cudaEventRecord(stopEvent, 0) );
-       /// checkCuda( cudaEventSynchronize(stopEvent) );
-       /// checkCuda( cudaEventElapsedTime(&ms, startEvent, stopEvent) );
-   
-        #ifndef MEASURES
-           // printAll(&cosx[i*chunk], clocks, ms);
-        //#else
-          //  printResults(ms);
-        #endif   
-
-       // msSum+=ms;
     }    
-    //cudaDeviceSynchronize();
 
+    //events stop
     checkCuda( cudaEventRecord(stopEvent, 0) );
     checkCuda( cudaEventSynchronize(stopEvent) );
     checkCuda( cudaEventElapsedTime(&ms, startEvent, stopEvent) );
-
-    printAll(cosx, clocks, ms);
-
+    
+    //stream array destroy
     streamDestroy(stream,nStream);    
-    //delete [] cosx;
-    //delete [] clocks;
-    cudaFreeHost(x);
 
+    //chrono end
+    end=std::chrono::system_clock::now();
+
+    //print results
+    #ifdef MEASURES
+        millis = end-start;
+        label += "STREAM";
+        std::cout<< label <<","<< ms <<","<< millis.count() <<","             //outputs
+                            << M_iter <<","<< N_size <<"," << K_exec <<","      //inputs
+                            << devId <<","<< BLOCK <<","<< GRID << std::endl;   //GPU infos
+    #else    
+        printInfos(); 
+        printAll(cosx, N_size, clocks, ms);
+    #endif
+    
+    //free Host and Device space
+    cudaFreeHost(x);
     cudaFreeHost(cosx);
     cudaFreeHost(clocks);
-
     cudaFree(x_d);
     cudaFree(clocks_d);
 
-    end=std::chrono::system_clock::now();
 
+
+/*** MANAGED ***/
 #elif MANAGED
     int nStream= 3;
     //const int streamSize = N_size ;
@@ -280,7 +271,7 @@ int main(int argc, char **argv){
     
     cudaEvent_t startEvent, stopEvent;  
     checkCuda( cudaEventCreate(&startEvent) );
-    checkCuda( cudaEventCreate(&stopEvent) );  
+    checkCuda( cudaEventCremsSumate(&stopEvent) );  
 
     cudaEvent_t startTot, stopTot;  
     checkCuda( cudaEventCreate(&startTot) );
@@ -321,19 +312,11 @@ int main(int argc, char **argv){
     end=std::chrono::system_clock::now();
 
 #endif
-    printTotalTimes(msSum,  (end-start).count() );
-
-    #ifndef MANAGED
-        //delete [] x;
-    #endif
-    #ifdef STREAM 
-        cudaFree(x_d);
-        cudaFree(clocks_d);
-    //#elif STREAMMANAGED
-      //  cudaFree(x);
-       // cudaFree(clocks);
+    #ifndef MEASURES
+    printTotalTimes(ms, (end-start).count());
     #endif
 
+    cudaDeviceReset();
     return 0;
 }
 

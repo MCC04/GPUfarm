@@ -47,9 +47,9 @@ void printResults(float ms){
 }
 
 void printTotalTimes(float eventsTime,  float hostTime){
-    #ifdef MEASURES
+    #ifndef MEASURES
         std::cout<<std::endl<<"$"<< eventsTime<<","<<hostTime<<std::endl;
-    #else
+    //#else
         std::cout<<std::endl<<"----Total Device Events measures: "<< eventsTime<<"ms"<<std::endl;
         std::cout<<std::endl<<"----Total Host measures: "<< hostTime <<"ms"<<std::endl;
     #endif
@@ -59,8 +59,8 @@ void printTotalTimes(float eventsTime,  float hostTime){
 
 void printMatrix(float *Cmat,int m, int n, float ms){
     float rb_wb=bytesSize*2 + GRIDx*sizeof(float); 
-   #ifndef MEASURES
-        std::cout<<"result MATRIX : " <<std::endl;  
+   //#ifndef MEASURES
+         
         for (int i = 0; i < m; ++i)
         {
             for (int j = 0; j < n; ++j){
@@ -71,20 +71,18 @@ void printMatrix(float *Cmat,int m, int n, float ms){
             std::cout<<std::endl;
         }      
 
-        std::cout<< std::endl <<"-------------------------"<< std::endl; 
+        /*std::cout<< std::endl <<"-------------------------"<< std::endl; 
         std::cout << "Event time(ms) "<< ms<<std::endl; 
         std::cout<<std::endl<<"Effective Bandwidth: "<< (rb_wb/ms/1e6)<<"GB/s"<<std::endl;        
     #else                
-        std::cout <<"*"<< ms<< ","<< (rb_wb/ms/1e6)<<std::endl; 
-    #endif
+        std::cout <<"*"<< ms<< ","<< (rb_wb/ms/1e6)<<std::endl; */
+   // #endif
 }
 
 
 void checkMatMul(float *A, float *B, float *C, int M, int K, int N){
-    std::cout<< std::endl<< "CHECK FOR - C - MATRIX "<<std::endl;
-    //float *tmpA = &A[i*M*K];
-    //float *tmpB = &B[i*K*N];
-    //float *tmpC = (float*)malloc(bytesC);
+    //std::cout<< std::endl<< "CHECK FOR - C - MATRIX "<<std::endl;
+
     for(int i=0; i<M; ++i) //M = r1
     {
         for(int j=0; j<N; ++j) //N = c2
@@ -96,7 +94,57 @@ void checkMatMul(float *A, float *B, float *C, int M, int K, int N){
             setMatrixVal( C,i,j,N,sum );
         } 
     }
-    printMatrix(C, M, N, 0); 
+    //printMatrix(C, M, N, 0); 
+}
+
+
+void checkMatMul(float *A, float *B, float *C, int N){
+    //std::cout<< std::endl<< "CHECK FOR - C - MATRIX "<<std::endl;
+
+    for(int i=0; i<N; ++i) 
+    {
+        for(int j=0; j<N; ++j) 
+        {
+            float sum=0.0f;
+            for(int l=0; l<N; ++l)                           
+                sum += getMatrixVal<float>( A,i,l,N )*getMatrixVal<float>( B,l,j,N );
+
+            setMatrixVal( C,i,j,N,sum );
+        } 
+    }
+    //printMatrix(C, M, N, 0); 
+}
+
+
+
+
+void checkMatEquality(float *A, float *B, int M, int N){
+    
+    bool equal=true;  
+    for(int i=0; i<M; ++i) 
+    {
+        for(int j=0; j<N; ++j) 
+        {
+            if(getMatrixVal<float>( A,i,j,N )!=getMatrixVal<float>( B,i,j,N ))
+                equal=false;
+                break;
+
+            //setMatrixVal( C,i,j,N,sum );
+        } 
+        if(!equal)
+            break;
+    }
+    if(!equal){
+        std::cout<< std::endl<< " NOT EQUAL matrices "<<std::endl;
+        /*std::cout<< std::endl<< " FIRST MATRIX "<<std::endl;
+        printMatrix(A, M, N, 0);
+
+        std::cout<< std::endl<< " SECOND MATRIX "<<std::endl;
+        printMatrix(B, M, N, 0);*/
+    }        
+    else
+        std::cout<< std::endl<< " EQUAL matrices "<<std::endl;
+
 }
 
 
@@ -106,17 +154,17 @@ int main(int argc, char **argv){
     int gpu_clk = 1;
     float clockSum = 0.0, clockAvg = 0.0, msTot = 0.0;
     float msSum = 0.0, rb_wb = 0.0; 
+    float ms=0.0;
     int nStream = 3;
     std::chrono::system_clock::time_point start, end;
     std::chrono::duration<double, std::milli> millis;  
 
 
-
-    int devId = atoi(argv[1]);
-    #ifndef LOWPAR
-        BLOCK = atoi(argv[2]);
-    #endif
+    //args
+    int devId = atoi(argv[1]);    
+    BLOCK = atoi(argv[2]);    
     int iters = atoi(argv[3]);
+
 
     bytesSize = N*sizeof(float); 
      
@@ -136,11 +184,12 @@ int main(int argc, char **argv){
     //STREAM creation
     cudaStream_t *stream=streamCreate(nStream);
 
-/*********
-* MATMUL *
-**********/
+/*** MATMUL ***/
 #ifdef MATMUL
+    std::string label;
     int matN;
+
+    //other args
     bool square = atoi(argv[4]);
     if(square){
         N = atoi(argv[5]);
@@ -155,115 +204,126 @@ int main(int argc, char **argv){
         matN = atoi(argv[8]);
     }
 
-
-    //const int streamSize = N ;
-    //const int streamBytes = streamSize* sizeof(float);
-    int chunk = matN/iters;
-    //const int streamBytes = chunk*sizeof(float);
-    float ms=0.0;
-
-    int bytesA = M*K*sizeof(float);
-    int bytesB = K*N*sizeof(float);
-    int bytesC = M*N*sizeof(float);
-    //const int streamBytes = chunk*(bytesA+bytesB+bytesA);
-    
-    /*float *A = (float*)calloc(matN, bytesA);
-    float *B = (float*)calloc(matN, bytesB);
-    float *C = (float*)calloc(matN, bytesC);*/
-
-    float *Ad = (float*)calloc(chunk, bytesA);
-    float *Bd = (float*)calloc(chunk, bytesB);
-    float *Cd = (float*)calloc(chunk, bytesC);
-
-
-    //float *C = (float*)calloc(chunk, bytesC);
-
-    float *A, *B, *C;
-    checkCuda( cudaMallocHost((void **)&A, bytesA*chunk) );
-    checkCuda( cudaMallocHost((void **)&B, bytesB*chunk) );
-    checkCuda( cudaMallocHost((void **)&C, bytesC*chunk) );
- 
+    int chunk = matN/iters;    
     #ifdef LOWPAR
-        BLOCK=8;
         GRIDx= 1;
         GRIDy= 1;
+        label="LOW";
     #else
-        GRIDx= ceil(M/BLOCK)+1;
-        GRIDy= ceil(N/BLOCK)+1;
+        //dim3 dimGrid((B.width + dimBlock.x - 1) / dimBlock.x,
+                    //(A.height + dimBlock.y - 1) / dimBlock.y);
+
+        int sizeY = M*chunk;
+        int sizeX = N*chunk;
+        GRIDx = ceil((sizeX)/BLOCK);
+        GRIDy = ceil((sizeY)/BLOCK);
+        label="";
     #endif
 
-
+    if(chunk==1)
+        label += "SINGLEMATMUL";
+    else
+        label += "CHUNKMATMUL";
   
+    //chrono start
     start=std::chrono::system_clock::now();
     
-    
-    
-  //  checkCuda( cudaEventRecord(startTot,0) );
-    /*checkCuda( cudaMallocManaged(&A, bytesA*matN) );
-    checkCuda( cudaMallocManaged(&B, bytesB*matN) );
-    checkCuda( cudaMallocManaged(&C, bytesC*matN) );*/
-    checkCuda( cudaMalloc(&Ad, bytesA*chunk) );
-    checkCuda( cudaMalloc(&Bd, bytesB*chunk) );
-    checkCuda( cudaMalloc(&Cd, bytesC*chunk) );
+    const int bytesA = M*K*sizeof(float);
+    const int bytesB = K*N*sizeof(float);
+    const int bytesC = M*N*sizeof(float);
 
+    //device mem allocation
+    float *Ad;// = (float*)calloc(chunk, bytesA);
+    float *Bd;// = (float*)calloc(chunk, bytesB);
+    float *Cd;// = (float*)calloc(chunk, bytesC);
+    checkCuda( cudaMalloc((void **)&Ad, bytesA*matN) );
+    checkCuda( cudaMalloc((void **)&Bd, bytesB*matN) );
+    checkCuda( cudaMalloc((void **)&Cd, bytesC*matN) );
 
-    //for (int j = 0; j < Nstr; ++j) {  
-      //  for (int i = 0; i < matN; ++i) { 
+    /*checkCuda( cudaMalloc((void **)&Ad, bytesA*chunk) );
+    checkCuda( cudaMalloc((void **)&Bd, bytesB*chunk) );
+    checkCuda( cudaMalloc((void **)&Cd, bytesC*chunk) );*/
+
+    //host pinned mem allocation
+    float *A, *B, *C;
+    checkCuda( cudaMallocHost((void **)&A, bytesA*matN) );
+    checkCuda( cudaMallocHost((void **)&B, bytesB*matN) );
+    checkCuda( cudaMallocHost((void **)&C, bytesC*matN) );
+    //host data init
+    for(int i=0; i<matN; ++i){
+        randomMatrix(M, K, &A[i*M*K]);
+        randomMatrix(K, N, &B[i*K*N]);
+    } 
+
+    //event start
+    checkCuda( cudaEventRecord(startTot,0) );
+
     for (int i = 0; i < iters; ++i) { 
         int j = i%nStream;
-            if(!square){
-                /*ms = matMulKer(&A[i*M*K], &B[i*K*N], &C[i*M*N], 
-                        M, K, N, stream[j], startEvent, stopEvent);*/
-                /*ms = newMatMulKer(&Ad[i*M*K], &Bd[i*K*N], &Cd[i*M*N], 
-                        M, K, N, chunk, stream[j], startEvent, stopEvent);*/
-                ms = newMatMulKer(A, B, C, Ad, Bd, Cd, 
-                        M, K, N, chunk, stream[j], startEvent, stopEvent);
-            
-           
+            if(square){
+                int size = N*N;
+                ms = newSquareMatMulKer(&A[i*size*chunk], &B[i*size*chunk], &C[i*size*chunk], 
+                            //Ad, Bd, Cd, N, chunk,
+
+                            &Ad[i*size*chunk], &Bd[i*size*chunk], &Cd[i*size*chunk], N, chunk,
+                            stream[j], startEvent, stopEvent);  //ms = newSquareMatMulKer(&Ad[i*size], &Bd[i*size], &Cd[i*size], N, chunk, stream[j], startEvent, stopEvent);
             }
             else{
-                int size = N*N;
-                /*ms = squareMatMulKer(&A[i*size], &B[i*size], &C[i*size], N,
-                        stream[j], startEvent, stopEvent);
-                ms = newSquareMatMulKer(&Ad[i*size], &Bd[i*size], &Cd[i*size], N, chunk,
-                        stream[j], startEvent, stopEvent);*/
-                ms = newSquareMatMulKer(A, B, C, Ad, Bd, Cd, N, chunk,
-                        stream[j], startEvent, stopEvent);
+                int sizeA = M*K;
+                int sizeB = K*N;
+                int sizeC = M*N;
+                ms = newMatMulKer(&A[i*sizeA*chunk], &B[i*sizeB*chunk], &C[i*sizeC*chunk], //A, B, C, Ad, Bd, Cd, 
+                            //Ad, Bd, Cd,
+                            &Ad[i*sizeA*chunk], &Bd[i*sizeB*chunk], &Cd[i*sizeC*chunk],
+                            M, K, N, chunk, stream[j], startEvent, stopEvent); //ms = newMatMulKer(&Ad[i*M*K], &Bd[i*K*N], &Cd[i*M*N], M, K, N, chunk, stream[j], startEvent, stopEvent);  
             }
-            
-
-            #if !defined(MEASURES)
-               // printMatrix(C, M, N, ms);
-                //float *tmpC = (float*)malloc(bytesC);
-                //checkMatMul(A, B, tmpC, M, K, N);              
-            #endif
-
-            msTot+=ms;
         }  
-        
-        //printResults(msTot); 
-    //}
-    /*checkCuda( cudaEventRecord(stopTot, 0) );
+    //events stop
+    checkCuda( cudaEventRecord(stopTot, 0) );
     checkCuda( cudaEventSynchronize(stopTot) );
-    checkCuda( cudaEventElapsedTime(&msSum, startTot, stopTot) );*/
-
+    checkCuda( cudaEventElapsedTime(&msSum, startTot, stopTot) );
+    //chrono end
     end = std::chrono::system_clock::now();
-
     millis = end - start;
     #ifdef MEASURES
-        std::cout<<std::endl<<"CHUNKMATMUL,"<< msSum <<","<< millis.count() <<",";
-        std::cout<< devId <<","<< iters <<","<< matN <<",";
+        
+
+        if(square)
+            std::cout<< label <<","<< msSum <<","<< millis.count() <<","                         //outputs
+                            << N <<","<< matN <<","<< 1 <<","<< iters<<","                            //input
+                            << devId <<","<< BLOCK <<","<< GRIDx <<","<< GRIDy <<std::endl; //gpu infos
+        else
+            std::cout<< label <<","<< msSum <<","<< millis.count() <<","                             //outputs
+                            << M <<","<< K <<","<< N <<","<< matN <<","<< 0 <<","<< iters <<"," //input
+                            << devId <<","<< BLOCK <<","<< GRIDx <<","<< GRIDy <<std::endl;     //gpu infos     
+    #else
         printInfos(square);
+        for (int s=0; s<matN; s++)
+        {
+            float *_A = &A[s*M*K];
+            float *_B = &B[s*K*N];
+            float *_C = &C[s*M*N];
+            //std::cout<<"C - RESULT MATRIX : " <<std::endl; 
+            //printMatrix(_C, M, N, ms);
+            float *tmpC = (float*)malloc(bytesC);
+            if(square)
+                checkMatMul(_A, _B, tmpC, N);
+            else
+                checkMatMul(_A, _B, tmpC, M, K, N);
+            checkMatEquality(_C, tmpC,  M, N);
+        }        
     #endif 
     
+    //free Host and Device space
     cudaFreeHost(A);
     cudaFreeHost(B);
     cudaFreeHost(C);
     cudaFree(Ad);
     cudaFree(Bd);
     cudaFree(Cd);
-#elif SMALLMATMUL  
 
+/*** SMALL MATMUL ***/
+#elif SMALLMATMUL  
     int square = atoi(argv[4]);
     int matN = 0;
     if(square){
@@ -587,6 +647,8 @@ int main(int argc, char **argv){
         printTotalTimes(msSum,  millis.count() );
     #endif
 
+
+cudaDeviceReset();
     return 0;
 }
 

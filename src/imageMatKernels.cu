@@ -72,21 +72,31 @@ float* getGaussian(int dim, float sigma)
 /*********
 **KERNELS*
 **********/
-__global__ void matMulKernel(float* Ad, float* Bd, float* Cd, int m, int k, int n)
+__global__ void matMulKernel(float* A, float* B, float* C, int m, int k, int n, int chunk)
 {
     int row = blockIdx.y*blockDim.y+threadIdx.y;
     int col = blockIdx.x*blockDim.x+threadIdx.x;
 
-    if(row<m && col<n) {
-        float sum = 0;
-        for(int j=0;j<k;j++) {
-            sum += Ad[row*k+j] * Bd[j*n+col];
+
+    for (int s = 0; s < chunk; ++s)
+    {
+        float *tmpA = &A[s*m*k];
+        float *tmpB = &B[s*k*n];
+        float *tmpC = &C[s*m*n];
+        float tmpSum = 0;
+
+        if(row<m && col<n) {
+           // float sum = 0;
+            for(int j=0;j<k;j++) {
+                tmpSum += tmpA[row*k+j] * tmpB[j*n+col];
+            }
+            tmpC[row*n+col] = tmpSum;
         }
-        Cd[row*n+col] = sum;
     }
+    return ;
 }
 
-__global__ void matMulGridStride(float* Ad, float* Bd, float* Cd, int m, int k, int n)//(int M, int N, float *x_d, int *myclocks, int offset){    
+__global__ void matMulGridStride(float* A, float* B, float* C, int m, int k, int n, int chunk)//(int M, int N, float *x_d, int *myclocks, int offset){    
 {
     int indexRow = blockIdx.x*blockDim.x + threadIdx.x;
     int strideRow = blockDim.x*gridDim.x;
@@ -98,64 +108,145 @@ __global__ void matMulGridStride(float* Ad, float* Bd, float* Cd, int m, int k, 
     *  B [K x N]
     *  C [M x N]
     */
-
-
-    for (int i = indexRow; i < m; i += strideRow) //M
+    for (int s = 0; s < chunk; ++s)
     {
-        for (int j = indexCol; j < n; j += strideCol) //N
+        float *tmpA = &A[s*m*k];
+        float *tmpB = &B[s*k*n];
+        float *tmpC = &C[s*m*n];
+        float tmpSum = 0;
+
+        for (int i = indexRow; i < m; i += strideRow) //M
         {
-            float sum = 0;
-            for(int l=0; l<k; l++) //K
+            for (int j = indexCol; j < n; j += strideCol) //N
             {
-                sum += Ad[i*k + l] * Bd[l*n + j];
+                //float sum = 0;
+                for(int l=0; l<k; l++) //K
+                {
+                    tmpSum += tmpA[i*k + l] * tmpB[l*n + j];
+                }
+                tmpC[i*n + j] = tmpSum;
             }
-            Cd[i*n + j] = sum;
         }
     }
-
     return ;
 }
 
-__global__ void squareMatMulKer(float* A, float* B, float* C, int N) {
+__global__ void squareMatMulKernel(float* A, float* B, float* C, int N, int chunk) {
+
+   int ROW = blockIdx.y*blockDim.y+threadIdx.y;
+        int COL = blockIdx.x*blockDim.x+threadIdx.x;
+ 
+    if (ROW < N && COL < N) {
+
+    for (int s = 0; s < chunk; s++)
+    {
+        float *tmpA = &A[s*N*N];
+        float *tmpB = &B[s*N*N];
+        float *tmpC = &C[s*N*N];
+        float tmpSum = 0;
+    
+            for (int i = 0; i < N; i++) {
+                tmpSum += tmpA[ROW * N + i] * tmpB[i * N + COL];
+            }
+       
+        
+        tmpC[ROW * N + COL] = tmpSum;
+        __syncthreads();
+    }
+
+
+ }
+
+/*
 
     int ROW = blockIdx.y*blockDim.y+threadIdx.y;
     int COL = blockIdx.x*blockDim.x+threadIdx.x;
 
     float tmpSum = 0;
-
     if (ROW < N && COL < N) {
-        // each thread computes one element of the block sub-matrix
         for (int i = 0; i < N; i++) {
             tmpSum += A[ROW * N + i] * B[i * N + COL];
         }
-    }
-    C[ROW * N + COL] = tmpSum;
+        C[ROW * N + COL] = tmpSum;
+        
+    }*/
+
+    return ;
 }
 
-__global__ void squareMatMulGridStrideKer(float* A, float* B, float* C, int N) {
+__global__ void squareMatMulGridStrideKer(float* A, float* B, float* C, int N, int chunk) {
 
-    int ROW = blockIdx.y*blockDim.y+threadIdx.y;
+/*    int ROW = blockIdx.y*blockDim.y+threadIdx.y;
     int Rstride = blockDim.y*gridDim.y;
 
     int COL = blockIdx.x*blockDim.x+threadIdx.x;
     int Cstride = blockDim.x*gridDim.x;
 
-    float tmpSum = 0;
+    
 
-    for (int i = ROW; i < N; i+=Rstride) {
+    for (int s = 0; s < chunk; s++)
+    {
+        float *tmpA = &A[s*N*N];
+        float *tmpB = &B[s*N*N];
+        float *tmpC = &C[s*N*N];
+        float tmpSum = 0;
 
-        // if (ROW < N && COL < N) {
-        // each thread computes one element of the block sub-matrix
-        //for (int i = 0; i < N; i++) {
-        for (int j = COL; i < N; i+=Cstride) {
-            tmpSum += A[i * N + j] * B[j * N + i];
+      for (int j = COL; j < N; j+=Cstride) { 
+           for (int i = ROW; i < N; i+=Rstride) {
+
+            //// if (ROW < N && COL < N) {
+            //// each thread computes one element of the block sub-matrix
+            ////for (int i = 0; i < N; i++) {
+            
+                //tmpSum += A[i * N + j] * B[j * N + i];
+                tmpC[j * N + i] += tmpA[i * N + j] * tmpB[j * N + i];
+            }
+            ////}
+            //tmpC[i * N + COL] = tmpSum;
+            //tmpC[i * N + COL] = tmpSum;
         }
-        //}
-        C[i * N + COL] = tmpSum;
+        //tmpC[ROW * N + COL] = tmpSum;
     }
+*/
+    
+
+    int ROW = blockIdx.y*blockDim.y+threadIdx.y;
+    int COL = blockIdx.x*blockDim.x+threadIdx.x;
+
+    int Rstride = blockDim.y*gridDim.y;
+    int Cstride = blockDim.x*gridDim.x;
+
+
+
+    //float tmpSum = 0;
+
+    for (int s = 0; s < chunk; s++)
+    {
+        float *tmpA = &A[s*N*N];
+        float *tmpB = &B[s*N*N];
+        float *tmpC = &C[s*N*N];
+        float tmpSum = 0;
+
+        //if (ROW < N && COL < N) {
+        for (int j = COL; j < N; j+=Cstride) { 
+            
+           for (int k = ROW; k < N; k+=Rstride) {
+               tmpSum=0;
+                for (int i = 0; i < N; i++) {
+                    tmpSum += tmpA[k * N + i] * tmpB[i * N + j];
+                }
+                tmpC[k * N + j] = tmpSum;
+            }   
+            
+        }
+
+    }
+
     
     return ;
 }
+
+
 
 
 __global__ void blurBoxFilterKer(unsigned char* input_image, unsigned char* output_image, int width, int height) {
@@ -296,6 +387,76 @@ const float* filter, const int filterWidth)
 **KERNEL LAUNCHERS**
 ********************/
 
+//MAT MUL
+float newMatMulKer(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd, 
+        int m, int k, int n, int chunk, cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
+{
+    float ms=0;
+    int bytesA = m*k*sizeof(float);
+    int bytesB = k*n*sizeof(float);
+    int bytesC = m*n*sizeof(float);
+
+    dim3 dimBlock(BLOCK,BLOCK,1);
+    dim3 dimGrid(GRIDx, GRIDy,1); 
+
+    cudaMemcpyAsync(Ad, A, bytesA*chunk, cudaMemcpyHostToDevice, strm);    
+    cudaMemcpyAsync(Bd, B, bytesB*chunk, cudaMemcpyHostToDevice, strm);   
+
+    #ifdef LOWPAR
+        matMulGridStride<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n, chunk);
+    #else
+        matMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n, chunk);
+    #endif
+
+    cudaMemcpyAsync( C, Cd, bytesC*chunk, cudaMemcpyDeviceToHost, strm);
+
+    return ms;
+}
+
+//SQUARE MATMUL
+float newSquareMatMulKer(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd, 
+            int n, int chunk, cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
+{
+    float ms=0;
+    int size=n*n;
+    int bytesMat=size*sizeof(float);
+
+    dim3 dimBlock(BLOCK,BLOCK,1);
+    dim3 dimGrid(GRIDx, GRIDy,1); 
+
+    checkCuda( cudaMemcpyAsync(Ad, A, bytesMat*chunk, cudaMemcpyHostToDevice, strm) );    
+    checkCuda( cudaMemcpyAsync(Bd, B, bytesMat*chunk, cudaMemcpyHostToDevice, strm) );   
+
+    #ifdef LOWPAR
+        squareMatMulGridStrideKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n, chunk);
+    #else
+        squareMatMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n, chunk);
+    #endif
+
+    checkCuda( cudaMemcpyAsync( C, Cd, bytesMat*chunk, cudaMemcpyDeviceToHost, strm) );
+    
+    return ms;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 float smallSquareMatMulKer(
     float *Ad, float *Bd, float *Cd, float *C,
     int n, 
@@ -321,9 +482,9 @@ float smallSquareMatMulKer(
     cudaMemcpyAsync(Bd, B, bytesB, cudaMemcpyHostToDevice, strm);   
 
     #ifdef LOWPAR
-        squareMatMulGridStrideKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n);
+        squareMatMulGridStrideKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n, 1);
     #else
-        squareMatMulKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n);
+        squareMatMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n, 1);
     #endif
 
     cudaMemcpyAsync( C, Cd, bytesC, cudaMemcpyDeviceToHost, strm);
@@ -357,9 +518,9 @@ float squareMatMulKer(
 
 
     #ifdef LOWPAR
-        squareMatMulGridStrideKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n);
+        squareMatMulGridStrideKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n, 1);
     #else
-        squareMatMulKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n);
+        squareMatMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n, 1);
     #endif
 
     checkCuda( cudaEventRecord(stop, 0) );
@@ -372,7 +533,7 @@ float squareMatMulKer(
 
 
 
-
+/*
 
 float smallMatMulKer(
     float *Ad, float *Bd, float *Cd, float *C,
@@ -427,10 +588,10 @@ float matMulKer(
     randomMatrix(m,k, Ad);
     randomMatrix(k,n, Bd);     
     
-    /*#ifdef LOWPAR
-        dim3 dimBlock(4,4,1);
-        dim3 dimGrid(1,1,1); 
-    #else*/
+    //#ifdef LOWPAR
+    //    dim3 dimBlock(4,4,1);
+    //    dim3 dimGrid(1,1,1); 
+    //#else
         dim3 dimBlock(BLOCK,BLOCK,1);
         dim3 dimGrid(GRIDx, GRIDy,1); 
    // #endif
@@ -451,7 +612,7 @@ float matMulKer(
     return ms;
 }
 
-
+*/
 
 
 
@@ -501,114 +662,6 @@ float matMulKer(
 }*/
 
 
-float newMatMulKer(
-    float *A, float *B, float *C,
-    float *Ad, float *Bd, float *Cd, 
-    int m, int k, int n, int chunk,
-    cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
-{
-
-    float ms=0;
-    int bytesA = m*k*sizeof(float);
-    int bytesB = k*n*sizeof(float);
-    int bytesC = m*n*sizeof(float);
-    //float  *A=(float*)calloc(chunk,bytesA);//new float[M*K];
-    //float *B=(float*)calloc(chunk,bytesB);//new float[K*N] ;
-
-    dim3 dimBlock(BLOCK,BLOCK,1);
-    dim3 dimGrid(GRIDx, GRIDy,1); 
-
-  //  checkCuda( cudaEventRecord(start,0) );
-
-    for(int i=0; i<chunk; ++i){
-        randomMatrix(m, k, &A[i*m*k]);
-        randomMatrix(k, n, &B[i*k*n]);  
-
-
-        cudaMemcpyAsync(Ad, A, bytesA, cudaMemcpyHostToDevice, strm);    
-        cudaMemcpyAsync(Bd, B, bytesB, cudaMemcpyHostToDevice, strm);   
-
-        #ifdef LOWPAR
-            matMulGridStride<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
-        #else
-            matMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
-        #endif
-
-        cudaMemcpyAsync( C, Cd, bytesC, cudaMemcpyDeviceToHost, strm);
-
-
-    }
-   
-
-    
-
-    
-
-
-
-  //  checkCuda( cudaEventRecord(stop, 0) );
-  //  checkCuda( cudaEventSynchronize(stop) );
-  //  checkCuda( cudaEventElapsedTime(&ms, start, stop) );
-
-    //free(A);
-    //free(B);
-
-    return ms;
-}
-
-
-
-
-float newSquareMatMulKer(
-    float *A, float *B, float *C,
-    float *Ad, float *Bd, float *Cd, 
-    int n, int chunk,
-    cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
-{
-
-    float ms=0;
-    int size=n*n;
-    int bytesMat=size*sizeof(float);
-
-
-   // float  *A=(float*)calloc(chunk, bytesMat);//new float[M*K];
-   // float *B=(float*)calloc(chunk, bytesMat);//new float[K*N] ;
-
-
-    dim3 dimBlock(BLOCK,BLOCK,1);
-    dim3 dimGrid(GRIDx, GRIDy,1); 
-
-   // checkCuda( cudaEventRecord(start,0) );
-
-    for(int i=0; i<chunk; ++i){
-        randomMatrix(n, n, &A[i*size]);
-        randomMatrix(n, n, &B[i*size]);
-
-        checkCuda( cudaMemcpyAsync(Ad, A, bytesMat, cudaMemcpyHostToDevice, strm) );    
-        checkCuda( cudaMemcpyAsync(Bd, B, bytesMat, cudaMemcpyHostToDevice, strm) );   
-
-        #ifdef LOWPAR
-            squareMatMulGridStrideKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n);
-        #else
-            squareMatMulKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n);
-        #endif
-
-        checkCuda( cudaMemcpyAsync( C, Cd, bytesMat, cudaMemcpyDeviceToHost, strm) );
-    }
-
-
-  
-
-
-  //  checkCuda( cudaEventRecord(stop, 0) );
-  //  checkCuda( cudaEventSynchronize(stop) );
-  //  checkCuda( cudaEventElapsedTime(&ms, start, stop) );
-
-   // free(A);
-   // free(B);
-
-    return ms;
-}
 
 
 

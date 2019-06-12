@@ -22,6 +22,7 @@ extern int GRIDy;
 
 template <typename T> T getMatrixVal(T *mat, int row, int col, int width);
 template <typename T> void setMatrixVal(T *mat, int row, int col, int width, T val);
+void randomMatrix(const int m, int n,float *mat);
 
 
 /*****Kernel launcers*****/

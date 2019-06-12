@@ -34,13 +34,11 @@ void cosKer(my_struct *_xs, float *x_d, int *clocks_d, int chunkBytes,
 
 
 
-void cosKer(std::vector<my_struct> &getDatas, int chunk, int bytesSize );
+float cosKer(std::vector<my_struct> &getDatas, int chunk, int bytesSize );
 
-void cosKerStream(
-    int m, int n,
-    float *x, //float *cosx, 
-     int *clocks, 
-    int offset, cudaStream_t strm);
+void cosKerStream( int m, int n,
+    float *x, int *clocks, 
+    cudaStream_t strm, int offset);
 
 float cosKerStream(
     cudaEvent_t start, cudaEvent_t stop,
