@@ -2,13 +2,22 @@
 #include <math.h>
 #include <stdlib.h>
  
-#include <cstdlib>
 #include <algorithm>
-#include <ctime>
-#include <vector>
-#include <future>
-#include <iterator>
+//#include <ctime>
+//#include <vector>
+//#include <future>
+//#include <iterator>
 #include <cosFutStr.h>
+
+
+
+
+
+
+
+
+
+
 
 #define HIGH 500.0f
 #define LOW -500.0f
@@ -73,118 +82,75 @@ __global__ void cosGridStride(int M, int N, float *x_d, int *myclocks, int offse
 /******************
 * KERNEL LAUNCERS *
 *******************/
+/*void futCheck(int i, std::string mess){
+    #ifndef MEASURES
+        std::cout <<i<<mess<<std::endl;
+    #endif  
+}*/
 
-/**** STREAM ****/
+/**** FUTURE ****/
 #ifdef FUTURE
-float cosKer(std::vector<my_struct> &getDatas, int chunk, int bytesSize )
+std::vector<std::future<hostData_t>> 
+    cosKerFuture(int M, int chunk, hostData_t output, float *x, float *x_d, int *clocks_d, cudaStream_t *strm, int nStreams, int offset)
 {
-    std::vector<std::future<my_struct>> futures;
-    int *clocks_d;
-    float *x_d; 
+    std::vector<std::future<hostData_t>> futures; 
+    //int strBytes = ;
 
-    float *x = new float[N_size]; //gpuErrchk( cudaMallocHost((void **)&x, N_size*sizeof(float)) ); //pinned x    
-    //float *cosx = new float[N_size]; //gpuErrchk( cudaMallocHost((void **)&cosx, N_size*sizeof(float)) ); //pinned x    
-    float *clockss = new float[K_exec*GRID]; //gpuErrchk( cudaMallocHost((void **)&clockss, K_exec*GRID*sizeof(float)) ); //pinned x
-  
-
-    gpuErrchk( cudaMalloc((void **)&x_d, N_size*sizeof(float)) ); 
-    gpuErrchk( cudaMalloc((void **)&clocks_d, GRID*K_exec*sizeof(int)) );
-
-    cudaEvent_t startEvent, stopEvent;
-    createAndStartEvent(startEvent, stopEvent);
-    /*gpuErrchk( cudaEventCreate(&startEvent) );
-    gpuErrchk( cudaEventCreate(&stopEvent) ); 
-    gpuErrchk( cudaEventRecord(startEvent,0) );*/
-
-    randomArray(x, N_size);
-
-    cudaStream_t *stream=streamCreate(3);
     for(int i = 0; i < K_exec; ++i) {
-        
+        int k = i%nStreams;
+        randomArray(x+i*chunk,chunk);
+  
      
-        futures.push_back (
-         std::async(std::launch::async,//std::launch::deferred,//       
-             [x,x_d,clocks_d,chunk,stream](int i ) { //[x,x_d,clocks_d,chunk](int i ) { 
+        futures.push_back (std::async(std::launch::async,//std::launch::deferred,//       
+                [M, chunk, output, x_d, clocks_d, offset,i] (float * x, cudaStream_t strm, int strBytes) {
+                
+                std::cout <<i<<"- going to memcpy x in H2D..."<<std::endl;
+              
+                gpuErrchk( cudaMemcpyAsync(x_d, x, strBytes, cudaMemcpyHostToDevice, strm) ); //gpuErrchk( cudaMemcpy(&x_d[i*chunk], &x[i*chunk], chunk*sizeof(float), cudaMemcpyHostToDevice) );          
 
-                my_struct _xs;
-                _xs.clocks=new int[GRID];
-                _xs.x_vect=new float[chunk];
-                int k = i%3;
+                std::cout <<i<<"- done memcpy x in H2D!"<<std::endl;
 
-                #ifndef MEASURES
-                    std::cout <<i<<" - going to memcpy x in H2D..."<<std::endl;
-                #endif                
-                gpuErrchk( cudaMemcpyAsync(&x_d[i*chunk], &x[i*chunk], chunk*sizeof(float), cudaMemcpyHostToDevice, stream[k]) ); //gpuErrchk( cudaMemcpy(&x_d[i*chunk], &x[i*chunk], chunk*sizeof(float), cudaMemcpyHostToDevice) );          
-                #ifndef MEASURES
-                    std::cout << i<<"- done memcpy x in H2D!"<<std::endl;
-                #endif
+
 
                 #ifdef LOWPAR
-                    #ifndef MEASURES                    
-                        std::cout << i<<"- kernel launch..."<<std::endl;
-                    #endif
-                    cosGridStride<<<GRID, BLOCK,0,stream[k]>>>(M_iter, chunk, &x_d[i*chunk], &clocks_d[i*chunk], 0); //cosGridStride<<<GRID, BLOCK>>>(M_iter, chunk, &x_d[i*chunk], &clocks_d[i*chunk], 0);
-                    #ifndef MEASURES 
-                        std::cout << i<<"- kernel end!"<<std::endl;
-                    #endif
+                    std::cout <<i<<"- kernel launch..."<<std::endl;
+
+                    cosGridStride<<<GRID, BLOCK,0,strm>>>(M, chunk, x_d, clocks_d, offset); //cosGridStride<<<GRID, BLOCK>>>(M_iter, chunk, &x_d[i*chunk], &clocks_d[i*chunk], 0);
+
+                    std::cout <<i<<"- kernel end!"<<std::endl;
                 #else
-                   
-                 
-                    #ifndef MEASURES                    
-                        std::cout << i<<"- kernel launch..."<<std::endl;
-                    #endif
-                    cosKernel<<<GRID, BLOCK,0,stream[k]>>>(M_iter, chunk, &x_d[i*chunk],&clocks_d[i*chunk], 0); //cosKernel<<<GRID, BLOCK>>>(M_iter, chunk, &x_d[i*chunk],&clocks_d[i*chunk], 0);
-                    #ifndef MEASURES 
-                        std::cout << i<<"- kernel end!"<<std::endl;
-                    #endif
+
+                    std::cout <<i<<"- kernel launch..."<<std::endl;
+
+                    cosKernel<<<GRID, BLOCK,0,strm>>>(M, chunk, x_d, clocks_d, offset); //cosKernel<<<GRID, BLOCK>>>(M_iter, chunk, &x_d[i*chunk],&clocks_d[i*chunk], 0);
+
+                    std::cout <<i<<"- kernel end!"<<std::endl;
 
                 #endif
-                              
-                #ifndef MEASURES
-                    std::cout <<i<<" - going to memcpy x in D2H..."<<std::endl;
-                #endif  
-                gpuErrchk( cudaMemcpyAsync(_xs.x_vect, &x_d[i*chunk], chunk*sizeof(float), cudaMemcpyDeviceToHost, stream[k]) ); //gpuErrchk( cudaMemcpy( _xs.x_vect, &x_d[i*chunk], chunk*sizeof(float), cudaMemcpyDeviceToHost) );
-                gpuErrchk( cudaMemcpyAsync(_xs.clocks, &clocks_d[i*GRID], GRID*sizeof(int), cudaMemcpyDeviceToHost, stream[k]) ); //gpuErrchk( cudaMemcpy(_xs.clocks, &clocks_d[i*GRID], GRID*sizeof(int), cudaMemcpyDeviceToHost) );
-                #ifndef MEASURES
-                    std::cout << i<<"- done memcpy x in D2H!"<<std::endl;
-                #endif
-                _xs.eventTime=0;
 
-                return _xs;
-            },i));       
+
+
+                std::cout <<i<<"- going to memcpy x in D2H..."<<std::endl;
+
+                gpuErrchk( cudaMemcpyAsync(output.x, x_d, strBytes, cudaMemcpyDeviceToHost, strm) ); //gpuErrchk( cudaMemcpy( output.x_vect, &x_d[i*chunk], chunk*sizeof(float), cudaMemcpyDeviceToHost) );
+                gpuErrchk( cudaMemcpyAsync(output.clocks, clocks_d, GRID*sizeof(int), cudaMemcpyDeviceToHost, strm) ); //gpuErrchk( cudaMemcpy(output.clocks, &clocks_d[i*GRID], GRID*sizeof(int), cudaMemcpyDeviceToHost) );
+
+
+                std::cout <<i<<"- done memcpy x in D2H!"<<std::endl;
+
+                return output;
+            }, x+(i*chunk), strm[k], chunk*sizeof(float) ));       
     }
-    float ms=0.0f;
-
-    
-    for(auto &e : futures) 
-            getDatas.push_back(e.get()); 
-    
-    /*gpuErrchk( cudaEventRecord(stopEvent, 0) );
-    gpuErrchk( cudaEventSynchronize(stopEvent) );
-    gpuErrchk( cudaEventElapsedTime(&ms, startEvent, stopEvent) );*/
-    msTot = endEvent(startEvent, stopEvent);
-
-    #ifndef MEASURES
-        std::cout << "EVENT TIME FUTURE: "<< ms<<std::endl;
-    #endif
-    streamDestroy(stream,3);
-
-    cudaFreeHost(x);
-    //cudaFreeHost(cosx);
-    cudaFreeHost(clockss);
-    cudaFree(x_d);
-    cudaFree(clocks_d);
-
-    return ms;
+    return futures;
 }
 #endif
+
 
 /**** STREAM ****/
 #ifdef STREAM
 
 void cosKerStream(int m, int chunk, float *x, float *cosx, float *x_d, int *clocks, int *clocks_d, cudaStream_t strm, int strBytes, int offset)
-{
-    
+{    
     gpuErrchk( cudaMemcpyAsync(x_d, x, strBytes, cudaMemcpyHostToDevice, strm) ); 
     #ifdef LOWPAR
         cosGridStride<<<GRID, BLOCK, offset, strm>>>(m, chunk, x_d, clocks_d, offset);
@@ -201,8 +167,7 @@ void cosKerStream(int m, int chunk, float *x, float *cosx, float *x_d, int *cloc
 
     #ifndef MEASURES
         printClocks(clocks,GRID);
-    #endif      
-    
+    #endif         
 }
 #endif
 
