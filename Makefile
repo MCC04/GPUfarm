@@ -1,7 +1,7 @@
 # -*- Makefile -*-
 
 CC:= nvcc
-CFLAGS:= -std=c++14 -g -DMEASURES
+CFLAGS:= -std=c++14 -g -G #-DMEASURES
 ALLFLAGS:= $(CFLAGS) -Iinclude/ 
 #FF_FLAGS:= -O3 -I/home/maria/fastflow/ -pthread #-lstdc++fs 
 LOWPAR:= $(ALLFLAGS) -DLOWPAR
@@ -57,19 +57,19 @@ empty: $(BIN)empty.out
 
 autosched: $(BIN)autosched.out
 
-$(BIN)autosched.out: $(BIN)autoScheduler.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
+$(BIN)autosched.out: $(BIN)cudaUtils.o $(BIN)farmkernels.o $(BIN)autoScheduler.o 
 	$(CC) $(ALLFLAGS) $(BIN)autoScheduler.o $(BIN)farmkernels.o $(BIN)cudaUtils.o -o $(BIN)autosched.out
 
-$(BIN)future.out: $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
+$(BIN)future.out: $(BIN)cudaUtils.o $(BIN)farmkernels.o $(BIN)main_cos.o  
 	$(CC) $(ALLFLAGS) $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o -o $(BIN)future.out
 
-$(BIN)managed.out: $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
+$(BIN)managed.out: $(BIN)cudaUtils.o $(BIN)farmkernels.o $(BIN)main_cos.o  
 	$(CC) $(ALLFLAGS) $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o -o $(BIN)managed.out
 
-$(BIN)stream.out: $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
+$(BIN)stream.out: $(BIN)cudaUtils.o $(BIN)farmkernels.o $(BIN)main_cos.o  
 	$(CC) $(ALLFLAGS) $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o -o $(BIN)stream.out
 
-$(BIN)empty.out: $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o
+$(BIN)empty.out: $(BIN)cudaUtils.o $(BIN)farmkernels.o $(BIN)main_cos.o  
 	$(CC) $(ALLFLAGS) $(BIN)main_cos.o $(BIN)farmkernels.o $(BIN)cudaUtils.o -o $(BIN)empty.out
 
 
@@ -81,7 +81,7 @@ $(BIN)main_cos.o: $(SRC)main_cos.cpp $(INCLUDE)cosFutStr.h $(INCLUDE)cudaUtils.h
 	$(CC) $(ALLFLAGS) -c $(SRC)main_cos.cpp -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z) -o $(BIN)main_cos.o
 
 $(BIN)farmkernels.o:  $(SRC)farmkernels.cu $(INCLUDE)cosFutStr.h $(INCLUDE)cudaUtils.h
-	$(CC) $(ALLFLAGS) -c $(SRC)farmkernels.cu -o $(BIN)farmkernels.o
+	$(CC) $(ALLFLAGS) -c $(SRC)farmkernels.cu -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z) -o $(BIN)farmkernels.o
 
 $(BIN)cudaUtils.o: $(SRC)cudaUtils.cpp  $(INCLUDE)cudaUtils.h
 	$(CC) $(ALLFLAGS) -c $(SRC)cudaUtils.cpp -o $(BIN)cudaUtils.o
@@ -134,7 +134,7 @@ $(BIN)main_cos_low.o: $(SRC)main_cos.cpp $(INCLUDE)cosFutStr.h $(INCLUDE)cudaUti
 	$(CC) $(LOWPAR) -c $(SRC)main_cos.cpp -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z | rev | cut -c 4- | rev) -o $(BIN)main_cos_low.o
 
 $(BIN)farmkernels_low.o:  $(SRC)farmkernels.cu $(INCLUDE)cosFutStr.h $(INCLUDE)cudaUtils.h
-	$(CC) $(LOWPAR) -c $(SRC)farmkernels.cu -o $(BIN)farmkernels_low.o
+	$(CC) $(LOWPAR) -c $(SRC)farmkernels.cu $(MAKECMDGOALS) | tr a-z A-Z | rev | cut -c 4- | rev) -o $(BIN)farmkernels_low.o
 
 
 ####HOST####

@@ -15,33 +15,17 @@
 #define LOW -500.0f
 
 template<typename T> T getMatrixVal(T *mat, int row, int col, int width)
-{
-    return mat[row*width + col];
-}
+{ return mat[row*width + col]; }
 
 template<typename T> void setMatrixVal(T *mat, int row, int col, int width, T val)
-{   
-    mat[row*width + col] = val;
-}
+{ mat[row*width + col] = val; }
 
 void randomMatrix(const int m, int n,float *mat){
-    #ifndef MEASURES
-       // std::cout<< "MATRIX M: "<<std::endl;  
-    #endif
-
-    for(int r = 0; r<m; ++r){
+    for(int r = 0; r<m; ++r)
         for(int c = 0; c<n; ++c){
             float val=LOW + (float) std::rand() * (HIGH-LOW) / RAND_MAX;
             setMatrixVal(mat, r, c, n, val);
-
-            #ifndef MEASURES
-              //  std::cout<< getMatrixVal<float>(mat,r,c,n) << ", ";              
-            #endif
-        }
-        #ifndef MEASURES
-          //  std::cout<< std::endl;  
-        #endif
-    }       
+        }     
 }
 
 float* getGaussian(int dim, float sigma)
@@ -52,33 +36,34 @@ float* getGaussian(int dim, float sigma)
 
     for (i=0 ; i<dim ; i++) {
         for (j=0 ; j<dim ; j++) {
-            float val = exp((float)(-(i*i+j*j))/(2*sigma*sigma))
-                        /(2*M_PI*sigma*sigma);
+            int i2 = i*i;
+            int j2 = j*i;
+            float sigma2 = sigma*sigma;
+            float val = exp((float)(-(i2+j2))/(2*sigma2))/(2*M_PI*sigma2);
             setMatrixVal<float>(ker,i,j,dim, val);
             sum += val;
         }
     }
 
-    for (i=0 ; i<dim ; i++) {
+    for (i=0 ; i<dim ; i++) 
         for (j=0 ; j<dim ; j++) {
             float val=getMatrixVal<float>(ker,i,j,dim)/sum;
             setMatrixVal<float>(ker,i,j,dim, val);
         }
-    }
 
     return ker;
 }
 
-/*********
-**KERNELS*
-**********/
+/************
+** KERNELS **
+*************/
 __global__ void matMulKernel(float* A, float* B, float* C, int m, int k, int n, int chunk)
 {
     int row = blockIdx.y*blockDim.y+threadIdx.y;
     int col = blockIdx.x*blockDim.x+threadIdx.x;
 
-
-    for (int s = 0; s < chunk; ++s)
+    //devo cercare di farlo funzionare con l'approccio tc non sia necessario usare un for (s<chunk)
+    for (int s = 0; s < chunk; ++s) //ma va bene così??? 
     {
         float *tmpA = &A[s*m*k];
         float *tmpB = &B[s*k*n];
@@ -251,12 +236,11 @@ __global__ void squareMatMulGridStrideKer(float* A, float* B, float* C, int N, i
 
 __global__ void blurBoxFilterKer(unsigned char* input_image, unsigned char* output_image, int width, int height) {
 
-    const unsigned int offset = blockIdx.x*blockDim.x + threadIdx.x;
+    const unsigned int offset = blockIdx.x*blockDim.x+threadIdx.x;
     int x = offset % width;
     int y = (offset-x)/width;
     int fsize = 5; // Filter size
     if(offset < width*height) {
-
         float output_red = 0;
         float output_green = 0;
         float output_blue = 0;
@@ -275,33 +259,33 @@ __global__ void blurBoxFilterKer(unsigned char* input_image, unsigned char* outp
         output_image[offset*3] = output_red/hits;
         output_image[offset*3+1] = output_green/hits;
         output_image[offset*3+2] = output_blue/hits;
-        }
+    }
+
+    return;
 }
 
-__global__ void gaussianBlurKer(
- const unsigned char* const inputChannel,
-unsigned char* outputChannel,
-int numRows, int numCols,
-const float* filter, const int filterWidth)
+__global__ void gaussianBlurKer (const unsigned char* const inputChannel, unsigned char* outputChannel,
+                                int numRows, int numCols, const float* filter, const int filterWidth)
 {
     int x = blockDim.x * blockIdx.x + threadIdx.x;
     int y = blockDim.y * blockIdx.y + threadIdx.y;
-    if (x >= numCols || y >= numRows)
-        return;
-    int idx = y * numCols + x;
-    float blur = 0.0f;
-    for (int i = 0; i < filterWidth; i++) {
-        for (int j = 0; j < filterWidth; j++) {
-            int p_x = x + i - filterWidth/2;
-            int p_y = y + j - filterWidth/2;
-            p_x = min(max(p_x, 0), numCols - 1);
-            p_y = min(max(p_y, 0), numRows - 1);
-            float filter_value = filter[i * filterWidth + j];
-            blur += filter_value *
-            static_cast<float>(inputChannel[p_y * numCols + p_x]);
+    //if (x >= numCols || y >= numRows)
+    //    return;
+    if (x <>=> numCols && y < numRows){
+        int idx = y * numCols + x;
+        float blur = 0.0f;
+        for (int i = 0; i < filterWidth; i++) {
+            for (int j = 0; j < filterWidth; j++) {
+                int p_x = x+i-filterWidth/2;
+                int p_y = y+j-filterWidth/2;
+                p_x = min(max(p_x,0), numCols-1);
+                p_y = min(max(p_y,0), numRows-1);
+                float filter_value = filter[ i*filterWidth+j ];
+                blur += filter_value*static_cast<float>(inputChannel[ p_y*numCols+p_x ]);
+            }
         }
+        outputChannel[idx] = blur;
     }
-    outputChannel[idx] = blur;
     return ;
 }
 
@@ -387,7 +371,8 @@ const float* filter, const int filterWidth)
 **KERNEL LAUNCHERS**
 ********************/
 
-//MAT MUL
+/**** NON SQUARE MATMUL ****/
+#ifdef MATMUL
 float newMatMulKer(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd, 
         int m, int k, int n, int chunk, cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
 {
@@ -413,7 +398,7 @@ float newMatMulKer(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd
     return ms;
 }
 
-//SQUARE MATMUL
+/**** SQUARE MATMUL ****/
 float newSquareMatMulKer(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd, 
             int n, int chunk, cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
 {
@@ -437,240 +422,11 @@ float newSquareMatMulKer(float *A, float *B, float *C, float *Ad, float *Bd, flo
     
     return ms;
 }
+#endif
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-float smallSquareMatMulKer(
-    float *Ad, float *Bd, float *Cd, float *C,
-    int n, 
-    cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
-{
-
-    float ms;
-    int bytesA=n*n*sizeof(float);
-    int bytesB=n*n*sizeof(float);
-    int bytesC=n*n*sizeof(float);
-    float  *A=(float*)calloc(1,bytesA);//new float[M*K];
-    float *B=(float*)calloc(1,bytesB);//new float[K*N] ;
-
-    randomMatrix(n,n, A);
-    randomMatrix(n,n, B);     
-
-    dim3 dimBlock(BLOCK,BLOCK,1);
-    dim3 dimGrid(GRIDx, GRIDy,1); 
-
-    checkCuda( cudaEventRecord(start,0) );
-
-    cudaMemcpyAsync(Ad, A, bytesA, cudaMemcpyHostToDevice, strm);    
-    cudaMemcpyAsync(Bd, B, bytesB, cudaMemcpyHostToDevice, strm);   
-
-    #ifdef LOWPAR
-        squareMatMulGridStrideKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n, 1);
-    #else
-        squareMatMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n, 1);
-    #endif
-
-    cudaMemcpyAsync( C, Cd, bytesC, cudaMemcpyDeviceToHost, strm);
-
-    checkCuda( cudaEventRecord(stop, 0) );
-    checkCuda( cudaEventSynchronize(stop) );
-    checkCuda( cudaEventElapsedTime(&ms, start, stop) );
-
-    free(A);
-    free(B);
-
-    return ms;
-}
-
-
-float squareMatMulKer(
-    float *Ad, float *Bd, float *Cd, 
-    int n,
-    cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
-{
-    float ms;    
-
-    randomMatrix(n,n, Ad);
-    randomMatrix(n,n, Bd);  
-  
-    dim3 dimBlock(BLOCK,BLOCK,1);
-    dim3 dimGrid(GRIDx, GRIDy,1); 
-
-
-    checkCuda( cudaEventRecord(start,0) );
-
-
-    #ifdef LOWPAR
-        squareMatMulGridStrideKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n, 1);
-    #else
-        squareMatMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n, 1);
-    #endif
-
-    checkCuda( cudaEventRecord(stop, 0) );
-    checkCuda( cudaEventSynchronize(stop) );
-    checkCuda( cudaEventElapsedTime(&ms, start, stop) );
-
-    return ms;
-}
-
-
-
-
-/*
-
-float smallMatMulKer(
-    float *Ad, float *Bd, float *Cd, float *C,
-    int m, int k, int n, 
-    cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
-{
-
-    float ms;
-    int bytesA=m*k*sizeof(float);
-    int bytesB=k*n*sizeof(float);
-    int bytesC=m*n*sizeof(float);
-    float  *A=(float*)calloc(1,bytesA);//new float[M*K];
-    float *B=(float*)calloc(1,bytesB);//new float[K*N] ;
-
-    randomMatrix(m,k, A);
-    randomMatrix(k,n, B);     
-
-    dim3 dimBlock(BLOCK,BLOCK,1);
-    dim3 dimGrid(GRIDx, GRIDy,1); 
-
-    checkCuda( cudaEventRecord(start,0) );
-
-    cudaMemcpyAsync(Ad, A, bytesA, cudaMemcpyHostToDevice, strm);    
-    cudaMemcpyAsync(Bd, B, bytesB, cudaMemcpyHostToDevice, strm);   
-
-    #ifdef LOWPAR
-        matMulGridStride<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
-    #else
-        matMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
-    #endif
-
-    cudaMemcpyAsync( C, Cd, bytesC, cudaMemcpyDeviceToHost, strm);
-
-    checkCuda( cudaEventRecord(stop, 0) );
-    checkCuda( cudaEventSynchronize(stop) );
-    checkCuda( cudaEventElapsedTime(&ms, start, stop) );
-
-    free(A);
-    free(B);
-
-    return ms;
-}
-
-
-float matMulKer(
-    float *Ad, float *Bd, float *Cd, 
-    int m, int k, int n, 
-    cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
-{
-    float ms;    
-
-    randomMatrix(m,k, Ad);
-    randomMatrix(k,n, Bd);     
-    
-    //#ifdef LOWPAR
-    //    dim3 dimBlock(4,4,1);
-    //    dim3 dimGrid(1,1,1); 
-    //#else
-        dim3 dimBlock(BLOCK,BLOCK,1);
-        dim3 dimGrid(GRIDx, GRIDy,1); 
-   // #endif
-
-    checkCuda( cudaEventRecord(start,0) );
-
-
-    #ifdef LOWPAR
-        matMulGridStride<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
-    #else
-        matMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
-    #endif
-
-    checkCuda( cudaEventRecord(stop, 0) );
-    checkCuda( cudaEventSynchronize(stop) );
-    checkCuda( cudaEventElapsedTime(&ms, start, stop) );
-
-    return ms;
-}
-
-*/
-
-
-
-
-
-
-/*float smallMatMulKer(
-    float *Ad, float *Bd, float *Cd, float *C,
-    int m, int k, int n, 
-    cudaStream_t strm, cudaEvent_t start, cudaEvent_t stop)
-{
-
-    float ms;
-    int bytesA=m*k*sizeof(float);
-    int bytesB=k*n*sizeof(float);
-    int bytesC=m*n*sizeof(float);
-    float  *A=(float*)calloc(1,bytesA);//new float[M*K];
-    float *B=(float*)calloc(1,bytesB);//new float[K*N] ;
-
-    randomMatrix(m,k, A);
-    randomMatrix(k,n, B);     
-
-    dim3 dimBlock(BLOCK,BLOCK,1);
-    dim3 dimGrid(GRIDx, GRIDy,1); 
-
-    checkCuda( cudaEventRecord(start,0) );
-
-    cudaMemcpyAsync(Ad, A, bytesA, cudaMemcpyHostToDevice, strm);    
-    cudaMemcpyAsync(Bd, B, bytesB, cudaMemcpyHostToDevice, strm);   
-
-    #ifdef LOWPAR
-        matMulGridStride<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
-    #else
-        matMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
-    #endif
-
-    cudaMemcpyAsync( C, Cd, bytesC, cudaMemcpyDeviceToHost, strm);
-
-    checkCuda( cudaEventRecord(stop, 0) );
-    checkCuda( cudaEventSynchronize(stop) );
-    checkCuda( cudaEventElapsedTime(&ms, start, stop) );
-
-    free(A);
-    free(B);
-
-    return ms;
-}*/
-
-
-
-
-
-
-
-
-
-
-
+/**** BLURBOX ****/
+#ifdef BLURBOX
 float blurBoxFilter (
     unsigned char *img_in, unsigned char *img_out,
     int width, int height,
@@ -700,8 +456,10 @@ float blurBoxFilter (
  
     return ms;
 }
+#endif
 
-
+/**** BLURGAUSS ****/
+#ifdef BLURGAUSS
 float blurGaussianfilter (
     unsigned char *img_in, unsigned char *img_out,
     int width, int height,int kerdim, float sigma,
@@ -737,3 +495,4 @@ float blurGaussianfilter (
  
     return ms;
 }
+#endif
