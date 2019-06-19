@@ -14,8 +14,8 @@ extern int N_size;
 
 /**** UTILS ****/
 void randomArray(float *x, int n);
-void printCos(float *cosx, int size);
-void printClocks(int *clocks, int size);
+inline void printCos(float *cosx, int size);
+inline void printClocks(int *clocks, int size);
 
 /**** KERNEL LAUNCHERS ****/
 float emptyKer();

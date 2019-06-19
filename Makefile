@@ -40,7 +40,7 @@ $(BIN)main_imageMat.o: $(SRC)main_imageMat.cpp $(INCLUDE)imageMatrix.h $(INCLUDE
 	$(CC) $(ALLFLAGS) -c $(SRC)main_imageMat.cpp -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z) -o $(BIN)main_imageMat.o
 
 $(BIN)imageMatKernels.o:  $(SRC)imageMatKernels.cu $(INCLUDE)imageMatrix.h $(INCLUDE)cudaUtils.h
-	$(CC) $(ALLFLAGS) -c $(SRC)imageMatKernels.cu -o $(BIN)imageMatKernels.o
+	$(CC) $(ALLFLAGS) -c $(SRC)imageMatKernels.cu -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z) -o $(BIN)imageMatKernels.o
 
 $(BIN)main_mat.o: $(SRC)main_imageMat.cpp $(INCLUDE)imageMatrix.h $(INCLUDE)cudaUtils.h
 	$(CC) $(ALLFLAGS) -c $(SRC)main_imageMat.cpp -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z) -o $(BIN)main_mat.o
@@ -91,7 +91,7 @@ $(BIN)cudaUtils.o: $(SRC)cudaUtils.cpp  $(INCLUDE)cudaUtils.h
 matmullow: $(BIN)matmullow.out
 smallmatmullow: $(BIN)smallmatmullow.out
 blurboxlow: $(BIN)blurboxlow.out
-
+blurgausslow: $(BIN)blurgausslow.out
 
 $(BIN)matmullow.out: $(BIN)main_mat_low.o $(BIN)imageMatKernels_low.o $(BIN)cudaUtils.o
 	$(CC) $(LOWPAR) $(BIN)main_mat_low.o $(BIN)imageMatKernels_low.o $(BIN)cudaUtils.o -o $(BIN)matmullow.out
@@ -102,14 +102,14 @@ $(BIN)smallmatmullow.out: $(BIN)main_mat_low.o $(BIN)imageMatKernels_low.o $(BIN
 $(BIN)blurboxlow.out: $(BIN)main_imageMat_low.o $(BIN)imageMatKernels_low.o $(BIN)lodepng.o $(BIN)cudaUtils.o
 	$(CC) $(LOWPAR) $(BIN)main_imageMat_low.o $(BIN)imageMatKernels_low.o $(BIN)lodepng.o $(BIN)cudaUtils.o -lstdc++fs -o $(BIN)blurboxlow.out
 
-#blurgauss: $(BIN)main_imageMat_low.o $(BIN)imageMatKernels_low.o $(BIN)lodepng.o $(BIN)cudaUtils.o
-	#$(CC) $(LOWPAR) $(BIN)main_imageMat_low.o $(BIN)imageMatKernels_low.o $(BIN)lodepng.o $(BIN)cudaUtils.o -lstdc++fs -o $(BIN)blurgauss.out
+$(BIN)blurgausslow.out: $(BIN)main_imageMat_low.o $(BIN)imageMatKernels_low.o $(BIN)lodepng.o $(BIN)cudaUtils.o
+	$(CC) $(LOWPAR) $(BIN)main_imageMat_low.o $(BIN)imageMatKernels_low.o $(BIN)lodepng.o $(BIN)cudaUtils.o -lstdc++fs -o $(BIN)blurgausslow.out
 
 $(BIN)main_imageMat_low.o: $(SRC)main_imageMat.cpp $(INCLUDE)imageMatrix.h $(INCLUDE)lodepng.h $(INCLUDE)cudaUtils.h
 	$(CC) $(LOWPAR) -c $(SRC)main_imageMat.cpp -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z | rev | cut -c 4- | rev) -o $(BIN)main_imageMat_low.o
 
 $(BIN)imageMatKernels_low.o:  $(SRC)imageMatKernels.cu $(INCLUDE)imageMatrix.h $(INCLUDE)cudaUtils.h
-	$(CC) $(LOWPAR) -c $(SRC)imageMatKernels.cu -o $(BIN)imageMatKernels_low.o
+	$(CC) $(LOWPAR) -c $(SRC)imageMatKernels.cu -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z | rev | cut -c 4- | rev) -o $(BIN)imageMatKernels_low.o
 
 $(BIN)main_mat_low.o: $(SRC)main_imageMat.cpp $(INCLUDE)imageMatrix.h $(INCLUDE)cudaUtils.h
 	$(CC) $(LOWPAR) -c $(SRC)main_imageMat.cpp -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z | rev | cut -c 4- | rev) -o $(BIN)main_mat_low.o
@@ -134,7 +134,7 @@ $(BIN)main_cos_low.o: $(SRC)main_cos.cpp $(INCLUDE)cosFutStr.h $(INCLUDE)cudaUti
 	$(CC) $(LOWPAR) -c $(SRC)main_cos.cpp -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z | rev | cut -c 4- | rev) -o $(BIN)main_cos_low.o
 
 $(BIN)farmkernels_low.o:  $(SRC)farmkernels.cu $(INCLUDE)cosFutStr.h $(INCLUDE)cudaUtils.h
-	$(CC) $(LOWPAR) -c $(SRC)farmkernels.cu $(MAKECMDGOALS) | tr a-z A-Z | rev | cut -c 4- | rev) -o $(BIN)farmkernels_low.o
+	$(CC) $(LOWPAR) -c $(SRC)farmkernels.cu -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z | rev | cut -c 4- | rev) -o $(BIN)farmkernels_low.o
 
 
 ####HOST####
