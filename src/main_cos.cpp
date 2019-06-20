@@ -114,9 +114,12 @@ int main(int argc, char **argv){
         label = "LOW";
     #else
         label = "";
-        GRID = ceil(chunk/BLOCK); //then make test on non divisible factors 
+        if (chunk%BLOCK==0)
+            GRID = chunk/BLOCK; //then make test on non divisible factors 
+        else
+            GRID = ceil((chunk+BLOCK-1)/BLOCK); //then make test on non divisible factors         
+        
     #endif
-
 
     #ifdef EMPTY
         std::cout <<"*";
@@ -155,8 +158,9 @@ int main(int argc, char **argv){
     //device memory
     float *x_d;
     int *clocks_d;    
-    gpuErrchk( cudaMalloc((void **)&x_d, bytesSize) ); 
-    gpuErrchk( cudaMalloc((void **)&clocks_d, GRID*sizeof(int)) );
+    gpuErrchk( cudaMalloc((void **)&x_d, bytesSize*nStreams) );  // bytesSize
+    gpuErrchk( cudaMalloc((void **)&clocks_d, GRID*nStreams*sizeof(int)) ); //GRID*sizeof(int)
+
     
     //stream array and events creation 
     cudaStream_t streams[nStreams];
@@ -206,12 +210,11 @@ int main(int argc, char **argv){
     gpuErrchk( cudaMallocHost((void **)&x, N_size*sizeof(float)) ); //pinned x    
     gpuErrchk( cudaMallocHost((void **)&cosx, N_size*sizeof(float)) ); //pinned cosx
     gpuErrchk( cudaMallocHost((void **)&clocks, GRID*sizeof(int)) ); //pinned clocks
-
     //device memory
     float *x_d; 
     int *clocks_d;
-    gpuErrchk( cudaMalloc((void**)&x_d, streamBytes) );
-    gpuErrchk( cudaMalloc((void**)&clocks_d, GRID*sizeof(int)) );   
+    gpuErrchk( cudaMalloc((void**)&x_d, streamBytes*nStreams) );
+    gpuErrchk( cudaMalloc((void**)&clocks_d, GRID*nStreams*sizeof(int)) );   
 
     //stream array and events creation 
     cudaStream_t streams[nStreams];
@@ -220,9 +223,10 @@ int main(int argc, char **argv){
 
     for (int i = 0; i < K_exec; ++i) {  
         int k = i%nStreams;
+        int strOffs = k*chunk;
         randomArray(x+i*chunk,chunk);
        
-        cosKerStream(M_iter,chunk, x+(i*chunk), cosx+(i*chunk), x_d, clocks, clocks_d, streams[k], streamBytes, 0);        
+        cosKerStream(M_iter,chunk, x+(i*chunk), cosx+(i*chunk), x_d+strOffs, clocks, clocks_d+(k*GRID), streams[k], streamBytes, 0);        
         #ifndef MEASURES
             printCos(cosx+i*chunk, chunk);
         #endif
@@ -250,54 +254,43 @@ int main(int argc, char **argv){
 /*** MANAGED ***/
 #elif MANAGED
     const int streamBytes = chunk* sizeof(float);
-
-    int *clocks = new int[GRID]; //sarà da fare pinned anche qua??
-    float *cosx = new float[chunk];
-    int bytesX = chunk*sizeof(float);
-    int bytesClocks = GRID*sizeof(int);
-   
+    float *cosx, *x;
+    int *clocks;
+    int bytesClocks = GRID*sizeof(int);   
     
     start = std::chrono::system_clock::now();
-    //stream array and events creation
-    cudaStream_t *stream = streamCreate(nStreams);
-    //cudaEvent_t startEvent, stopEvent;
-    /*gpuErrchk( cudaEventCreate(&startEvent) );
-    gpuErrchk( cudaEventCreate(&stopEvent) );
-    gpuErrchk( cudaEventRecord(startEvent,0) );*/
+
+    //stream array and events creation 
+    cudaStream_t streams[nStreams];
+    streamCreate(streams, nStreams);
     createAndStartEvent(&startEvent, &stopEvent);
+
     //unified memory
-    cudaMallocManaged(&x, bytesX);
-    cudaMallocManaged(&cosx, bytesX);
-    cudaMallocManaged(&clocks, bytesClocks);
+    cudaMallocManaged(&x, streamBytes*nStreams);
+    cudaMallocManaged(&cosx, streamBytes*nStreams);
+    cudaMallocManaged(&clocks, bytesClocks*nStreams);
 
     for (int i = 0; i < K_exec; ++i) {   
         int k = i%nStreams;
+        int strOffs = k*chunk;
 
-        cosKerStream(M_iter, chunk, x, cosx, clocks, 0, stream[k]);
+        cosKerStream(M_iter, chunk, x+strOffs, cosx+strOffs, clocks+(k*GRID), 0, streams[k]);
 
         #ifndef MEASURES
             printCos(cosx,chunk);
-            printClocks(clocks);
+            printClocks(clocks,GRID);
         #endif
     }
-    //events stop and stream
-    /*gpuErrchk( cudaEventRecord(stopEvent, 0) );
-    gpuErrchk( cudaEventSynchronize(stopEvent) );
-    gpuErrchk( cudaEventElapsedTime(&msTot, startEvent, stopEvent) );*/
+    //events stop and stream destroy
     msTot = endEvent(&startEvent, &stopEvent);
-    streamDestroy(stream,nStreams);
+    streamDestroy(streams,nStreams);
     end = std::chrono::system_clock::now();
-//sistema le print per managed
 
     #ifdef MEASURES
         millis = end-start;
-        label + =  "MANAGED";
+        label +=  "MANAGED";
         printMeasures(label, msTot, millis.count(), devId);
-        //std::cout<< label <<","<< msTot <<","<< millis.count() <<","             //outputs
-          //                  << M_iter <<","<< N_size <<"," << K_exec <<","      //inputs
-            //                << devId <<","<< BLOCK <<","<< GRID << std::endl;   //GPU infos
     #endif
-
 #endif
 
 #ifndef MEASURES
@@ -307,4 +300,3 @@ int main(int argc, char **argv){
     cudaDeviceReset();
     return 0;
 }
-

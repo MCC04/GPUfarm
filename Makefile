@@ -1,7 +1,7 @@
 # -*- Makefile -*-
 
 CC:= nvcc
-CFLAGS:= -std=c++14 -g -G #-DMEASURES
+CFLAGS:= -std=c++14 -g -G -DMEASURES
 ALLFLAGS:= $(CFLAGS) -Iinclude/ 
 #FF_FLAGS:= -O3 -I/home/maria/fastflow/ -pthread #-lstdc++fs 
 LOWPAR:= $(ALLFLAGS) -DLOWPAR

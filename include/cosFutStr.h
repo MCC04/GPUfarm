@@ -21,13 +21,7 @@ inline void printClocks(int *clocks, int size);
 float emptyKer();
 std::vector<std::future<hostData_t>> cosKerFuture(int M, int chunk, hostData_t out, float *x, float *x_d, int *clocks_d, cudaStream_t *strm, int nStreams, int offset);
 void cosKerStream(int M, int chunk, float *x, float *cosx, float *x_d, int *clocks, int *clocks_d, cudaStream_t strm, int strBytes, int offset);
-
-
-
-
-
-void cosKerStream(int m, int n,
-    float *x, float *cosx,  int *clocks, int offset, cudaStream_t strm);
+void cosKerStream(int m, int n, float *x, float *cosx,  int *clocks, int offset, cudaStream_t strm);
 
 
 

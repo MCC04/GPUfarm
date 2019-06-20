@@ -29,9 +29,20 @@ void printInfos(bool square){
         std::cout << N <<" \t \t " << BLOCK << " \t \t " << GRIDx << std::endl;
     }
     else {
-        std::cout << "A size \t B size \t C size \t Block Dim \t Grid X Dim \t Grid Y Dim" << std::endl;
-        std::cout<< M<<"x"<<K <<"\t"<< K<<"x"<<N <<"\t"<< M<<"x"<<N <<"\t" << BLOCK << " \t \t \t "<< GRIDx << " \t \t \t "<< GRIDy <<std::endl;
+        std::cout << "A size \t\t B size \t C size"<< std::endl;
+        std::cout<< M<<"x"<<K <<"\t\t"<< K<<"x"<<N <<"\t\t"<< M<<"x"<<N <<std::endl;
+    
+        std::cout<< std::endl << "Block Dim \t Grid X Dim \t Grid Y Dim" << std::endl;
+        std::cout<< BLOCK << " \t \t "<< GRIDx << " \t \t "<< GRIDy <<std::endl;
     }       
+    
+#endif     
+}
+
+void printImageInfos(int width,int height){
+#ifndef MEASURES
+    std::cout << "Image WIDTH \t Image HEIGHT \t Block Dim \t Grid Dim " << std::endl;
+    std::cout << width <<" \t \t " << height <<" \t \t " << BLOCK << " \t \t " << GRIDx << std::endl;    
 #endif     
 }
 
@@ -67,7 +78,7 @@ void hostMatMul(float *A, float *B, float *C, int M, int K, int N){
         for(int j=0; j<N; ++j){ //N = c2        
             float sum=0.0f;
             for(int l=0; l<K; ++l) //K = c1                            
-                sum += getMatrixVal( A,i,l,K )*getMatrixVal( B,l,j,N ); //getMatrixVal<float>( B,l,j,N )
+                sum += getMatrixVal( A,i,l,K )*getMatrixVal( B,l,j,N ); 
 
             setMatrixVal( C,i,j,N,sum );
         } 
@@ -79,31 +90,36 @@ void printMeasures(bool square, std::string label, float msTot, float chr, int m
     //posso usare prop per prendere il devID???
     if(square)
         std::cout<< label <<","<< msTot <<","<< chr <<","             //outputs
-                << N <<","<< matN <<","<< 1 <<","<< iters<<","        //input
+                << 1 <<","<< N <<","<< matN <<","<< iters<<","        //input
                 << devId <<","<< BLOCK <<","<< GRIDx <<std::endl;     //gpu infos
     else
         std::cout<< label <<","<< msTot <<","<< chr <<","                           //outputs
-                << M <<","<< K <<","<< N <<","<< matN <<","<< 0 <<","<< iters <<"," //input
+                << 0 <<","<< M <<","<< K <<","<< N <<","<< matN <<","<< iters <<"," //input
                 << devId <<","<< BLOCK <<","<< GRIDx <<","<< GRIDy <<std::endl;     //gpu infos     
+}
+
+void printImgMeasures(std::string label, float msTot, float chr, int imageN, int devId){
+    std::cout<< label <<","<< msTot <<","<< chr <<","               //outputs
+            << imageN <<","    //input
+            << devId <<","<< BLOCK <<std::endl;                     //gpu infos     
 }
 
 
 void checkMatEquality(float *A, float *B, int M, int N){    
     bool equal=true;  
-    std::cout<<"------CORRECTNESS CHECK------"<<std::endl;
+    //std::cout<<"------CORRECTNESS CHECK------"<<std::endl;
     for(int i=0; i<M; ++i) {
         for(int j=0; j<N; ++j) {
-            std::cout<<getMatrixVal( A,i,j,N )<<","<<getMatrixVal( B,i,j,N )<<" | ";
-
+            //std::cout<<getMatrixVal( A,i,j,N )<<","<<getMatrixVal( B,i,j,N )<<" | ";
             if (getMatrixVal( A,i,j,N ) != getMatrixVal( B,i,j,N )){
                 equal=false;
-               // break;
+                break;
             }  
                         
         } 
-         std::cout<<std::endl; 
-       //if(!equal)
-         //   break;
+        // std::cout<<std::endl; 
+        if(!equal)
+           break;
     }
     if(!equal)
         std::cout<< " NOT EQUAL matrices "<<std::endl<< std::endl;
@@ -112,11 +128,10 @@ void checkMatEquality(float *A, float *B, int M, int N){
 }
 
 
-inline void divideAlphaChannel(unsigned char* inImage, /*unsigned char* outImage,*/ unsigned char* alphaChannel, std::vector<unsigned char> in){
-    
+inline void divideAlphaChannel(unsigned char* inImage, unsigned char* alphaChannel, std::vector<unsigned char> in){
     int count=0,where=0;
     for(int i = 0; i < in.size(); ++i) {
-        if((i+1) % 4 != 0) {
+        if((i+1) % 4 != 0)  {
             inImage[where] = in.at(i);
             ++where;
         }                
@@ -124,13 +139,11 @@ inline void divideAlphaChannel(unsigned char* inImage, /*unsigned char* outImage
             alphaChannel[count] = in.at(i);
             ++count;
         }
-       // outImage[i] = 255; //dopo vedere se lo posso togliere e farlo tipo come con calloc ma che setti tutto a 255 invece di 0
     }
 }
 
 
 inline std::vector<unsigned char> rebuildAlphaChannel(unsigned char*outImg, unsigned char*alphaChannel, int size){
-    // Prepare data for output
     int count=0;
     std::vector<unsigned char> out;
     for(int i = 0; i < size; ++i) {
@@ -140,8 +153,6 @@ inline std::vector<unsigned char> rebuildAlphaChannel(unsigned char*outImg, unsi
             ++count;
         }
     }
-
-
     return out;
 }
 
@@ -195,32 +206,10 @@ int main(int argc, char **argv){
     }
 
     int chunk = matN/iters;    
-    /*#ifdef LOWPAR
-        GRIDx= 1;
-        GRIDy= 1;
-        label="LOW";
-    #else
-        int sizeX,sizeY;
-        if (M%BLOCK == 0)
-            sizeX = M;
-        else
-            sizeX = M+BLOCK-1;
-
-        if (N%BLOCK == 0)
-            sizeY = N;
-        else
-            sizeY = N+BLOCK-1;
-
-        GRIDx = ceil((sizeX)/BLOCK);
-        GRIDy = ceil((sizeY)/BLOCK);
-        label="";
-    #endif*/
-
     if(chunk==1)
         label += "SINGLEMATMUL";
     else
-        label += "CHUNKMATMUL";
-  
+        label += "CHUNKMATMUL";  
 
     start=std::chrono::system_clock::now();
     
@@ -230,9 +219,9 @@ int main(int argc, char **argv){
 
     //device mem allocation
     float *Ad, *Bd, *Cd;
-    gpuErrchk( cudaMalloc((void **)&Ad, bytesA*chunk) );
-    gpuErrchk( cudaMalloc((void **)&Bd, bytesB*chunk) );
-    gpuErrchk( cudaMalloc((void **)&Cd, bytesC*chunk) );
+    gpuErrchk( cudaMalloc((void **)&Ad, bytesA*chunk*nStream) );
+    gpuErrchk( cudaMalloc((void **)&Bd, bytesB*chunk*nStream) );
+    gpuErrchk( cudaMalloc((void **)&Cd, bytesC*chunk*nStream) );
     //host pinned mem allocation
     float *A, *B, *C;
     gpuErrchk( cudaMallocHost((void **)&A, bytesA*matN) );
@@ -255,7 +244,10 @@ int main(int argc, char **argv){
         for (int i = 0; i < iters; ++i) { 
             int j = i%nStream;            
             int idx = i*size*chunk;
-            newSquareMatMulKer(A+idx, B+idx, C+idx, Ad, Bd, Cd, N, chunk, stream[j]);         
+            int streamOffs = j*size*chunk;
+            newSquareMatMulKer(A+idx, B+idx, C+idx, 
+            Ad+streamOffs, Bd+streamOffs, Cd+streamOffs, //Ad, Bd, Cd,
+            N, chunk, stream[j]);         
         }
     }
     else{
@@ -268,7 +260,13 @@ int main(int argc, char **argv){
             int idxA = i*sizeA*chunk;
             int idxB = i*sizeB*chunk;
             int idxC = i*sizeC*chunk;
-            newMatMulKer(A+idxA, B+idxB, C+idxC, Ad, Bd, Cd, M, K, N, chunk, stream[j]);
+            int strOffsA = j*sizeA*chunk;
+            int strOffsB = j*sizeB*chunk;
+            int strOffsC = j*sizeC*chunk;
+
+            newMatMulKer(A+idxA, B+idxB, C+idxC, 
+            Ad+strOffsA, Bd+strOffsB, Cd+strOffsC,//Ad, Bd, Cd,
+            M, K, N, chunk, stream[j]);
         }
     }      
 
@@ -302,11 +300,18 @@ int main(int argc, char **argv){
     cudaFree(Bd);
     cudaFree(Cd);
 
+/*** BLURBOX ***/
 #elif BLURBOX
     label += "BLURBOX";
     unsigned int width, height;
     const char* input_path = "/home/cecconi/GPUfarm/images/in/";
     const char* output_path = "/home/cecconi/GPUfarm/images/out/";
+
+    #ifndef MEASURES
+        std::cout<<"Device : "<< prop.name <<std::endl;
+        std::cout<<"multiproc num : "<< prop.multiProcessorCount <<std::endl;
+        std::cout<<"warp size : "<< prop.warpSize <<std::endl;
+    #endif
 
     start=std::chrono::system_clock::now();
     createAndStartEvent(&startEvent, &stopEvent);    
@@ -318,7 +323,7 @@ int main(int argc, char **argv){
         int j = k%nStream;
         std::string fname = entry.path().string().substr(entry.path().string().find_last_of('/') + 1);
         #ifndef MEASURES
-            std::cout<<fname.c_str()<<std::endl;
+            std::cout<<std::endl<<"----------"<<std::endl<<fname.c_str()<<std::endl;
         #endif
         const char * input_file=entry.path().c_str();
         std::vector<unsigned char> in;
@@ -328,47 +333,21 @@ int main(int argc, char **argv){
         if(error) 
             std::cout<<"decoder error "<< error <<": "<< lodepng_error_text(error)<< std::endl;
 
-        //bytesSize=width*height; //sizeof(unsigned char)=1
-
         //prepare the data
         int imgBytes=width*height*3;
-        /*unsigned char *input_image, *output_image;
-        gpuErrchk( cudaMallocHost((void **)&input_image, in.size()) );
-        gpuErrchk( cudaMallocHost((void **)&output_image, in.size()) );
-        unsigned char *input_d, *output_d;
-        gpuErrchk( cudaMalloc((void **)&input_d, in.size()) );
-        gpuErrchk( cudaMalloc((void **)&output_d, in.size()) );*/
         unsigned char *input_image, *output_image;
         gpuErrchk( cudaMallocHost((void **)&input_image, imgBytes) );
         gpuErrchk( cudaMallocHost((void **)&output_image, imgBytes) );
         unsigned char *input_d, *output_d;
         gpuErrchk( cudaMalloc((void **)&input_d, imgBytes) );
         gpuErrchk( cudaMalloc((void **)&output_d, imgBytes) );
-        //unsigned char* input_image = new unsigned char[in.size()];
-        //unsigned char* output_image = new unsigned char[in.size()];
-
-        //gpuErrchk(cudaMallocManaged(&input_image, in.size()));
-        //gpuErrchk(cudaMallocManaged(&output_image, in.size()));
-
-        //gpuErrchk( cudaMalloc((void **)&Cd, bytesC*chunk) );
-        //host pinned mem allocation
-        //float *A, *B, *C;
-        //gpuErrchk( cudaMallocHost((void **)&A, bytesA*matN) );
-
-        std::cout<<std::endl<< in.size()<<std::endl;
-
 
         unsigned char* alphaChannel = new unsigned char[in.size()/4];
-        divideAlphaChannel(input_image, /*output_image,*/ alphaChannel, in);
+        divideAlphaChannel(input_image, alphaChannel, in);
 
-        blurBoxFilter( input_image, output_image, input_d, output_d, width, height, imgBytes,//in.size(),
-                            stream[j]);
-
+        blurBoxFilter( input_image, output_image, input_d, output_d, width, height, imgBytes, stream[j] );
         
         std::vector<unsigned char> out=rebuildAlphaChannel(output_image, alphaChannel,  imgBytes);
-
-                std::cout<<std::endl<< out.size()<<std::endl;
-
 
         //output the data
         std::string s(output_path);
@@ -379,6 +358,9 @@ int main(int argc, char **argv){
             std::cout<<"encoder error "<< error <<": "<< lodepng_error_text(error) <<std::endl;
 
         ++k;
+        #ifndef MEASURES
+            printImageInfos( width, height);
+        #endif
 
         cudaFreeHost(input_image);
         cudaFreeHost(output_image);
@@ -390,36 +372,10 @@ int main(int argc, char **argv){
     millis = end - start;
 
     #ifdef MEASURES          
-        printMeasures(square, label, msTot, millis.count(), matN, iters, devId);        
-    #else        
-        /*float *_A, *_B, *_C, *tmpC;
-        tmpC = (float *)calloc(1,bytesC*chunk);
-        for (int s=0; s<matN; ++s)
-        {          
-            _A = A+(s*M*K);
-            _B = B+(s*K*N);
-            _C = C+(s*M*N);
-            memset(tmpC, 0, bytesC*chunk);
-
-            hostMatMul(_A, _B, tmpC, M, K, N);
-            checkMatEquality(_C, tmpC, M, N);
-        } */
-        printInfos(1);//???
+        printImgMeasures(label, msTot, millis.count(), k, devId);     
     #endif    
-    
 
-    //free Host and Device space
-   /* cudaFreeHost(A);
-    cudaFreeHost(B);
-    cudaFreeHost(C);
-    cudaFree(Ad);
-    cudaFree(Bd);
-    cudaFree(Cd);*/
-
-
-
-
-
+/*** BLURGAUSS ***/
 #elif BLURGAUSS
     label += "BLURGAUSS";
     unsigned int width, height;
@@ -428,79 +384,58 @@ int main(int argc, char **argv){
     const int kerDim = 5;
     const float sigma = 4.0;
 
+    #ifndef MEASURES
+        std::cout<<"Device : "<< prop.name <<std::endl;
+        std::cout<<"multiproc num : "<< prop.multiProcessorCount <<std::endl;
+        std::cout<<"warp size : "<< prop.warpSize <<std::endl;
+    #endif
+
     start=std::chrono::system_clock::now();
     createAndStartEvent(&startEvent, &stopEvent);  
-    //for (int j=0; j<Nstr; ++j){
+
+    //Gaussian filter mat
+    int kerBytes = kerDim*kerDim*sizeof(float);
+    float *ker, *ker_d;
+    gpuErrchk(cudaMallocHost(&ker, kerBytes));
+    gpuErrchk(cudaMalloc(&ker_d, kerBytes));
+
+    getGaussian(ker, kerDim, sigma); 
+    gpuErrchk( cudaMemcpy(ker_d, ker, kerBytes, cudaMemcpyHostToDevice) );    
+
+
     int k=0;
     for (const auto &entry : std::experimental::filesystem::directory_iterator(input_path))
     {
         int j = k%nStream;
         std::string fname = entry.path().string().substr(entry.path().string().find_last_of('/') + 1);
         #ifndef MEASURES
-            std::cout<<fname.c_str()<<std::endl;
+            std::cout<<std::endl<<"----------"<<std::endl<<fname.c_str()<<std::endl;
         #endif
 
         const char * input_file=entry.path().c_str();
         std::vector<unsigned char> in;
     
-        // Load the data
+        //load data
         unsigned error = lodepng::decode(in, width, height, input_file);
         if(error) std::cout << "decoder error " << error << ": " << lodepng_error_text(error) << std::endl;
-        //bytesSize=width*height*sizeof(unsigned char);
 
-        // Prepare the data
-        //unsigned char* input_image = new unsigned char[in.size()];
-        //unsigned char* output_image = new unsigned char[in.size()];
-        int imgBytes=width*height*3;
+        int imgBytes = width*height*3;
         unsigned char *input_image, *output_image;
-        //gpuErrchk( cudaMallocHost((void **)&input_image, in.size()) );
-        //gpuErrchk( cudaMallocHost((void **)&output_image, in.size()) );
         gpuErrchk( cudaMallocHost((void **)&input_image, imgBytes) );
         gpuErrchk( cudaMallocHost((void **)&output_image, imgBytes) );
         unsigned char *input_d, *output_d;
-        //gpuErrchk( cudaMalloc((void **)&input_d, in.size()) );
-        //gpuErrchk( cudaMalloc((void **)&output_d, in.size()) );
         gpuErrchk( cudaMalloc((void **)&input_d, imgBytes) );
         gpuErrchk( cudaMalloc((void **)&output_d, imgBytes) );
 
-        //gpuErrchk(cudaMallocManaged(&input_image, in.size()));
-        //gpuErrchk(cudaMallocManaged(&output_image, in.size()));
-
         unsigned char* alphaChannel = new unsigned char[in.size()/4];
         divideAlphaChannel(input_image, alphaChannel, in);
-        /*int where = 0,count=0;
-        for(int i = 0; i < in.size(); ++i) {
-            if((i+1) % 4 != 0) {
-                input_image[where] = in.at(i);
-                //output_image[i] = 255;
-                ++where
-            }   
-            else{
-
-            }
-        }*/
         std::cout<<std::endl<< in.size()<<std::endl;
-        blurGaussianfilter (input_image, output_image, input_d, output_d, width, height, imgBytes,
-                             kerDim, sigma, stream[j]);
 
+        blurGaussianfilter (input_image, output_image, input_d, output_d, ker_d, width, height, imgBytes,
+                            kerDim, stream[j]);
 
-        /*gpuErrchk( cudaEventRecord(stopTot, 0) );
-        gpuErrchk( cudaEventSynchronize(stopTot) );
-        gpuErrchk( cudaEventElapsedTime(&tmp, startTot, stopTot) );*/
-
-        // Prepare data for output
-        /*std::vector<unsigned char> out;
-        for(int i = 0; i < in.size(); ++i) {
-            out.push_back(output_image[i]);
-            /*if((i+1) % 3 == 0) {
-                out.push_back(255);
-            }*/
-        //}
-       
-        //rebuildAlphaChannel(output_image, alphaChannel, out, imgBytes);
-        std::vector<unsigned char> out= rebuildAlphaChannel(output_image, alphaChannel,  imgBytes);
-
-            std::cout<<std::endl<< out.size()<<std::endl;
+        std::vector<unsigned char> out = rebuildAlphaChannel(output_image, alphaChannel, imgBytes);
+        std::cout<<std::endl<< out.size()<<std::endl;
 
         // Output the data
         std::string s(output_path);
@@ -512,6 +447,10 @@ int main(int argc, char **argv){
 
         ++k;
 
+        #ifndef MEASURES
+            printImageInfos( width, height);
+        #endif
+
         cudaFreeHost(input_image);
         cudaFreeHost(output_image);
         cudaFree(input_d);
@@ -523,30 +462,19 @@ int main(int argc, char **argv){
     millis = end - start;
 
     #ifdef MEASURES          
-        printMeasures(square, label, msTot, millis.count(), matN, iters, devId); 
-    #else
-        printInfos(1);//???        
+        printMeasures(square, label, msTot, millis.count(), matN, iters, devId);  
     #endif    
-    
-
-
+   
     //free Host and Device space
-   /* cudaFreeHost(A);
-    cudaFreeHost(B);
-    cudaFreeHost(C);
-    cudaFree(Ad);
-    cudaFree(Bd);
-    cudaFree(Cd);   */
+    cudaFree(ker_d);
+    cudaFreeHost(ker);
 #endif
 
     //STREAM destruction
     streamDestroy(stream,nStream);
-    #ifndef MESURES 
+    #ifndef MEASURES 
         printTotalTimes(msTot,  millis.count() );
     #endif
-
-
     cudaDeviceReset();
     return 0;
 }
-
