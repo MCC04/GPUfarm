@@ -21,7 +21,7 @@ void randomArray(float *x, int n){
 __global__ void emptyKernel(){ return; }
 #endif
 
-/**** GRID-STRIDE COS KERNEL ****/ 
+/****  COS KERNEL ****/ 
 __global__ void cosKernel(int M, int N, float *x_d, int *myclocks, int offset){    
     int idx = offset+blockIdx.x*blockDim.x + threadIdx.x; 
    
@@ -33,7 +33,7 @@ __global__ void cosKernel(int M, int N, float *x_d, int *myclocks, int offset){
 
         clock_t end=clock();
 
-        if (threadIdx.x == 0) myclocks[blockIdx.x+(offset/blockDim.x)]=(int)(end-start);
+      //  if (threadIdx.x == 0) myclocks[blockIdx.x+(offset/blockDim.x)]=(int)(end-start);
     }
     return ;
 }
@@ -56,6 +56,7 @@ __global__ void cosGridStride(int M, int N, float *x_d, int *myclocks, int offse
 
     return ;
 }
+
 
 
 /******************
@@ -149,17 +150,114 @@ std::vector<std::future<hostData_t>>
 #endif
 
 
+
+
+
+void optimalCosKer( int m, int chunk, float *x, float *cosx, float *x_d, int *clocks, int *clocks_d, cudaStream_t strm, int strBytes, int offset){
+    int blockSize;   // The launch configurator returned block size 
+    int minGridSize; // The minimum grid size needed to achieve the 
+                    // maximum occupancy for a full device launch 
+    int gridSize;    // The actual grid size needed, based on input size 
+
+    cudaOccupancyMaxPotentialBlockSize( &minGridSize, &blockSize, cosKernel, 0, 0); 
+    // Round up according to array size 
+    gridSize = (chunk + blockSize - 1) / blockSize; 
+
+    gpuErrchk( cudaMemcpyAsync(x_d, x, strBytes, cudaMemcpyHostToDevice, strm) ); 
+
+    cosKernel<<< gridSize, blockSize,offset,strm >>>(m, chunk, x_d, clocks_d, offset);
+
+    gpuErrchk( cudaMemcpyAsync( cosx, x_d, strBytes, cudaMemcpyDeviceToHost, strm) );
+    gpuErrchk( cudaMemcpyAsync( clocks, clocks_d, GRID*sizeof(int), cudaMemcpyDeviceToHost, strm) );
+
+    //cudaDeviceSynchronize(); 
+
+    // calculate theoretical occupancy
+    int maxActiveBlocks;
+    cudaOccupancyMaxActiveBlocksPerMultiprocessor( &maxActiveBlocks, cosKernel, blockSize, 0);
+
+    int device;
+    cudaDeviceProp props;
+    cudaGetDevice(&device);
+    cudaGetDeviceProperties(&props, device);
+#ifndef MEASURES
+    float occupancy = (maxActiveBlocks * blockSize / props.warpSize) / 
+                    (float)(props.maxThreadsPerMultiProcessor / 
+                            props.warpSize);
+
+    std::cout << "Launched blockSize: " << blockSize<< std::endl
+              << "Min Grid Size: " << minGridSize << std::endl
+              << "Launched Grid Size: " << gridSize << std::endl
+              << "Max active blocks: " << maxActiveBlocks<< std::endl
+              << "Theoretical occupancy:" << occupancy << std::endl;
+              
+  #endif
+
+
+
+}
+
+
+float optimalCosKer( int m, int n, float *x, float *cosx, float *x_d, int *clocks, int *clocks_d){
+    int blockSize;   // The launch configurator returned block size 
+    int minGridSize; // The minimum grid size needed to achieve the 
+                    // maximum occupancy for a full device launch 
+    int gridSize;    // The actual grid size needed, based on input size 
+    cudaEvent_t startEvent, stopEvent;
+
+    cudaOccupancyMaxPotentialBlockSize( &minGridSize, &blockSize, cosKernel, 0, 0); 
+    // Round up according to array size 
+    gridSize = (n + blockSize - 1) / blockSize; 
+
+    createAndStartEvent(&startEvent, &stopEvent);   
+    gpuErrchk( cudaMemcpy(x_d, x, n*sizeof(float), cudaMemcpyHostToDevice) ); 
+
+    cosKernel<<<gridSize, blockSize>>>(m, n, x_d, clocks_d, 0);
+
+    gpuErrchk( cudaMemcpy( cosx, x_d, n*sizeof(float), cudaMemcpyDeviceToHost) );
+    gpuErrchk( cudaMemcpy( clocks, clocks_d, GRID*sizeof(int), cudaMemcpyDeviceToHost) );
+
+        gpuErrchk( cudaPeekAtLastError() );
+
+cudaDeviceSynchronize();
+
+    float ms = endEvent(&startEvent, &stopEvent);
+    // calculate theoretical occupancy
+    int maxActiveBlocks;
+    cudaOccupancyMaxActiveBlocksPerMultiprocessor( &maxActiveBlocks, cosKernel, blockSize, 0);
+
+    int device;
+    cudaDeviceProp props;
+    cudaGetDevice(&device);
+    cudaGetDeviceProperties(&props, device);
+#ifndef MEASURES
+    float occupancy = (maxActiveBlocks * blockSize / props.warpSize) / 
+                    (float)(props.maxThreadsPerMultiProcessor / 
+                            props.warpSize);
+
+    std::cout << "Launched blockSize: " << blockSize<< std::endl
+              << "Min Grid Size: " << minGridSize << std::endl
+              << "Launched Grid Size: " << gridSize << std::endl
+              << "Max active blocks: " << maxActiveBlocks<< std::endl
+              << "Theoretical occupancy:" << occupancy << std::endl;
+   #endif           
+  
+return ms;
+
+
+}
+
 /**** STREAM ****/
 #ifdef STREAM
-
 void cosKerStream(int m, int chunk, float *x, float *cosx, float *x_d, int *clocks, int *clocks_d, cudaStream_t strm, int strBytes, int offset)
 {    
+ 
     gpuErrchk( cudaMemcpyAsync(x_d, x, strBytes, cudaMemcpyHostToDevice, strm) ); 
-    #ifdef LOWPAR
+    /* #ifdef LOWPAR
         cosGridStride<<<GRID, BLOCK, offset, strm>>>(m, chunk, x_d, clocks_d, offset);
-    #else
+    #else*/
         cosKernel<<<GRID, BLOCK, offset, strm>>>(m, chunk, x_d, clocks_d, offset);
-    #endif   
+    //#endif   
 
     #ifndef MEASURES
         gpuErrchk( cudaPeekAtLastError() );
@@ -168,11 +266,38 @@ void cosKerStream(int m, int chunk, float *x, float *cosx, float *x_d, int *cloc
     gpuErrchk( cudaMemcpyAsync( cosx, x_d, strBytes, cudaMemcpyDeviceToHost, strm) );
     gpuErrchk( cudaMemcpyAsync( clocks, clocks_d, GRID*sizeof(int), cudaMemcpyDeviceToHost, strm) );
 
-    #ifndef MEASURES
+   /* #ifndef MEASURES
         printClocks(clocks,GRID);
-    #endif  
+    #endif  */ 
     //cudaStreamSynchronize(strm);       
 }
+
+
+void cosKer(int m, int chunk, float *x, float *cosx, float *x_d, int *clocks, int *clocks_d)
+{   
+    int xBytes = chunk*sizeof(float);
+    int clockBytes = GRID*sizeof(int);
+    
+    gpuErrchk( cudaMemcpy(x_d, x, xBytes, cudaMemcpyHostToDevice) ); 
+    #ifdef LOWPAR
+        cosGridStride<<<GRID, BLOCK>>>(m, chunk, x_d, clocks_d, 0);
+    #else
+        cosKernel<<<GRID, BLOCK>>>(m, chunk, x_d, clocks_d, 0);
+    #endif   
+
+    #ifndef MEASURES
+        gpuErrchk( cudaPeekAtLastError() );
+        gpuErrchk( cudaDeviceSynchronize() );
+    #endif   
+    gpuErrchk( cudaMemcpy( cosx, x_d, xBytes, cudaMemcpyDeviceToHost) );
+    gpuErrchk( cudaMemcpy( clocks, clocks_d, clockBytes, cudaMemcpyDeviceToHost) );
+
+   /* #ifndef MEASURES
+        printClocks(clocks,GRID);
+    #endif  */ 
+    //cudaStreamSynchronize(strm);       
+}
+
 #endif
 
 
