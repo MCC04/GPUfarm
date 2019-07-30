@@ -198,6 +198,7 @@ void optimalCosKer( int m, int chunk, float *x, float *cosx, float *x_d, int *cl
 }
 
 
+//DATAPAR
 float optimalCosKer( int m, int n, float *x, float *cosx, float *x_d, int *clocks, int *clocks_d){
     int blockSize;   // The launch configurator returned block size 
     int minGridSize; // The minimum grid size needed to achieve the 
@@ -208,6 +209,18 @@ float optimalCosKer( int m, int n, float *x, float *cosx, float *x_d, int *clock
     cudaOccupancyMaxPotentialBlockSize( &minGridSize, &blockSize, cosKernel, 0, 0); 
     // Round up according to array size 
     gridSize = (n + blockSize - 1) / blockSize; 
+
+    BLOCK=blockSize;
+    GRID=gridSize;
+
+    clocks = (int *) malloc(GRID*sizeof(int));
+
+    gpuErrchk( cudaMalloc((void**)&clocks_d, GRID*sizeof(int)) );  
+
+   
+
+
+
 
     createAndStartEvent(&startEvent, &stopEvent);   
     gpuErrchk( cudaMemcpy(x_d, x, n*sizeof(float), cudaMemcpyHostToDevice) ); 

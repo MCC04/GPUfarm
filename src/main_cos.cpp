@@ -176,13 +176,55 @@ int main(int argc, char **argv){
     int *clocks;
     float *x_d; 
     int *clocks_d;
+
+
+
+
+    #ifdef LOWPAR
+        GRID = 1;
+        if (!hyb)
+        {
+            BLOCK = 32;
+            chunkSize=1;
+        }
+        else
+        {
+            chunkSize = BLOCK*GRID;
+        }
+        
+    #else
+        if (hyb)
+            GRID = 56;
+        else
+            GRID = maxThreads/BLOCK;  
+        chunkSize = BLOCK*GRID;
+    #endif
+
     
     if (nStreams==0)
     {
-        GRID = 1;  
-        
+         
+
+
+     
+
+
+
+        /* 
         #ifdef LOWPAR
-            BLOCK = 32;
+            GRID = 1;
+            if (!hyb)
+            {
+                BLOCK = 32;
+                chunkSize=1;
+            }
+            else
+            {
+                chunkSize = BLOCK*GRID;
+            }
+
+            //GRID = 1; 
+            //BLOCK = 32;
 
             x = (float *) malloc(sizeof(float));
             cosx = (float *) malloc(sizeof(float));
@@ -213,55 +255,44 @@ int main(int argc, char **argv){
             msTot = endEvent(&startEvent, &stopEvent);
 
         #else
-            chunkSize = BLOCK*GRID;
-            x = (float *) malloc(N_size*sizeof(float));
-            cosx = (float *) malloc(N_size*sizeof(float));
-            clocks = (int *) malloc(GRID*sizeof(int));
-
-            //device memory
-            gpuErrchk( cudaMalloc((void**)&x_d, chunkSize*sizeof(float)) );
-            gpuErrchk( cudaMalloc((void**)&clocks_d, GRID*sizeof(int)) ); 
-
-            //events creation 
-            createAndStartEvent(&startEvent, &stopEvent);
-            
-            for (int i = 0; i < N_size/chunkSize; ++i) {  
-                //random chunk
-                randomArray(x+(i*chunkSize),chunkSize);
-
-                //function calling kernel            
-                cosKer(M_iter,chunkSize, x+(i*chunkSize), cosx+(i*chunkSize), x_d, clocks, clocks_d);
-                
-                //print results
-                #ifndef MEASURES
-                    printCos(cosx+i*chunkSize, chunkSize);
-                #endif                
-            } 
-            msTot = endEvent(&startEvent, &stopEvent);
-
-        #endif
-    }
-    else 
-    {
-        #ifdef LOWPAR
-            GRID = 1;
-            if (!hyb)
-            {
-                BLOCK = 32;
-                chunkSize=1;
-            }
-            else
-            {
-                chunkSize = BLOCK*GRID;
-            }
-            
-        #else
+            //GRID = maxThreads/BLOCK; 
+            //chunkSize = BLOCK*GRID;
             if (hyb)
                 GRID = 56;
             else
                 GRID = maxThreads/BLOCK;  
-            chunkSize = BLOCK*GRID;
-        #endif
+            chunkSize = BLOCK*GRID;*/
+            
+        x = (float *) malloc(N_size*sizeof(float));
+        cosx = (float *) malloc(N_size*sizeof(float));
+        clocks = (int *) malloc(GRID*sizeof(int));
+
+        //device memory
+        gpuErrchk( cudaMalloc((void**)&x_d, chunkSize*sizeof(float)) );
+        gpuErrchk( cudaMalloc((void**)&clocks_d, GRID*sizeof(int)) ); 
+
+        //events creation 
+        createAndStartEvent(&startEvent, &stopEvent);
+        
+        for (int i = 0; i < N_size/chunkSize; ++i) {  
+            //random chunk
+            randomArray(x+(i*chunkSize),chunkSize);
+
+            //function calling kernel            
+            cosKer(M_iter,chunkSize, x+(i*chunkSize), cosx+(i*chunkSize), x_d, clocks, clocks_d);
+            
+            //print results
+            #ifndef MEASURES
+                printCos(cosx+i*chunkSize, chunkSize);
+            #endif                
+        } 
+        msTot = endEvent(&startEvent, &stopEvent);
+
+     //   #endif
+    }
+    else 
+    {
+
 
         
 
@@ -342,11 +373,11 @@ int main(int argc, char **argv){
        */ 
      x = (float *) malloc(N_size*sizeof(float));
             cosx = (float *) malloc(N_size*sizeof(float));
-            clocks = (int *) malloc(GRID*sizeof(int));
+            //clocks = (int *) malloc(GRID*sizeof(int));
     //device memory
     //int strSize = nStreams*chunkSize;
     gpuErrchk( cudaMalloc((void**)&x_d, N_size*sizeof(float)) );
-    gpuErrchk( cudaMalloc((void**)&clocks_d, GRID*sizeof(int)) );  
+    //gpuErrchk( cudaMalloc((void**)&clocks_d, GRID*sizeof(int)) );  
 
     //random array and function calling kernel
     randomArray(x,N_size);

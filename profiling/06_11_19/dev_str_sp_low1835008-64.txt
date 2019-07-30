@@ -1,0 +1,7 @@
+==22972== NVPROF is profiling process 22972, command: ./bin/streamlow.out 0 64 32 64 1835008
+==22972== Warning: ERR_NVGPUCTRPERM - The user does not have permission to profile on the target device. See the following link for instructions to enable permissions and get more information: https://developer.nvidia.com/ERR_NVGPUCTRPERM 
+==22972== Profiling application: ./bin/streamlow.out 0 64 32 64 1835008
+==22972== Profiling result:
+No kernels were profiled.
+No API activities were profiled.
+==22972== Warning: Some profiling data are not recorded. Make sure cudaProfilerStop() or cuProfilerStop() is called before application exit to flush profile data.

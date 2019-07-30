@@ -17,39 +17,28 @@ def getDatas(str):
 	linesSeq = open(str, 'r')	
 	charsSeq = [line.rstrip('\n') for line in linesSeq]
 	
-
+	inputParams=[]
 	tokens=[]
 	lbls=[]
 	evTimes=[]
 	chronoTimes=[]
-	chunkSizes=[]
-	N=[]
-	M=[]
-	nStreams=[]
-	blocks=[]
-	grids=[]
-	
+
 	for line in charsSeq:
-		tokens= line.split(',',11)
+		tokens= line.split(',',10)
 		lbls.append(tokens[0])
 		evTimes.append(float(tokens[1]))
-		chronoTimes.append(float(tokens[2]))	
-		chunkSizes.append(float(tokens[3]))
-		N.append(float(tokens[4]))
-		M.append(float(tokens[5]))
-		nStreams.append(float(tokens[6]))
-		blocks.append(float(tokens[9]))
-		grids.append(float(tokens[10]))		
+		chronoTimes.append(float(tokens[2]))			
 		
-		
+		if(len(tokens)>2):
+			inputParams.append([int(x) for x in tokens[3:]])
 
-
+	print("\nInput params: ",inputParams)
 	print("\nEvent times: ",evTimes)
 	print("\nChrono times: ",chronoTimes)
+	print("\nLabels: ",lbls)
 
 
-
-	return lbls, evTimes, chronoTimes, chunkSizes, N, M, nStreams, blocks, grids
+	return lbls,inputParams, evTimes, chronoTimes
 
 
 ##########
@@ -63,97 +52,155 @@ def main():
 		print(os.path.join("../results/", file))		
 	
 		
-		if file[0:6]=="dev_sp":# and file[4:9]!="lowpar":	
-
-			f=os.path.join("../results/", file)
-			lbls, evTimes, chronoTimes, chunkSizes, N, M, nStreams, blocks, grids = getDatas(f)
+		if file[0:13]=="dev_sp_stream":# and file[4:9]!="lowpar":	
+			if file[-7:-4]=="inv":
+				f=os.path.join("../results/", file)
+				lbls,inputs,evTimes,chronoTimes = getDatas(f)
+			
+				csvPath="./output/dev_spup"
 		
-			csvPath="./output/dev_cos_avgs.csv"
-	
-			print("Ev len: ",len(evTimes))
-			print("Chrono len: ",len(chronoTimes))		
-			print("Lbl len: ",len(lbls))						
+				print("\nEv len: ",len(evTimes))
+				print("\nchrono len: ",len(chronoTimes))					
+				print("\ninputs len: ",len(inputs))
+		
+				chFinalAvgs=np.zeros((5,5))
+				evFinalAvgs=np.zeros((5,5))
+
+				chLowFinalAvgs=np.zeros((5,5))
+				evLowFinalAvgs=np.zeros((5,5))
+			
+				tmpChFinalAvgs=np.zeros((5,5))
+				tmpEvFinalAvgs=np.zeros((5,5))
 
 			
-			evtmp=[]
-			chtmp=[]
-			evAvgs=[]
-			chAvgs=[]
+				evAvg = []
+				chAvg = []	
+				xRow = [] #COS=N_size; MAT=matN	
+				xCol = [] #COS=M_iter; MAT=Ndim
+				lbltmp = lbls[0]
+				i = 0
+				low = 0
 
-			#lbls=[lbls.remove(lbls[x]) for x in range(len(lbls)) if x%10!=0]
-
-			
-			#print ("length lbls: ",len(lbls))
-			#print (" lbls: ",lbls)
-
-			i=0
-			for i in range(len(evTimes)):
-				if i%10!=0 or i==0:
-					evtmp.append(evTimes[i])
-					chtmp.append(chronoTimes[i])
-				
-						
-				else:
-					e, c = getChunkAvg(evtmp,chtmp)
-					evAvgs.append(e)
-					chAvgs.append(c)
-					evtmp=[]
-					chtmp=[]
-					evtmp.append(evTimes[i])
-					chtmp.append(chronoTimes[i])
-			
-			lbls=lbls[0:len(lbls):10]
-			chunkSizes=chunkSizes[0:len(chunkSizes):10]
-			N=N[0:len(N):10]
-			M=M[0:len(M):10]
-			nStreams=nStreams[0:len(nStreams):10]
-			blocks=blocks[0:len(blocks):10]
-			grids=grids[0:len(grids):10]
-						
-						
-			print("Event Averages: ",evAvgs)
-			print("Chrono Averages: ",chAvgs)
-			
-			print("LBLs: ",lbls)
-			
-			lbl=lbls[0]
-			with open(csvPath,  "wb") as fcsv:
-				writer = csv.writer(fcsv) 
-				writer.writerow([lbl])
-				writer.writerow(['EVENTS','CHRONO','CHUNK','N SIZE','M ITERS','N STREAMS','BLOCK','GRID'])
-				for i in range(len(evAvgs)):	
-				
-					if(lbl!=lbls[i]):
-						lbl=lbls[i]
-						writer.writerow([lbl])
-						writer.writerow(['EVENTS','CHRONO','CHUNK','N SIZE','M ITERS','N STREAMS','BLOCK','GRID'])
+				for l in lbls:
+					print("***LLL", l, i)
+					if l==lbltmp and i < len(lbls)-1:
+						evAvg.append(evTimes[i])
+						chAvg.append(chronoTimes[i])
 					
-					writer.writerow([evAvgs[i],chAvgs[i],chunkSizes[i],N[i],M[i],nStreams[i],blocks[i],grids[i]])
+					else:
+						lbltmp = l
+						print("***LBL", lbltmp)
+						k = 0
+						m = 0				
+						t = 0
+						while t<len(evAvg):
+						
+							evChunk = evAvg[t:(t+testNum)]
+							chChunk = chAvg[t:(t+testNum)]
+						
+							print("***XCOLS   ", xCol)
+							print("***XROWS   ", xRow)
+						
+							tmpEvFinalAvgs[m][k], tmpChFinalAvgs[m][k]=getChunkAvg(evChunk,chChunk)
+						
+							#print("***k", k)
+							#print("***m", m)	
+						
+						
+							#print("***MAT CH \n", tmpChFinalAvgs)
+							#print("***MAT EV \n", tmpEvFinalAvgs)
+					
+							#print("***IN LEN   ", len(inputs))
+						
+						
+							k+=1
+						
+				
+					
+							if(k>=5):
+								#print("***inputs dim : ", len(inputs[0]), len(inputs[1]))
+							
+								m+=1
+								k=0
+								#print("***MMMM : ", m)
+								if(m>=5):
+									m=0
+									break
+	
+								#xRow.append(inputs[m*t][2]) #1=N_size;2=M_iter
+								#xRow.append(inputs[m*t][1]) 
+						
+							#xCol.append(inputs[k*t][1])
+							#xCol.append(inputs[k*t][0])#0=dim;1=matN
+							
+							t+=testNum
+						
+						
 						
 					
-			
+						if(low):
+							print("***LOW : ", low)
+							chLowFinalAvgs=tmpChFinalAvgs
+							evLowFinalAvgs=tmpEvFinalAvgs
+						
+							#if I'm here it means I can plot a speedup, since 
+							#I've both high and low measures of some test
+							speedUp = evLowFinalAvgs/evFinalAvgs
+							print("***SPEEDUP: \n", speedUp)
+							print("***LBL", lbltmp)
+							csvPath+=lbltmp
+							csvPath+=".csv"
+							#xRow =[32,64,128,256,512]			
+							#xCol=[56,112,168,224,280]							
+										
+							xCol=[64,128,256,512,1024]
+							xRow =[114688,229376,458752,917504,1835008]
+							
+							writeToCSV(csvPath, lbltmp, chFinalAvgs, evFinalAvgs, evLowFinalAvgs, speedUp)
+							doPlots(evFinalAvgs, evLowFinalAvgs, speedUp, xRow, xCol, lbltmp)
+										
+							xCol=[]
+							xRow =[]
+							low=0
+						else:
+							print("***LOW : ", low)
+							chFinalAvgs=tmpChFinalAvgs
+							evFinalAvgs=tmpEvFinalAvgs
+							low=1
+						
+						tmpChFinalAvgs = np.zeros((5,5))
+						tmpEvFinalAvgs = np.zeros((5,5))
+					
+
+						
+						
+						
+						
+						
+						
+						
+						
+							
+						evAvg=[]
+						chAvg=[]
+						#evAvg.append(evTimes[i])
+						#chAvg.append(chronoTimes[i])
+						
+							
+					
+					i+=1
+
+			#else:
+			#	for l in lbls:
+			#		print("***LLL", l, i)
+			#		if l==lbltmp and i < len(lbls)-1:
+			#			evAvg.append(evTimes[i])
+			#			chAvg.append(chronoTimes[i])
+					
+			#		else:
+			#			ch,minC,maxC = divideDatas(chAvg)
+			#			ev,minE,maxE = divideDatas(evAvg)
 		
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-		
-	
 ###############
 ### GET AVG ###
 ###############	
