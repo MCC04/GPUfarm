@@ -1,0 +1,7 @@
+==48793== NVPROF is profiling process 48793, command: ./bin/cos/stream.out 0 256 57344 10000 64 0
+==48793== Warning: ERR_NVGPUCTRPERM - The user does not have permission to profile on the target device. See the following link for instructions to enable permissions and get more information: https://developer.nvidia.com/ERR_NVGPUCTRPERM 
+==48793== Profiling application: ./bin/cos/stream.out 0 256 57344 10000 64 0
+==48793== Profiling result:
+No kernels were profiled.
+No API activities were profiled.
+==48793== Warning: Some profiling data are not recorded. Make sure cudaProfilerStop() or cuProfilerStop() is called before application exit to flush profile data.
