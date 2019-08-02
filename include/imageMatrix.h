@@ -17,10 +17,15 @@ void getGaussian (float* ker,int dim, float sigma);
 /*****Kernel launcers*****/
 //MATRIX MULTIPLICATION
 void newMatMulKer (float *A, float *B, float *C, float *Ad, float *Bd, float *Cd,
-     int m, int k, int n, int chunk, cudaStream_t strm); 
+                    int m, int k, int n, cudaStream_t strm); 
 
 void newSquareMatMulKer (float *A, float *B, float *C, float *Ad, float *Bd, float *Cd,
-    int n, int chunk, cudaStream_t strm);
+                        int n, cudaStream_t strm);
+
+void newMatMulKer (float *A, float *B, float *C, float *Ad, float *Bd, float *Cd,
+                     int m, int k, int n); 
+
+void newSquareMatMulKer (float *A, float *B, float *C, float *Ad, float *Bd, float *Cd, int n);
 
 //IMAGE PROCESSING
 void blurBoxFilter (unsigned char *img_in, unsigned char *img_out, unsigned char *in_d, unsigned char *out_d,

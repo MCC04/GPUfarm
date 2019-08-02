@@ -67,7 +67,7 @@ def main():
 			f=os.path.join("../results/", file)
 			lbls, evTimes, chronoTimes, chunkSizes, N, M, nStreams, blocks, grids = getDatas(f)
 		
-			csvPath="./output/"+file[0:-4]+"_avgs.csv"
+			csvPath="./output/"+file[0:-4]+"_avgs2.csv"
 	
 			print("Ev len: ",len(evTimes))
 			print("Chrono len: ",len(chronoTimes))		
@@ -96,7 +96,7 @@ def main():
 					evtmp.append(evTimes[i])
 					chtmp.append(chronoTimes[i])
 					
-			if len(evtemp)==8:
+			if len(evtmp)==8:
 				e, c = getChunkAvg(evtmp,chtmp)
 				evAvgs.append(e)
 				chAvgs.append(c)

@@ -55,18 +55,17 @@ void getGaussian(float* ker,int dim, float sigma)
 ***********/
 
 /**** MATMUL ****/
-__global__ void matMulKernel(float* A, float* B, float* C, int m, int k, int n, int chunk) {   
+__global__ void matMulKernel(float* A, float* B, float* C, int m, int k, int n) {   
     int ROW = blockIdx.x*blockDim.x+threadIdx.x;
     int COL = blockIdx.y*blockDim.y+threadIdx.y;
  
     if (ROW<m && COL<n) {
-        int sizeA = m*k;
-        int sizeB = k*n;
-        int sizeC = m*n;
+       // int sizeA = m*k;
+        //int sizeB = k*n;
+        //int sizeC = m*n;
         float tmpSum = 0.0f;
-        int offsA = 0, offsB = 0, offsC = 0;
         
-        for (int s=0; s<chunk; ++s)
+        /* for (int s=0; s<chunk; ++s)
         {
             offsA = s*sizeA;
             offsB = s*sizeB;
@@ -77,22 +76,27 @@ __global__ void matMulKernel(float* A, float* B, float* C, int m, int k, int n, 
                 tmpSum += A[offsA+(ROW*k)+i] * B[offsB+(i*n)+COL];
             }        
             C[offsC+(ROW*n)+COL] = tmpSum;
-        }
+        }*/
+
+        
+        for (int i = 0; i < k; ++i) {
+            tmpSum += A[(ROW*k)+i] * B[(i*n)+COL];
+        }        
+        C[(ROW*n)+COL] = tmpSum;
     }
     return ;
 }
 
 /**** GRID-STRIDE MATMUL ****/
-__global__ void matMulGridStride(float* A, float* B, float* C, int m, int k, int n, int chunk) {
+__global__ void matMulGridStride(float* A, float* B, float* C, int m, int k, int n) {
     int ROW = blockIdx.x*blockDim.x+threadIdx.x;
     int COL = blockIdx.y*blockDim.y+threadIdx.y;
 
     int Rstride = blockDim.x*gridDim.x;
     int Cstride = blockDim.y*gridDim.y;    
 
-    float tmpSum = 0.0f;
-    int offsA = 0, offsB = 0, offsC = 0;
-    for (int s=0; s<chunk; ++s)
+    
+    /*for (int s=0; s<chunk; ++s)
     {
         offsA = s*m*k;
         offsB = s*k*n;
@@ -107,20 +111,34 @@ __global__ void matMulGridStride(float* A, float* B, float* C, int m, int k, int
                 C[offsC+(r*n)+c] = tmpSum;
             }           
         }
-    }    
+    }     */
+
+
+    for (int r=ROW; r<m; r+=Rstride) {
+        for (int c=COL; c<n; c+=Cstride) {        
+            float tmpSum = 0.0f;
+            for (int i = 0; i <k; ++i) {
+                tmpSum += A[(r*k)+i] * B[(i*n)+c];
+            }
+            C[(r*n)+c] = tmpSum;
+        }           
+    }
+   
     return ;
 }
 
 /**** SQUARE MATMUL ****/
-__global__ void squareMatMulKernel(float* A, float* B, float* C, int N, int chunk) {
+__global__ void squareMatMulKernel(float* A, float* B, float* C, int N) {
 
-    int ROW = blockIdx.x*blockDim.x+threadIdx.x;
-    int COL = blockIdx.y*blockDim.y+threadIdx.y;
+    //int ROW = blockIdx.x*blockDim.x+threadIdx.x;
+    //int COL = blockIdx.y*blockDim.y+threadIdx.y;
+    int COL = blockIdx.x*blockDim.x+threadIdx.x;
+    int ROW = blockIdx.y*blockDim.y+threadIdx.y;
  
     if (ROW<N && COL<N) {
-        int size=N*N;
+       // int size=N*N;
         float tmpSum=0.0f;        
-        for (int s=0; s<chunk; ++s)
+        /* for (int s=0; s<chunk; ++s)
         {
             int offs = s*size;
             tmpSum = 0.0f;        
@@ -128,13 +146,17 @@ __global__ void squareMatMulKernel(float* A, float* B, float* C, int N, int chun
                 tmpSum += A[offs+(ROW*N)+i] * B[offs+(i*N)+COL];
             }        
             C[offs+(ROW*N)+COL] = tmpSum;
-        }
+        }*/
+        for (int i = 0; i < N; ++i) {
+            tmpSum += A[(ROW*N)+i] * B[(i*N)+COL];
+        }        
+        C[(ROW*N)+COL] = tmpSum;        
     }
     return ;
 }
 
 /**** GRID-STRIDE SQUARE MATMUL ****/
-__global__ void squareMatMulGridStrideKer(float* A, float* B, float* C, int N, int chunk) {
+__global__ void squareMatMulGridStrideKer(float* A, float* B, float* C, int N) {
 
     int ROW = blockIdx.x*blockDim.x+threadIdx.x;
     int COL = blockIdx.y*blockDim.y+threadIdx.y;
@@ -143,8 +165,8 @@ __global__ void squareMatMulGridStrideKer(float* A, float* B, float* C, int N, i
     int Cstride = blockDim.y*gridDim.y;    
 
     float tmpSum = 0.0f;
-    int offs = 0;
-    for (int s=0; s<chunk; ++s)
+   // int offs = 0;
+    /*for (int s=0; s<chunk; ++s)
     {
         offs = s*N*N;
         for (int k=ROW; k<N; k+=Rstride) {
@@ -156,7 +178,18 @@ __global__ void squareMatMulGridStrideKer(float* A, float* B, float* C, int N, i
                 C[offs+(k*N)+j] = tmpSum;
             }               
         }
-    }    
+    }     */
+
+    for (int k=ROW; k<N; k+=Rstride) {
+        for (int j=COL; j<N; j+=Cstride) {        
+            tmpSum=0;
+            for (int i = 0; i < N; i++) {
+                tmpSum += A[(k*N)+i] * B[(i*N)+j];
+            }
+            C[(k*N)+j] = tmpSum;
+        }               
+    }
+  
     return ;
 }
 
@@ -324,21 +357,19 @@ const float* filter, const int filterWidth)
 /**** NON SQUARE MATMUL ****/
 #ifdef MATMUL
 void newMatMulKer(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd, 
-        int m, int k, int n, int chunk, cudaStream_t strm)
+        int m, int k, int n, cudaStream_t strm)
 {
     int bytesA = m*k*sizeof(float);
     int bytesB = k*n*sizeof(float);
     int bytesC = m*n*sizeof(float);
 
-    cudaMemcpyAsync(Ad, A, bytesA*chunk, cudaMemcpyHostToDevice, strm);    
-    cudaMemcpyAsync(Bd, B, bytesB*chunk, cudaMemcpyHostToDevice, strm);   
+    cudaMemcpyAsync(Ad, A, bytesA, cudaMemcpyHostToDevice, strm);    
+    cudaMemcpyAsync(Bd, B, bytesB, cudaMemcpyHostToDevice, strm);   
 
     dim3 dimBlock( BLOCK,BLOCK,1 );
     #ifdef LOWPAR
         GRIDx = 1;
         GRIDy = 1;
-        dim3 dimGrid( GRIDx,GRIDy,1 ); 
-        matMulGridStride<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n, chunk);
     #else
         int sizeX,sizeY;
         if (m%BLOCK == 0) sizeX = m;
@@ -349,46 +380,102 @@ void newMatMulKer(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd,
 
         GRIDx = (sizeX)/BLOCK;
         GRIDy = (sizeY)/BLOCK;
-        dim3 dimGrid( GRIDx,GRIDy,1 ); 
-        matMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n, chunk);
     #endif
 
-    cudaMemcpyAsync( C, Cd, bytesC*chunk, cudaMemcpyDeviceToHost, strm);
+    dim3 dimGrid( GRIDx,GRIDy,1 ); 
+    matMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
+    //matMulGridStride<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, m,  k,  n);
 
-    //cudaDeviceSynchronize();
+    cudaMemcpyAsync( C, Cd, bytesC, cudaMemcpyDeviceToHost, strm);
+}
+
+
+void newMatMulKer(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd, 
+        int m, int k, int n)
+{
+    int bytesA = m*k*sizeof(float);
+    int bytesB = k*n*sizeof(float);
+    int bytesC = m*n*sizeof(float);
+
+    cudaMemcpy(Ad, A, bytesA, cudaMemcpyHostToDevice);    
+    cudaMemcpy(Bd, B, bytesB, cudaMemcpyHostToDevice);   
+
+    dim3 dimBlock( BLOCK,BLOCK,1 );
+    #ifdef LOWPAR
+        GRIDx = 1;
+        GRIDy = 1;
+    #else
+        int sizeX,sizeY;
+        if (m%BLOCK == 0) sizeX = m;
+        else sizeX = m+BLOCK-1;
+
+        if (n%BLOCK == 0) sizeY = n;
+        else sizeY = n+BLOCK-1;
+
+        GRIDx = (sizeX)/BLOCK;
+        GRIDy = (sizeY)/BLOCK;
+    #endif
+    dim3 dimGrid( GRIDx,GRIDy,1 ); 
+    //matMulGridStride<<<dimGrid, dimBlock>>>(Ad, Bd, Cd, m,  k,  n);
+    matMulKernel<<<dimGrid, dimBlock>>>(Ad, Bd, Cd, m,  k,  n);
+
+    cudaMemcpy( C, Cd, bytesC, cudaMemcpyDeviceToHost);
 }
 
 /**** SQUARE MATMUL ****/
 void newSquareMatMulKer(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd, 
-            int n, int chunk, cudaStream_t strm)
+            int n, cudaStream_t strm)
 {
     int size = n*n;
     int bytesMat = size*sizeof(float);
 
-    gpuErrchk( cudaMemcpyAsync(Ad, A, bytesMat*chunk, cudaMemcpyHostToDevice, strm) );    
-    gpuErrchk( cudaMemcpyAsync(Bd, B, bytesMat*chunk, cudaMemcpyHostToDevice, strm) );   
+    gpuErrchk( cudaMemcpyAsync(Ad, A, bytesMat, cudaMemcpyHostToDevice, strm) );    
+    gpuErrchk( cudaMemcpyAsync(Bd, B, bytesMat, cudaMemcpyHostToDevice, strm) );   
 
     dim3 dimBlock( BLOCK,BLOCK,1 );
     #ifdef LOWPAR        
         GRIDx = 1;
+    #else
+        int sizeX;
+        if (n%BLOCK == 0) sizeX = n;
+        else sizeX = n+BLOCK-1;
+        GRIDx = sizeX/BLOCK;
+    #endif
         dim3 dimGrid( GRIDx,GRIDx,1 ); 
-        squareMatMulGridStrideKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n, chunk);
+        //squareMatMulGridStrideKer<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n);
+        squareMatMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n);
+
+    gpuErrchk( cudaMemcpyAsync( C, Cd, bytesMat, cudaMemcpyDeviceToHost, strm) );
+}
+
+
+
+void newSquareMatMulKer(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd, int n)
+{
+    int size = n*n;
+    int bytesMat = size*sizeof(float);
+
+    gpuErrchk( cudaMemcpy(Ad, A, bytesMat, cudaMemcpyHostToDevice) );    
+    gpuErrchk( cudaMemcpy(Bd, B, bytesMat, cudaMemcpyHostToDevice) );   
+
+    dim3 dimBlock( BLOCK,BLOCK,1 );
+    #ifdef LOWPAR        
+        GRIDx = 1;
     #else
         int sizeX;
         if (n%BLOCK == 0) sizeX = n;
         else sizeX = n+BLOCK-1;
 
         GRIDx = (sizeX)/BLOCK;
-        dim3 dimGrid( GRIDx,GRIDx,1 ); 
-        squareMatMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n, chunk);
     #endif
-    squareMatMulKernel<<<dimGrid, dimBlock, 0, strm>>>(Ad, Bd, Cd, n, chunk);
+    dim3 dimGrid( GRIDx,GRIDx,1 ); 
+    squareMatMulKernel<<<dimGrid, dimBlock>>>(Ad, Bd, Cd, n);
+    //squareMatMulGridStrideKer<<<dimGrid, dimBlock>>>(Ad, Bd, Cd, n);
 
-    gpuErrchk( cudaMemcpyAsync( C, Cd, bytesMat*chunk, cudaMemcpyDeviceToHost, strm) );
-
-    //cudaDeviceSynchronize();
+    gpuErrchk( cudaMemcpy( C, Cd, bytesMat, cudaMemcpyDeviceToHost) );
 }
 #endif
+
 
 /**** BLURBOX ****/
 #ifdef BLURBOX

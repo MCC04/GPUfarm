@@ -86,15 +86,15 @@ void hostMatMul(float *A, float *B, float *C, int M, int K, int N){
 }
 
 
-void printMeasures(bool square, std::string label, float msTot, float chr, int matN, int iters, int devId){
+void printMeasures(bool square, std::string label, float msTot, float chr, int matN, int devId){
     //posso usare prop per prendere il devID???
     if(square)
         std::cout<< label <<","<< msTot <<","<< chr <<","             //outputs
-                << 1 <<","<< N <<","<< matN <<","<< iters<<","        //input
+                << 1 <<","<< N <<","<< matN <<","        //input
                 << devId <<","<< BLOCK <<","<< GRIDx <<std::endl;     //gpu infos
     else
         std::cout<< label <<","<< msTot <<","<< chr <<","                           //outputs
-                << 0 <<","<< M <<","<< K <<","<< N <<","<< matN <<","<< iters <<"," //input
+                << 0 <<","<< M <<","<< K <<","<< N <<","<< matN <<"," //input
                 << devId <<","<< BLOCK <<","<< GRIDx <<","<< GRIDy <<std::endl;     //gpu infos     
 }
 
@@ -161,20 +161,23 @@ int main(int argc, char **argv){
     std::srand(static_cast <unsigned> (time(NULL)));
     
     std::string label;
+    int maxThreads = 2048;
     int gpu_clk = 1;    
     float msTot = 0.0f;
-    int nStream = 3;
+    //int nStream = 3;
     std::chrono::system_clock::time_point start, end;
     std::chrono::duration<double, std::milli> millis;  
 
     //args
     int devId = atoi(argv[1]);    
     BLOCK = atoi(argv[2]);    
-    int iters = atoi(argv[3]);
+    const int nStreams = atoi(argv[3]);
+    //int hyb = atoi(argv[5]);
      
     gpuErrchk( cudaDeviceGetAttribute(&gpu_clk, cudaDevAttrClockRate, devId));    
     gpuErrchk( cudaSetDevice(devId) );
     gpuErrchk( cudaGetDeviceProperties(&prop, devId));   
+    
 
     #ifdef LOWPAR
         label="LOW";
@@ -184,109 +187,140 @@ int main(int argc, char **argv){
 
     //event and stream creation
     cudaEvent_t startEvent, stopEvent;
-    cudaStream_t stream[nStream];
-    streamCreate(stream, nStream);
+    cudaStream_t stream[nStreams];
+    streamCreate(stream, nStreams);
 
 /*** MATMUL ***/
 #ifdef MATMUL
-    int matN;
-    //other args
+    label+="MATMUL";
+    //args
+    if (argc<6|| argc>8){
+        return 1;
+    }
     bool square = atoi(argv[4]);
+    int matN = atoi(argv[5]);
     if(square){
-        N = atoi(argv[5]);
-        matN = atoi(argv[6]);
+        N = atoi(argv[6]);        
         M = N;
         K = N;
     }
     else{
-        M = atoi(argv[5]);
-        K = atoi(argv[6]);
-        N = atoi(argv[7]);
-        matN = atoi(argv[8]);
+        M = atoi(argv[6]);
+        K = atoi(argv[7]);
+        N = atoi(argv[8]);
     }
-
-    int chunk = matN/iters;    
-    if(chunk==1)
-        label += "SINGLEMATMUL";
-    else
-        label += "CHUNKMATMUL";  
-
-    start=std::chrono::system_clock::now();
-    
+    #ifndef MEASURES
+        printInfos(square); 
+    #endif
+     
+    float *A, *B, *C;
+    float *Ad, *Bd, *Cd;
     const int bytesA = M*K*sizeof(float);
     const int bytesB = K*N*sizeof(float);
     const int bytesC = M*N*sizeof(float);
 
-    //device mem allocation
-    float *Ad, *Bd, *Cd;
-    gpuErrchk( cudaMalloc((void **)&Ad, bytesA*chunk*nStream) );
-    gpuErrchk( cudaMalloc((void **)&Bd, bytesB*chunk*nStream) );
-    gpuErrchk( cudaMalloc((void **)&Cd, bytesC*chunk*nStream) );
-    //host pinned mem allocation
-    float *A, *B, *C;
-    gpuErrchk( cudaMallocHost((void **)&A, bytesA*matN) );
-    gpuErrchk( cudaMallocHost((void **)&B, bytesB*matN) );
-    gpuErrchk( cudaMallocHost((void **)&C, bytesC*matN) );
-
-    //host data init
-    for(int i=0; i<matN; ++i){
-        randomMatrix(M, K, A+(i*M*K));
-        randomMatrix(K, N, B+(i*K*N));
-    } 
-
-    //event start
-    createAndStartEvent(&startEvent, &stopEvent);
-
-    if (square)
-    {          
-        label += "SQUARE";
-        int size = N*N;
-        for (int i = 0; i < iters; ++i) { 
-            int j = i%nStream;            
-            int idx = i*size*chunk;
-            int streamOffs = j*size*chunk;
-            newSquareMatMulKer(A+idx, B+idx, C+idx, 
-            Ad+streamOffs, Bd+streamOffs, Cd+streamOffs, //Ad, Bd, Cd,
-            N, chunk, stream[j]);         
+    start=std::chrono::system_clock::now();
+    if (nStreams==0)
+    {        
+        //device mem allocation       
+        gpuErrchk( cudaMalloc((void **)&Ad, bytesA) );
+        gpuErrchk( cudaMalloc((void **)&Bd, bytesB) );
+        gpuErrchk( cudaMalloc((void **)&Cd, bytesC) );
+        //host mem alloc
+        A = (float *)calloc(matN, bytesA);
+        B = (float *)calloc(matN, bytesB);
+        C = (float *)calloc(matN, bytesC);
+        //host data init
+        for(int i=0; i<matN; ++i){
+            randomMatrix(M, K, A+(i*M*K));
+            randomMatrix(K, N, B+(i*K*N));
+        } 
+        //event start
+        createAndStartEvent(&startEvent, &stopEvent);
+        if (square){          
+            label += "SQUARE";
+            int size = N*N;
+            for (int i = 0; i < matN; ++i) { 
+                int idx = i*size;
+                //kernel call
+                newSquareMatMulKer(A+idx, B+idx, C+idx, Ad, Bd, Cd, N);         
+            }
         }
+        else{
+            label += "NONSQUARE";
+            int sizeA = M*K;
+            int sizeB = K*N;
+            int sizeC = M*N;
+            for (int i = 0; i < matN; ++i) { 
+                int idxA = i*sizeA;
+                int idxB = i*sizeB;
+                int idxC = i*sizeC;
+                //kernel call
+                newMatMulKer(A+idxA, B+idxB, C+idxC, Ad, Bd, Cd, M, K, N);
+            }
+        }        
     }
-    else{
-        label += "NONSQUARE";
-        int sizeA = M*K;
-        int sizeB = K*N;
-        int sizeC = M*N;
-        for (int i = 0; i < iters; ++i) { 
-            int j = i%nStream;   
-            int idxA = i*sizeA*chunk;
-            int idxB = i*sizeB*chunk;
-            int idxC = i*sizeC*chunk;
-            int strOffsA = j*sizeA*chunk;
-            int strOffsB = j*sizeB*chunk;
-            int strOffsC = j*sizeC*chunk;
-
-            newMatMulKer(A+idxA, B+idxB, C+idxC, 
-            Ad+strOffsA, Bd+strOffsB, Cd+strOffsC,//Ad, Bd, Cd,
-            M, K, N, chunk, stream[j]);
+    else
+    {
+        //device mem allocation
+        gpuErrchk( cudaMalloc((void **)&Ad, bytesA*nStreams) );
+        gpuErrchk( cudaMalloc((void **)&Bd, bytesB*nStreams) );
+        gpuErrchk( cudaMalloc((void **)&Cd, bytesC*nStreams) );
+        //host pinned mem allocation
+        gpuErrchk( cudaMallocHost((void **)&A, bytesA*matN) );
+        gpuErrchk( cudaMallocHost((void **)&B, bytesB*matN) );
+        gpuErrchk( cudaMallocHost((void **)&C, bytesC*matN) );
+        //host data init
+        for(int i=0; i<matN; ++i){
+            randomMatrix(M, K, A+(i*M*K));
+            randomMatrix(K, N, B+(i*K*N));
+        } 
+        //event start
+        createAndStartEvent(&startEvent, &stopEvent);
+        if (square){          
+            label += "SQUARE";
+            int size = N*N;
+            for (int i = 0; i < matN; ++i) { 
+                int j = i%nStreams;            
+                int idx = i*size;
+                int streamOffs = j*size;
+                //kernel call
+                newSquareMatMulKer(A+idx, B+idx, C+idx, Ad+streamOffs, Bd+streamOffs, Cd+streamOffs, 
+                                    N, stream[j]);         
+            }
         }
-    }      
-
+        else{
+            label += "NONSQUARE";
+            int sizeA = M*K;
+            int sizeB = K*N;
+            int sizeC = M*N;
+            for (int i = 0; i < matN; ++i) { 
+                int j = i%nStreams;   
+                int strOffsA = j*sizeA;
+                int strOffsB = j*sizeB;
+                int strOffsC = j*sizeC;
+                //kernel call
+                newMatMulKer(A+(i*sizeA), B+(i*sizeB), C+(i*sizeC), Ad+strOffsA, Bd+strOffsB, Cd+strOffsC,
+                                M, K, N, stream[j]);
+            }
+        }                
+    }
     msTot = endEvent(&startEvent, &stopEvent);
     end = std::chrono::system_clock::now();
-    millis = end - start; 
-
+    millis = end - start;    
     #ifdef MEASURES          
-        printMeasures(square, label, msTot, millis.count(), matN, iters, devId);
+        printMeasures(square, label, msTot, millis.count(), matN, devId);
     #else
         printInfos(square);
 
         float *_A, *_B, *_C, *tmpC;
-        tmpC = (float *)calloc(1,bytesC*chunk);
+        tmpC = (float *)calloc(1,bytesC);
         for (int s=0; s<matN; ++s)
         {          
             _A = A+(s*M*K);
             _B = B+(s*K*N);
             _C = C+(s*M*N);
-            memset(tmpC, 0, bytesC*chunk);
+            memset(tmpC, 0, bytesC);
 
             hostMatMul(_A, _B, tmpC, M, K, N);
             checkMatEquality(_C, tmpC, M, N);
@@ -299,6 +333,7 @@ int main(int argc, char **argv){
     cudaFree(Ad);
     cudaFree(Bd);
     cudaFree(Cd);
+
 
 /*** BLURBOX ***/
 #elif BLURBOX
@@ -462,7 +497,7 @@ int main(int argc, char **argv){
     millis = end - start;
 
     #ifdef MEASURES          
-        printMeasures(square, label, msTot, millis.count(), matN, iters, devId);  
+        printMeasures(square, label, msTot, millis.count(), matN, devId);  
     #endif    
    
     //free Host and Device space
@@ -471,7 +506,7 @@ int main(int argc, char **argv){
 #endif
 
     //STREAM destruction
-    streamDestroy(stream,nStream);
+    streamDestroy(stream,nStreams);
     #ifndef MEASURES 
         printTotalTimes(msTot,  millis.count() );
     #endif

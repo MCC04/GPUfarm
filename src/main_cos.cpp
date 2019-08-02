@@ -89,8 +89,7 @@ int main(int argc, char **argv){
     std::srand(static_cast <unsigned> (time(NULL)));
 
     const int maxThreads = 2048;
-    //const int nStreams =  3;    
-    
+   
     float msTot = 0.0f;    
     int gpu_clk = 1; 
     std::string label;
@@ -99,53 +98,23 @@ int main(int argc, char **argv){
     cudaEvent_t startEvent, stopEvent;
 
     //args
-    /*
-    int devId = atoi(argv[1]); 
-    BLOCK = atoi(argv[2]);
-    K_exec = atoi(argv[3]);
-    M_iter = atoi(argv[4]);
-    N_size = atoi(argv[5]);
-    const int nStreams = atoi(argv[6]);
-    
-     */
     if (argc!=7){
         return 1;
     }
     int devId = atoi(argv[1]); 
-   // std::cout<<atoi(argv[1])<<","<<devId;
     BLOCK = atoi(argv[2]);
-    //GRID = atoi(argv[3]);
-    //K_exec = atoi(argv[3]);   
     N_size = atoi(argv[3]);
     M_iter = atoi(argv[4]);
     const int nStreams = atoi(argv[5]);
     int hyb = atoi(argv[6]);
 
-   // 
-   /*  if(chunk<BLOCK){
-        std::cerr<<"The chunk size is smaller than Block size."
-                    <<std::endl<<"Please, enter more elements (N) or less chunks (K)."<<std::endl;
-        return -1;
-    }*/
-    //int chunk = N_size/K_exec;
     int chunk = N_size;
-
     bytesSize = chunk*sizeof(float); 
 
-    //grid setting
     #ifdef LOWPAR
-       // GRID = maxThreads/BLOCK;
         label = "LOW";
     #else
-        label = "";
-        /*
-        if (chunk%BLOCK==0)
-            GRID = chunk/BLOCK; //then make test on non divisible factors 
-        else
-            GRID = ceil((chunk+BLOCK-1)/BLOCK); //then make test on non divisible factors            
-         */     
-        
-        
+        label = "";       
     #endif
 
     #ifdef EMPTY
@@ -167,8 +136,7 @@ int main(int argc, char **argv){
     #endif
 
 
-#ifdef STREAM
-    
+#ifdef STREAM    
     int chunkSize = 1;
     start = std::chrono::system_clock::now();
 
@@ -176,9 +144,6 @@ int main(int argc, char **argv){
     int *clocks;
     float *x_d; 
     int *clocks_d;
-
-
-
 
     #ifdef LOWPAR
         GRID = 1;
@@ -199,70 +164,9 @@ int main(int argc, char **argv){
             GRID = maxThreads/BLOCK;  
         chunkSize = BLOCK*GRID;
     #endif
-
     
     if (nStreams==0)
-    {
-         
-
-
-     
-
-
-
-        /* 
-        #ifdef LOWPAR
-            GRID = 1;
-            if (!hyb)
-            {
-                BLOCK = 32;
-                chunkSize=1;
-            }
-            else
-            {
-                chunkSize = BLOCK*GRID;
-            }
-
-            //GRID = 1; 
-            //BLOCK = 32;
-
-            x = (float *) malloc(sizeof(float));
-            cosx = (float *) malloc(sizeof(float));
-            clocks = (int *) malloc(sizeof(int));
-
-            //device memory            
-            gpuErrchk( cudaMalloc((void**)&x_d, sizeof(float)) );
-            gpuErrchk( cudaMalloc((void**)&clocks_d, sizeof(float)) );   
-
-            //events creation 
-            createAndStartEvent(&startEvent, &stopEvent);
-
-            for (int i = 0; i < N_size; ++i) { 
-                //random x 
-                x[0] = LOW + (float) std::rand() * (HIGH-LOW) / RAND_MAX; 
-
-                //function calling kernel  
-                #ifndef MEASURES
-                    //optimalCosKer(M_iter,1, x, cosx, x_d, clocks, clocks_d, (cudaStream_t) 0, 0, 0); 
-                    cosKer(M_iter,1, x, cosx, x_d, clocks, clocks_d);
-
-                    
-                    printCos(cosx, 1);
-                #else                    
-                    cosKer(M_iter,1, x, cosx, x_d, clocks, clocks_d);
-                #endif
-            }   
-            msTot = endEvent(&startEvent, &stopEvent);
-
-        #else
-            //GRID = maxThreads/BLOCK; 
-            //chunkSize = BLOCK*GRID;
-            if (hyb)
-                GRID = 56;
-            else
-                GRID = maxThreads/BLOCK;  
-            chunkSize = BLOCK*GRID;*/
-            
+    {           
         x = (float *) malloc(N_size*sizeof(float));
         cosx = (float *) malloc(N_size*sizeof(float));
         clocks = (int *) malloc(GRID*sizeof(int));
@@ -287,28 +191,19 @@ int main(int argc, char **argv){
             #endif                
         } 
         msTot = endEvent(&startEvent, &stopEvent);
-
-     //   #endif
     }
     else 
     {
-
-
-        
-
-        //const int streamBytes = chunk*sizeof(float) ;
         const int streamBytes = chunkSize*sizeof(float) ;
+
         //host pinned mem
         gpuErrchk( cudaMallocHost((void **)&x, N_size*sizeof(float)) ); //pinned x    
         gpuErrchk( cudaMallocHost((void **)&cosx, N_size*sizeof(float)) ); //pinned cosx
-        gpuErrchk( cudaMallocHost((void **)&clocks, GRID*sizeof(int)) ); //pinned clocks
-            
+        gpuErrchk( cudaMallocHost((void **)&clocks, GRID*sizeof(int)) ); //pinned clocks            
         //device memory
         int strSize = nStreams*chunkSize;
         gpuErrchk( cudaMalloc((void**)&x_d, strSize*sizeof(float)) );
         gpuErrchk( cudaMalloc((void**)&clocks_d, GRID*nStreams*sizeof(int)) );  
-
-
         //stream array and events creation 
         cudaStream_t streams[nStreams];
         streamCreate(streams, nStreams);
@@ -329,12 +224,6 @@ int main(int argc, char **argv){
         msTot = endEvent(&startEvent, &stopEvent);
         streamDestroy(streams,nStreams); 
     }
-    
-
-
-      
-       
-
     end = std::chrono::system_clock::now();
 
     //print results
@@ -366,26 +255,12 @@ int main(int argc, char **argv){
     float *x_d; 
     int *clocks_d;
 
-    //host pinned mem
-   /* gpuErrchk( cudaMallocHost((void **)&x, N_size*sizeof(float)) ); //pinned x    
-    gpuErrchk( cudaMallocHost((void **)&cosx, N_size*sizeof(float)) ); //pinned cosx
-    gpuErrchk( cudaMallocHost((void **)&clocks, GRID*sizeof(int)) ); //pinned clocks
-       */ 
-     x = (float *) malloc(N_size*sizeof(float));
-            cosx = (float *) malloc(N_size*sizeof(float));
-            //clocks = (int *) malloc(GRID*sizeof(int));
-    //device memory
-    //int strSize = nStreams*chunkSize;
+    x = (float *) malloc(N_size*sizeof(float));
+    cosx = (float *) malloc(N_size*sizeof(float));
     gpuErrchk( cudaMalloc((void**)&x_d, N_size*sizeof(float)) );
-    //gpuErrchk( cudaMalloc((void**)&clocks_d, GRID*sizeof(int)) );  
 
-    //random array and function calling kernel
     randomArray(x,N_size);
-    //events creation & start
     createAndStartEvent(&startEvent, &stopEvent);
-    //function calling kernel            
-    //cosKer(M_iter, N_size, x, cosx, x_d, clocks, clocks_d);
-
 
     float msKer = optimalCosKer(M_iter, N_size, x, cosx, x_d, clocks, clocks_d); 
 
