@@ -96,7 +96,7 @@ def main():
 					evtmp.append(evTimes[i])
 					chtmp.append(chronoTimes[i])
 					
-			if len(evtmp)==5:
+			if len(evtmp)==8:
 				e, c = getChunkAvg(evtmp,chtmp)
 				evAvgs.append(e)
 				chAvgs.append(c)

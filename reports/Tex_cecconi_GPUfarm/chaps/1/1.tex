@@ -1,0 +1,205 @@
+
+\chapter{Introduction}
+\pagenumbering{arabic}
+	\label{chap:intro}
+	This is the first section.
+	\pagenumbering{arabic}
+	\section{Goals}
+		The main goal of this thesis is to study GPU's behavior when used for different purposes with respect to the common ones.
+		In particular, we wanted to use a GPU to perform a code that comes closer to a \textit{\textbf{stream parallel pattern}}.	
+		Then we observed ongoings, in terms of  \textit{completion time} and \textit{speed up }.
+		We now see in detail the concepts we've just introduced.
+
+	\subsection{GPU Architecture and Data Parallel}
+		\textbf{GPU} (\textbf{\textit{Graphics Processing Unit}}) is a co-processor, generally known as a highly parallel multiprocessor optimized for visual computing.
+		Compared with multicore CPUs, manycore GPUs have different architectural design points, one focused on executing many parallel threads efficiently on many cores.
+		This is achieved using simpler  cores  and  optimizing  for  data parallel  behavior  among  groups  of  threads, so more  of  the  per-chip  transistor  budget  is  devoted to computation \cite{pattersonhennessy}.
+		
+		In most of situations, indeed visual processing can be associated to a data parallel pattern.
+		In general, we can roughly think to an image as a given and known amount of data upon which we want to do some computations. In most of cases, once the proper granularity of the problem has been chosen, this work should be done for each portion of the image.
+		Considering the above scenario and given that generally a GPU should have to process huge amount of data, we wish to have a lot of threads (lot of cores consequently) doing "the same things" on all data portions.
+		
+		And that's why GPUs performs their best on data parallel problems. 
+	
+	\subsection{Other Applications}
+	\label{subs:otherApps}
+		However in recent years we're moving to \textbf{GPGPUs} (\textbf{\textit{General-purpose computing on graphics processing units}}).
+		In other words, lately GPUs have been used for other applications than graphics processing.
+		
+		
+		One of the first attempts of non-graphical computations on a GPU was a matrix-matrix multiply. In 2001, low-end graphics cards had no floating-point support; floating-point color buffers did not arrive until 2003. For the gaming industry this meant more realistic game-play. For the scientific community, the addition of floating point, meant that overflow associated with fixed-point arithmetic was no longer a problem. 
+		Other computational advances would not be possible if it weren't for the programmable shaders, that broke the rigidity of the fixed graphics pipeline. 
+		LU factorization with partial pivoting on a GPU was one of the first common computational kernels, that ran faster than an optimized CPU implementation.
+		The introduction of \textbf{NVIDIA}’s \textbf{CUDA} (\textbf{\textit{Compute Unified Device Architecture}}) in 2007, ushered a new era of improved performance for many applications as programming GPUs became simpler: archaic terms such as texels, fragments, and pixels were superseded with threads, vector processing, data caches and shared memory. 
+		\cite{fromCUtoOCL}
+		
+		In our work we took advantage of that parallel platform, we'll show some further informations about CUDA in \hyperref[sect:tools]{Section 1.4}. 
+		
+		One thing we should point out from GPGPUs birth: initially scientific applications on GPGPUs started from matrix (or vector) computations, that mainly could be referred to as data parallel problems.
+		But over time scientific community felt the need to cover other applications, that not necessarily were data parallel.
+		
+		In particular some of latest researches are moving towards \textit{Task parallel} applications (sometimes also known as \textit{Irregular-Workloads parallel patterns}).
+		For example 
+		
+		
+		
+		
+		
+		
+		- The backtracking paradigm: used in constraint satisfaction in AI, frequent itemset mining in data mining, maximal clique enumeration in graph mining, k-d tree traversal for ray tracing in graphics. Backtracking is oftentimes at the core of the problems that are combinatorial by nature and, therefore, compute-and-memory-intensive. 
+		
+		Recent advancements in parallel computing architectures have opened up possibilities for more computationally- and energy-efficient algorithms. In particular,
+		graphics processing units (GPUs) have been maturing not only for graphics ap-
+		plications, but also for general-purpose computations 1 [14]. Some computational
+		motifs perform effectively on a GPU, while the effectiveness of others is still an
+		open issue. For instance, Lee et al. note an average speedup of 2.5x of various
+		algorithms on the GPU vs. optimized Nehalem implementations, and both Lee
+		et al. and Vuduc et al. highlight memory-bound algorithms on the GPU that
+		perform at the same level or worse than the corresponding CPU implementation [12,18].
+		
+		Despite some of the successes of recent computational dwarfs on GPUs, the
+		mapping of the backtracking paradigm onto the GPU architecture has been
+		recognized as a notoriously difficult problem for a number of reasons. Table 1
+		names a number of difficulties that a mapping of a backtracking problem to the
+		GPU could encounter, leading to a vastly inefficient use of the GPU memory
+		hierarchy and SIMD-optimized GPU multi-processors.
+		
+		There have, however, been algorithms successfully mapped onto the GPU,
+		though with major departures from the general case of backtracking. The most
+		visible example is in ray tracing, where k-d tree acceleration structures are used
+		to compute ray intersections by traversing the tree in a depth-first fashion [5,10].
+		
+		
+		Our goal, therefore, is to investigate the parallelization of the backtracking
+		paradigm on the GPU. To do this, we analyze the components of difficult back-
+		tracking problems and propose tree-level and node-level parallelizations of search
+		space traversal, as well as buffer-based output. At best, given the performance
+		of other computational motifs and the nature of the backtracking problem, we
+		cannot expect an order of magnitude increase in performance. Rather, a more re-
+		alistic performance goal is to perform at one to two times the CPU performance,
+		which opens up the possibility of building future backtracking algorithms on
+		heterogeneous hardware (such as CPU-GPU clusters) and performing workload-
+		based optimizations
+		\cite{backtrack}
+ 	
+ 	---------------
+ 	
+ 	
+ 	A variety of scenarios demand task-parallelism
+ 	• We will discuss three
+ 	– Reyes Rendering
+ 	– Deferred Lighting
+ 	– Video Encoding
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	 
+	
+	\subsection{GP-GPUs and Stream Parallel}
+		In this work we were interested to a particular type of task parallelism: \textit{Stream parallelism}.\\
+		This means that our tasks are elements of an input stream, of which we don't know a priori the length or the emission rate.
+		Once the stream elements are available, parallel workers will make computations over them and finally, the manipulated elements will become the output stream.
+		We recall as main stream parallel patterns \textit{Farm} and \textit{Pipeline}. The former is the object of this work.\\
+		
+		The Farm parallel pattern is used to model embarrassingly parallel computations. \\The only functional parameter of a farm is the function \(f\) needed to compute the single task.
+		Given a stream of input tasks
+		\begin{center}
+			\(x_m , . . . , x_1\)\\
+		\end{center}
+		the farm with function \(f\) computes the output stream
+		\begin{center}
+			\(f ( x_m ), . . . , f ( x_1 )\)\\
+		\end{center}
+		%Its parallel semantics ensures it will process the single task in a time close to the time needed to compute \(f\) sequentially. The time between the delivery of two different task results, instead, can be made close to the time spent to compute f sequentially divided by the number of parallel agents used to execute the farm, i.e. its parallelism degree 52 .
+		\cite{spm}		
+		It's not difficult to see that Farm pattern is really similar to a data parallel problem (in this case a \textit{Map Pattern}). The key difference resides in the input and output data type:
+		\begin{itemize}			
+			\item data structure for Data parallel patterns;
+			\item streams of items for Farm.\\
+		\end{itemize}
+		
+		This reveal the main problem of this work, that is the Data Transfer times between\\ \textit{\textbf{host memory}} (CPU side) and \textit{\textbf{device memory}} (GPU side), and vice versa.
+		
+		We'll show in detail all aspects of this and other minor problems, together with respective solutions, in \hyperref[chap:logic]{Chapter 3}.
+	
+	\section{Expectations}
+		The main expectation was to show that a not suitable problem, such as Farm parallel pattern, could fit in a GPU. 
+		In other words we wanted to see that, running on GPU our code, it could take an advantage near the order of the number of \textbf{SMs} (\textit{\textbf{Streaming Multiprocessors}}).\\
+		
+		Looking closer at that this expected results, it means that:
+		\begin{itemize}
+			\item Data transfer time had in some way to be hidden behind Computation time; 
+			
+			\item The GPU had to achieve a full \textit{Occupancy} (we'll insist on occupancy topic in \hyperref[chap:logic]{Chapter 3}).\\
+		\end{itemize}
+		
+		Once we could gain these two factors, no matter what kind of feature GPU has, we expected to get a \(Speedup \approx number \: of \: SMs \).
+		The reason why we wanted to see such a speedup is all about some advantages with respect to CPU processing:
+		\begin{itemize}
+			\item We can delegate our streaming problems to the GPU while the CPU can compute other things, this allow the CPU to not being saturated (especially when stream has high throughput or each element require high computation intensity); 
+			
+			\item We can split the amount of work between CPU and GPU, the best would be to give respective quantities based on completion time;
+			 
+			
+			\item We hopefully want to see a GPU speedup with respect to the CPU, or see the same performances at worst.\\
+		\end{itemize}
+		
+		
+		
+	\section{Results}
+	Put a summary on results here.\\
+	\section{Tools}
+	\label{sect:tools}
+		As mentioned in \hyperref[subs:otherApps]{Subsection 1.1.2} we exploited NVIDIA's CUDA Toolkit.
+		In particular we worked with those tools:
+		\begin{itemize}
+			\item The code was implemented in CUDA C++ language, so the compiler was \texttt{nvcc};
+			
+			\item The profiling of GPU code performances was supported by \texttt{nvprof} and by the advanced visual version \texttt{NVIDIA Nsight};
+			
+			\item The debugging was made by using \texttt{cuda-gdb};
+			
+			\item Studies on GPU Occupancy have been done with \textit{CUDA Occupancy Calculator spreadsheet} and \textit{Occupancy APIs}.\\
+		\end{itemize}
+		
+
+		Tests on the code were implemented as bash scripts and all tests have been run on two machines:
+		
+		\begin{itemize}
+			\item The first with four NVIDIA GPUs \textbf{Tesla P100-PCIE-16GB};
+			
+			\item The second with four NVIDIA GPUs \textbf{Tesla M40}.\\
+		\end{itemize}
+		
+		The code was developed with the following environments:
+		\begin{itemize}
+			\item \textit{Visual Studio Code} for CUDA C++, Makefile, bash scripts;
+			\item \textit{Gedit} for Python scripts.\\
+		\end{itemize}
+			
+			
+		In \hyperref[chap:tools]{Chapter 2} will be shown all features and details about the aforementioned tools.\\\\
+	
+In next chapters all notions presented in this introduction will be seen in depth.\\
+In Chapter 2 there will be an accurate description of all employed tools and how they were used.\\
+After that, we'll enter in the core of this work in Chapter 3, where we'll see the logic of the project, with both written and graphical illustrations. In other words here we point out the main ideas behind the followed approach and solutions.\\
+Following those guidelines, in Chapter 4 will be presented and explained main implementation features. Here will be reported some fundamental part of the code.\\ 
+Then in Chapter 5 will be shown either how experiments and test were set,  obtained results and some respective plots.\\
+And we'll end up with Conclusions and some final remarks. 
+% chapter intro (end)

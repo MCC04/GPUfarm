@@ -194,7 +194,7 @@ int main(int argc, char **argv){
 #ifdef MATMUL
     label+="MATMUL";
     //args
-    if (argc<6|| argc>8){
+    if (argc<6|| argc>9){
         return 1;
     }
     bool square = atoi(argv[4]);

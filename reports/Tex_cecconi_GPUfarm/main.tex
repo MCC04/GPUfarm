@@ -1,0 +1,108 @@
+%\documentclass[11pt, twoside]{report}
+%\documentclass[14pt]{extreport}
+\documentclass[12pt]{report}
+%\usepackage[T1]{fontenc}
+\usepackage{ragged2e}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{listings}
+
+\usepackage{wrapfig}
+
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+%\usepackage{rotating}
+%\usepackage{biblatex}
+%\usepackage{helvet}
+%\usepackage[a4paper,width=180mm,top=20mm,bottom=20mm,bindingoffset=6mm]{geometry}
+\usepackage[framemethod=default]{mdframed}
+\usepackage{lipsum,titlesec,fancyhdr,array,multicol,float,graphicx,wrapfig,subcaption}
+%\usepackage{fontspec,todonotes,enumitem,comment,capt-of,amsmath,booktabs,dirtree,minted,tikz,xcolor}
+\usepackage[colorlinks]{hyperref}
+%\usepackage[font=scriptsize]{caption}
+\usepackage[font={small}]{caption}
+\usepackage[Sonny]{fncychap}
+%\usepackage[sorting=none]{biblatex}
+\usepackage[toc,page]{appendix}
+\usepackage[left=3cm, right=3cm, top=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{makecell}
+
+\usepackage{float}
+
+\usepackage{mathtools}
+
+\graphicspath{/images}
+
+\renewcommand{\baselinestretch}{1.5} 
+
+\begin{document}
+\renewcommand{\familydefault}{\sfdefault}
+%\renewcommand{\chap\usepackage[english]{babel}tername}{}
+%\renewcommand\thechapter{\Roman{chapter}}
+
+\hypersetup {
+    colorlinks,
+    citecolor= green,
+    filecolor= black,
+    linkcolor= black,
+    urlcolor= black
+}
+
+%\usetikzlibrary{arrows.meta}
+%\addbibresource{references.bib}
+%\usemintedstyle{bw}
+
+%\definecolor{LightGray}{HTML}{F0F0F0}
+	
+    \input{chaps/frontpage/FrontPage}
+    \pagenumbering{Roman}
+    \tableofcontents
+    \input{chaps/1/1}
+    \input{chaps/2/2}
+    \input{chaps/3/3}
+    \input{chaps/4/4}
+    \input{chaps/5/5}
+    \input{chaps/concl/concl}
+    
+    \listoftables
+	
+	\begin{thebibliography}{9}
+		%\bibitem{latexcompanion} 
+		\bibitem{pattersonhennessy}
+		D.A. Patterson, J.L. Hennessy, 
+		\textit{Computer Organization and Design: The Hardware and Software Interface}, V Edition. Appendix C by J. Nickolls, D.Kirk.
+	
+		\bibitem{fromCUtoOCL}
+		Peng Du, Rick Weber, Piotr Luszczek, Stanimire Tomov, Gregory Peterson, Jack Dongarr, 
+		\textit{From CUDA to OpenCL: Towards a Performance-portable Solution for Multi-platformGPU Programming}
+		
+		\bibitem{backtrack}
+		John Jenkins, Isha Arkatkar, John D. Owens, Alok Choudhary, Nagiza F. Samatova, 
+		\textit{Lessons Learned from Exploring the Backtracking Paradigm on the GPU}
+		
+		
+		\bibitem{spm}
+		Marco Danelutto,
+		\textit{Distributed Systems: Paradigms and Models}, 2014
+		
+		\bibitem{cudaguide}
+		CUDA Toolkit Documentation, 		
+		\textit{CUDA C PROGRAMMING GUIDE}, 2018
+		
+		\bibitem{profilersguide}
+		CUDA Toolkit Documentation, 
+		\textit{https://docs.nvidia.com/cuda/profiler-users-guide/index.html}
+		
+		\bibitem{nvprofarticle}
+		Mark Harris, 
+		\textit{CUDA Pro Tip: nvprof is Your Handy Universal GPU Profiler}, https://devblogs.nvidia.com/cuda-pro-tip-nvprof-your-handy-universal-gpu-profiler/
+		
+		
+	
+	\end{thebibliography}
+   % \begin{appendices}
+    %    \input{chaps/appendix/appendix}
+    %\end{appendices}
+
+   % \printbibliography[heading=bibintoc,title={References}]
+\end{document}

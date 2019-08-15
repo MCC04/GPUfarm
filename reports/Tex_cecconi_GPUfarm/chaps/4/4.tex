@@ -1,0 +1,41 @@
+\chapter{Implementation} 
+\label{chap:impl}
+%\pagenumbering{arabic}
+
+Specs and code.
+	
+
+
+\section{Stream Parallel on GPU}
+	\textbf{\(<<<\)\, blockSize\(>>>\)}
+	%\subsection{Low Parallel un GPU}
+
+\section{Data Parallel un GPU}
+	\textbf{\(<<<\)dataSize/blockSize, blockSize\(>>>\)}
+	
+	
+	\subsection{CUDA Occupancy APIs}
+	%‣
+	The occupancy calculator API,
+	cudaOccupancyMaxActiveBlocksPerMultiprocessor , can provide an
+	occupancy prediction based on the block size and shared memory usage of a kernel.
+	This function reports occupancy in terms of the number of concurrent thread blocks
+	per multiprocessor.
+	%‣
+	%‣
+	Note that this value can be converted to other metrics. Multiplying by
+	the number of warps per block yields the number of concurrent warps
+	per multiprocessor; further dividing concurrent warps by max warps per
+	multiprocessor gives the occupancy as a percentage.
+	The occupancy-based launch configurator APIs,
+	cudaOccupancyMaxPotentialBlockSize and
+	cudaOccupancyMaxPotentialBlockSizeVariableSMem , heuristically calculate
+	an execution configuration that achieves the maximum multiprocessor-level
+	occupancy.
+	
+	The following code sample calculates the occupancy of MyKernel. It then reports the
+	occupancy level with the ratio between concurrent warps versus maximum warps per
+	multiprocessor
+	
+\section{CPU and GPU Mix}
+Queue with P and Q chunk exec by respectively CPU and GPU.
