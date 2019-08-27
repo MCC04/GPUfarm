@@ -1,41 +1,293 @@
 \chapter{Implementation} 
 \label{chap:impl}
-%\pagenumbering{arabic}
+Given the logical schema of the previous chapter, we had to build different types of code to observe their behaviors in performances.
 
-Specs and code.
+In particular, we wanted to distinguish some kernels of interest and adapt them to the Farm parallel pattern for GPU we conceived. So, in this project we've implemented the following applications:
+\begin{itemize}
+	\item Repeated cosine application;
+	\item Matrix multiplication;
+	\item Blur Box filter.
+\end{itemize}
+
+\section{Kernels}
+As we anticipated in the previous section, our kernels mainly doesn't use shared memory.\\
+Each kernel clearly is designed such that each thread executes a different element from the input data structure.
+\subsection{Repeated cosine}
+	This is a very simple kernel, in which given as inputs an array of floating point and a number \textit{M}, it computes, for each input float, the cosine applied \textit{M} times. The output will be again a floats array (given by cosines).\\
+	Note that, since here we're working on one-dimensional data structures, we'll use one-dimensional thread blocks for convenience.
+	\begin{lstlisting}[language=C++]
+	__global__ void cosKernel(int M, int N, float *x_d){  		  
+		int idx = offset+blockIdx.x*blockDim.x + threadIdx.x; 		
+		if(idx<N){		
+			for(int j=0; j<M; ++j)
+				x_d[idx]=cosf(x_d[idx]);  		
+		}
+		return ;
+	}
+	\end{lstlisting}
+	This is almost a regular kernel, with no branching and an almost equal workload for each thread that could execute that code.\\
+	It was a very useful kernel, because changing a single parameter we could then test situations either of low or high iterations amount, ie different workloads.
+	Moreover this is clearly a computation-bounded kernel.
 	
+\subsection{Matrix multiplication}
+	Here's the most classical version of matrix multiplication in CUDA.
+    An important difference from the application above is that now we're working with matrices, both in input and output. So, for convenience, we'll use two-dimensional thread blocks.\\  
+	Each couple of threads perform the computation of a single element in result matrix. For example, assume we have \texttt{thread[ROW]} and \texttt{thread[COL]}, then they will perform\\ \texttt{sum += A[ROW, i] * B[i, COL];},\\ where \texttt{i = 0, ..., N} and \texttt{sum} will be \texttt{C[ROW, COL]}, ie one of the items result matrix.
+	\begin{lstlisting}
+	/**** MATMUL ****/
+	__global__ void matMulKernel(float* A, float* B, float* C, int m, int k, int n) {   
+		int ROW = blockIdx.x*blockDim.x+threadIdx.x;
+		int COL = blockIdx.y*blockDim.y+threadIdx.y;
+		
+		if (ROW<m && COL<n) {
+			float tmpSum = 0.0f;			
+	
+			for (int i = 0; i < k; ++i) {
+				tmpSum += A[(ROW*k)+i] * B[(i*n)+COL];
+			}        
+			C[(ROW*n)+COL] = tmpSum;
+		}
+		return ;
+	}
+	
+		
+	/**** SQUARE MATMUL ****/
+	__global__ void squareMatMulKernel(float* A, float* B, float* C, int N) {
+
+		int COL = blockIdx.x*blockDim.x+threadIdx.x;
+		int ROW = blockIdx.y*blockDim.y+threadIdx.y;
+		
+		if (ROW<N && COL<N) {
+			float tmpSum=0.0f;        
+		
+			for (int i = 0; i < N; ++i) {
+				tmpSum += A[(ROW*N)+i] * B[(i*N)+COL];
+			}        
+			C[(ROW*N)+COL] = tmpSum;        
+		}
+		return ;
+	}
+	\end{lstlisting}
+	Matrix multiplication is one of the most widespread applications in GPU computing, this is the basis of other applications too.\\
+	It is well known that this kind of very trivial matrix multiplication is quite inefficient. In fact, each for loop iteration will have to perform a multiplication and a sum but, at the same time, the GPU will have to access global memory three times \footnote{We'll have two pull from memory for A[i, k] and B[k, j] and a push for C[i, j].}.
+	This means we have a low arithmetic intensity w.r.t. memory accesses, so cores won't hide memory access latency.
+	That's why in general other optimized algorithms are used, the most known of them is the one decomposing matrices in tiles that will fit in \textit{shared memory}.
+	
+\subsection{Blur Box filter}
+	The last type of application implemented in this project is an image processing kernel to apply blur filter.
+	Here input and output pictures are represented as char buffer, items are \textbf{RGB} values in [0, 255] that represent pixels such as "RGB RGB RGB...".\\
+	For each pixel, in the input image, we take the average of each of the pixels in neighborhood (inside the limits of filter size) and writes it to the output image. This filter is known as a Box blur \footnote{Another blur filter is the \textit{Gaussian blur}, generally preferred as to be more accurate. In fact Box blurs are frequently used to approximate a Gaussian blur. By the central limit theorem, repeated application of a box blur will approximate a Gaussian blur.}.
+	
+%	Notice that we check if our offset is actually within the range of \texttt{width*height}, because it can happen that it will be outside due to the blocks CUDA will run, so remember to keep that. Also we need to remember to check whether or not the pixel we read are actually in our image when doing the box blur as well. You can try to remove them one at a time and see what happens.
+	\begin{lstlisting}
+	/**** BLURBOX ****/
+	__global__ void blurBoxFilterKer(unsigned char* input_image, unsigned char* output_image, int width, int height) {
+	
+		const unsigned int offset = blockIdx.x*blockDim.x+threadIdx.x;
+		int dim = width*height*3;
+		if(offset<dim){
+			int x = offset % width;
+			int y = (offset-x)/width;
+			int fsize = 5; // Filter size
+			if(offset < width*height) {
+				float output_red = 0;
+				float output_green = 0;
+				float output_blue = 0;
+				int hits = 0;
+				for(int ox = -fsize; ox < fsize+1; ++ox) {
+					for(int oy = -fsize; oy < fsize+1; ++oy) {
+						if((x+ox) > -1 && (x+ox) < width && (y+oy) > -1 && (y+oy) < height) {
+							const int currentoffset = (offset+ox+oy*width)*3;
+							output_red += input_image[currentoffset]; 
+							output_green += input_image[currentoffset+1];
+							output_blue += input_image[currentoffset+2];
+							hits++;
+						}
+					}
+				}
+				output_image[offset*3] = output_red/hits;
+				output_image[offset*3+1] = output_green/hits;
+				output_image[offset*3+2] = output_blue/hits;
+			}
+		}
+		return;
+	}
+	\end{lstlisting}
+
+\section{Parallel Patterns implementation on GPU}
+What really makes the difference in the implementation is how we send data to the GPU and kernel executions configurations.
+This is what really determines a behavior associated to either a Stream Parallel pattern or a Data Parallel pattern.
 
 
-\section{Stream Parallel on GPU}
-	\textbf{\(<<<\)\, blockSize\(>>>\)}
-	%\subsection{Low Parallel un GPU}
+\subsection{Stream Parallel on GPU}
+	The code translates the diagram in Fig. \ref{fig:overallLogic}.
+	Let's start by explaining the setting phase:
+	\begin{itemize}
+		\item The block dimension is provided as command line parameter;
+		\item Then grid dimensions are initially determined;
+		\item Here we can have two different settings
+		\begin{itemize}
+			\item The chunk has the same dimension of the block, given the capabilities in our machines means having a size \(< 1024\). The grid will have size one;
+			\item The chunk takes as dimension the maximum number of threads active in a SM, for both our machines is 2048. Here the grid will be adjusted to cover the chunk dimension w.r.t. the block dimension, ie \texttt{GRID = maxThreads/BLOCK;}
+		\end{itemize}
+	
+	\end{itemize}
+		\begin{lstlisting}		
+		#ifdef LOWPAR
+			GRID = 1;
+			chunkSize = BLOCK*GRID;		
+		#else
+			GRID = maxThreads/BLOCK;  
+			chunkSize = BLOCK*GRID;		
+		#endif		
+		\end{lstlisting}
+	
+	Now we arrive at the core of the implementation. The number of CUDA streams to spawn, as we previously told, is equal to the number of Streaming multiprocessor in the target machine. So, we start by distinguish two different cases:
+	\begin{itemize}
+		\item Number of streams equal to zero, this means we won't use CUDA stream
+		\begin{enumerate}
+			\item We allocate space for our device chunk, with a simple \texttt{cudaMalloc} (because here we'll not use streams);
+			\item As input stream items arrive, we store them on the host chunk buffer;
+			\item We send it to the device as soon as it's full, with a simple \texttt{cudaMemcpy} \footnote{Note that \texttt{cudaMemcpy} is a blocking operation w.r.t. the host, this means that other CUDA calls from the host will be issued after data is fully copied to device.};
+			\item We launch the Kernel, that will execute as soon as data is fully copied;
+			\item We call another \texttt{cudaMemcpy} to bring back results to host.
+		\end{enumerate}
+		
+			\begin{lstlisting}[label=lst:noStr]
+			void cosKer(int m, int chunk, float *x, float *cosx, float *x_d)
+			{   
+				int xBytes = chunk*sizeof(float);
+				
+				gpuErrchk( cudaMemcpy(x_d, x, xBytes, cudaMemcpyHostToDevice) ); 
+				
+				cosKernel<<<GRID, BLOCK>>>(m, chunk, x_d);
+				#ifndef MEASURES
+					gpuErrchk( cudaPeekAtLastError() );
+					gpuErrchk( cudaDeviceSynchronize() );
+				#endif   
+				
+				gpuErrchk( cudaMemcpy( cosx, x_d, xBytes, cudaMemcpyDeviceToHost) );
+			}
+			\end{lstlisting}
+		
+		\item Number of streams greater than zero, this means we will use CUDA stream, so steps are analogous to the previous except for some tricks (See Code Listing )
+		\begin{enumerate}
+			\item We allocate space for our device chunk, with a \texttt{cudaMallocHost} (in order to use CUDA streams and gain best overlapping possible, host should allocate memory as \textit{Pinned});
+			\item In a Round-Robin fashion, we send full chunks in an asynchronous way, using \texttt{cudaMemcpyAsync} \footnote{Note that \texttt{cudaMemcpyAsync} is non-blocking for the host, in parameters we'll have to specify which stream will issue the copy.};
+			\item We launch the Kernel in the same CUDA stream of the previous copy;
+			\item We call another \texttt{cudaMemcpyAsync} to bring back results to host, on the same stream as before.
+		\end{enumerate}
+		
+		\begin{lstlisting}[label=lst:str]
+		void cosKerStream(int m, int chunk, float *x, float *cosx, float *x_d, cudaStream_t strm, int strBytes)
+		{     
+			gpuErrchk( cudaMemcpyAsync(x_d, x, strBytes, cudaMemcpyHostToDevice, strm) ); 
+			
+			cosKernel<<<GRID, BLOCK, 0, strm>>>(m, chunk, x_d);
+			
+			#ifndef MEASURES
+				gpuErrchk( cudaPeekAtLastError() );
+				gpuErrchk( cudaDeviceSynchronize() );
+			#endif   
+			gpuErrchk( cudaMemcpyAsync( cosx, x_d, strBytes, cudaMemcpyDeviceToHost, strm) );
+		}
+		\end{lstlisting}
+		
+	\end{itemize}
+	The reason why we implemented these two versions, of Farm Parallel Pattern for GPU, is that we want to show the gain obtained with CUDA Stream.\\
+	In particular we want to show that a Stream Parallel Pattern would be unfeasible in terms of device completion time, because of overhead introduced by data transfers. Instead, we wanted to show that, with CUDA Streams and some other precautions and experiments, a Stream Parallel Pattern could work near to the Data Parallel performances.\\
+	
+	It may be interesting to see how the Round Robin scheduler sends buffers to the function \texttt{cosKerStream} via CUDA streams, we present a pseudo-code version that shows only main features:
+	\begin{lstlisting}
+	const int streamBytes = chunkSize*sizeof(float) ;
+	int strSize = nStreams*chunkSize;	
+	//host pinned mem
+	gpuErrchk( cudaMallocHost((void **)&x, strSize*sizeof(float)) ); 
+	gpuErrchk( cudaMallocHost((void **)&cosx, strSize*sizeof(float)) ); //pinned cosx
+	//device memory	
+	gpuErrchk( cudaMalloc((void**)&x_d, strSize*sizeof(float)) );
+	//stream array and events creation 
+	cudaStream_t streams[nStreams];
+	streamCreate(streams, nStreams);
+	createAndStartEvent(&startEvent, &stopEvent);
+	
+	int k=0;
+	while (InputStream) {  
+		if (buffer x[i: i+chunkSize] is full)
+		{
+			int i = k%nStreams;
+			int strOffs = i*chunkSize;
+			
+			cosKerStream( M_iterations, chunkSize, x[i: i+chunkSize], cosx[i: i+chunkSize], x_d[i: i+chunkSize], streams[i], streamBytes);     
+			   
+			send output buffer cosx[i: i+chunkSize] to output stream
+			
+			++k;
+		}
+		else
+		{
+			add item to buffer x[i: i+chunkSize]
+		}	
+	} 
+	msTot = endEvent(&startEvent, &stopEvent);
+	streamDestroy(streams,nStreams); 	
+	\end{lstlisting}
+	It's interesting to highlight the use of \textit{CUDA Events}, they were useful to measure the completion time of memory copies and kernel executions. So they allowed us to make device side measures, that are the main concern in this project \footnote{We'll explain other details on measures on \hyperref[chap:experim]{Chapter 5}.}.
+	
+	As we can see we presented most important code parts relative to the Cosine Kernel, but the structure and the implementation to execute Matrix multiplication and Blur Box are totally analogous.
 
-\section{Data Parallel un GPU}
-	\textbf{\(<<<\)dataSize/blockSize, blockSize\(>>>\)}
+\subsection{Data Parallel un GPU}
+	To prove that our Farm Pattern had acceptable performances, it was useful to compare it with its respective Data Parallel version.\\
+	Clearly, to have control on time probes and to compare such two different models, we set a maximum length on input stream. In the reality we know that we cannot have such informations on input/output streams. So we make the assumptions to know input stream length only for a time measuring purpose.
+	
+	Furthermore, this allow us to compare our Farm model, having an input stream of \texttt{N\_size} items length, with a Data Parallel model sending all \texttt{N\_size} items in once, computing them all in a classic configuration kernel and send back all again \footnote{And this is how generally the GPU is meant to be used and this is the kind of problem a GPU is designed for.}
+	\begin{lstlisting}
+	x = (float *) malloc(N_size*sizeof(float));
+	cosx = (float *) malloc(N_size*sizeof(float));
+	gpuErrchk( cudaMalloc((void**)&x_d, N_size*sizeof(float)) );
+	
+	generate N_size items and put in the "x" data structure
+	
+	createAndStartEvent(&startEvent, &stopEvent);
+	
+	float msKer = optimalCosKer(M_iter, N_size, x, cosx, x_d, clocks, clocks_d); 	
 	
 	
-	\subsection{CUDA Occupancy APIs}
-	%‣
-	The occupancy calculator API,
-	cudaOccupancyMaxActiveBlocksPerMultiprocessor , can provide an
-	occupancy prediction based on the block size and shared memory usage of a kernel.
-	This function reports occupancy in terms of the number of concurrent thread blocks
-	per multiprocessor.
-	%‣
-	%‣
-	Note that this value can be converted to other metrics. Multiplying by
-	the number of warps per block yields the number of concurrent warps
-	per multiprocessor; further dividing concurrent warps by max warps per
-	multiprocessor gives the occupancy as a percentage.
+	/*** Kernel launcher ***/
+	float optimalCosKer( int m, int n, float *x, float *cosx, float *x_d){
+		int gridSize;    // The actual grid size needed, based on input size 
+		int minGridSize; // The min grid size needed to achieve the maximum occupancy for a full device launch 
+		cudaEvent_t startEvent, stopEvent;
+		
+		cudaOccupancyMaxPotentialBlockSize( &minGridSize, &BLOCK, cosKernel, 0, 0); 
+		GRID = (n + BLOCK - 1) / BLOCK; // Round up according to array size 
+
+		gpuErrchk( cudaMalloc((void**)&clocks_d, GRID*sizeof(int)) );  		
+		createAndStartEvent(&startEvent, &stopEvent); 
+		  
+		gpuErrchk( cudaMemcpy(x_d, x, n*sizeof(float), cudaMemcpyHostToDevice) ); 
+		
+		cosKernel<<<gridSize, blockSize>>>(m, n, x_d);
+		
+		gpuErrchk( cudaMemcpy( cosx, x_d, n*sizeof(float), cudaMemcpyDeviceToHost) );
+	
+		gpuErrchk( cudaPeekAtLastError() );		
+		cudaDeviceSynchronize();		
+		float ms = endEvent(&startEvent, &stopEvent);
+	
+		return ms;	
+	}
+		
+	\end{lstlisting}
+	The peculiarity of this Kernel is that we exploited CUDA Occupancy APIs.
 	The occupancy-based launch configurator APIs,
-	cudaOccupancyMaxPotentialBlockSize and
-	cudaOccupancyMaxPotentialBlockSizeVariableSMem , heuristically calculate
-	an execution configuration that achieves the maximum multiprocessor-level
-	occupancy.
+	\texttt{cudaOccupancyMaxPotentialBlockSize}, heuristically calculate an execution configuration (thread block and grid sizes) that achieves the maximum multiprocessor-level occupancy.\\
+	This was one example of the use of CUDA Occupancy calculator tools, in this case we used it to achieve the best block and grid configuration possible for our Kernel.
 	
-	The following code sample calculates the occupancy of MyKernel. It then reports the
-	occupancy level with the ratio between concurrent warps versus maximum warps per
-	multiprocessor
+	Again the code presented above is relative to Cosine kernel, but the implementation structure is analogous to the one for Matrix multiplication and Blur Box.
+	For example, in Matrix multiplication, we'll have a stream of small matrices for Farm parallel and a single huge matrix for Data parallel.
+	
+	
 	
 \section{CPU and GPU Mix}
-Queue with P and Q chunk exec by respectively CPU and GPU.
+%Queue with P and Q chunk exec by respectively CPU and GPU.

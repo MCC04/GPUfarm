@@ -31,6 +31,37 @@
 
 \usepackage{mathtools}
 
+\usepackage{listings,lstautogobble}
+\usepackage{xcolor}
+
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+
+\lstset{language=C++,
+	keywordstyle=\color{RoyalBlue},
+	basicstyle=\scriptsize\ttfamily,
+	commentstyle=\ttfamily\itshape\color{gray},
+	stringstyle=\ttfamily,
+	showstringspaces=false,
+	breaklines=true,
+	frameround=ffff,
+	frame=single,
+	rulecolor=\color{lightgray},
+	autogobble=true
+	postbreak=\mbox{\textcolor{blue}{$\hookrightarrow$}\space},
+}
+
+%\usepackage[formats]{listings}
+
+%\lstdefineformat{C++}
+%{
+%	\{=\newline\string\newline\indent,%
+%	\}=\newline\noindent\string\newline,%
+%	;=[\ ]\string\space,%
+%}
+
+
+
+
 \graphicspath{/images}
 
 \renewcommand{\baselinestretch}{1.5} 
@@ -96,6 +127,10 @@
 		\bibitem{nvprofarticle}
 		Mark Harris, 
 		\textit{CUDA Pro Tip: nvprof is Your Handy Universal GPU Profiler}, https://devblogs.nvidia.com/cuda-pro-tip-nvprof-your-handy-universal-gpu-profiler/
+		
+		\bibitem{loweroccupancy}
+		Vasily Volkov,
+		\textit{Better Performance at Lower Occupancy}, September 2010
 		
 		
 	

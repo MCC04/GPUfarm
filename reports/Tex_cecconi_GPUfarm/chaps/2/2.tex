@@ -1,94 +1,84 @@
 %\addcontentsline{toc}{section}{Unnumbered Section}
 \chapter{Tools} \label{chap:tools}
-%\pagenumbering{arabic}
 
 In this project all tools and elaborations were made in GNU/Linux environment.
-We had two available remote computers, connecting them by \texttt{ssh} command on terminal.\\
+We had two available remote computers, to which we connect by \texttt{ssh} command on terminal.\\
 In particular we worked on the following machines:
-
 	\begin{enumerate}
-		\item Local host
+		\item \textbf{Local host}
 		\begin{itemize} 
 			\item Ubuntu 14.04 LTS, (4.4.0-148-generic x86\_64)
 			\item 1 CPU Intel® Core™ i5 CPU M 450 @ 2.40GHz x 4 
 		\end{itemize}
 		
-		\item P100 remote server
+		\item \textbf{P100 remote server}
 		\begin{itemize}
 			\item Ubuntu 18.04.2 LTS (4.15.0-43-generic x86\_64)	
 			\item 80 CPUs Intel(R) Xeon(R) CPU E5-2698 v4 @ 2.20GHz		
-			\item 4 GPUs Tesla P100-PCIE-16GB
+			\item 4 GPUs Tesla P100-PCIE-16GB\\\\
 		\end{itemize}
 		 
-		\item M40 remote server
+		\item\textbf{ M40 remote server}
 		\begin{itemize}
 			\item Ubuntu 16.04.6 LTS (4.4.0-154-generic x86\_64)
 			\item 48 CPUs Intel(R) Xeon(R) CPU E5-2670 v3 @ 2.30GHz
 			\item 4 GPUs NVIDIA Tesla M40\\
 		\end{itemize}
 	\end{enumerate}
-	
-	Given that this work is focused on the use of GPUs, it's really important to list all main specifics of devices in remote servers, see Table \ref{tab:gpuspecs}. All the following informations have been get by executing \texttt{cudaDeviceQuery} application (located inside samples of CUDA Toolkit).
+	Given that this work is focused on the use of the remote GPUs, their main specifics are listed in Table \ref{tab:gpuspecs}. All the following informations have been get by executing \texttt{cudaDeviceQuery} application (located inside samples of CUDA Toolkit).\\
+	\begin{table}	
+	\begin{tabular}{|c | c c |} 
+		\hline
+  & \textbf{Tesla P100} & \textbf{Tesla M40} \\ [0.5ex] 
+		\hline\hline
 		
-	
-	%\begin{center}
-		\begin{table}
+		\textbf{Driver/Runtime Version} & 10.1  & 10.1 \\ 
+		\hline
 		
-		\begin{tabular}{|c | c c |} 
-
-			%\hline
-			%\multicolumn{2}{|c|}{Country List} \\
-			%\hline
-			
-			\hline
-			  & \textbf{Tesla P100} & \textbf{Tesla M40} \\ [0.5ex] 
-			\hline\hline
-			
-			\textbf{Driver/Runtime Version} & 10.1  & 10.1 \\ 
-			\hline
-			
-			\textbf{CUDA Capability} & 6.0 & 5.2 \\
-			\hline
-			\textbf{\makecell{Tot. \\global memory amount}} & 16281 MBytes & 11449 MBytes \\
-			\hline
-			\textbf{Multiprocessors} & 56 & 24 \\
-			\hline
-			\textbf{\makecell{CUDA Cores/MP \\(Tot. CUDA cores)}} & 64 (3584) & 128 (3072) \\ %[1ex] 
-			\hline
-			\textbf{GPU Max Clock rate} & 1329 MHz (1.33 GHz) & 1112 MHz (1.11 GHz) \\ 
-			\hline
-			\textbf{\makecell{Tot. amount\\ constant memory} } & 65536 bytes & 65536 bytes \\ 
-			\hline
-			
-			\textbf{\makecell{Tot. amount\\ shared memory/block}} & 49152 bytes & 49152 bytes \\ 
-			\hline
-			
-			\textbf{\makecell{Tot.\\ \#registers available/block}} & 65536 & 65536 \\ 
-			\hline
-			
-			\textbf{Warp size} & 32 & 32\\
-			\hline
-			
-			\textbf{\makecell{Maximum\\ \#threads/multiprocessor}} & 2048 & 2048 \\
-			\hline
-			\textbf{Max \#threads/block} & 1024 & 1024 \\
-			\hline
-			\textbf{\makecell{Max thread block dimensions \\(x,y,z)}} & (1024, 1024, 64) & (1024, 1024, 64) \\
-			\hline 
-			\textbf{\makecell{Max grid size dimensions\\ (x,y,z)}} & (2147483647, 65535, 65535) & (2147483647, 65535, 65535) \\
-			\hline
-			
-			 \textbf{\makecell{Concurrent copy \& \\ kernel exec}} & Yes with 2 copy engine(s) & Yes with 2 copy engine(s) \\
-			\hline
-			
-		\end{tabular}
-		\caption{GPUs specifics for the two machines employed in this project.}	
-			\label{tab:gpuspecs}
-			
-		\end{table}
-	%\end{center}
-
-	
+		\textbf{CUDA Capability} & 6.0 & 5.2 \\
+		\hline
+		\textbf{\makecell{Tot. \\global memory amount}} & 16281 MBytes & 11449 MBytes \\
+		\hline
+		
+		\textbf{Multiprocessors} & 56 & 24 \\
+		\hline
+		
+		\textbf{\makecell{CUDA Cores/MP \\(Tot. CUDA cores)}} & 64 (3584) & 128 (3072) \\ %[1ex] 
+		\hline
+		
+		\textbf{GPU Max Clock rate} & 1329 MHz (1.33 GHz) & 1112 MHz (1.11 GHz) \\ 
+		\hline
+		
+		\textbf{\makecell{Tot. amount\\ constant memory} } & 65536 bytes & 65536 bytes \\ 
+		\hline
+		
+		\textbf{\makecell{Tot. amount\\ shared memory/block}} & 49152 bytes & 49152 bytes \\ 
+		\hline
+		
+		\textbf{\makecell{Tot.\\ \#registers available/block}} & 65536 & 65536 \\ 
+		\hline
+		
+		\textbf{Warp size} & 32 & 32\\
+		\hline
+		
+		\textbf{\makecell{Maximum\\ \#threads/multiprocessor}} & 2048 & 2048 \\
+		\hline
+		
+		\textbf{Max \#threads/block} & 1024 & 1024 \\
+		\hline
+		
+		\textbf{\makecell{Max thread block dimensions \\(x,y,z)}} & (1024, 1024, 64) & (1024, 1024, 64) \\
+		\hline 
+		
+		\textbf{\makecell{Max grid size dimensions\\ (x,y,z)}} & (2147483647, 65535, 65535) & (2147483647, 65535, 65535) \\
+		\hline
+		
+		 \textbf{\makecell{Concurrent copy \& \\ kernel exec}} & Yes with 2 copy engine(s) & Yes with 2 copy engine(s) \\
+		\hline		
+	\end{tabular}
+	\caption{GPUs specifics for the two remote machines employed in this project.}	
+	\label{tab:gpuspecs}		
+	\end{table}
 %	Here we present most important specifics for \textbf{P100}:
 %	\begin{itemize}
 %		\item Device: "Tesla P100-PCIE-16GB"
@@ -162,18 +152,17 @@ In particular we worked on the following machines:
 %		%Supports MultiDevice Co-op Kernel Launch:      No
 %		%Device PCI Domain ID / Bus ID / location ID:   0 / 130 / 0	
 %	\end{itemize}
-
-
-In this work we mainly made use of many tools in the CUDA Toolkit. In the following section will be presented all of employed stuff, with some specifications and how they've been exploited during this project.\\
+In this work we mainly made use of many tools in the CUDA Toolkit. In the following section will be presented all of employed stuff, with some specifications and how they've been exploited during this project.
 
 \section{CUDA}
-	In November 2006, NVIDIA introduced CUDA® , a general purpose parallel computing platform and programming model that leverages the parallel compute engine in NVIDIA GPUs to solve many complex computational problems, in certain cases even in a more efficient way than on a CPU.\\
-	CUDA comes with a software environment that allows developers to use C as a high-level programming language. \\ 
+	In November 2006, NVIDIA introduced CUDA, a general purpose parallel computing platform and programming model provided for compute engine in NVIDIA GPUs, to solve many complex computational problems (sometimes in a more efficient way than on a CPU).\\
+	%CUDA comes with a software environment that allows developers to use C as a high-level programming language. \\ 
 	
-	The advent of multicore CPUs and manycore GPUs means that mainstream processor chips are now parallel systems. Furthermore, their parallelism continues to scale with Moore's law. The CUDA challenge is to develop application software that scales its parallelism to leverage the increasing number of processor cores, while maintaining a low learning curve for programmers familiar with standard programming languages such as C.\\
-	
+	The advent of multicore CPUs and manycore GPUs means that mainstream processor chips are now parallel systems and their parallelism continues to scale with Moore's law.\\
+	%The CUDA challenge is to develop application software that scales its parallelism to leverage the increasing number of processor cores, while maintaining a low learning curve for programmers familiar with standard programming languages such as C.\\
+	We used CUDA with C++ support.
 	At its core are three key abstractions that are exposed to the programmer as a minimal
-	set of language extensions:\\
+	set of language extensions:
 	\begin{itemize}
 		\item A hierarchy of thread groups;
 		
@@ -183,12 +172,7 @@ In this work we mainly made use of many tools in the CUDA Toolkit. In the follow
 	\end{itemize} 
 	
 	These abstractions provide fine-grained data parallelism and thread parallelism, nested within coarse-grained data parallelism and task parallelism.\\
-	This makes possible to partition the problem into coarse sub-problems \textendash solved
-	independently in parallel by \textit{blocks} of threads \textendash, and each sub-problem into finer pieces
-	\textendash solved cooperatively in parallel by all \textit{threads} within the block \textendash.	\\
-
-	Indeed, each block of threads can be scheduled on any of the available SMs within a GPU, in any order, concurrently or sequentially, so that a compiled CUDA program can execute on any number of multiprocessors as illustrated by Figure \ref{fig:cudaSM}, and only the runtime system needs to know the physical multiprocessor count.
-	This scalable programming model allows the GPU architecture to span a wide market range by simply scaling the number of multiprocessors and memory partitions. \cite{cudaguide} \\ 
+	This makes possible to partition the problem into coarse sub-problems \textendash solved independently in parallel by \textit{blocks} of threads \textendash, and each sub-problem into finer pieces \textendash solved cooperatively in parallel by all \textit{threads} within the block \textendash.
 	
 	\begin{figure}[H]
 		%\vspace*{-2.4cm}
@@ -197,12 +181,11 @@ In this work we mainly made use of many tools in the CUDA Toolkit. In the follow
 		\caption{GPU scalability.}
 		\label{fig:cudaSM}
 	\end{figure}
-
+	Indeed, \textit{each block of threads can be scheduled on any of the available SMs within a GPU, in any order, concurrently or sequentially}, so that a compiled CUDA program can execute on any number of multiprocessors as illustrated by Figure \ref{fig:cudaSM}, and only the runtime system needs to know the physical multiprocessor count.
+	This programming model scales on the number of multiprocessors and memory partitions \cite{cudaguide}.  
 
 \section{Profilers}	
-	NVIDIA profiling tools enable the understanding and optimization in performance of CUDA applications. 
-	
-	The Visual Profiler is a graphical profiling tool that displays a timeline of your application's CPU and GPU activity, and that includes an automated analysis engine to identify optimization opportunities. The nvprof profiling tool enables you to collect and view profiling data from the command-line. 
+	NVIDIA profiling tools were useful to optimize in performance our CUDA applications, we used three different versions: the \texttt{nvprof} profiling tool enables you to collect and view profiling data from the command-line. 
 	
 	%Note that Visual Profiler and nvprof will be deprecated in a future CUDA release. It is recommended to use next-generation tools NVIDIA Nsight Compute for GPU profiling and NVIDIA Nsight Systems for GPU and CPU sampling and tracing.
 	
@@ -211,172 +194,105 @@ In this work we mainly made use of many tools in the CUDA Toolkit. In the follow
 	%NVIDIA Nsight Systems is a system-wide performance analysis tool designed to visualize an application’s algorithms, help you identify the largest opportunities to optimize, and tune to scale efficiently across any quantity or size of CPUs and GPUs; from large server to our smallest SoC.
 	
 	\subsection{nvprof}
-	
 %	CUDA Pro Tip: nvprof is Your Handy Universal GPU Profiler
 %	By Mark Harris | October 23, 2013 Tags: CUDA, Development Tools and Libraries, GPU, Pro Tip, Profiling, Programming Languages and Compilers, Python, Tools
-	
 	\texttt{nvprof} was added to CUDA Toolkit with CUDA 5. It is a command-line profiler, so it's a GUI-less version of the graphical profiling features available in the NVIDIA Visual Profiler.\\
-	
 	The \texttt{nvprof} profiler enables the collection of a timeline of CUDA-related activities on both CPU and GPU, including kernel execution, memory transfers, memory set and CUDA API calls and events or metrics for CUDA kernels.\\
+	After all data is collected, profiling results are displayed in the console \footnote{The textual output of the profiler is redirected to \texttt{stderr} by default.} or can be saved in a log file for later viewing \footnote{Or for later import into either \texttt{nvprof} or the \texttt{NVIDIA Visual Profiler)}.} \cite{profilersguide, nvprofarticle}.\\
+	\texttt{nvprof} operates in different modes: \textit{Summary Mode}, \textit{GPU-Trace and API-Trace Modes}, \textit{Event/metric Summary Mode} and  \textit{Event/metric Trace Mode}.\\	
+	For our purposes we used only \textit{Summary Mode}, this is the default operating mode, where we have a single result line for each kernel function and each type of CUDA memory copy performed by the application (for each operation type are shown number of calls and total, max, min and average time) \cite{profilersguide}.
 	
-	There are many profiling options, provided through command-line. Profiling results are displayed in the console after the profiling data is collected, and may also be saved for later viewing by either \texttt{nvprof}.
-	The textual output of the profiler is redirected to \texttt{stderr} by default \cite{profilersguide, nvprofarticle}.	
-	
-	
-	\texttt{nvprof} operates in one of the modes listed below:
-	
-	 \begin{enumerate}
-	 \item \textit{Summary Mode} is the default operating mode, here we have a single result line for each kernel function and each type of CUDA memory copy performed by the application (for each operation type we have number of calls and total, max, min and average time); 
-	 
-	 \item \textit{GPU-Trace and API-Trace Modes} provides a timeline of all activities taking place on the GPU in chronological order with some detailed information such as kernel parameters, shared memory usage and memory transfer throughput (enabled individually or together);
-	 
-	 
-	 \item \textit{Event/metric Summary Mode} gives the list of all available events and/or all available metrics on a particular GPU (nvprof is able to collect multiple events/metrics at the same time);
-	 
-	 \item \textit{Event/metric Trace Mode} event and metric values are shown for each kernel execution.  
-	
-\end{enumerate} 
-	
-	\cite{profilersguide}\\\\
-	
-	We used it as a quick check, for example to see if the application isn't running kernels on the GPU at all, or it's performing an unexpected number of memory copies.
+	We used it, in some situations, as a quick check, for example we exploited it to see if the application wasn't running kernels on the GPU at all, or it was performing an unexpected number of memory copies, etc.
 	To this aim it's enough to run the application with\\
 	\texttt{nvprof ./myApp arg0 arg1 ...}\\
-	we can quickly see a summary of all the kernels and memory copies that it used.\\
-	
-	Although when we needed to launch our tests, we wanted to consult profiling results in a second moment and whenever was necessary. So we used \texttt{--log-file} to redirect the output to files available for deferred examination (or for later import into either nvprof or the NVIDIA Visual Profiler). \\
-	
+	Although when we launched our tests, we wanted to consult profiling results after running or whenever was necessary, it was useful especially when we had to compare them with time probes inside the code. So we used \texttt{--log-file} option to redirect the output to files for deferred examination. \\
 	\texttt{nvprof} revealed peculiarly suitable for remote profiling. That's because of the fact command line is faster to check and save an application profiling.
 	  
 	\subsection{NVIDIA Visual Profiler}
-	The NVIDIA Visual Profiler, introduced in 2008, is a cross-platform performance profiling tool that delivers developers visual feedback for optimizing CUDA C/C++ applications.\\
+	The NVIDIA Visual Profiler, introduced in 2008, is a performance profiling tool providing visual feedback for optimizing CUDA C/C++ applications.
 	
-	The Visual Profiler displays a timeline of your application's activity on both the CPU and GPU so that you can identify opportunities for performance improvement. In addition, the Visual Profiler will analyze your application to detect potential performance bottlenecks, using highly configurable tables and graphical views, that allow to check memory transfers, kernel launches, and other API functions on the same timeline \cite{profilersguide}.\\
+	The Visual Profiler displays a timeline of an application's activity on both the CPU and GPU to make performance improvement, it analyzes the application to detect potential bottlenecks, using graphical views, that allow to check memory transfers, kernel launches, and other API functions on the same timeline \cite{profilersguide}.\\
 	 
-	 We used the standalone version of the Visual Profiler, \texttt{nvvp}. 
-	 Furthermore we used NVIDIA Nsight Systems, this is a low overhead performance analysis tool that provides insights to optimize  software, and it allows tuning to scale efficiently across any quantity or size of CPUs and GPUs.\\
+	We used the standalone version of the Visual Profiler, \texttt{nvvp}. 
+	Furthermore we used NVIDIA Nsight Systems, the advanced version of Visual Profiler, this is a low overhead performance analysis tool that provides insights to optimize software, to investigate for bottlenecks. It also identifies issues, such as GPU starvation, unnecessary GPU synchronization, insufficient CPU parallelizing, unexpectedly expensive algorithms across the CPUs and GPUs of their target platform. 
 	 
-	 Unbiased activity data is visualized to investigate bottlenecks, avoid inferring false-positives, and pursue optimizations with higher probability of performance gains. It identifies issues, such as GPU starvation, unnecessary GPU synchronization, insufficient CPU parallelizing, unexpectedly expensive algorithms across the CPUs and GPUs of their target platform. \\
-	 
-	In particular in this project Nsight Systems was used in developing phase, to check for data transfers and kernel executions overlapping.
-	This allowed to check if code was properly written to hide data transfers, even though often it happens that profilers introduce some sampling synchronization, giving not fully reliable visual results.
-	By the way we'll see in detail this aspect and how it was managed in \hyperref[chap:logic]{Chapter 3}.
-	 
-\section{CUDA C++}
+	In particular in this project \texttt{Nsight Systems} was used in developing phase, to check if code was properly written to hide as much as possible data transfers \footnote{We'll see in detail the Overlapping topic and how it was managed in \hyperref[chap:logic]{Chapter 3}.}, even though sometimes it may happens that profilers introduce some sampling synchronization, giving not fully reliable visual results.
+	
+
+\section{CUDA C/C++}
 	Here we'll briefly introduce main concepts behind the CUDA programming model, by outlining how they are exposed in C.
 	Especially we'll show important notions about features involved in this project and how/why these were included.
-	\subsection{Kernels} 
-	CUDA C allows the programmer to define particular C functions, called \textit{kernels},	these, when called, are executed N times in parallel by N different CUDA threads, as	opposed to only once like regular C functions.\\
-	
-	A kernel is defined using the \texttt{\_\_global\_\_} declaration specifier. The number of CUDA threads that will execute the kernel for a given call is specified using thi special execution configuration syntax: 
-	\texttt{<<<...>>>}.\\
-	
-	Each thread executing the kernel is given a unique thread ID, accessible within the kernel through the built-in \texttt{threadIdx} variable \cite{cudaguide}.
-	
-	\subsection{Thread Hierarchy}  
-	In practice \texttt{threadIdx} is a 3-component vector, so that threads can be identified using either  one, or two, or three dimensional thread index.
-	In turn these threads will form	either  one, or two, or three dimensional block of threads, called a
-	\textit{thread block}.
-	This provides a way to invoke computation across the elements in domains such as a vectors, matrices, or volumes.\\
-	The index of a thread and its thread ID relate to each other in a straightforward way:
-	\begin{itemize}
-		\item For a one-dimensional block, they are the same; 
-		
-		\item for a two-dimensional block of size \((D_{x} ,	D_{y}) \space \rightarrow \space\)  a thread of index \((x, y)\) has \(threadID = (x + y \cdot D_{x} );\)
-		
-		\item for a three-dimensional block of size \((D_{x} ,	D_{y} ,	D_{z}) \space \rightarrow \space\)  a thread of index \((x, y, z)\) has \(threadID = (x + y \cdot D_{x} + z \cdot D_{x} \cdot D_{y});\)
-		
-
-	\end{itemize}
-	 
-	
-	There is a limit to the number of threads per block, since all threads of a block are expected to reside on the same processor core and must share the limited memory resources of that core. On current GPUs, a thread block may contain up to 1024 threads (see Table \ref{tab:gpuspecs} for limits in our used machines).\\
-	However, a kernel can be executed by multiple equally-shaped thread blocks, so that
-	\(Total number of threads = \#threadsPerBlock \cdot \#blocks\)
-	 
-	Blocks in turn are organized into either one, or two, or three dimensional
-	grid of thread blocks as illustrated by Figure \ref{fig:gridblock}.	
-	So, the number of blocks in a grid is	usually dictated by the size of the data being processed or the number of processors in the system.
-	
-
-%	\begin{figure}
-%		\centering
-%		\vspace*{-2.5cm}
-%		\includegraphics[scale=0.4]{images/gridblocks.png}
-%		\caption{Above: a Grid formed by Blocks.\\ Below: a Block formed by Threads.}
-%		\label{fig:gridblock}
-%	\end{figure}
-	
-	
-	
-	\begin{wrapfigure}{L}{0.55\textwidth}
-		%\begin{center}
+	\begin{wrapfigure}{l}{0.58\textwidth}
 		\raggedleft
-		\includegraphics[width=0.55\textwidth]{images/gridblocks.png}
+		
+		\includegraphics[width=0.58\textwidth]{images/gridblocks.png}
 		\caption{Above: a Grid formed by Blocks.\\ Below: a Block formed by Threads.}
 		\label{fig:gridblock}
 	\end{wrapfigure}
+	
+	\subsection{Kernels} 
+	\label{subs:ker}
+	CUDA C allows to define particular C functions, called \textbf{\textit{kernels}}, when called, these are executed N times in parallel by N different CUDA threads, as	opposed to only once like regular C functions.
+	
+	A kernel is defined using the \texttt{\_\_global\_\_} declaration specifier. The number of CUDA threads that will execute the kernel for a given call is specified using this special execution configuration syntax: 
+	\texttt{<<<...>>>}.\\
+	Each thread executing the kernel is given a unique thread ID, accessible within the kernel through the built-in \texttt{threadIdx} variable \cite{cudaguide}.
 
-	
-	
+	\subsection{Thread Hierarchy}  
+	In practice \texttt{threadIdx} is a 3-component vector, so that threads can be identified using either one, or two, or three dimensional thread index.
+	In turn these threads will form	either one, or two, or three dimensional block of threads, called a
+	\textbf{\textit{thread block}}.
+	This provides a way to invoke computation across the elements in domains such as a vectors, matrices, or volumes.
+	%The index of a thread and its thread ID relate to each other in a straightforward way:
+	%\begin{itemize}
+	%	\item For a one-dimensional block, they are the same; 
+		
+	%	\item for a two-dimensional block of size \((D_{x} ,	D_{y}) \space \rightarrow \space\)  a thread of index \((x, y)\) has \(threadID = (x + y \cdot D_{x} );\)
+		
+	%	\item for a three-dimensional block of size \((D_{x} ,	D_{y} ,	D_{z}) \space \rightarrow \space\)  a thread of index \((x, y, z)\) has \(threadID = (x + y \cdot D_{x} + z \cdot D_{x} \cdot D_{y});\)
+	%\end{itemize}
+	There is a limit to the number of threads per block, since \textit{all threads of a block are expected to reside on the same processor core and must share the limited memory resources of that core}. On current GPUs, and on the two we worked on, a thread block may contain up to 1024 threads \footnote{see Table \ref{tab:gpuspecs} for limits in the machines we used).}.\\
+	However, a kernel can be executed by multiple equally-shaped thread blocks, so that\\
+	\(Total number of threads = \#threadsPerBlock \cdot \#blocks\)\\	 
+	Blocks in turn are organized into either one, or two, or three dimensional \textit{\textbf{grid of thread blocks}} as illustrated by Figure \ref{fig:gridblock}.	
+	So, the number of blocks in a grid is usually dictated by the size of the data being processed or the number of processors in the system.
 	The number of \textit{threads per block} and the number of \textit{blocks per grid} specified in the 	\texttt{<<<...>>>} syntax can be of type \texttt{int} or \texttt{dim3}.\\
-	
-	The dimension of the thread block is accessible within the kernel through the
-	built-in \texttt{blockDim} variable. \cite{cudaguide}.
-	
-	
+	The dimension of the thread block, block index and thread index are accessible within the kernel through the respective built-in variables: \texttt{blockDim}, \texttt{blockIdx}, \texttt{threadIdx}. \cite{cudaguide}.
 
 	\subsection{CUDA Streams}
 	\label{subs:streams} 
 	\textbf{Overlap of Data Transfer and Kernel Execution}\\
-	Some devices can perform an asynchronous memory copy to or from the GPU
-	concurrently with kernel execution. Applications may query this capability by checking
-	the \texttt{asyncEngineCount} device property (see Device Enumeration), which is greater
-	than zero for devices that support it. If host memory is involved in the copy, it must be
-	page-locked.
-	
-	In particular some devices, of compute capability 2.x and higher, can overlap copies to and from the
-	device. Applications may query this capability by checking the \texttt{asyncEngineCount}
-	device property (see Device Enumeration), which is equal to 2 for devices that support
-	it \footnote{This is the case for both of our machines. \\ See the last line of \texttt{deviceQuery} in Table \ref{tab:gpuspecs}}. 
-	
-	\textbf{Streams}\\
-	Applications manage the concurrent operations described above through \textbf{streams}. A
-	stream is a sequence of commands (possibly issued by different host threads) that	execute in order. Different streams, on the other hand, may execute their commands out of order with respect to one another or concurrently; this behavior is not guaranteed and	should therefore not be relied upon for correctness (e.g., inter-kernel communication is undefined) \cite{cudaguide}.
-	
+	Some devices can perform an asynchronous memory copy to or from the GPU	concurrently with kernel execution. 
+	It's possible to query this capability by checking the \texttt{asyncEngineCount} device property \footnote{ See \textit{Device Enumeration} in Table \ref{tab:gpuspecs}, For both of our machines, from the \textit{deviceQuery}, we get 2 copy engines.}, which is greater than zero for devices that support it. If host memory is involved in the copy, it must be
+	\textit{\textbf{page-locked}}.\\\\
+	%In particular some devices, of compute capability 2.x and higher, can overlap copies to and from the device. Applications may query this capability by checking the \texttt{asyncEngineCount} device property (see Device Enumeration), which is equal to 2 for devices that support	it \footnote{This is the case for both of our machines. \\ See the last line of \texttt{deviceQuery} in Table \ref{tab:gpuspecs}}. 
+	\Large \textbf{Streams}\normalsize\\
+	Applications manage the concurrent operations described above through \textbf{streams}. A stream is a sequence of commands (possibly issued by different host threads) that execute in order. On the other hand, a stream may execute their commands out of order or concurrently with respect to another; this behavior is not guaranteed and	should not be relied upon for correctness (e.g. inter-kernel communication is undefined) \cite{cudaguide}.\\
 	A brief code example:
-	\begin{lstlisting}[language=c++]
-	cudaStream\_t stream[2];
+	\begin{lstlisting}
+	cudaStream_t stream[2];
 	for (int i = 0; i < 2; ++i)
-	cudaStreamCreate(\&stream[i]);
+		cudaStreamCreate(&stream[i]);
 	float* hostPtr;
-	cudaMallocHost(\&hostPtr, 2 * size);
-	\end{lstlisting}
+	cudaMallocHost(&hostPtr, 2 * size);
+	\end{lstlisting}	
 
-	Each of these streams is defined by the following code sample as a sequence of one
-	memory copy from host to device, one kernel launch, and one memory copy from device
-	to host:
-	\begin{lstlisting}[language=C++]
+	Each of these streams is defined, by the following code sample, as a sequence of one memory copy \(host \rightarrow device\), one kernel launch, and one memory copy \(host \leftarrow device\):
+	\begin{lstlisting}
 	for (int i = 0; i < 2; ++i) {
-		cudaMemcpyAsync(inputDevPtr + i * size, hostPtr + i * size,
-		size, cudaMemcpyHostToDevice, stream[i]);
-		MyKernel <<<100, 512, 0, stream[i]>>>
-		(outputDevPtr + i * size, inputDevPtr + i * size, size);
-		cudaMemcpyAsync(hostPtr + i * size, outputDevPtr + i * size,
-		size, cudaMemcpyDeviceToHost, stream[i]);
+		cudaMemcpyAsync(inputDevPtr + i * size, hostPtr + i * size, size, cudaMemcpyHostToDevice, stream[i]);
+		MyKernel <<<100, 512, 0, stream[i]>>> (outputDevPtr + i * size, inputDevPtr + i * size, size);
+		cudaMemcpyAsync(hostPtr + i * size, outputDevPtr + i * size, size, cudaMemcpyDeviceToHost, stream[i]);
 	}
 	\end{lstlisting}
 	
-	Each stream copies its portion of input array hostPtr to array inputDevPtr in device
-	memory, processes inputDevPtr on the device by calling MyKernel() , and copies
-	the result outputDevPtr back to the same portion of hostPtr . Overlapping Behavior
-	describes how the streams overlap in this example depending on the capability of the
-	device. Note that hostPtr must point to page-locked host memory for any overlap to
-	occur.
-	Streams are released by calling cudaStreamDestroy().
-	\begin{lstlisting}[language=C++]
+	Each stream copies its portion of input array \texttt{hostPtr} to array \texttt{inputDevPtr} in device memory, processes \texttt{inputDevPtr} on the device by calling \texttt{MyKernel()}, and copies
+	the result \texttt{outputDevPtr} back to the same portion of \texttt{hostPtr}. Note that \texttt{hostPtr} must point to page-locked host memory for any overlap to
+	occur.\\
+	Streams are released by calling \texttt{cudaStreamDestroy()}.
+	\begin{lstlisting}
 	for (int i = 0; i < 2; ++i)
-	cudaStreamDestroy(stream[i]);
+		cudaStreamDestroy(stream[i]);
 	\end{lstlisting}
 	
 %	In case the device is still doing work in the stream when cudaStreamDestroy() is 	called, the function will return immediately and the resources associated with the stream 	will be released automatically once the device has completed all work in the stream.
@@ -482,84 +398,83 @@ In this work we mainly made use of many tools in the CUDA Toolkit. In the follow
 %	device to host issued to stream[0] only overlaps with the last thread blocks of the kernel
 %	launch issued to stream[1] as per Implicit Synchronization, which can represent only a
 %	small portion of the total execution time of the kernel.
-%	
-%	
-%	
-%	
-%	
-%	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	\subsection{Visual Studio Code}
-		Visual Studio Code is an open-source code editor developed by Microsoft for Linux Operative Systems too. It includes support for debugging, embedded Git control and GitHub, syntax highlighting, intelligent code completion, snippets, and code refactoring \footnote{Other infos: https://en.wikipedia.org/wiki/Visual\_Studio\_Code \\
-		Documentation: https://docs.microsoft.com/it-it/dotnet/core/tutorials/with-visual-studio-code \\ 
-			 Website: https://code.visualstudio.com/}.\\
-		
-		It is customizable and so it was exploited to add C++ and CUDA editor extensions.
-		Furthermore an SFTP extension allowed to quickly upload/download files from remote machines. \\
-		 
-		 Visual Studio Code is based on Electron, a framework which is used to deploy Node.js applications for the desktop running on the Blink layout engine. Although it uses the Electron framework,[10] the software does not use Atom and instead employs the same editor component (codenamed "Monaco") used in Azure DevOps (formerly called Visual Studio Online and Visual Studio Team Services).[11]
-		 
-		 In the Stack Overflow 2019 Developer Survey, Visual Studio Code was ranked the most popular developer environment tool, with 50.7\% of 87,317 respondents claiming to use it
 		 
 	\subsection{nvcc compiler}
-		To compile the CUDA C++ code was necessary to use a special compiler, included in CUDA Toolkit, that is \texttt{nvcc}.\\
-		The compilation here involves several splitting, compilation, preprocessing, and merging steps for each CUDA source file. The CUDA compiler driver hides the details of CUDA compilation from developers. It accepts a range of conventional compiler options, for example for the project we used options for defining macros and include/library paths \footnote{NVCC documentation: https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html\#introduction}.\\ 
-		All non-CUDA compilation steps are forwarded to a C++ host compiler that is supported by nvcc. 
-		This compiler can be used almost the same way as a classic \texttt{gcc}, for example:\\
-		
-		\texttt{nvcc -std=c++14 -g -G nvcc -o executable source.cu} \\	
-		
-		Here we present compiler versions installed in our two machines:\\
-		
-		\begin{itemize}
-			\item \textbf{Tesla P100}\\
-			nvcc: NVIDIA (R) Cuda compiler driver, 
-			%Copyright (c) 2005-2019 NVIDIA Corporation
-			%Built on Wed_Apr_24_19:10:27_PDT_2019
-			%Cuda compilation tools,
-			 release 10.1, V10.1.168			
-				 
-			\item \textbf{Tesla M40}\\
-			 nvcc: NVIDIA (R) Cuda compiler driver, 
-			 %Copyright (c) 2005-2019 NVIDIA Corporation
-			 %Built on Fri_Feb__8_19:08:17_PST_2019
-			 %Cuda compilation tools, 
-			 release 10.1, V10.1.105
-		\end{itemize}
-
+	To compile the CUDA C++ code was necessary to use a special compiler, included in CUDA Toolkit, that is \texttt{nvcc}.\\
+	The CUDA compiler driver hides the details of CUDA compilation from developers. It accepts a range of conventional compiler options, for example for the project we could define macros or include library paths \footnote{NVCC documentation: https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html\#introduction}.\\ 
+	All non-CUDA compilation steps are forwarded to a C++ host compiler that is supported by \texttt{nvcc}. 
+	Source files compiled with \texttt{nvcc} can include a mix of host code and device code. \texttt{nvcc}'s basic
+	workflow consists in separating device from host code and then:
+	\begin{itemize}
+		\item compiling the device code into an assembly form (PTX code) and/or binary form (cubin object), \item and modifying the host code by replacing the \texttt{<<<...>>>} syntax introduced in	Kernels \footnote{See  \hyperref[subs:ker]{subsection 2.3.1}} by the necessary CUDA C runtime function calls, to load and launch each compiled kernel from the PTX code and/or cubin object.
+	\end{itemize}
+	The modified host code is output either as C code that is left to be compiled using another tool, or as object code directly by letting \texttt{nvcc} invoke the host compiler during	the last compilation stage.
+	Applications can then either link to the compiled host code (most common case), or ignore the modified host code (if any) and use the CUDA driver API to load and execute the PTX code or cubin object.\\
+	This compiler can be used almost the same way as a classic \texttt{gcc}, for example:
+	
+	\texttt{nvcc -std=c++14 -g -G -o executable source.cu}\\	
+	Here we present compiler versions installed in our two machines:	
+	\begin{itemize}
+		\item \textbf{Tesla P100}\\
+		nvcc: NVIDIA (R) Cuda compiler driver, 
+		%Copyright (c) 2005-2019 NVIDIA Corporation
+		%Built on Wed_Apr_24_19:10:27_PDT_2019
+		%Cuda compilation tools,
+	 release 10.1, V10.1.168			
+		 
+		\item \textbf{Tesla M40}\\
+	 nvcc: NVIDIA (R) Cuda compiler driver, 
+	 %Copyright (c) 2005-2019 NVIDIA Corporation
+	 %Built on Fri_Feb__8_19:08:17_PST_2019
+	 %Cuda compilation tools, 
+	 release 10.1, V10.1.105
+	\end{itemize}
 		 
 	\subsection{\texttt{cuda-gdb} debugger}
-		CUDA-GDB is the NVIDIA tool for debugging CUDA applications (available on Linux). It is an extension to the x86-64 port of GDB, the GNU Project debugger.\\
-		The tool provides developers with a mechanism for debugging CUDA applications running on actual hardware. This enables to debug applications without the potential variations introduced by simulation and emulation environments.
-		Cuda-gdb main features are:
-		\begin{itemize}
-			\item it gives environment that allows simultaneous debugging of both GPU and CPU code within the same application;
-			\item as programming in CUDA C is an extension to C programming, debugging with CUDA-GDB is an extension to debugging with GDB, so the existing GDB debugging features are present for debugging the host code (additional features have been provided especially to support debugging CUDA device code);	
-			
-			\item it allows to set breakpoints, to single-step CUDA applications, and also to inspect and modify the memory and variables of any given thread running on the hardware;
-			
-			\item it supports debugging all CUDA applications, whether they use the CUDA driver API, the CUDA runtime API, or both.
-			
-			\item it supports debugging kernels that have been compiled for specific CUDA architectures, but also supports debugging kernels compiled at runtime, referred to as just-in-time compilation, or JIT compilation for short.
-		\end{itemize}
+	\texttt{CUDA-GDB} is the NVIDIA tool for debugging CUDA applications (available on Linux). It is an extension to the x86-64 port of GDB, the GNU Project debugger.\\
+	Cuda-gdb main features are:
+	\begin{itemize}
+		\item it gives environment that allows simultaneous debugging of both GPU and CPU code within the same application;
 		
-		Cuda-gdb was used to debug all compiled \texttt{.cu} source file.
-		Mainly it was really helpful in this project to step device code, inspect runtime errors thrown by CUDA API calls and check exactly what code did inside kernels.
+		\item as programming in CUDA C is an extension to C programming, debugging with CUDA-GDB is an extension to debugging with GDB, so the existing GDB debugging features are present for debugging the host code (additional features have been provided to support  CUDA device code);	
+		
+		\item it allows to set breakpoints, to single-step CUDA applications, and also to inspect and modify the memory and variables of any given thread running on the hardware;
+		
+		\item it supports debugging all CUDA applications, whether they use the CUDA driver API, the CUDA runtime API, or both.
+		
+		\item it supports debugging kernels that have been compiled for specific CUDA architectures, but also supports debugging kernels compiled at runtime, referred to as just-in-time (JIT) compilation.
+	\end{itemize}	
+	\texttt{CUDA-GDB} was used to debug all compiled source files, both \texttt{.cu} and \texttt{.cpp} .
+	Mainly it was really helpful in this project to step device code, inspect runtime errors thrown by CUDA API calls and check exactly what code was doing inside our kernels.
 	
-	
+\section{Visual Studio Code}
+	Visual Studio Code is an open-source code editor by Microsoft for Linux Operative Systems too. It includes support for debugging, embedded Git control and GitHub, syntax highlighting, intelligent code completion, snippets, and code refactoring \footnote{Other infos: https://en.wikipedia.org/wiki/Visual\_Studio\_Code \\
+		Documentation: https://docs.microsoft.com/it-it/dotnet/core/tutorials/with-visual-studio-code \\ 
+		Website: https://code.visualstudio.com/}.\\
+	Since it's customizable we could add C++ and CUDA editor extensions, furthermore an SFTP extension allowed us to quickly upload/download files from remote machines. 	
 	
 \section{Tests, Result gathering, Plots}
+Some other peripheral tools were involved in this project.
+In particular we needed:
+\begin{itemize}
+	\item a way to serially run executions of our applications,possibly varying input dataset on interest values;
+	\item put all results on text files;
+	\item implement a script to compute averages, speedups and other interest metrics, from results on text files;
+	\item a generator of graphs on important values from the obtained calculations.
+\end{itemize}
+
 \subsection{Bash scripts}
+Bash (Bourne-Again SHell) is the shell, or command language interpreter, for the GNU operating system; the latter provides other shells, but Bash is the default  shell\footnote{https://www.gnu.org/software/bash/manual/}. 
+
+\textbf{\texttt{Bash scripts}} were needed to implement tests, that run more executions of a certain CUDA application, also varying input dataset.
+We programmed bash scripts (\texttt{.sh}) tests to contain several command as compile a certain CUDA application, run many times the related executable, profile it with \texttt{nvprof} and so on.
+
 \subsection{Python scripts}
-Python 2.7.6
+As Python \footnote{The Python version used to compile, on local host, our scripts is: Python 2.7.6.\\ See documentation: https://docs.python.org/2/} has dynamic typing, together with its interpreted nature, it's an ideal language for scripting and rapid application development.
+
+In the case of this work was most useful to quickly implement a result filter: given text files with time measures, we computed averages and some speedups. \\
+Furthermore we implemented a script to generate some plots on averages and speedups, exploiting the library \texttt{matplotlib} \footnote{https://matplotlib.org/}
+
+
+
 

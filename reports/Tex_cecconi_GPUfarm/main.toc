@@ -1,7 +1,7 @@
 \select@language {english}
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
-\contentsline {section}{\numberline {1.1}Goals}{1}{section.1.1}
-\contentsline {subsection}{\numberline {1.1.1}GPU Architecture and Data Parallel}{1}{subsection.1.1.1}
+\contentsline {section}{\numberline {1.1}Goals}{2}{section.1.1}
+\contentsline {subsection}{\numberline {1.1.1}GPU Architecture and Data Parallel}{2}{subsection.1.1.1}
 \contentsline {subsection}{\numberline {1.1.2}Other Applications}{2}{subsection.1.1.2}
 \contentsline {subsection}{\numberline {1.1.3}GP-GPUs and Stream Parallel}{4}{subsection.1.1.3}
 \contentsline {section}{\numberline {1.2}Expectations}{5}{section.1.2}
@@ -10,33 +10,39 @@
 \contentsline {chapter}{\numberline {2}Tools}{9}{chapter.2}
 \contentsline {section}{\numberline {2.1}CUDA}{10}{section.2.1}
 \contentsline {section}{\numberline {2.2}Profilers}{13}{section.2.2}
-\contentsline {subsection}{\numberline {2.2.1}nvprof}{14}{subsection.2.2.1}
-\contentsline {subsection}{\numberline {2.2.2}NVIDIA Visual Profiler}{15}{subsection.2.2.2}
-\contentsline {section}{\numberline {2.3}CUDA C++}{16}{section.2.3}
-\contentsline {subsection}{\numberline {2.3.1}Kernels}{17}{subsection.2.3.1}
-\contentsline {subsection}{\numberline {2.3.2}Thread Hierarchy}{17}{subsection.2.3.2}
-\contentsline {subsection}{\numberline {2.3.3}CUDA Streams}{18}{subsection.2.3.3}
-\contentsline {subsection}{\numberline {2.3.4}Visual Studio Code}{20}{subsection.2.3.4}
-\contentsline {subsection}{\numberline {2.3.5}nvcc compiler}{21}{subsection.2.3.5}
-\contentsline {subsection}{\numberline {2.3.6}\texttt {cuda-gdb} debugger}{22}{subsection.2.3.6}
-\contentsline {section}{\numberline {2.4}Tests, Result gathering, Plots}{23}{section.2.4}
-\contentsline {subsection}{\numberline {2.4.1}Bash scripts}{23}{subsection.2.4.1}
-\contentsline {subsection}{\numberline {2.4.2}Python scripts}{23}{subsection.2.4.2}
-\contentsline {chapter}{\numberline {3}Project Logic}{24}{chapter.3}
-\contentsline {section}{\numberline {3.1}Streaming Parallelism: Farm pattern}{24}{section.3.1}
-\contentsline {section}{\numberline {3.2}CPU-GPGPU: heterogeneous architecture}{26}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Overlapping: Data Transfer hiding}{27}{subsection.3.2.1}
-\contentsline {subsection}{\numberline {3.2.2}Occupancy of GPU cores}{29}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {2.2.1}nvprof}{13}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}NVIDIA Visual Profiler}{14}{subsection.2.2.2}
+\contentsline {section}{\numberline {2.3}CUDA C/C++}{15}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}Kernels}{15}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.3.2}Thread Hierarchy}{16}{subsection.2.3.2}
+\contentsline {subsection}{\numberline {2.3.3}CUDA Streams}{16}{subsection.2.3.3}
+\contentsline {subsection}{\numberline {2.3.4}nvcc compiler}{18}{subsection.2.3.4}
+\contentsline {subsection}{\numberline {2.3.5}\texttt {cuda-gdb} debugger}{19}{subsection.2.3.5}
+\contentsline {section}{\numberline {2.4}Visual Studio Code}{20}{section.2.4}
+\contentsline {section}{\numberline {2.5}Tests, Result gathering, Plots}{20}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}Bash scripts}{21}{subsection.2.5.1}
+\contentsline {subsection}{\numberline {2.5.2}Python scripts}{21}{subsection.2.5.2}
+\contentsline {chapter}{\numberline {3}Project Logic}{22}{chapter.3}
+\contentsline {section}{\numberline {3.1}Streaming Parallelism: Farm pattern}{22}{section.3.1}
+\contentsline {section}{\numberline {3.2}CPU-GPGPU: heterogeneous architecture}{24}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Overlapping: Data Transfer hiding}{25}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Occupancy of GPU cores}{28}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Occupancy drawbacks}{30}{subsection.3.2.3}
 \contentsline {section}{\numberline {3.3}Overall Logic}{32}{section.3.3}
-\contentsline {section}{\numberline {3.4}Tunings}{38}{section.3.4}
-\contentsline {section}{\numberline {3.5}CPU/GPU Scheduling}{39}{section.3.5}
-\contentsline {chapter}{\numberline {4}Implementation}{40}{chapter.4}
-\contentsline {section}{\numberline {4.1}Stream Parallel on GPU}{40}{section.4.1}
-\contentsline {section}{\numberline {4.2}Data Parallel un GPU}{40}{section.4.2}
-\contentsline {subsection}{\numberline {4.2.1}CUDA Occupancy APIs}{40}{subsection.4.2.1}
-\contentsline {section}{\numberline {4.3}CPU and GPU Mix}{41}{section.4.3}
-\contentsline {chapter}{\numberline {5}Experiments}{42}{chapter.5}
-\contentsline {section}{\numberline {5.1}What and How}{42}{section.5.1}
-\contentsline {section}{\numberline {5.2}Results}{42}{section.5.2}
-\contentsline {section}{\numberline {5.3}Plots}{42}{section.5.3}
-\contentsline {chapter}{\numberline {6}Conclusions}{43}{chapter.6}
+\contentsline {section}{\numberline {3.4}Tunings}{39}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}Tuning on block and grid dimensions}{41}{subsection.3.4.1}
+\contentsline {section}{\numberline {3.5}CPU/GPU Scheduling}{42}{section.3.5}
+\contentsline {chapter}{\numberline {4}Implementation}{44}{chapter.4}
+\contentsline {section}{\numberline {4.1}Kernels}{44}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Repeated cosine}{45}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}Matrix multiplication}{45}{subsection.4.1.2}
+\contentsline {subsection}{\numberline {4.1.3}Blur Box filter}{47}{subsection.4.1.3}
+\contentsline {section}{\numberline {4.2}Parallel Patterns implementation on GPU}{48}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Stream Parallel on GPU}{48}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Data Parallel un GPU}{52}{subsection.4.2.2}
+\contentsline {section}{\numberline {4.3}CPU and GPU Mix}{54}{section.4.3}
+\contentsline {chapter}{\numberline {5}Experiments}{55}{chapter.5}
+\contentsline {section}{\numberline {5.1}What and How}{55}{section.5.1}
+\contentsline {section}{\numberline {5.2}Results}{55}{section.5.2}
+\contentsline {section}{\numberline {5.3}Plots}{55}{section.5.3}
+\contentsline {chapter}{\numberline {6}Conclusions}{56}{chapter.6}
