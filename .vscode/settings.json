@@ -59,7 +59,12 @@
         "codecvt": "cpp",
         "filesystem": "cpp",
         "string_view": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "bitset": "cpp",
+        "list": "cpp",
+        "map": "cpp",
+        "memory_resource": "cpp",
+        "set": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled",
     "C_Cpp.dimInactiveRegions": false,

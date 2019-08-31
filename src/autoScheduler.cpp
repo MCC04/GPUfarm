@@ -52,14 +52,14 @@ void printTotalTimes(float eventsTime,  float hostTime ){
     #endif
 }
 
-void printAll(float *cosx, int *clocks, float ms){    
+void printAll(float *cosx, float ms){    
     std::cout<<std::endl<<"COSX array : " <<std::endl;  
     for(int j=0; j<N_size;j+=1) 
         std::cout << cosx[j] << ", ";    
-    std::cout << std::endl;
+    /*std::cout << std::endl;
     std::cout <<"Clocks measures"<< std::endl;
 
-    int max=clocks[0],min=clocks[0];
+     int max=clocks[0],min=clocks[0];
     int clockSum=0;
     for(int j=0; j<GRID;j+=1) {
         std::cout << clocks[j] << ", ";
@@ -67,10 +67,13 @@ void printAll(float *cosx, int *clocks, float ms){
         if(clocks[j]<min) min=clocks[j];
         if(clocks[j]>max) max=clocks[j];
     }
-    int clockAvg=clockSum/GRID;
+    int clockAvg=clockSum/GRID;*/
     int rb_wb=bytesSize*2 + GRID*sizeof(float);        
 
-    std::cout<< std::endl <<"-------------------------"<< std::endl; 
+    //std::cout<< std::endl <<"-------------------------"<< std::endl; 
+    //std::cout << 
+    //"Avg clk (ms) \t min clk \t max clk \t event time(ms) "<< std::endl;   
+    // std::cout << min << " \t " << max <<" \t "<< ms<<std::endl; 
     std::cout << 
     "Avg clk (ms) \t min clk \t max clk \t event time(ms) "<< std::endl;   
     std::cout << min << " \t " << max <<" \t "<< ms<<std::endl; 
