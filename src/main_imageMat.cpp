@@ -7,17 +7,63 @@
 #include <lodepng.h>
 #include <imageMatrix.h>
 
+#define HIGH 500.0f
+#define LOW -500.0f
+
 cudaDeviceProp prop;
-int BLOCK=0;
-int GRIDx=0;
-int GRIDy=0;
+unsigned int BLOCK=0;
+unsigned int GRIDx=0;
+unsigned int GRIDy=0;
 
-int K=0;
-int M=0;
-int N=0;
-int bytesSize;
+unsigned int K=0;
+unsigned int M=0;
+unsigned int N=0;
+unsigned int bytesSize;
 
+/* ********* *
+ * UTILITIES *
+ * ********* */
+template<typename T> inline T getMatrixVal(T *mat, int row, int col, int width)
+{ return mat[row*width+col]; }
 
+template<typename T> inline void setMatrixVal(T *mat, int row, int col, int width, T val)
+{ mat[row*width+col] = val; }
+
+void randomMatrix(const int m, int n,float *mat){
+    for(int r=0; r<m; ++r)
+        for(int c=0; c<n; ++c){
+            int rnd = (float)std::rand();
+            float val = LOW + (rnd*(HIGH-LOW)/RAND_MAX);
+            setMatrixVal(mat, r, c, n, val);
+        }     
+}
+
+void launchConfig(int m, int n){
+    #ifdef LOWPAR
+        GRIDx = 1;
+        GRIDy = 1;
+    #else
+        /* int sizeX,sizeY;
+        if (m%BLOCK == 0) sizeX = m;
+        else sizeX = m+BLOCK-1;
+
+        if (n%BLOCK == 0) sizeY = n;
+        else sizeY = n+BLOCK-1;*/
+
+        //unsigned int grid_rows = (m + BLOCK - 1) / BLOCK;
+        //unsigned int grid_cols = (n + BLOCK - 1) / BLOCK;
+        //dim3 dimGrid(grid_cols, grid_rows);
+        GRIDx = (m + BLOCK - 1) / BLOCK;
+        GRIDy = (n + BLOCK - 1) / BLOCK;
+
+       // GRIDx = (sizeX)/BLOCK;
+       // GRIDy = (sizeY)/BLOCK;
+    #endif
+}
+
+/* ****************** *
+ * PRINT INFORMATIONS *
+ * ****************** */
 void printInfos(bool square){
 #ifndef MEASURES
     std::cout<<"Device : "<< prop.name <<std::endl;
@@ -54,6 +100,9 @@ void printImageInfos(int width,int height){
 }
 
 
+/* ************* *
+ * PRINT RESULTS *
+ * ************* */
 void printResults(float ms){
     float rb_wb=bytesSize*2 + GRIDx*sizeof(float); 
     std::cout <<"*"<< ms<< ","<< (rb_wb/ms/1e6)<<std::endl; 
@@ -79,20 +128,6 @@ void printMatrix(float *Cmat,int m, int n){
     }      
 }
 
-
-void hostMatMul(float *A, float *B, float *C, int M, int K, int N){
-    for(int i=0; i<M; ++i){ //M = r1    
-        for(int j=0; j<N; ++j){ //N = c2        
-            float sum=0.0f;
-            for(int l=0; l<K; ++l) //K = c1                            
-                sum += getMatrixVal( A,i,l,K )*getMatrixVal( B,l,j,N ); 
-
-            setMatrixVal( C,i,j,N,sum );
-        } 
-    }
-}
-
-
 void printMeasures(bool square, std::string label, float msTot, float chr, int matN, int devId){
     //posso usare prop per prendere il devID???
     if(square)
@@ -111,6 +146,21 @@ void printImgMeasures(std::string label, float msTot, float chr, int imageN, int
             << devId <<","<< BLOCK <<std::endl;                     //gpu infos     
 }
 
+
+/* *********************** *
+ * MATRICES EQUALITY CHECK *
+ * *********************** */
+void hostMatMul(float *A, float *B, float *C, int M, int K, int N){
+    for(int i=0; i<M; ++i){ //M = r1    
+        for(int j=0; j<N; ++j){ //N = c2        
+            float sum=0.0f;
+            for(int l=0; l<K; ++l) //K = c1                            
+                sum += getMatrixVal( A,i,l,K )*getMatrixVal( B,l,j,N ); 
+
+            setMatrixVal( C,i,j,N,sum );
+        } 
+    }
+}
 
 void checkMatEquality(float *A, float *B, int M, int N){    
     bool equal=true;  
@@ -135,6 +185,10 @@ void checkMatEquality(float *A, float *B, int M, int N){
 }
 
 
+
+/* ********************** *
+ * IMG PROCESSING HELPERS *
+ * ********************** */
 inline void divideAlphaChannel(unsigned char* inImage, unsigned char* alphaChannel, std::vector<unsigned char> in){
     int count=0,where=0;
     for(int i = 0; i < in.size(); ++i) {
@@ -148,7 +202,6 @@ inline void divideAlphaChannel(unsigned char* inImage, unsigned char* alphaChann
         }
     }
 }
-
 
 inline std::vector<unsigned char> rebuildAlphaChannel(unsigned char*outImg, unsigned char*alphaChannel, int size){
     int count=0;
@@ -176,12 +229,17 @@ std::string getOutFullFileName(std::string out_path, std::string out_name, int k
 }
 
 
+/* ************* *
+ * ************* *
+ * MAIN FUNCTION *
+ * ************* *
+ * ************* */
 int main(int argc, char **argv){
     std::srand(static_cast <unsigned> (time(NULL)));
     
     std::string label;
     float msTot = 0.0f;
-    int nStreams;
+    unsigned int nStreams;
     std::chrono::system_clock::time_point start, end;
     std::chrono::duration<double, std::milli> millis;  
     cudaEvent_t startEvent, stopEvent;
@@ -206,7 +264,7 @@ int main(int argc, char **argv){
 
 
 
-/*** MATMUL ***/
+/**** MATMUL ****/
 #ifdef MATMUL
     label+="MATMUL";
     //args
@@ -216,7 +274,7 @@ int main(int argc, char **argv){
     }
     bool square = atoi(argv[5]);
     bool shared = atoi(argv[6]);
-    int matN = atoi(argv[7]);
+    unsigned int matN = atoi(argv[7]);
     M = atoi(argv[8]);
     if(square){
         N = M;
@@ -232,9 +290,9 @@ int main(int argc, char **argv){
      
     float *A, *B, *C;
     float *Ad, *Bd, *Cd;
-    const int bytesA = M*K*sizeof(float);
-    const int bytesB = K*N*sizeof(float);
-    const int bytesC = M*N*sizeof(float);
+    const unsigned int bytesA = M*K*sizeof(float);
+    const unsigned int bytesB = K*N*sizeof(float);
+    const unsigned int bytesC = M*N*sizeof(float);
 
     start=std::chrono::system_clock::now();
     if (!cuStr) //NO CUDA STREAMS
@@ -256,6 +314,7 @@ int main(int argc, char **argv){
         createAndStartEvent(&startEvent, &stopEvent);
 
         if (square){   
+            launchConfig(N,N);
             int size = N*N; 
             if (shared)
                 label += "SHARED";
@@ -277,6 +336,7 @@ int main(int argc, char **argv){
             }     */       
         }
         else{ 
+            launchConfig(M,N);
             label += "NONSQUARE";
             int sizeA = M*K;
             int sizeB = K*N;
@@ -316,6 +376,7 @@ int main(int argc, char **argv){
         // Event start
         createAndStartEvent(&startEvent, &stopEvent);
         if (square){    
+            launchConfig(N,N);
             int size = N*N; 
                 if (shared)
                     label += "SHARED";
@@ -323,10 +384,13 @@ int main(int argc, char **argv){
                     label += "SQUARE";
                 
                 for (int i = 0; i < matN; ++i) { 
-                    int j = i%nStreams;            
+                    int j = i%nStreams;       
                     int idx = i*size;
                     int streamOffs = j*size;
                     // Kernel caller
+                    if(j==0 && i>0)
+                        cudaDeviceSynchronize();  
+                        //cudaStreamSynchronize(stream[j]);  
                     streamSquareMatMul(A+idx, B+idx, C+idx, Ad+streamOffs, Bd+streamOffs, Cd+streamOffs, 
                                     N, stream[j], shared);      
                 }
@@ -344,6 +408,7 @@ int main(int argc, char **argv){
             }  */    
         }
         else{
+            launchConfig(M,N);
             label += "NONSQUARE";
             int sizeA = M*K;
             int sizeB = K*N;
@@ -354,6 +419,8 @@ int main(int argc, char **argv){
                 int strOffsB = j*sizeB;
                 int strOffsC = j*sizeC;
                 // Kernel caller
+                if(j==0 && i>0)
+                    cudaStreamSynchronize(stream[j]); 
                 streamMatMul(A+(i*sizeA), B+(i*sizeB), C+(i*sizeC), Ad+strOffsA, Bd+strOffsB, Cd+strOffsC,
                                 M, K, N, stream[j]);
             }
@@ -384,14 +451,22 @@ int main(int argc, char **argv){
             checkMatEquality(_C, tmpC, M, N);
         }     
         std::cout<<std::endl<< std::endl;     
+        free(tmpC);
     #endif    
     // Free mem
-    cudaFreeHost(A);
-    cudaFreeHost(B);
-    cudaFreeHost(C);
     cudaFree(Ad);
     cudaFree(Bd);
     cudaFree(Cd);
+    if(cuStr){
+        cudaFreeHost(A);
+        cudaFreeHost(B);
+        cudaFreeHost(C);
+    }
+    else{
+        free(A);
+        free(B);
+        free(C);
+    }
 
 
 /**** BLURBOX ****/
@@ -438,7 +513,7 @@ int main(int argc, char **argv){
         //std::cout<<"warp size : "<< prop.warpSize <<std::endl;
     #endif
 
-    int imgBytes = width*height*3;
+    unsigned int imgBytes = width*height*3;
     unsigned char *input_h, *output_h;
     unsigned char *input_d, *output_d;
     
@@ -545,6 +620,7 @@ int main(int argc, char **argv){
                 #endif
                 
                 int j = k%nStreams;
+                
                 int strOffs = j*imgBytes;
 
                 const char *input_file = entry.path().c_str();
@@ -560,6 +636,9 @@ int main(int argc, char **argv){
                 divideAlphaChannel(input_h+k*imgBytes, alphaChannel, in);
 
                 // Kernel launcher
+                if(j==0 && k>0)
+                    cudaDeviceSynchronize();
+                    //cudaStreamSynchronize(stream[j]); 
                 streamBlurBoxFilter( input_h+k*imgBytes, output_h+k*imgBytes, input_d+strOffs, output_d+strOffs, width, height, stream[j] );
 
                 //output the data

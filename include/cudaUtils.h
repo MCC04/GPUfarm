@@ -3,10 +3,7 @@
 #include <assert.h> 
 
 extern cudaDeviceProp prop; //queste robbe qua mi sa che è meglio levarle
-extern int BLOCK;
-extern int GRID;
-extern int GRIDx;
-extern int GRIDy;
+
 
 //CUDA API error checking
 #define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }

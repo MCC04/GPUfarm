@@ -20,7 +20,7 @@ let nTests=6
 #################
 matSize=(128 512 1024)
 #nStreams=(0 3 56)
-nMats=(256 1024 4096) # 14680064 29360128)
+nMats=(100 196 400 784 1600) # 14680064 29360128)
 dpSize=(2048 4096 8192 16384)
 
 ##### MAT DATA PAR #####
@@ -75,53 +75,53 @@ do
 			./bin/mat/matmul.out $GPU $B 0 0 1 0 $m $N >> ./results/dev_mat_dp_str.txt
 		done
 		echo -ne "$nTests \n"			
-		sudo /usr/local/cuda-10.1/bin/nvprof --log-file ./profiling/dev_mat_dp$N-$m-$B.txt ./bin/mat/matmul.out $GPU $B 0 0 1 0 $m $N >> ./results/dev_mat_dp_str.txt
+		sudo /usr/local/cuda-10.1/bin/nvprof --log-file ./profiling/dev_mat_str$N-$m-$B-0.txt ./bin/mat/matmul.out $GPU $B 0 0 1 0 $m $N >> ./results/dev_mat_dp_str.txt
 
 	done
 done
 
 #########
 
-echo ***STREAM_3_test***
+echo ***MATMUL_STREAM_3_test***
 echo BLOCK = $B 
 
 for N in "${matSize[@]}"
 do	
 	for m in "${nMats[@]}"
 	do
-		echo size = $N elements, matrices num = $m 
+		echo size = $N, matrices num = $m 
 		echo -n execIndex = 
 		
 		for((j=0; j<nTests; j+=1));
 		do
 			echo -n "$j , "
-			./bin/mat/matmul.out $GPU $B 0 0 1 0 $m $N >> ./results/dev_mat_dp_str.txt
+			./bin/mat/matmul.out $GPU $B 1 3 1 0 $m $N >> ./results/dev_mat_dp_str.txt
 		done
 		echo -ne "$nTests \n"			
-		sudo /usr/local/cuda-10.1/bin/nvprof --log-file ./profiling/dev_mat_dp$N-$m-$B.txt ./bin/mat/matmul.out $GPU $B 0 0 1 0 $m $N >> ./results/dev_mat_dp_str.txt
+		sudo /usr/local/cuda-10.1/bin/nvprof --log-file ./profiling/dev_mat_str$N-$m-$B-3.txt ./bin/mat/matmul.out $GPU $B 1 3 1 0 $m $N >> ./results/dev_mat_dp_str.txt
 
 	done
 done
 
 #########
 
-echo ***STREAM_NCORES_test***
+echo ***MATMUL_STREAM_NCORES_test***
 echo BLOCK = $B 
 
 for N in "${matSize[@]}"
 do	
 	for m in "${nMats[@]}"
 	do
-		echo size = $N elements, matrices num = $m 
+		echo size = $N, matrices num = $m 
 		echo -n execIndex = 
 		
 		for((j=0; j<nTests; j+=1));
 		do
 			echo -n "$j , "
-			./bin/mat/matmul.out $GPU $B 0 0 1 0 $m $N >> ./results/dev_mat_dp_str.txt
+			./bin/mat/matmul.out $GPU $B 1 0 1 0 $m $N >> ./results/dev_mat_dp_str.txt
 		done
 		echo -ne "$nTests \n"			
-		sudo /usr/local/cuda-10.1/bin/nvprof --log-file ./profiling/dev_mat_dp$N-$m-$B.txt ./bin/mat/matmul.out $GPU $B 0 0 1 0 $m $N >> ./results/dev_mat_dp_str.txt
+		sudo /usr/local/cuda-10.1/bin/nvprof --log-file ./profiling/dev_mat_str$N-$m-$B-cores.txt ./bin/mat/matmul.out $GPU $B 1 0 1 0 $m $N >> ./results/dev_mat_dp_str.txt
 
 	done
 done

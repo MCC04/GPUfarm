@@ -26,18 +26,18 @@ matmul: $(BINMAT)matmul.out
 blurbox: $(BINMAT)blurbox.out
 
 $(BINMAT)matmul.out: $(BINMAT)main_mat.o $(BINMAT)imageMatKernels.o $(BIN)cudaUtils.o
-	$(CC) $(ALLFLAGS) $(BINMAT)main_mat.o $(BINMAT)imageMatKernels.o $(BIN)cudaUtils.o -o $(BINMAT)matmul.out
+	$(CC) $(ALLFLAGS) $(BINMAT)imageMatKernels.o $(BINMAT)main_mat.o $(BIN)cudaUtils.o -o $(BINMAT)matmul.out
 
 $(BINMAT)blurbox.out: $(BINMAT)main_imageMat.o $(BINMAT)imageMatKernels.o $(BINMAT)lodepng.o $(BIN)cudaUtils.o
 	$(CC) $(ALLFLAGS) $(BINMAT)main_imageMat.o $(BINMAT)imageMatKernels.o $(BINMAT)lodepng.o $(BIN)cudaUtils.o -lstdc++fs -o $(BINMAT)blurbox.out
 
-$(BINMAT)main_imageMat.o: $(SRC)main_imageMat.cpp $(INCLUDE)imageMatrix.h $(INCLUDE)lodepng.h $(INCLUDE)cudaUtils.h
+$(BINMAT)main_imageMat.o: $(SRC)main_imageMat.cpp $(INCLUDE)lodepng.h $(INCLUDE)cudaUtils.h $(INCLUDE)imageMatrix.h
 	$(CC) $(ALLFLAGS) -c $(SRC)main_imageMat.cpp -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z) -o $(BINMAT)main_imageMat.o
 
-$(BINMAT)imageMatKernels.o:  $(SRC)imageMatKernels.cu $(INCLUDE)imageMatrix.h $(INCLUDE)cudaUtils.h
+$(BINMAT)imageMatKernels.o:  $(SRC)imageMatKernels.cu $(INCLUDE)cudaUtils.h $(INCLUDE)imageMatrix.h 
 	$(CC) $(ALLFLAGS) -c $(SRC)imageMatKernels.cu -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z) -o $(BINMAT)imageMatKernels.o
 
-$(BINMAT)main_mat.o: $(SRC)main_imageMat.cpp $(INCLUDE)imageMatrix.h $(INCLUDE)cudaUtils.h
+$(BINMAT)main_mat.o: $(SRC)main_imageMat.cpp $(INCLUDE)cudaUtils.h $(INCLUDE)imageMatrix.h 
 	$(CC) $(ALLFLAGS) -c $(SRC)main_imageMat.cpp -D$(shell echo $(MAKECMDGOALS) | tr a-z A-Z) -o $(BINMAT)main_mat.o
 	
 $(BINMAT)lodepng.o: $(SRC)lodepng.cpp  $(INCLUDE)lodepng.h

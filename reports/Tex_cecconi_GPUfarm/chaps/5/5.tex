@@ -1,9 +1,385 @@
 \chapter{Experiments}
 \label{chap:experim}
-Experiments bla bla
-\section{What and How}
-What and How
+%\section{Overview}
+In this chapter will be shown all the experiments performed and their results. The first section starts from what we expect to show from experiments on code and, to this aim, what kind of comparisons will be made.\\
+The second section will explain how to implement tests, ie chosen datasets for each type of code and scripts main features.
+After that, the other section will move on results, in particular will be shown time measures and plots with some final remarks and comparisons with respect to what we expected.
+
+%\section{What and How}
+%What and How
+\section{Expectations}
+As previously mentioned, what we want to see is that our model and implementation of a Farm parallel pattern can fit in a GPU.
+To this aim is necessary to gain a speedup in the order of the number of Streaming multiprocessors of the GPU we're running code.
+Let's clarify some concepts in the sentence above:
+
+\begin{itemize}
+	\item The speedup will be estimated in terms of \textbf{GPU completion time}, ie the total time needed to perform all data transfers and kernel executions for a certain application;
+	\item We expect to have the best speedup only when we have certain conditions;
+	\item The best speedup for would be in the order of multiprocessors number.
+\end{itemize}
+The last point means we can't expect to reach greater gain than the available amount of hardware resources. This is strictly related to the fact that we can't expect Streaming parallel problems, that we implemented, to perform better than the equivalent Data Parallel version. \footnote{As we mentioned in previous Chapters, the GPU is specifically designed to be efficient and to perform at its best on Data Parallel problems.}
+The second point above means we expect the best performances in the following cases:
+\begin{itemize}
+	\item When we have a regular kernel, that is a kernel with the lowest possible amount of branching and, thus, very low (or absent) threads divergence;
+	\item When the kernel is more computational-bound than memory bound, the less access to Global memory the less data transfer latency will slow down computations;
+	\item When the kernel execution takes an amount of time near the one for a data transfer.
+\end{itemize} 
+When one, or more, of the above conditions isn't meet we expect to have a considerably lower speedup.
+
+
+\subsection{Measures: What and How}
+Before the test setup and writing it's important to understand what we should measure, in order to get significant comparisons.\\
+First we recall that the measures of interest are relative to \textit{data transfers} and \textit{kernel execution}. Clearly, in the case were CUDA streams are used, we have an additional time cost to create and destroy streams, especially when lot of streams are spawned.\\
+For completeness some measures on CUDA Stream creation/destruction \footnote{Measures on CUDA Streams spawn/deletion are collected from \textit{nvprof} log file, where all CUDA APIs time is precisely measured.} will be reported, but we won't sum up them with measures on data transfer and kernel execution. This is because, even if the streams overhead can be notable \footnote{We'll see that CUDA streams creation/destruction can take from few to hundred milliseconds, depending on how many they are.}, it's a one-time cost to pay.\\
+This means that it won't weigh on performances, given that in the beginning we create CUDA streams, then we'll run kernels on a indefinitely long input stream and, only when input is totally consumed out, CUDA streams will be destroyed. 
+So on a reasonably long input stream, the CUDA streams APIs cost should be negligible.
+
+So focusing on data transfers and kernel, we put two time probes, one before the start of the input stream loop and one at the end. The time probes are implemented using \textbf{CUDA Events}.\\
+Below will be reported a pseudo-code to clarify how the probes are positioned:
+\begin{lstlisting}[label={lst:timers}]	
+/**** Code with events time probes ****/	
+streamCreate(streams, nStreams); // Create CUDA streams
+
+createAndStartEvent(&startEvent, &stopEvent); // Create "start" and "stop" events, start recording
+
+int k = 0;
+while (InputStream) {  
+	if (buffer x[i: i+chunkSize] is full)
+	{
+		int i = k%nStreams;
+		
+		kernelCaller(input_host, output_host, input_device, output_device, streams[i], streamBytes, ...);
+
+		. . . .
+		
+		++k;
+	}
+	else
+	{
+		add item to buffer x[i: i+chunkSize]
+	}	
+} 
+msTot = endEvent(&startEvent, &stopEvent);
+cudaEventDestroy();
+		
+/**** Events Creation and start ****/
+void createAndStartEvent(cudaEvent_t *startEvent, cudaEvent_t *stopEvent)
+{
+	gpuErrchk( cudaEventCreate(startEvent) );
+	gpuErrchk( cudaEventCreate(stopEvent) );
+	gpuErrchk( cudaEventRecord(*startEvent,0) );
+}
+
+/**** Events end and time measure collection ****/
+float endEvent(cudaEvent_t *startEvent, cudaEvent_t *stopEvent)
+{
+	float ms = 0.0f;
+	gpuErrchk( cudaEventRecord(*stopEvent, 0) );
+	gpuErrchk( cudaEventSynchronize(*stopEvent) );
+	gpuErrchk( cudaEventElapsedTime(&ms, *startEvent, *stopEvent) );
+	return ms;
+}
+	
+/**** Kernel caller example ****/
+void kernelCaller(input_host, output_host, input_device, output_device, streams[i], streamBytes, ...)
+{
+	// H2D mem copy 
+	gpuErrchk( cudaMemcpyAsync(input_device, input_host, streamBytes, cudaMemcpyHostToDevice, streams[i]) ); 
+	// Kernel call
+	ernel<<<GRID, BLOCK, 0, streams[i]>>>(input_device, output_device, ...); 
+	#ifndef MEASURES
+	gpuErrchk( cudaPeekAtLastError() );
+	#endif   
+	// D2H mem copy 
+	gpuErrchk( cudaMemcpyAsync( output_host, output_device, streamBytes, cudaMemcpyDeviceToHost, streams[i]) );
+}
+	
+\end{lstlisting}
+CUDA event APIs are a device-bound tool and they were chosen as inside-code measurement for several reasons.
+Another approach could be to use any CPU timer provided for C++ in a way such as:
+\begin{lstlisting}
+	t1 = myCPUTimer();
+	Kernel<<<GRID, BLOCK>>>(param0. param1, ...);
+	cudaDeviceSynchronize();
+	t2 = myCPUTimer();
+\end{lstlisting}
+A problem with using host-device synchronization points, such as \texttt{cudaDeviceSynchronize()}, is that they stall the GPU pipeline.
+Events, instead, provide a relatively light-weight alternative to CPU timers via the \textit{CUDA event API}. This API includes calls to create and destroy events, record events, and compute the elapsed time in milliseconds between two recorded events, exactly as it's shown in code Listing \ref{lst:timers}.
+
+CUDA events make use of the concept of CUDA streams. 
+CUDA events are of type \texttt{cudaEvent\_t} and are created and destroyed with \texttt{cudaEventCreate()} and \texttt{cudaEventDestroy()}. In the above code \texttt{cudaEventRecord()} places the start and stop events into the default stream, or \texttt{stream 0} (also called the “\textit{Null Stream}”). This holds for all device timers we introduced in our code.\\
+The \texttt{cudaEventRecord()} will record a time stamp in device for the event, but only when that event is reached in the specified stream. The function \texttt{cudaEventSynchronize()} blocks CPU execution until the specified event is recorded. The \texttt{cudaEventElapsedTime()} function returns in the first argument the number of milliseconds time elapsed between the recording of \textit{start} and \textit{stop}. This value has a resolution of approximately 0.5 microseconds \cite{devblogevents}. So those timers will be enough accurate for our purpose, since we'll see that almost all elapsed times will be from tens to hundreds milliseconds.
+
+It's important to point out why we used events on the default stream. 
+If one of the events were last recorded in a non-NULL stream, the resulting time may be greater than expected (even if both used the same stream handle). This happens because the \texttt{cudaEventRecord()} operation takes place asynchronously and there is no guarantee that the measured latency is actually just between the two events.\\
+Any number of other different stream operations could execute in between the two measured events, thus altering the timing in a significant way \cite{libevents}.
+So given the asynchronous nature of CUDA calls we do in non-default stream, the behavior and order in between different streams is unpredictable. This means that a call from a different non-null stream can actually be issued in between two events we're trying to recording, even if they were issued from the same non-default stream.
+
+Another significant fact on events, is why we chose to put timers outside the loop over input stream.
+We could insert events again on default stream, but inside the loop, so that we measured singularly each iteration\footnote{And so measure each single memory copy H2D, Kernel execution and memory copy D2H.} and sum up all those elapsed times.
+There would have been three problems:
+\begin{itemize}
+	\item Each "\textit{end}" event, must be sure to measure everything until the ending event, that's why it's necessary to introduce \texttt{cudaEventSynchronize()};
+	\item Given that the input stream should be quite long, all those timers in each loop iteration would have introduced an amount of undesired overhead, apart from synchronization time.
+\end{itemize}
+
+In first problem we recall that \texttt{cudaEventSynchronize()} blocks CPU execution until the specified event is recorded,but we really want to avoid that.
+We should avoid as much host-device synchronizations as we can: given that we're working on input/output streams of items from host and, thus, "stopping" this flow on host side at each iteration would invalidate the gain of our model, increasing the overall completion time (of a non negligible amount).\\
+The second problem is related to the first. Even if events are a light-weight solution for device activities timing, it doesn't mean they don't introduce a bit of overhead (in addition to the synchronization one) in both host and device side.
+
+For completeness, we'll show some performances case of interest measured by profilers, in addition to those from timers.
+This will allow us not only to observe the correctness of some measurements, but also to check some special cases or technical details.
+
+
+\section{Tests setup}
+Once it is determined the time measure criterion, we have to decide what behaviors we want to observe from our code and its performances.
+Note that for each type of input dataset, we run multiple times (say \(N_{test}\)) the executable so that, for a certain input setup, we can collect more time measures. This allows us to delete some \textit{outliers} completion times, as they may distort the result, and then we take the mean value among the remaining measures.
+
+Moreover, as we mentioned in \hyperref[subs:bash]{Subsection 2.5.1}, we implemented our tests as bash scripts.
+These scripts will cover the task of:
+\begin{itemize}
+	\item Compiling a certain executable, exploiting the rules available in our Makefile;
+	\item Run that executable \(N_{test} - 1\) times and then redirect the output, of the running application, to a specific \texttt{.txt} file;
+	\item Run for the \(N_{test}^{\ th}\) time the executable via \texttt{nvprof}, redirecting the profiler output to a folder of \texttt{.txt} log files
+\end{itemize} 
+In next subsections we'll show, for each type of kernel, what type of tests have been made.
+
+It's important to recall that input stream length shouldn't be known a priori, but in tests we'll see that we have to give an input a limit. This is for time measuring purpose only, because we need to have a knowledge on what and how much data we are measuring.
+
+\subsection{Simple-computation kernel}
+For the computational-bound kernel, for each type of input dataset, we identified three different values for kernel iterations number, call it \(M\): \(10 000, 500 000, 1 million\).\\
+These values will identify how many times our kernel will have to repeat a certain mathematical operation (in our case the Cosine).
+
+Another important parameter is the Block size that we set to \(BLOCK = (1024, 1, 1)\). We recall that 1024 is the maximum we can give to \textit{x} and \textit{y} dimension for both of the GPUs we used to run tests, ie \textbf{P100} and \textbf{M40}.\\
+The choice for 1024 was made because CUDA Occupancy APIs, suggested this as best block size for our application. In general, but it's not a strict rule, computational-bound kernels perform at their best on higher block size, because this should allow us to use the maximum number of threads possible and, thus, to use as much computational resources as possible.\\
+%As we mentioned in \hyperref[chap:logic]{Chapter 3}
+Then we performed the following executions:
+
+
+	\begin{table}	
+		\centering
+		\begin{tabular}{| c c |} 
+			\hline
+			\textbf{Tesla P100} & \textbf{Tesla M40} \\ [0.5ex] 
+			\hline\hline
+			
+			114 688 & ----  \\ 
+			\hline		
+			458 752	& ----  \\ 
+			\hline			
+			1 835 008 & ---- \\
+			\hline				
+			3 670 016 & ---- \\
+			\hline
+			
+			
+			
+		\end{tabular}
+		\caption{Input dataset for Simple-Computation kernel, these are the input stream length for both devices.}	
+		\label{tab:cosdata}		
+	\end{table}
+
+	
+\begin{enumerate}
+	\item \textbf{Classic data parallel approach}\\
+		Here we launch the execution of our simple-computation kernel, as it would be classically used, that is as data parallel application.
+		To this aim, we should assume that, instead of having as input a stream of items, we'll have a quite long array of data, in particular made of floating point numbers.\\
+		In \hyperref[tab:cosdata]{Table 5.1} we show length that was used, in this case is the number of items grouped in a data structure.\\
+		Note that in this case, as in all data parallel versions we implemented, we don't make use of CUDA Streams, they'd be useless since we're launching a single kernel on a single huge data structure.
+
+		
+		%Ns=(114688 458752 1835008 3670016)
+	\item \textbf{Streaming parallel with smaller buffers}
+		Here we are in the case of the Farm parallel pattern for GPU, but with smaller buffers.
+		As we mentioned in \hyperref[chap:logic]{Chapter 3}, we're trying to get maximal occupancy, especially in a computational-bound kernel. So, given that the goal of our code is that each kernel launched could fill an entire SM or at least a part, we had to take into account of: 
+		\begin{itemize}
+			\item How many items we push for each kernel execution;
+			\item Consequently, how many thread blocks our kernel will issue.
+		\end{itemize}
+		These choices followed from our devices features, though the two GPUs are located in different Compute Capabilities (P100 is c.c. 6.0, M40 is c.c. 5.2) they have the same limits for 
+		\begin{itemize}
+			\item Resident \textbf{threads} per SM = 2048 (equivalent to 64 resident warps per SM);
+			\item Resident \textbf{thread blocks} per SM = 32.
+		\end{itemize}
+		The second limit means that we can have at most 32 thread block active, and so running, on a certain Streaming Multiprocessor. However we should hit this limit only when we have a poor amount of threads in each block and a consistent quantity of thread blocks.
+		This isn't our case, since we decided to use the maximum number of threads in a block, ie for \textit{x} dimension.\\
+		The first limit, instead, is our main goal here. Having at most 2048 active threads in a SM means that and having configuration of blocks = (\textit{1024, 1, 1}), we will have at most two resident blocks in a SM.
+		
+		The execution configuration for smaller buffers is such that we want to have 1024 buffers and kernel configuration such as \texttt{<<<1, 1024>>>}. 
+		So here each launched kernel will have one block containing 1024 threads and this theoretically should correspond to half the occupancy of a SM.\\
+		Clearly the code will launch a lot of buffers to device, ie enough to hopefully fill all SMs. The number of chunks will be limited by the limits we gave to the input stream length (see \hyperref[tab:cosdata]{Table 5.1}).
+		
+		All of the above mentioned configurations will be tested for the following CUDA streams cases:		
+		\begin{itemize}
+			\item \textbf{Zero} CUDA Streams. This is the scenario where we use any non-default CUDA stream, so we'll have serial and synchronous data transfers. Kernel are still an asynchronous call, but immediately after we want to have data back from device and this means have a \texttt{cudaMemcpy}, that is a synchronous call (w.r.t. the host);
+			\item \textbf{Three} CUDA Streams. Here we'll use 3 non-default streams, because we want to observe the behavior of our code in a sort of base case. In general, using three stream is the classic configuration for devices with two copy engines. This means it's the minimum to expect an overlap such as a kernel and at most two simultaneous data transfers;
+			\item \textbf{N\textsubscript{SM}} CUDA Streams, with \(N_{SM}\ =\#Streaming \ Multiprocessors\). This is our special case because, in general, applications don't use such a high number of CUDA Streams. But in our case it's necessary to try to achieve the expected speedup with respect to the version without non-default streams (our zero case).\\
+			Clearly, at a certain time say \(t_{i}\), we can have at most two data transfer but there's no limit on kernel calls, clearly they will be effectively executed as long as there are available resources on the device. So this is the key point why all of kernel launches, at peak CUDA stream filling, will be spread in SMs as soon as will be available requested resources.
+		\end{itemize}
+		
+	\item \textbf{Streaming parallel with bigger buffers}
+	This tests has similar premises to the one for smaller buffers, here the only thing is changing is buffer length set to 2048.\\
+	Thus, having always blockSize=(1024, 1, 1), the code will set gridSize to (2, 1, 1), this is because we'll have two blocks each covering calculations on one half of the buffer.
+	This can sound as having better performances, with respect to smaller buffers, but, as we said before, it's not a strict rule to have better performances on maximum occupancy.
+	We'll see from results that instead this approach behaves worse than smaller buffers. \\
+	Clearly we repeated the above CUDA streams scenarios, so for this configuration we executed code using: \textbf{Zero}, \textbf{Three} and \textbf{N\textsubscript{SM}} CUDA Streams.
+	Motivations for those number of non-default streams are completely analogous to the one explained before.
+
+	\item \textbf{Streaming parallel using \texttt{std::future} approach (smaller buffers)}
+	Here's a particular case, because we wanted to experiment a different approach for host side.
+	Until now we have seen all cases in which CUDA calls were issued synchronously by a single host thread, ie the main thread.\\
+	We tried, instead, to see what could happen if we used more threads calling in asynchronous way, at each iteration, a copy H2D, kernel call, and copy D2H.\\
+	We tested only a single scenario, \textbf{N\textsubscript{SM}} CUDA Streams, just to observe, in our CUDA stream special case, if this approach would have give even more advantage, than single thread host.
+	
+\end{enumerate}
+
+\subsection{Matrix Multiplication}
+With Matrix multiplication we're facing a kernel mostly memory-bound, so we had to make some slightly different tests with respect to the ones in simple-computation kernel.\\
+Note that, even if the logic is the same as the previous application, there are some details to redefine.\\
+First of all, before we were dealing with a stream of floats that were accumulated in buffers, here we have a stream of matrices. In particular as soon as we have two available input matrices, they're sent out to device to apply the matrix multiplication kernel. Finally we get back to host with the result matrix, that will be one of the output stream components.
+
+Another assumption is that, for simplicity, we're measuring on square matrices case, even if code was implemented for non-square case too. \\
+Thus we performed the following executions:
+%BLOCK=32
+%matSize=(128 512 1024)
+%#nStreams=(0 3 56)
+%nMats=(256 1024 2048) # 14680064 29360128)
+%dpSize=(2048 3840 5504 7680 8192 15360)
+
+	\begin{table}	
+		\centering
+		\begin{tabular}{| c | c | c |} 
+			\hline
+			
+			 %\multicolumn{2}{c}{\textbf{Tesla P100}} & \multicolumn{2}{c}{\textbf{Tesla M40}} \\ [0.5ex]
+			  & \textbf{Tesla P100} & \textbf{Tesla M40} \\ 
+			\hline\hline
+			
+			\textbf{Mat. Order} & \textbf{In stream limit} &  \textbf{In stream limit}  \\ 
+			\hline
+			256 & 128 & ----  \\ 
+			\hline		
+			484	& 256 & ----  \\ 
+			\hline			
+			900 & 1024 & ----  \\
+			\hline
+			\hline				
+			%3 670 016 & ---- & ---- & ---- \\
+			%\hline
+			
+		%	\multicolumn{2}{c}{\textbf{Data Parallel}} & \multicolumn{2}{c}{\textbf{Data Parallel}} \\ [0.5ex]
+			 & \textbf{Data Parallel} & \textbf{Data Parallel} \\ 
+			\hline\hline
+			
+			 & 2048 \((=128\cdot16)\) & ---- \\ 
+			\hline
+			 & 3840 \((=128\cdot30)\) & ---- \\  
+			\hline
+			
+			
+		\end{tabular}
+		\caption{Input dataset for Matrix Multiplication kernel. Above Stream parallel configuration, below Data Parallel correspondent.}	
+		\label{tab:matdata}		
+	\end{table}
+	
+\begin{enumerate}
+	\item \textbf{Classic data parallel approach}
+	As always we have to put a limit on input stream, so that we can measure completion times and compare different approaches.\\
+	To test the data parallel version it suffices to treat input/output streams as huge matrices.
+	This means that we'll do computations, no longer on stream of small data structures, but on a unique big data structure.\\
+	So, for example:
+	\begin{itemize}
+		\item We have two input streams, each has limit to 9 square matrices of order 2 (one input stream is for \textbf{A} matrices and one for \textbf{B});
+		\item So suppose that our stream parallel model, sends out one matrix A and one B at time;
+		\item Then we launch the kernel, performing the matrix multiplication, this will give back a matrix result C;
+		\item This means in total we will perform 9 multiplications between couples of matrices, giving 9 result matrices;
+		\item If we consider those 9 small matrices as block matrices, we can combine them into a bigger one;
+		\item This will be equivalent to pick A and B matrices each of order 6;
+		\item note that, for simplicity, we'll choose as input stream limit a square number, so that the equivalent combined data structure will be again square;
+		\item In our example 9 is a square number so that we can obtain as composed matrix dimension \([(2\cdot3)\times(2\cdot3)] = [6\times6]\)  
+	\end{itemize} 
+	In \hyperref[tab:matdata]{Table 5.2}, in the lower portion, are showed the matrices orders we used to test data parallel version for matrix multiplication. 
+	By giving these values as (square) matrix dimension and computing only one multiplication between matrices, we'll get the relative comparison to some Stream parallel versions \footnote{We'll see later what cases we match between data and stream parallel to make comparisons.}.
+	
+	\item \textbf{Streaming parallel}
+	As we mentioned before, we have to put a limit on the stream length for both streams of input matrices.\\
+	In the upper portion of \hyperref[tab:matdata]{Table 5.2} are reported all input stream limit, for each of them we test all of matrices order.\\
+	For every combination given by the input dimensions, we'll test for different numbers of CUDA streams: \textbf{Zero}, \textbf{Three} and \textbf{N\textsubscript{SM}} CUDA Streams (with \(N_{SM} \ =\# Streaming \ Multiprocessors\)).
+	The above test on different numbers of non-default streams, is implemented in a totally analogous way to the one for Simple-computation Kernel. And the reasons why we test for those numbers of streams are the same too.
+\end{enumerate}
+
+\subsection{Image processing}
+With image processing, ie Blur Box algorithm we're facing a kernel mostly memory-bound and especially rich of divergent execution flows, so we made similar tests to the ones for Matrix multiplication.\\
+Thus we performed the following executions:
+%BLOCK=1024
+%imgSize=(128 256)
+%#nStreams=(0 3 56)
+%nImgs=(256 1024) # 14680064 29360128)
+%dpSize=(4096 8192)
+
+
+\begin{table}	
+	\centering
+	\begin{tabular}{| c | c | c |} 
+		\hline
+		
+		 & \multicolumn{2}{c}{\textbf{Tesla P100} \& \textbf{Tesla M40}} \\ [0.5ex]
+		%& \textbf{Tesla P100} & \textbf{Tesla M40} \\ 
+		\hline\hline
+		
+		\textbf{Img. Order} & \textbf{In stream limit} &  \textbf{In stream limit}  \\ 
+		\hline
+		128 & 256 & ----  \\ 
+		\hline		
+		256	& 1024 & ----  \\ 
+		\hline			
+		\hline
+			
+
+		& \textbf{Data Parallel} & \textbf{Data Parallel} \\ 
+		\hline\hline		
+		& 4096 \((=128\cdot32)\) & ---- \\ 
+		\hline
+		& 8192 \((=256\cdot32)\) & ---- \\  
+		\hline
+		
+		
+	\end{tabular}
+	\caption{Input dataset for Matrix Multiplication kernel. Above Stream parallel configuration, below Data Parallel correspondent.}	
+	\label{tab:imgdata}		
+\end{table}
+
+\begin{enumerate}
+	\item \textbf{Classic data parallel approach}
+	If we think to a picture as a matrix of pixels, then it's easy to see the analogy to the previous application.\\
+	In particular the Data Parallel approach will be tested giving an image of large dimensions, instead of a stream of small images.\\
+	Again we can consider a single big image, as formed by merging smaller ones. Similarly to matrix multiplication case we chose, as input stream limits, square numbers to make possible a balanced comparison to the correspondent square picture in data parallel.\\
+	In the lower part of \hyperref[tab:imgdata]{Table 5.3} we show the order of dimension of the images used to compare to some streaming parallel cases.
+	
+	\item \textbf{Streaming parallel}
+	
+	As previous cases of Farm parallel pattern, we have to put a limit on the stream length for input stream of images.\\
+	In the upper portion of \hyperref[tab:imgdata]{Table 5.3} are reported input stream limits, for each of them we test the two types of picture dimensions. Note that those images are square, so, for example, a size of 128 stands for a picture of \((128\times128)\) resolution (ie 16 384 pixels).\\
+	For every combination given by the input dimensions, we'll test for different numbers of CUDA streams: \textbf{Zero}, \textbf{Three} and \textbf{N\textsubscript{SM}} CUDA Streams (with \(N_{SM} \ =\# Streaming \ Multiprocessors\)).
+	The above test on different numbers of non-default streams, is implemented in a totally analogous way to the ones for the two applications showed above.
+	
+	\begin{itemize}
+		\item \textbf{Zero} CUDA Streams
+		\item \textbf{Three} CUDA Streams
+		\item \textbf{N} CUDA Streams, with \(N=\# of Streaming Multiprocessors\)
+	\end{itemize}
+\end{enumerate}
+
 \section{Results}
-Results
+Results are collected, for each group of execution, in some \texttt{.txt} files. In those files we can find a list of applications outputs in \texttt{.csv} format.
+
+\subsection{Simple-computation kernel}
+Dire che smaller buffer meglio perché non monopolizza interamente un SM, lascia spazio ad un altro kernel launch di entrare.
+
+\subsection{Matrix Multiplication}
+
+\subsection{Image Processing}
+
+
 \section{Plots}
 Plots

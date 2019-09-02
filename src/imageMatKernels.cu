@@ -3,45 +3,7 @@
 #include <imageMatrix.h>
 
 
-#define HIGH 500.0f
-#define LOW -500.0f
-
-/* ********* *
- * UTILITIES *
- * ********* */
-template<typename T> inline T getMatrixVal(T *mat, int row, int col, int width)
-{ return mat[row*width+col]; }
-
-template<typename T> inline void setMatrixVal(T *mat, int row, int col, int width, T val)
-{ mat[row*width+col] = val; }
-
-void randomMatrix(const int m, int n,float *mat){
-    for(int r=0; r<m; ++r)
-        for(int c=0; c<n; ++c){
-            int rnd = (float)std::rand();
-            float val = LOW + (rnd*(HIGH-LOW)/RAND_MAX);
-            setMatrixVal(mat, r, c, n, val);
-        }     
-}
-
-void launchConfig(int m, int n){
-    #ifdef LOWPAR
-        GRIDx = 1;
-        GRIDy = 1;
-    #else
-        int sizeX,sizeY;
-        if (m%BLOCK == 0) sizeX = m;
-        else sizeX = m+BLOCK-1;
-
-        if (n%BLOCK == 0) sizeY = n;
-        else sizeY = n+BLOCK-1;
-
-        GRIDx = (sizeX)/BLOCK;
-        GRIDy = (sizeY)/BLOCK;
-    #endif
-}
-
-void getGaussian(float* ker,int dim, float sigma)
+/* void getGaussian(float* ker,int dim, float sigma)
 {
     float sum=0.0;
     int i,j;
@@ -63,7 +25,7 @@ void getGaussian(float* ker,int dim, float sigma)
             float val=getMatrixVal<float>(ker,i,j,dim)/sum;
             setMatrixVal<float>(ker,i,j,dim, val);
         }
-}
+}*/
 
 
 /* ******* *
@@ -72,8 +34,8 @@ void getGaussian(float* ker,int dim, float sigma)
 
 /**** MATMUL ****/
 __global__ void matMulKernel(float* A, float* B, float* C, int m, int k, int n) {   
-    int ROW = blockIdx.x*blockDim.x+threadIdx.x;
-    int COL = blockIdx.y*blockDim.y+threadIdx.y;
+    int COL = blockIdx.x*blockDim.x+threadIdx.x;
+    int ROW = blockIdx.y*blockDim.y+threadIdx.y;
  
     if (ROW<m && COL<n) {
         float tmpSum = 0.0f;        
@@ -400,13 +362,13 @@ __global__ void blurBoxGridStride(unsigned char* input_image, unsigned char* out
 void streamSquareMatMul(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd, 
             int n, cudaStream_t strm, bool shared)
 {
-    int size = n*n;
-    int bytesMat = size*sizeof(float);
+    //int size = n*n;
+    unsigned int bytesMat = n*n*sizeof(float);
     // H2D memCopy
     gpuErrchk( cudaMemcpyAsync(Ad, A, bytesMat, cudaMemcpyHostToDevice, strm) );    
     gpuErrchk( cudaMemcpyAsync(Bd, B, bytesMat, cudaMemcpyHostToDevice, strm) );   
     // Grid and Block setting
-    launchConfig(n, n);
+    //launchConfig(n, n);
     dim3 dimBlock( BLOCK,BLOCK,1 );
     /*#ifdef LOWPAR        
         GRIDx = 1;
@@ -432,13 +394,13 @@ void streamSquareMatMul(float *A, float *B, float *C, float *Ad, float *Bd, floa
 
 void squareMatMul(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd, int n, bool shared)
 {
-    int size = n*n;
-    int bytesMat = size*sizeof(float);
+    //int size = n*n;
+    unsigned int bytesMat = n*n*sizeof(float);
 
     gpuErrchk( cudaMemcpy(Ad, A, bytesMat, cudaMemcpyHostToDevice) );    
     gpuErrchk( cudaMemcpy(Bd, B, bytesMat, cudaMemcpyHostToDevice) );   
 
-    launchConfig(n, n);
+    //launchConfig(n, n);
     dim3 dimBlock( BLOCK,BLOCK,1 );
     /*#ifdef LOWPAR        
         GRIDx = 1;
@@ -472,14 +434,14 @@ void squareMatMul(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd,
 void streamMatMul(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd, 
         int m, int k, int n, cudaStream_t strm)
 {
-    int bytesA = m*k*sizeof(float);
-    int bytesB = k*n*sizeof(float);
-    int bytesC = m*n*sizeof(float);
+    unsigned int bytesA = m*k*sizeof(float);
+    unsigned int bytesB = k*n*sizeof(float);
+    unsigned int bytesC = m*n*sizeof(float);
     // H2D memCopy
     cudaMemcpyAsync(Ad, A, bytesA, cudaMemcpyHostToDevice, strm);    
     cudaMemcpyAsync(Bd, B, bytesB, cudaMemcpyHostToDevice, strm);   
     // Grid and Block setting    
-    launchConfig(m, n);
+    //launchConfig(m, n);
     dim3 dimBlock( BLOCK,BLOCK,1 );
     /*#ifdef LOWPAR
         GRIDx = 1;
@@ -506,14 +468,14 @@ void streamMatMul(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd,
 void matMul(float *A, float *B, float *C, float *Ad, float *Bd, float *Cd, 
         int m, int k, int n)
 {
-    int bytesA = m*k*sizeof(float);
-    int bytesB = k*n*sizeof(float);
-    int bytesC = m*n*sizeof(float);
+    unsigned int bytesA = m*k*sizeof(float);
+    unsigned int bytesB = k*n*sizeof(float);
+    unsigned int bytesC = m*n*sizeof(float);
     // H2D memCopy
     cudaMemcpy(Ad, A, bytesA, cudaMemcpyHostToDevice);    
     cudaMemcpy(Bd, B, bytesB, cudaMemcpyHostToDevice);   
     // Grid and Block setting
-    launchConfig(m, n);
+    //launchConfig(m, n);
     dim3 dimBlock( BLOCK,BLOCK,1 );
     /*#ifdef LOWPAR
         GRIDx = 1;
@@ -600,7 +562,7 @@ void squareSharedMatMul(float *A, float *B, float *C, float *Ad, float *Bd, floa
 void streamBlurBoxFilter (unsigned char *in_h, unsigned char *out_h, unsigned char *in_d, unsigned char *out_d, 
                     int width, int height, cudaStream_t strm)
 {          
-    int size = width*height*3;
+    unsigned int size = width*height*3;
     // H2D memCopy
     gpuErrchk( cudaMemcpyAsync(in_d, in_h, size, cudaMemcpyHostToDevice, strm) );  
     // Grid and Block setting
@@ -610,13 +572,13 @@ void streamBlurBoxFilter (unsigned char *in_h, unsigned char *out_h, unsigned ch
     #else
         GRIDx = (unsigned int)((size+BLOCK-1)/BLOCK);
     #endif
-    dim3 blockDims( BLOCK,1,1 );
-    dim3 gridDims( GRIDx,1,1 );
+    //dim3 blockDims( BLOCK,1,1 );
+    //dim3 gridDims( GRIDx,1,1 );
     // Kernel launch
     #ifdef LOWPAR   
-        blurBoxGridStride<<<gridDims, blockDims, 0, strm>>>(in_d, out_d, width, height); 
+        blurBoxGridStride<<<GRIDx, BLOCK, 0, strm>>>(in_d, out_d, width, height); 
     #else
-        blurBoxFilterKer<<<gridDims, blockDims, 0, strm>>>(in_d, out_d, width, height); 
+        blurBoxFilterKer<<<GRIDx, BLOCK, 0, strm>>>(in_d, out_d, width, height); 
     #endif
     //blurBoxFilterKer<<<gridDims, blockDims, 0, strm>>>(in_d, out_d, width, height); 
     // D2H memCopy
@@ -631,7 +593,7 @@ void streamBlurBoxFilter (unsigned char *in_h, unsigned char *out_h, unsigned ch
 void blurBoxFilter (unsigned char *in_h, unsigned char *out_h, unsigned char *in_d, unsigned char *out_d, 
                     int width, int height)
 {     
-    int size = width*height*3;    
+    unsigned int size = width*height*3;    
     // H2D memCopy
     gpuErrchk( cudaMemcpy(in_d,in_h, size, cudaMemcpyHostToDevice) );   
     // Grid and Block setting    

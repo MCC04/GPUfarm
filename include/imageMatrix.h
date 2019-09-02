@@ -1,17 +1,23 @@
 #include <iostream>
 #include <cudaUtils.h>
 
-extern int K_exec;
-extern int M_iter;
-extern int N_size;
+/*extern unsigned int K_exec;
+extern unsigned int M_iter;
+extern unsigned int N_size;
 
-extern int GRIDx;
-extern int GRIDy;
+extern unsigned int GRIDx;
+extern unsigned int GRIDy;
+extern unsigned int BLOCK;*/
 
-template <typename T>  T getMatrixVal (T *mat, int row, int col, int width);
-template <typename T>  void setMatrixVal (T *mat, int row, int col, int width, T val);
+extern unsigned int BLOCK;
+extern unsigned int GRIDx;
+extern unsigned int GRIDy;
+
+template <typename T> inline T getMatrixVal (T *mat, int row, int col, int width);
+template <typename T> inline void setMatrixVal (T *mat, int row, int col, int width, T val);
 void randomMatrix (const int m, int n,float *mat);
-void easyRandomMatrix (const int m, int n,float *mat, float var);
+//void easyRandomMatrix (const int m, int n,float *mat, float var);
+void launchConfig(int m, int n);
 //void getGaussian (float* ker,int dim, float sigma);
 
 /*****Kernel launcers*****/

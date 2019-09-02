@@ -41,7 +41,12 @@
 \BOOKMARK [2][-]{subsection.4.2.2}{Data Parallel un GPU}{section.4.2}% 41
 \BOOKMARK [1][-]{section.4.3}{CPU and GPU Mix}{chapter.4}% 42
 \BOOKMARK [0][-]{chapter.5}{Experiments}{}% 43
-\BOOKMARK [1][-]{section.5.1}{What and How}{chapter.5}% 44
-\BOOKMARK [1][-]{section.5.2}{Results}{chapter.5}% 45
-\BOOKMARK [1][-]{section.5.3}{Plots}{chapter.5}% 46
-\BOOKMARK [0][-]{chapter.6}{Conclusions}{}% 47
+\BOOKMARK [1][-]{section.5.1}{Expectations}{chapter.5}% 44
+\BOOKMARK [2][-]{subsection.5.1.1}{Measures: What and How}{section.5.1}% 45
+\BOOKMARK [1][-]{section.5.2}{Tests setup}{chapter.5}% 46
+\BOOKMARK [2][-]{subsection.5.2.1}{Simple-computation kernel}{section.5.2}% 47
+\BOOKMARK [2][-]{subsection.5.2.2}{Matrix Multiplication}{section.5.2}% 48
+\BOOKMARK [2][-]{subsection.5.2.3}{Image processing}{section.5.2}% 49
+\BOOKMARK [1][-]{section.5.3}{Results}{chapter.5}% 50
+\BOOKMARK [1][-]{section.5.4}{Plots}{chapter.5}% 51
+\BOOKMARK [0][-]{chapter.6}{Conclusions}{}% 52

@@ -3,8 +3,8 @@
 rm -f ./results/dev_blur_dp_str.txt
 touch ./results/dev_blur_dp_str.txt
 
-rm -f ./profiling/dev_mat_str*.txt
-rm -f ./profiling/dev_mat_dp*.txt
+rm -f ./profiling/dev_blur_str*.txt
+rm -f ./profiling/dev_blur_dp*.txt
 
 BLUE='\033[1;34m'
 NC='\033[0m'
@@ -46,7 +46,7 @@ do
 		./bin/mat/blurbox.out $GPU $B 0 0 $N $N 1 >> ./results/dev_blur_dp_str.txt
 	done
 	echo -ne "$nTests \n"			
-	sudo /usr/local/cuda-10.1/bin/nvprof --log-file ./profiling/dev_mat_dp$N-$m-$B.txt ./bin/mat/blurbox.out $GPU $B 0 0 $N $N 1 >> ./results/dev_blur_dp_str.txt
+	sudo /usr/local/cuda-10.1/bin/nvprof --log-file ./profiling/dev_blur_dp$N-$m-$B.txt ./bin/mat/blurbox.out $GPU $B 0 0 $N $N 1 >> ./results/dev_blur_dp_str.txt
 
 	#done
 done
@@ -75,7 +75,7 @@ do
 			./bin/mat/blurbox.out $GPU $B 0 0 $N $N $m >> ./results/dev_blur_dp_str.txt
 		done
 		echo -ne "$nTests \n"			
-		sudo /usr/local/cuda-10.1/bin/nvprof --log-file ./profiling/dev_mat_str$N-$m-$B-0.txt ./bin/mat/blurbox.out $GPU $B 0 0 $N $N $m >> ./results/dev_blur_dp_str.txt
+		sudo /usr/local/cuda-10.1/bin/nvprof --log-file ./profiling/dev_blur_str$N-$m-$B-0.txt ./bin/mat/blurbox.out $GPU $B 0 0 $N $N $m >> ./results/dev_blur_dp_str.txt
 
 	done
 done
@@ -98,7 +98,7 @@ do
 			./bin/mat/blurbox.out $GPU $B 1 3 $N $N $m >> ./results/dev_blur_dp_str.txt
 		done
 		echo -ne "$nTests \n"			
-		sudo /usr/local/cuda-10.1/bin/nvprof --log-file ./profiling/dev_mat_str$N-$m-$B-0.txt ./bin/mat/blurbox.out $GPU $B 1 3 $N $N $m >> ./results/dev_blur_dp_str.txt
+		sudo /usr/local/cuda-10.1/bin/nvprof --log-file ./profiling/dev_blur_str$N-$m-$B-0.txt ./bin/mat/blurbox.out $GPU $B 1 3 $N $N $m >> ./results/dev_blur_dp_str.txt
 
 	done
 done
@@ -121,7 +121,7 @@ do
 			./bin/mat/blurbox.out $GPU $B 1 0 $N $N $m >> ./results/dev_blur_dp_str.txt
 		done
 		echo -ne "$nTests \n"			
-		sudo /usr/local/cuda-10.1/bin/nvprof --log-file ./profiling/dev_mat_str$N-$m-$B-0.txt ./bin/mat/blurbox.out $GPU $B 1 0 $N $N $m >> ./results/dev_blur_dp_str.txt
+		sudo /usr/local/cuda-10.1/bin/nvprof --log-file ./profiling/dev_blur_str$N-$m-$B-0.txt ./bin/mat/blurbox.out $GPU $B 1 0 $N $N $m >> ./results/dev_blur_dp_str.txt
 
 	done
 done

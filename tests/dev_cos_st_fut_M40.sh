@@ -20,7 +20,7 @@ let nTests=6
 #################
 Miters=(10000 500000 1000000)
 #nStreams=(0 3 56)
-Ns=(114688 1835008 7340032) # 14680064 29360128)
+Ns=(24576 49152 98304 196608 393216 786432 1572864)
 
 ##### STREAM PAR #####
 #parameters: deviceID, BLOCK, N_elements, M_iterations, nCUDAStreams, chunkSize
@@ -111,7 +111,7 @@ done
 
 ##### FUTURE #####
 #parameters: deviceID, BLOCK, N_elements, M_iterations, cuStr[bool], strNum
-make cleandp
+make cleandplow
 echo -e "${BLUE}compiling futurelow...${NC}"
 echo ""
 make futurelow

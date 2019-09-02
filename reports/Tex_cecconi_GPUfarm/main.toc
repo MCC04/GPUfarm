@@ -42,7 +42,12 @@
 \contentsline {subsection}{\numberline {4.2.2}Data Parallel un GPU}{52}{subsection.4.2.2}
 \contentsline {section}{\numberline {4.3}CPU and GPU Mix}{54}{section.4.3}
 \contentsline {chapter}{\numberline {5}Experiments}{55}{chapter.5}
-\contentsline {section}{\numberline {5.1}What and How}{55}{section.5.1}
-\contentsline {section}{\numberline {5.2}Results}{55}{section.5.2}
-\contentsline {section}{\numberline {5.3}Plots}{55}{section.5.3}
-\contentsline {chapter}{\numberline {6}Conclusions}{56}{chapter.6}
+\contentsline {section}{\numberline {5.1}Expectations}{55}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Measures: What and How}{56}{subsection.5.1.1}
+\contentsline {section}{\numberline {5.2}Tests setup}{61}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Simple-computation kernel}{62}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Matrix Multiplication}{65}{subsection.5.2.2}
+\contentsline {subsection}{\numberline {5.2.3}Image processing}{68}{subsection.5.2.3}
+\contentsline {section}{\numberline {5.3}Results}{69}{section.5.3}
+\contentsline {section}{\numberline {5.4}Plots}{69}{section.5.4}
+\contentsline {chapter}{\numberline {6}Conclusions}{70}{chapter.6}

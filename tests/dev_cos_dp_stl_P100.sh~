@@ -24,7 +24,7 @@ Ns=(114688 1835008 7340032) # 14680064 29360128)
 
 ##### DATA PAR #####
 #parameters: deviceID, BLOCK, N_elements, M_iterations, cuStr[bool], strNum
-make cleandp
+make cleandplow
 echo -e "${BLUE}compiling datapar...${NC}"
 echo ""
 make datapar
@@ -53,7 +53,7 @@ done
 
 ##### STREAM LOW PAR #####
 #parameters: deviceID, BLOCK, N_elements, M_iterations, cuStr[bool], strNum
-make cleandp
+make cleandplow
 echo -e "${BLUE}compiling stream...${NC}"
 echo ""
 make streamlow
