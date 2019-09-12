@@ -1,6 +1,0 @@
-***host_mat.sh***
-start: Wed May 15 23:34:30 CEST 2019
-end: Thu May 16 02:35:06 CEST 2019
-***host_mat_invert.sh***
-start: Thu May 16 02:35:06 CEST 2019
-end: Thu May 16 06:03:50 CEST 2019

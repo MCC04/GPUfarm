@@ -1,9 +1,0 @@
-***host_mat.sh***
-start: Wed May 15 19:01:07 CEST 2019
-end: Wed May 15 19:01:55 CEST 2019
-***dev_lowpar_mat.sh***
-start: Wed May 15 19:01:55 CEST 2019
-end: Wed May 15 19:04:52 CEST 2019
-***host_mat_invert.sh***
-start: Wed May 15 19:04:52 CEST 2019
-end: Wed May 15 19:05:45 CEST 2019
