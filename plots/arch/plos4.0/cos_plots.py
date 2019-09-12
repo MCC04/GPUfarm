@@ -1,0 +1,281 @@
+#!/usr/bin/env python3
+# coding=utf-8
+
+#import glob
+import os
+import matplotlib.pyplot as plt
+import numpy as np
+import math
+import csv
+
+
+
+testNum=8
+singleResSize = testNum*5*5	
+
+def getDatas(str):
+	linesSeq = open(str, 'r')	
+	charsSeq = [line.rstrip('\n') for line in linesSeq]
+	
+	tokens=[]
+	lbls=[]
+	evTimes=[]
+	chronoTimes=[]
+	chunkSizes=[]
+	N=[]
+	M=[]
+	nStreams=[]
+	blocks=[]
+	grids=[]
+	
+	for line in charsSeq:
+		tokens= line.split(',',11)
+		lbls.append(tokens[0])
+		evTimes.append(float(tokens[1]))
+		chronoTimes.append(float(tokens[2]))	
+		chunkSizes.append(int(tokens[3]))
+		N.append(int(tokens[4]))
+		M.append(int(tokens[5]))
+		nStreams.append(int(tokens[6]))
+		blocks.append(int(tokens[9]))
+		grids.append(int(tokens[10]))		
+		
+		
+
+
+	#print("\nEvent times: ",evTimes)
+	#print("\nChrono times: ",chronoTimes)
+
+
+
+	return lbls, evTimes, chronoTimes, chunkSizes, N, M, nStreams, blocks, grids
+
+
+##########
+###MAIN###
+##########
+def main():
+	testNum=5
+	#paramNum=5
+	res_path = "../results/"+sys.argv[1]
+	for file in os.listdir(res_path):
+	    if file.endswith(".txt"):
+		print(os.path.join(res_path, file))		
+	
+		
+		if file[0:6]=="dev_sp":	
+
+			f=os.path.join("../results/", file)
+			lbls, evTimes, chronoTimes, chunkSizes, N, M, nStreams, blocks, grids = getDatas(f)
+		
+			csvPath="./output/"+file[0:-4]+"_avgs2.csv"
+	
+			print("Ev len: ",len(evTimes))
+			print("Chrono len: ",len(chronoTimes))		
+			print("Lbl len: ",len(lbls))						
+		
+			#evtmp=[evTimes[0]]
+			#chtmp=[chronoTimes[0]]
+			evtmp=[]
+			chtmp=[]
+			evAvgs=[]
+			chAvgs=[]
+
+			i=0
+			for i in range(len(evTimes)):
+				if i%testNum!=0 or i==0:
+					evtmp.append(evTimes[i])
+					chtmp.append(chronoTimes[i])		
+				else:
+					print("Ev TMP: ",evtmp)
+					print("Ch TMP: ",chtmp)
+					e, c = getChunkAvg(evtmp,chtmp)
+					evAvgs.append(e)
+					chAvgs.append(c)
+					evtmp=[]
+					chtmp=[]
+					evtmp.append(evTimes[i])
+					chtmp.append(chronoTimes[i])
+					
+			if len(evtmp)==8:
+				e, c = getChunkAvg(evtmp,chtmp)
+				evAvgs.append(e)
+				chAvgs.append(c)
+				
+			
+			lbls=lbls[0:len(lbls):testNum]
+			chunkSizes=chunkSizes[0:len(chunkSizes):testNum]
+			N=N[0:len(N):testNum]
+			M=M[0:len(M):testNum]
+			nStreams=nStreams[0:len(nStreams):testNum]
+			blocks=blocks[0:len(blocks):testNum]
+			grids=grids[0:len(grids):testNum]
+						
+						
+			print("Event Averages: ",evAvgs)
+			print("Chrono Averages: ",chAvgs)
+			
+			print("LEN Event Avg: ",len(evAvgs))
+			print("LEN Chrono Avg: ",len(chAvgs))
+			
+			print("LBLs: ",lbls)
+			
+			lbl=lbls[0]
+			with open(csvPath,  "wb") as fcsv:
+				writer = csv.writer(fcsv) 
+				writer.writerow([lbl])
+				writer.writerow(['EVENTS','CHRONO','CHUNK','N SIZE','M ITERS','N STREAMS','BLOCK','GRID'])
+				for i in range(len(evAvgs)):	
+				
+					if(lbl!=lbls[i]):
+						lbl=lbls[i]
+						writer.writerow([lbl])
+						writer.writerow(['EVENTS','CHRONO','CHUNK','N SIZE','M ITERS','N STREAMS','BLOCK','GRID'])
+					
+					writer.writerow([evAvgs[i],chAvgs[i],chunkSizes[i],N[i],M[i],nStreams[i],blocks[i],grids[i]])
+						
+					
+			
+				
+###############
+### GET AVG ###
+###############
+def getChunkAvg(evT,chT):		
+	#print("***evChunk \n", evT)
+	#print("***chChunk \n", chT)
+
+	#j=0
+	#for j in range(2):							
+	evT.remove(min(evT))
+	chT.remove(min(chT))
+	evT.remove(max(evT))
+	chT.remove(max(chT))
+
+
+	ch = sum(chT[:])/len(chT)
+	ev = sum(evT[:])/len(evT)
+	
+	return ev,ch
+
+			
+
+			
+			
+			
+			
+########################
+##### PLOTS ON COS #####
+########################
+def doPlots(evTimes, evLowTimes, speedUp, xRows, xCols, lbl):				
+	#for i in range(0,5):			
+	#	plotCompTimeGraph(evTimes[i,:], evLowTimes[:,i], xRows, lbl)
+	#	plotCompTimeGraph(evTimes[:,i], evLowTimes[i,:], xCols, lbl)
+
+	for i in range(0,5):			
+		plotSpeedup(speedUp[i,:], xRows, i,0, lbl)
+		plotSpeedup(speedUp[:,i], xCols, i,0, lbl)
+
+
+
+
+
+				
+plotId=0
+figId=0
+	
+def plotCompTimeGraph(y1, y2, x1, lblMeasures):
+
+	global plotId	
+	global figId		
+
+	#if gType=="mat":
+	#	x1=(4,16,32,64,128) #nMat
+	#	x2=(32,64,128,256,512) #dimMat			
+#		lblx1="N mat"
+#		lblx2="DIM mat"
+#	elif gType=="cos":
+#		x1=(10,50,250,1250,2500)
+#		x2=(3584,7168,14336,28672,57344)
+#		lblx1="M"
+#		lblx2="N"
+		
+#	if spUp==0:
+#		lbly="Comp Time (ms)" + lblMeasure
+#		fname= 'comp'
+#	elif spUp==1:
+#		lbly="Speed Up" + lblMeasure
+#		fname = 'spup'
+		
+	title=str(lblMeasures)
+	title=title.upper()
+	#if inv==1:
+	#	title+="-INVERTED"
+	#	fname+='_inv'
+
+	fig=plt.figure(figId)
+
+	ay = fig.add_subplot(111)
+	ay.plot(x1, y1, '-', label = lblx1, marker='o', linestyle='-', color='black', linewidth=1)
+
+	ay2 = ay.twiny()
+	ay2.plot(x1, y2, '-r', label = lblx2, marker='o', linestyle='-', color='black', linewidth=3)	
+	ay2.legend(loc="upper right")
+	ay.legend(loc="lower right")
+	ay.grid()
+	
+	ay.set_ylabel(lbly)
+	ay.set_xlabel(lblx1)	
+	ay2.set_xlabel(lblx2)
+
+	
+	ay2.set_xticks(np.linspace(ay2.get_xticks()[0], ay2.get_xticks()[-1], len(ay.get_xticks())))
+
+	plt.suptitle(title,  fontsize=16,horizontalalignment='left')
+	plt.tight_layout()
+	plt.show()	
+	
+	#img_name='./plt_img/'+ str(plotId)
+	#plt.savefig(img_name)
+	plotId+=1
+	
+	figId+=1
+	#plt.close(fig)
+	
+	
+def plotSpeedup(y1, x1, num, inv,lblMeasures):			
+
+	global plotId
+	global figId
+
+	lbly="Speed Up" + lblMeasures		
+	title=str(lbly)
+	title=title.upper()
+	
+	if inv==1:
+		title+="-INVERTED"
+
+	plt.figure(figId)
+
+	plt.plot(x1, y1, '-', label = 'Speedup', marker='o', linestyle='-', color='black', linewidth=1)
+	plt.plot(x1, x1, marker='.',label='Ideal speed up',color='black',linestyle='--')
+	
+	#plt.xlabel(lblx1)
+	plt.ylabel(lbly)		
+	plt.legend(loc="upper right")
+
+	#plt.suptitle(title,  fontsize=16, horizontalalignment='left')
+	#plt.tight_layout()	
+
+	#img_name='./plt_img/spup'+str(plotId)
+	#plt.savefig(img_name)
+	plt.show()
+	plotId+=1
+	figId+=1
+	#plt.close()
+	
+	
+	
+if __name__ == "__main__":
+	main()
+
+

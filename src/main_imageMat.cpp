@@ -43,21 +43,8 @@ void launchConfig(int m, int n){
         GRIDx = 1;
         GRIDy = 1;
     #else
-        /* int sizeX,sizeY;
-        if (m%BLOCK == 0) sizeX = m;
-        else sizeX = m+BLOCK-1;
-
-        if (n%BLOCK == 0) sizeY = n;
-        else sizeY = n+BLOCK-1;*/
-
-        //unsigned int grid_rows = (m + BLOCK - 1) / BLOCK;
-        //unsigned int grid_cols = (n + BLOCK - 1) / BLOCK;
-        //dim3 dimGrid(grid_cols, grid_rows);
         GRIDx = (m + BLOCK - 1) / BLOCK;
         GRIDy = (n + BLOCK - 1) / BLOCK;
-
-       // GRIDx = (sizeX)/BLOCK;
-       // GRIDy = (sizeY)/BLOCK;
     #endif
 }
 
@@ -109,8 +96,8 @@ void printResults(float ms){
 }
 
 
-void printTotalTimes(float eventsTime, float hostTime){ //è uguale a quello di cos, c'è il modo di metterlo da qualche parte e poi richiamarlo n volte?
-    int rb_wb = bytesSize*2 + GRIDx*sizeof(float); //?????
+void printTotalTimes(float eventsTime, float hostTime){ 
+        int rb_wb = bytesSize*2 + GRIDx*sizeof(float); 
     std::cout<<std::endl<<"----Total Device Events measures: "<< eventsTime<<"ms"<<std::endl;
     std::cout<<std::endl<<"----Total Host measures: "<< hostTime <<"ms"<<std::endl;
     std::cout<<std::endl<<"----Effective Bandwidth: "<< (rb_wb/eventsTime/1e6)<<"GB/s"<<std::endl;     
@@ -128,22 +115,22 @@ void printMatrix(float *Cmat,int m, int n){
     }      
 }
 
-void printMeasures(bool square, std::string label, float msTot, float chr, int matN, int devId){
+void printMeasures(bool square, std::string label, float msTot, float chr, int matN, int nStreams, int devId){
     //posso usare prop per prendere il devID???
     if(square)
         std::cout<< label <<","<< msTot <<","<< chr <<","             //outputs
-                << 1 <<","<< N <<","<< matN <<","        //input
+                << 1 <<","<< N <<","<< matN <<"," << nStreams <<","   //input
                 << devId <<","<< BLOCK <<","<< GRIDx <<std::endl;     //gpu infos
     else
-        std::cout<< label <<","<< msTot <<","<< chr <<","                           //outputs
-                << 0 <<","<< M <<","<< K <<","<< N <<","<< matN <<"," //input
-                << devId <<","<< BLOCK <<","<< GRIDx <<","<< GRIDy <<std::endl;     //gpu infos     
+        std::cout<< label <<","<< msTot <<","<< chr <<","                               //outputs
+                << 0 <<","<< M <<","<< K <<","<< N <<","<< matN <<","<< nStreams <<","  //input
+                << devId <<","<< BLOCK <<","<< GRIDx <<","<< GRIDy <<std::endl;         //gpu infos     
 }
 
-void printImgMeasures(std::string label, float msTot, float chr, int imageN, int devId){
+void printImgMeasures(std::string label, float msTot, float chr, int imgSize, int imageN, int nStreams, int devId){
     std::cout<< label <<","<< msTot <<","<< chr <<","               //outputs
-            << imageN <<","    //input
-            << devId <<","<< BLOCK <<std::endl;                     //gpu infos     
+            << imgSize <<","<< imageN <<"," << nStreams <<","       //input
+            << devId <<","<< BLOCK <<","<< GRIDx <<std::endl;       //gpu infos     
 }
 
 
@@ -164,17 +151,13 @@ void hostMatMul(float *A, float *B, float *C, int M, int K, int N){
 
 void checkMatEquality(float *A, float *B, int M, int N){    
     bool equal=true;  
-    //std::cout<<"------CORRECTNESS CHECK------"<<std::endl;
     for(int i=0; i<M; ++i) {
         for(int j=0; j<N; ++j) {
-            //std::cout<<getMatrixVal( A,i,j,N )<<","<<getMatrixVal( B,i,j,N )<<" | ";
             if (getMatrixVal( A,i,j,N ) != getMatrixVal( B,i,j,N )){
                 equal=false;
                 break;
-            }  
-                        
+            }                          
         } 
-        // std::cout<<std::endl; 
         if(!equal)
            break;
     }
@@ -217,7 +200,6 @@ inline std::vector<unsigned char> rebuildAlphaChannel(unsigned char*outImg, unsi
 }
 
 std::string getOutFullFileName(std::string out_path, std::string out_name, int k){
-    //std::string s(out_path);
     size_t pos = out_name.find(".");
     std::string name = out_name.substr(0,pos);
     std::string ext = out_name.substr(pos,out_name.length()-1);
@@ -284,9 +266,6 @@ int main(int argc, char **argv){
         K = atoi(argv[9]);
         N = atoi(argv[10]);
     }
-    //#ifndef MEASURES
-      //  printInfos(square); 
-    //#endif
      
     float *A, *B, *C;
     float *Ad, *Bd, *Cd;
@@ -297,6 +276,7 @@ int main(int argc, char **argv){
     start=std::chrono::system_clock::now();
     if (!cuStr) //NO CUDA STREAMS
     {        
+        nStreams=0;
         // Device mem alloc     
         gpuErrchk( cudaMalloc((void **)&Ad, bytesA) );
         gpuErrchk( cudaMalloc((void **)&Bd, bytesB) );
@@ -324,16 +304,7 @@ int main(int argc, char **argv){
                 int idx = i*size;
                 // Kernel caller
                 squareMatMul(A+idx, B+idx, C+idx, Ad, Bd, Cd, N, shared);         
-            }
-            /*}
-            else{
-                label += "SQUARE";
-                for (int i = 0; i < matN; ++i) { 
-                    int idx = i*size;
-                    // Kernel caller
-                    squareMatMul(A+idx, B+idx, C+idx, Ad, Bd, Cd, N);         
-                }
-            }     */       
+            }   
         }
         else{ 
             launchConfig(M,N);
@@ -388,24 +359,9 @@ int main(int argc, char **argv){
                     int idx = i*size;
                     int streamOffs = j*size;
                     // Kernel caller
-                    if(j==0 && i>0)
-                        cudaDeviceSynchronize();  
-                        //cudaStreamSynchronize(stream[j]);  
                     streamSquareMatMul(A+idx, B+idx, C+idx, Ad+streamOffs, Bd+streamOffs, Cd+streamOffs, 
                                     N, stream[j], shared);      
                 }
-           /* }
-            else{
-                label += "SQUARE";
-                for (int i = 0; i < matN; ++i) { 
-                    int j = i%nStreams;            
-                    int idx = i*size;
-                    int streamOffs = j*size;
-                    // Kernel caller
-                    streamSquareMatMul(A+idx, B+idx, C+idx, Ad+streamOffs, Bd+streamOffs, Cd+streamOffs, 
-                                    N, stream[j]);      
-                }
-            }  */    
         }
         else{
             launchConfig(M,N);
@@ -419,8 +375,6 @@ int main(int argc, char **argv){
                 int strOffsB = j*sizeB;
                 int strOffsC = j*sizeC;
                 // Kernel caller
-                if(j==0 && i>0)
-                    cudaStreamSynchronize(stream[j]); 
                 streamMatMul(A+(i*sizeA), B+(i*sizeB), C+(i*sizeC), Ad+strOffsA, Bd+strOffsB, Cd+strOffsC,
                                 M, K, N, stream[j]);
             }
@@ -434,7 +388,7 @@ int main(int argc, char **argv){
     millis = end - start;    
     // Print results
     #ifdef MEASURES          
-        printMeasures(square, label, msTot, millis.count(), matN, devId);
+        printMeasures(square, label, msTot, millis.count(), matN, nStreams, devId);
     #else
         printInfos(square);
 
@@ -479,22 +433,10 @@ int main(int argc, char **argv){
 
     std::string input_path = "/home/cecconi/GPUfarm/images/in/";
     std::string output_path = "/home/cecconi/GPUfarm/images/out/";
-    if (width==128 || width==256 || width==4096 || width==8192) {
+    if (width==128 || width==256 || width==512 || width==1024 || width==2048 || width==4096 || width==8192) {
         input_path += std::to_string(width)+"/";
         output_path += std::to_string(width)+"/";
     }
-   /* else if (width==256) {
-        input_path += "256/";
-        output_path += "256/";
-    }
-    else if (width==4096) {
-        input_path += "4096/";
-        output_path += "4096/";
-    }
-    else if (width==8192) {
-        input_path += "8192/";
-        output_path += "8192/";
-    }*/
     else{
         std::cerr<<"No available images in specified format."<<std::endl;
         return 1;
@@ -503,14 +445,8 @@ int main(int argc, char **argv){
     std::vector<unsigned char> in;
     std::vector<unsigned char> out;
     
-    //const char* input_path = "/home/cecconi/GPUfarm/images/in/";
-    //const char* output_path = "/home/cecconi/GPUfarm/images/out/";
-
     #ifndef MEASURES
         printInfos();
-        //std::cout<<"Device : "<< prop.name <<std::endl;
-        //std::cout<<"multiproc num : "<< prop.multiProcessorCount <<std::endl;
-        //std::cout<<"warp size : "<< prop.warpSize <<std::endl;
     #endif
 
     unsigned int imgBytes = width*height*3;
@@ -523,9 +459,7 @@ int main(int argc, char **argv){
     if (!cuStr) // NO CUDA STREAMS
     {
         gpuErrchk( cudaMalloc((void **)&input_d, imgBytes) );
-        gpuErrchk( cudaMalloc((void **)&output_d, imgBytes) );
-
-        
+        gpuErrchk( cudaMalloc((void **)&output_d, imgBytes) );        
 
         createAndStartEvent(&startEvent, &stopEvent); 
 
@@ -541,8 +475,6 @@ int main(int argc, char **argv){
                 #endif
 
                 const char * input_file = entry.path().c_str();
-                //std::vector<unsigned char> in;
-
                 //load the data
                 unsigned error = lodepng::decode(in, width, height, input_file);
                 if(error) 
@@ -556,16 +488,8 @@ int main(int argc, char **argv){
                 blurBoxFilter( input_h, output_h, input_d, output_d, width, height);
 
                 //output the data
-                //std::vector<unsigned char> out=rebuildAlphaChannel(output_image, alphaChannel,  imgBytes);
                 out = rebuildAlphaChannel(output_h, alphaChannel,  imgBytes);
-                /*std::string s(output_path);
-                std::string name = fname.substr(0, s.find("."));
-                std::string ext = fname.substr(1, s.find("."));
-                //s.append(fname.c_str());
-                s.append(name.c_str());
-                s.append(std::to_string(k));
-                s.append(ext.c_str());
-                const char * out_fname=s.c_str();*/
+
                 std::string s = getOutFullFileName(output_path, fname, k);
                 const char *out_fname = s.c_str();
                 error = lodepng::encode(out_fname, out, width, height);
@@ -573,6 +497,8 @@ int main(int argc, char **argv){
                     std::cout<<"encoder error "<< error <<": "<< lodepng_error_text(error) <<std::endl;
 
                 ++k;
+                if(k>=nImages)
+                    break;
                 #ifndef MEASURES
                     printImageInfos(width, height);
                 #endif
@@ -588,12 +514,11 @@ int main(int argc, char **argv){
         millis = end - start;
 
         #ifdef MEASURES          
-            printImgMeasures(label, msTot, millis.count(), k, devId);     
+            printImgMeasures(label, msTot, millis.count(), width, k, 0, devId);     
         #endif  
         
     }
     else{ // CUDA STREAMS
-        //nStreams = prop.multiProcessorCount;
         if (strNum>1)
             nStreams = strNum;
         else
@@ -619,12 +544,10 @@ int main(int argc, char **argv){
                     std::cout<<std::endl<<"----------"<<std::endl<<fname.c_str()<<std::endl;
                 #endif
                 
-                int j = k%nStreams;
-                
+                int j = k%nStreams;                
                 int strOffs = j*imgBytes;
 
                 const char *input_file = entry.path().c_str();
-                //std::vector<unsigned char> in;
 
                 //load the data
                 unsigned error = lodepng::decode(in, width, height, input_file);
@@ -636,24 +559,10 @@ int main(int argc, char **argv){
                 divideAlphaChannel(input_h+k*imgBytes, alphaChannel, in);
 
                 // Kernel launcher
-                if(j==0 && k>0)
-                    cudaDeviceSynchronize();
-                    //cudaStreamSynchronize(stream[j]); 
                 streamBlurBoxFilter( input_h+k*imgBytes, output_h+k*imgBytes, input_d+strOffs, output_d+strOffs, width, height, stream[j] );
 
                 //output the data
                 out = rebuildAlphaChannel(output_h+k*imgBytes, alphaChannel,  imgBytes);
-                /*std::string s(output_path);
-
-                std::string name = fname.substr(0, );
-                std::string ext = fname.substr(1, s.find("."));
-                //s.append(fname.c_str());
-                s.append(name.c_str());
-                s.append(std::to_string(k));
-                s.append(ext.c_str());
-                //s.append(fname.c_str());
-                //s.append(std::to_string(k));
-                const char * out_fname=s.c_str();*/
 
                 std::string s = getOutFullFileName(output_path, fname, k).c_str();
                 const char *out_fname = s.c_str();
@@ -664,6 +573,8 @@ int main(int argc, char **argv){
                     std::cout<<"encoder error "<< error <<": "<< lodepng_error_text(error) <<std::endl;
 
                 ++k;
+                if(k>=nImages)
+                    break;
                 #ifndef MEASURES
                     printImageInfos(width, height);
                 #endif
@@ -672,126 +583,20 @@ int main(int argc, char **argv){
                 delete[] alphaChannel;
             }              
         }
-
         msTot = endEvent(&startEvent, &stopEvent);
         end = std::chrono::system_clock::now();
         millis = end - start;
 
         #ifdef MEASURES          
-            printImgMeasures(label, msTot, millis.count(), k, devId);     
+            printImgMeasures(label, msTot, millis.count(), width, k, nStreams, devId);     
         #endif  
         streamDestroy(stream,nStreams);
         cudaFreeHost(input_h);
-        cudaFreeHost(output_h);
-        
+        cudaFreeHost(output_h);        
     }
-
     cudaFree(input_d);
     cudaFree(output_d);
-
-
-
-
 #endif
-
-
-
-
-/*** BLURGAUSS ***/
-/*#elif BLURGAUSS
-    label += "BLURGAUSS";
-    unsigned int width, height;
-    const char* input_path = "/home/cecconi/GPUfarm/images/in/";
-    const char* output_path = "/home/cecconi/GPUfarm/images/out/";
-    const int kerDim = 5;
-    const float sigma = 4.0;
-
-    #ifndef MEASURES
-        std::cout<<"Device : "<< prop.name <<std::endl;
-        std::cout<<"multiproc num : "<< prop.multiProcessorCount <<std::endl;
-        std::cout<<"warp size : "<< prop.warpSize <<std::endl;
-    #endif
-
-    start=std::chrono::system_clock::now();
-    createAndStartEvent(&startEvent, &stopEvent);  
-
-    //Gaussian filter mat
-    int kerBytes = kerDim*kerDim*sizeof(float);
-    float *ker, *ker_d;
-    gpuErrchk(cudaMallocHost(&ker, kerBytes));
-    gpuErrchk(cudaMalloc(&ker_d, kerBytes));
-
-    getGaussian(ker, kerDim, sigma); 
-    gpuErrchk( cudaMemcpy(ker_d, ker, kerBytes, cudaMemcpyHostToDevice) );    
-
-
-    int k=0;
-    for (const auto &entry : std::experimental::filesystem::directory_iterator(input_path))
-    {
-        int j = k%nStream;
-        std::string fname = entry.path().string().substr(entry.path().string().find_last_of('/') + 1);
-        #ifndef MEASURES
-            std::cout<<std::endl<<"----------"<<std::endl<<fname.c_str()<<std::endl;
-        #endif
-
-        const char * input_file=entry.path().c_str();
-        std::vector<unsigned char> in;
-    
-        //load data
-        unsigned error = lodepng::decode(in, width, height, input_file);
-        if(error) std::cout << "decoder error " << error << ": " << lodepng_error_text(error) << std::endl;
-
-        int imgBytes = width*height*3;
-        unsigned char *input_image, *output_image;
-        gpuErrchk( cudaMallocHost((void **)&input_image, imgBytes) );
-        gpuErrchk( cudaMallocHost((void **)&output_image, imgBytes) );
-        unsigned char *input_d, *output_d;
-        gpuErrchk( cudaMalloc((void **)&input_d, imgBytes) );
-        gpuErrchk( cudaMalloc((void **)&output_d, imgBytes) );
-
-        unsigned char* alphaChannel = new unsigned char[in.size()/4];
-        divideAlphaChannel(input_image, alphaChannel, in);
-        std::cout<<std::endl<< in.size()<<std::endl;
-
-        blurGaussianfilter (input_image, output_image, input_d, output_d, ker_d, width, height, imgBytes,
-                            kerDim, stream[j]);
-
-        std::vector<unsigned char> out = rebuildAlphaChannel(output_image, alphaChannel, imgBytes);
-        std::cout<<std::endl<< out.size()<<std::endl;
-
-        // Output the data
-        std::string s(output_path);
-        s.append(fname.c_str());
-        const char * out_fname=s.c_str();
-
-        error = lodepng::encode(out_fname, out, width, height);
-        if(error) std::cout << "encoder error " << error << ": "<< lodepng_error_text(error) << std::endl;
-
-        ++k;
-
-        #ifndef MEASURES
-            printImageInfos( width, height);
-        #endif
-
-        cudaFreeHost(input_image);
-        cudaFreeHost(output_image);
-        cudaFree(input_d);
-        cudaFree(output_d);
-
-    }
-    msTot = endEvent(&startEvent, &stopEvent);
-    end = std::chrono::system_clock::now();
-    millis = end - start;
-
-    #ifdef MEASURES          
-        printMeasures(square, label, msTot, millis.count(), matN, devId);  
-    #endif    
-   
-    //free Host and Device space
-    cudaFree(ker_d);
-    cudaFreeHost(ker);
-#endif*/
-
     
     #ifndef MEASURES 
         printTotalTimes(msTot,  millis.count() );

@@ -3,8 +3,6 @@
 #include <iterator>
 #include <cudaUtils.h>
 
-//extern int M_iter;
-//extern int N_size;
 extern unsigned int BLOCK;
 extern unsigned int GRID;
 

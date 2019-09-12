@@ -9,7 +9,7 @@ rm -f ./profiling/dev_datapar*.txt
 BLUE='\033[1;34m'
 NC='\033[0m'
 
-let GPU=0
+let GPU=3
 let B=1024
 #let SM=56
 
@@ -18,9 +18,10 @@ let nTests=4
 #################
 ###### COS ######
 #################
-Miters=(10000 500000 1000000)
+Miters=(10000 400000 800000)
 #nStreams=(0 3 56)
-Ns=(114688 1835008 7340032) # 14680064 29360128)
+#Ns=(114688 1835008 7340032) # 14680064 29360128)
+Ns=(57344 114688 229376 458752 917504 1835008)
 
 ##### DATA PAR #####
 #parameters: deviceID, BLOCK, N_elements, M_iterations, cuStr[bool], strNum

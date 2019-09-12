@@ -9,19 +9,21 @@ rm -f ./profiling/dev_mat_dp*.txt
 BLUE='\033[1;34m'
 NC='\033[0m'
 
-let GPU=0
+let GPU=3
 let B=32
 #let SM=56
 
-let nTests=6
+let nTests=4
 
 #################
 ###### MAT ######
 #################
-matSize=(128 512 1024)
+matSize=(128 256 512 1024 2048)
 #nStreams=(0 3 56)
-nMats=(256 1024 4096) # 14680064 29360128)
-dpSize=(2048 4096 8192 16384)
+#nMats=(256 1024 4096) # 14680064 29360128)
+#dpSize=(2048 4096 8192 16384)
+nMats=(225 441 900 1764) # 14680064 29360128)
+dpSize=(1920 2816 3840 5632 7680 11264)
 
 ##### MAT DATA PAR #####
 #parameters: deviceID, BLOCK, cuStr[bool], strNum, square[bool], shared[bool], numMats, M [, K, N]

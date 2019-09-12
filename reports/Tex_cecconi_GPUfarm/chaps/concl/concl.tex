@@ -1,5 +1,13 @@
 \chapter{Conclusions} \label{chap:conclusions}
+The main goal of this thesis was to experiment if a Farm parallel pattern could fit in GPU architecture and, if this was the case, how.\\
+Even though a Streaming parallel pattern may seem so far from the concept of normal GPU use, we founded our attempt on the increasing and pervasive concept od General-Purpose computing.
+Nowadays it's a common practice to use the high parallelism and huge computational power of GPUs as co-processors, even if it isn't strictly for graphical problems.\\
+Also research moved, in last years, the focus on problems that generally are assigned CPUs. Clearly, in General Purpose (GP) it's easy to spot applications that are clearly embarrassingly parallel; we recall that GPUs are mostly well suited in data parallel approaches.\\
+However, there are many others problems that are really far from data parallel. Again, GP-GPUs demonstrate a fair behavior (with some adjustments) in some of those cases too.\\
+So it makes perfectly sense to inspect for new non-data parallel applications to fit in GPU model, to exploit its good computation potential.
 
-%\pagenumbering{arabic}
-Conclusions
+The starting point of this study was to consider and understand some main features and the functioning of a graphic processor, in particular taking into account of the organization about parallelism, threads, cores, internal memory and so on. We showed main GPU and NVIDIA CUDA characteristics, briefly introducing them in \hyperref[chap:into]{Chapter 1} and deepening on more specific concepts in \hyperref[chap:tools]{Chapter 2} and \hyperref[chap:logic]{Chapter 3}. In the latter we also showed how some best practices and consideration were exploited to evaluate, implement and then test our model. \\
+
+
+
 

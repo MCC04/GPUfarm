@@ -9,19 +9,19 @@ rm -f ./profiling/dev_blur_dp*.txt
 BLUE='\033[1;34m'
 NC='\033[0m'
 
-let GPU=0
-let B=32
+let GPU=2
+let B=1024
 #let SM=56
 
-let nTests=6
+let nTests=4
 
 #################
 ###### IMG ######
 #################
-imgSize=(128 256)
+imgSize=(128 256 512)
 #nStreams=(0 3 56)
-nImgs=(256 1024) # 14680064 29360128)
-dpSize=(4096 8192)
+nImgs=(64 256 1024) # 14680064 29360128)
+dpSize=(1024 2048 4096 8192)
 
 ##### IMG DATA PAR #####
 #parameters: deviceID, BLOCK, cuStr[bool], strNum, width, height, numImages

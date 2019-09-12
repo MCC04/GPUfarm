@@ -7,7 +7,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{listings}
-
+\usepackage{multirow}
 \usepackage{wrapfig}
 
 \newcommand\tab[1][1cm]{\hspace*{#1}}
@@ -16,7 +16,7 @@
 %\usepackage{helvet}
 %\usepackage[a4paper,width=180mm,top=20mm,bottom=20mm,bindingoffset=6mm]{geometry}
 \usepackage[framemethod=default]{mdframed}
-\usepackage{lipsum,titlesec,fancyhdr,array,multicol,float,graphicx,wrapfig,subcaption}
+\usepackage{lipsum,titlesec,fancyhdr,array,multicol,float,graphicx,wrapfig}
 %\usepackage{fontspec,todonotes,enumitem,comment,capt-of,amsmath,booktabs,dirtree,minted,tikz,xcolor}
 \usepackage[colorlinks]{hyperref}
 %\usepackage[font=scriptsize]{caption}
@@ -26,6 +26,7 @@
 \usepackage[toc,page]{appendix}
 \usepackage[left=3cm, right=3cm, top=3cm]{geometry}
 \usepackage{graphicx}
+\usepackage{subfig}
 \usepackage{makecell}
 
 \usepackage{float}
@@ -102,15 +103,15 @@
 		%\bibitem{latexcompanion} 
 		\bibitem{pattersonhennessy}
 		D.A. Patterson, J.L. Hennessy, 
-		\textit{Computer Organization and Design: The Hardware and Software Interface}, V Edition. Appendix C by J. Nickolls, D.Kirk.
+		\textit{Computer Organization and Design: The Hardware and Software Interface}, V Edition, 2014
 	
 		\bibitem{fromCUtoOCL}
 		Peng Du, Rick Weber, Piotr Luszczek, Stanimire Tomov, Gregory Peterson, Jack Dongarr, 
-		\textit{From CUDA to OpenCL: Towards a Performance-portable Solution for Multi-platformGPU Programming}
+		\textit{From CUDA to OpenCL: Towards a Performance-portable Solution for Multi-platform GPU Programming}, 2012
 		
 		\bibitem{backtrack}
 		John Jenkins, Isha Arkatkar, John D. Owens, Alok Choudhary, Nagiza F. Samatova, 
-		\textit{Lessons Learned from Exploring the Backtracking Paradigm on the GPU}
+		\textit{Lessons Learned from Exploring the Backtracking Paradigm on the GPU}, 2011
 		
 		
 		\bibitem{spm}
@@ -118,28 +119,31 @@
 		\textit{Distributed Systems: Paradigms and Models}, 2014
 		
 		\bibitem{cudaguide}
-		CUDA Toolkit Documentation, 		
-		\textit{CUDA C PROGRAMMING GUIDE}, 2018
+		NVIDIA, \textit{CUDA C Programming Guide}, CUDA Toolkit Documentation, from https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html, 2019
 		
 		\bibitem{profilersguide}
-		CUDA Toolkit Documentation, 
-		\textit{https://docs.nvidia.com/cuda/profiler-users-guide/index.html}
+		NVIDIA, \textit{NVIDIA Profilers Guide}, CUDA Toolkit Documentation, from
+		https://docs.nvidia.com/cuda/profiler-users-guide/index.html , 2019 
 		
 		\bibitem{nvprofarticle}
 		Mark Harris, 
-		\textit{CUDA Pro Tip: nvprof is Your Handy Universal GPU Profiler}, https://devblogs.nvidia.com/cuda-pro-tip-nvprof-your-handy-universal-gpu-profiler/
+		\textit{CUDA Pro Tip: nvprof is Your Handy Universal GPU Profiler}, NVIDIA Developer Blog, article from https://devblogs.nvidia.com/cuda-pro-tip-nvprof-your-handy-universal-gpu-profiler/, 2013
 		
 		\bibitem{loweroccupancy}
 		Vasily Volkov,
-		\textit{Better Performance at Lower Occupancy}, September 2010
+		\textit{Better Performance at Lower Occupancy}, 2010
 		
 		\bibitem{devblogevents}
-		Mark Harris, \textit{How to Implement Performance Metrics in CUDA C/C++}, article from CUDA Dev Blogs: https://devblogs.nvidia.com/how-implement-performance-metrics-cuda-cc/ , 2012 
+		Mark Harris, \textit{How to Implement Performance Metrics in CUDA C/C++}, NVIDIA Developer Blogs, article from https://devblogs.nvidia.com/how-implement-performance-metrics-cuda-cc/ , 2012 
 		
 		\bibitem{libevents}
-		AUTH, \textit{NVIDIA Library Documentation- Event Management}, from site: http://horacio9573.no-ip.org/cuda/group\_\_CUDART\_\_EVENT\_g14c387cc57ce2e328f6669854e6020a5.html, YEAR
+		NVIDIA, \textit{NVIDIA Library Documentation- Event Management}, from site: http://horacio9573.no-ip.org/cuda/group\_\_CUDART\_\_EVENT\_g14c387cc57ce2e328f6669854e6020a5.html, YEAR
 		
-	
+		\bibitem{structparprog}
+		M. McCool, A.D. Robinson, J. Reinders, \textit{Structured Parallel Programming: Patterns for Efficient Computation}, 2012
+		
+		\bibitem{cudabestpractices}
+		NVIDIA, \textit{CUDA C Best Practices Guide}, https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html, 2019
 	\end{thebibliography}
    % \begin{appendices}
     %    \input{chaps/appendix/appendix}

@@ -11,14 +11,13 @@
 #define LOW -500.0f
 
 cudaDeviceProp prop;
-int BLOCK = 0;
-int GRID = 0;
+unsigned int BLOCK = 0;
+unsigned int GRID = 0;
 
-//int K_exec = 0;
-int M_iter = 0;
-int N_size = 0;
+unsigned int M_iter = 0;
+unsigned int N_size = 0;
 
-int bytesSize;
+unsigned int bytesSize;
 
 void printInfos(){
     #ifndef MEASURES
@@ -34,40 +33,11 @@ void printInfos(){
 
 
 void printTotalTimes(float eventsTime, float hostTime ){
-    int rb_wb = bytesSize*2 + GRID*sizeof(float); //?????
+    int rb_wb = bytesSize*2 + GRID*sizeof(float); 
     std::cout<<std::endl<<"----Total Device Events measures: "<< eventsTime<<"ms"<<std::endl;
     std::cout<<std::endl<<"----Total Host measures: "<< hostTime <<"ms"<<std::endl;
     std::cout<<std::endl<<"----Effective Bandwidth: "<< (rb_wb/eventsTime/1e6)<<"GB/s"<<std::endl;     
 }
-
-
-/* inline void printClocks(int *clocks, int size){    
-    std::cout<< std::endl<<"Clocks measures"<< std::endl;
-
-    std::cout <<"-------------------------"<< std::endl;
-    if (size>2){
-        int max = clocks[0],min = clocks[0];
-        int clockSum = 0;
-        for(int j = 0; j<size; ++j) {
-            std::cout << clocks[j] << ", ";
-            clockSum += clocks[j];
-            if(clocks[j]<min) min = clocks[j];
-            if(clocks[j]>max) max = clocks[j];
-        }
-        int clockAvg = clockSum/size;
-        std::cout <<std::endl<< "Avg clk \t min clk \t max clk "<< std::endl;   
-        std::cout << clockAvg <<" \t "<< min <<" \t "<< max;
-    }
-    else if(size>=1){
-        for(int j = 0; j<size; ++j) 
-            std::cout << clocks[j] << ", ";
-    }
-    else{
-        std::cout <<std::endl<< "No clocks were sampled."<< std::endl;   
-    }
-    std::cout<<std::endl<<"-------------------------"<< std::endl;
-}
-*/
 
 inline void printCos(float *cosx, int size){    
     std::cout<<"COSX array : " <<std::endl;  
@@ -242,7 +212,6 @@ int main(int argc, char **argv){
         nStreams = strNum;
     else
         nStreams = prop.multiProcessorCount;
-    //const int nStreams = prop.multiProcessorCount;
     label += "FUTURE";    
     std::vector<std::future<float *>> futures;
     std::vector<float *> getDatas;  

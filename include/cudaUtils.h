@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <assert.h> 
 
-extern cudaDeviceProp prop; //queste robbe qua mi sa che è meglio levarle
-
+extern cudaDeviceProp prop; 
 
 //CUDA API error checking
 #define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }

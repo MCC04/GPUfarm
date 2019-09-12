@@ -44,10 +44,17 @@
 \contentsline {chapter}{\numberline {5}Experiments}{55}{chapter.5}
 \contentsline {section}{\numberline {5.1}Expectations}{55}{section.5.1}
 \contentsline {subsection}{\numberline {5.1.1}Measures: What and How}{56}{subsection.5.1.1}
-\contentsline {section}{\numberline {5.2}Tests setup}{61}{section.5.2}
-\contentsline {subsection}{\numberline {5.2.1}Simple-computation kernel}{62}{subsection.5.2.1}
-\contentsline {subsection}{\numberline {5.2.2}Matrix Multiplication}{65}{subsection.5.2.2}
-\contentsline {subsection}{\numberline {5.2.3}Image processing}{68}{subsection.5.2.3}
-\contentsline {section}{\numberline {5.3}Results}{69}{section.5.3}
-\contentsline {section}{\numberline {5.4}Plots}{69}{section.5.4}
-\contentsline {chapter}{\numberline {6}Conclusions}{70}{chapter.6}
+\contentsline {subsection}{\numberline {5.1.2}Tests setup}{61}{subsection.5.1.2}
+\contentsline {subsection}{\numberline {5.1.3}Speedup}{62}{subsection.5.1.3}
+\contentsline {subsection}{\numberline {5.1.4}Results gathering and modeling}{67}{subsection.5.1.4}
+\contentsline {section}{\numberline {5.2}Simple-computation kernel}{68}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Results}{72}{subsection.5.2.1}
+\contentsline {section}{\numberline {5.3}Matrix Multiplication}{78}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Results}{81}{subsection.5.3.1}
+\contentsline {section}{\numberline {5.4}Image processing}{91}{section.5.4}
+\contentsline {section}{\numberline {5.5}Results Summary}{92}{section.5.5}
+\contentsline {subsection}{\numberline {5.5.1}Simple-computation kernel}{92}{subsection.5.5.1}
+\contentsline {subsection}{\numberline {5.5.2}Matrix Multiplication}{93}{subsection.5.5.2}
+\contentsline {subsection}{\numberline {5.5.3}Image Processing}{93}{subsection.5.5.3}
+\contentsline {section}{\numberline {5.6}Plots}{93}{section.5.6}
+\contentsline {chapter}{\numberline {6}Conclusions}{94}{chapter.6}
