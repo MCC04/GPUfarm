@@ -3,3 +3,7 @@
 
 #Ignore folder '/images'
 /images
+
+#Ignore folder '/log'
+/log
+
