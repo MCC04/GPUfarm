@@ -15,7 +15,7 @@ Each kernel clearly is designed such that each thread executes a different eleme
 \subsection{Repeated cosine}
 	This is a very simple kernel, in which given as inputs an array of floating point and a number \textit{M}, it computes, for each input float, the cosine applied \textit{M} times. The output will be again a floats array (given by cosines).\\
 	Note that, since here we're working on one-dimensional data structures, we'll use one-dimensional thread blocks for convenience.
-	\begin{lstlisting}[language=C++]
+	\begin{lstlisting}[language=C++, caption={Implementation for Simple-Computation Kernel}]
 	__global__ void cosKernel(int M, int N, float *x_d){  		  
 		int idx = offset+blockIdx.x*blockDim.x + threadIdx.x; 		
 		if(idx<N){		
@@ -33,7 +33,7 @@ Each kernel clearly is designed such that each thread executes a different eleme
 	Here's the most classical version of matrix multiplication in CUDA.
     An important difference from the application above is that now we're working with matrices, both in input and output. So, for convenience, we'll use two-dimensional thread blocks.\\  
 	Each couple of threads perform the computation of a single element in result matrix. For example, assume we have \texttt{thread[ROW]} and \texttt{thread[COL]}, then they will perform\\ \texttt{sum += A[ROW, i] * B[i, COL];},\\ where \texttt{i = 0, ..., N} and \texttt{sum} will be \texttt{C[ROW, COL]}, ie one of the items result matrix.
-	\begin{lstlisting}
+	\begin{lstlisting}[caption={Implementation for Matrix Multiplication Kernel, both non-square and square}]
 	/**** MATMUL ****/
 	__global__ void matMulKernel(float* A, float* B, float* C, int m, int k, int n) {   
 		int ROW = blockIdx.x*blockDim.x+threadIdx.x;
@@ -79,7 +79,7 @@ Each kernel clearly is designed such that each thread executes a different eleme
 	For each pixel, in the input image, we take the average of each of the pixels in neighborhood (inside the limits of filter size) and writes it to the output image. This filter is known as a Box blur \footnote{Another blur filter is the \textit{Gaussian blur}, generally preferred as to be more accurate. In fact Box blurs are frequently used to approximate a Gaussian blur. By the central limit theorem, repeated application of a box blur will approximate a Gaussian blur.}.
 	
 %	Notice that we check if our offset is actually within the range of \texttt{width*height}, because it can happen that it will be outside due to the blocks CUDA will run, so remember to keep that. Also we need to remember to check whether or not the pixel we read are actually in our image when doing the box blur as well. You can try to remove them one at a time and see what happens.
-	\begin{lstlisting}
+	\begin{lstlisting}[caption={Implementation for Image processing Kernel (Blur Box Algorithm)}]
 	/**** BLURBOX ****/
 	__global__ void blurBoxFilterKer(unsigned char* input_image, unsigned char* output_image, int width, int height) {
 	
@@ -132,15 +132,15 @@ This is what really determines a behavior associated to either a Stream Parallel
 		\end{itemize}
 	
 	\end{itemize}
-		\begin{lstlisting}		
-		#ifdef LOWPAR
-			GRID = 1;
-			chunkSize = BLOCK*GRID;		
-		#else
-			GRID = maxThreads/BLOCK;  
-			chunkSize = BLOCK*GRID;		
-		#endif		
-		\end{lstlisting}
+	\begin{lstlisting}	[caption={Kernel Launch configuration, ie Grid and Block dimensions setting}]	
+	#ifdef LOWPAR
+		GRID = 1;
+		chunkSize = BLOCK*GRID;		
+	#else
+		GRID = maxThreads/BLOCK;  
+		chunkSize = BLOCK*GRID;		
+	#endif		
+	\end{lstlisting}
 	
 	Now we arrive at the core of the implementation. The number of CUDA streams to spawn, as we previously told, is equal to the number of Streaming multiprocessor in the target machine. So, we start by distinguish two different cases:
 	\begin{itemize}
@@ -153,7 +153,7 @@ This is what really determines a behavior associated to either a Stream Parallel
 			\item We call another \texttt{cudaMemcpy} to bring back results to host.
 		\end{enumerate}
 		
-			\begin{lstlisting}[label=lst:noStr]
+			\begin{lstlisting}[label=lst:noStr, caption={Data transfer host/device and kernel call, NO-CUDA Streams version}]
 			void cosKer(int m, int chunk, float *x, float *cosx, float *x_d)
 			{   
 				int xBytes = chunk*sizeof(float);
@@ -178,7 +178,7 @@ This is what really determines a behavior associated to either a Stream Parallel
 			\item We call another \texttt{cudaMemcpyAsync} to bring back results to host, on the same stream as before.
 		\end{enumerate}
 		
-		\begin{lstlisting}[label=lst:str]
+		\begin{lstlisting}[label=lst:str, caption={Data transfer host/device and kernel call, CUDA Streams version}]
 		void cosKerStream(int m, int chunk, float *x, float *cosx, float *x_d, cudaStream_t strm, int strBytes)
 		{     
 			gpuErrchk( cudaMemcpyAsync(x_d, x, strBytes, cudaMemcpyHostToDevice, strm) ); 
@@ -198,7 +198,7 @@ This is what really determines a behavior associated to either a Stream Parallel
 	In particular we want to show that a Stream Parallel Pattern would be unfeasible in terms of device completion time, because of overhead introduced by data transfers. Instead, we wanted to show that, with CUDA Streams and some other precautions and experiments, a Stream Parallel Pattern could work near to the Data Parallel performances.\\
 	
 	It may be interesting to see how the Round Robin scheduler sends buffers to the function \texttt{cosKerStream} via CUDA streams, we present a pseudo-code version that shows only main features:
-	\begin{lstlisting}
+	\begin{lstlisting}[, caption={Host side pseudo-code: input stream + kernel launcher function}]
 	const int streamBytes = chunkSize*sizeof(float) ;
 	int strSize = nStreams*chunkSize;	
 	//host pinned mem
@@ -241,7 +241,7 @@ This is what really determines a behavior associated to either a Stream Parallel
 	Clearly, to have control on time probes and to compare such two different models, we set a maximum length on input stream. In the reality we know that we cannot have such informations on input/output streams. So we make the assumptions to know input stream length only for a time measuring purpose.
 	
 	Furthermore, this allow us to compare our Farm model, having an input stream of \texttt{N\_size} items length, with a Data Parallel model sending all \texttt{N\_size} items in once, computing them all in a classic configuration kernel and send back all again \footnote{And this is how generally the GPU is meant to be used and this is the kind of problem a GPU is designed for.}
-	\begin{lstlisting}
+	\begin{lstlisting}[, caption={Optimal Kernel launcher for Simple-Computation kernel, uses APIs to get best Block configuration}]
 	x = (float *) malloc(N_size*sizeof(float));
 	cosx = (float *) malloc(N_size*sizeof(float));
 	gpuErrchk( cudaMalloc((void**)&x_d, N_size*sizeof(float)) );

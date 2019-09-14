@@ -1,13 +1,110 @@
 \chapter{Conclusions} \label{chap:conclusions}
+%\subsection{Overview and goals}
 The main goal of this thesis was to experiment if a Farm parallel pattern could fit in GPU architecture and, if this was the case, how.\\
 Even though a Streaming parallel pattern may seem so far from the concept of normal GPU use, we founded our attempt on the increasing and pervasive concept od General-Purpose computing.
 Nowadays it's a common practice to use the high parallelism and huge computational power of GPUs as co-processors, even if it isn't strictly for graphical problems.\\
 Also research moved, in last years, the focus on problems that generally are assigned CPUs. Clearly, in General Purpose (GP) it's easy to spot applications that are clearly embarrassingly parallel; we recall that GPUs are mostly well suited in data parallel approaches.\\
-However, there are many others problems that are really far from data parallel. Again, GP-GPUs demonstrate a fair behavior (with some adjustments) in some of those cases too.\\
+However, there are many others problems that are really far from data parallel. Again, GP-GPUs demonstrate a fair behavior (with some adjustments) in some of those cases.\\
 So it makes perfectly sense to inspect for new non-data parallel applications to fit in GPU model, to exploit its good computation potential.
 
-The starting point of this study was to consider and understand some main features and the functioning of a graphic processor, in particular taking into account of the organization about parallelism, threads, cores, internal memory and so on. We showed main GPU and NVIDIA CUDA characteristics, briefly introducing them in \hyperref[chap:into]{Chapter 1} and deepening on more specific concepts in \hyperref[chap:tools]{Chapter 2} and \hyperref[chap:logic]{Chapter 3}. In the latter we also showed how some best practices and consideration were exploited to evaluate, implement and then test our model. \\
+\subsection{Evaluation of the problem}
+The starting point of this study was to consider and understand some main features and the functioning of a graphic processor, in particular taking into account of the organization about parallelism, threads, cores, internal memory and so on. We showed main GPU and NVIDIA CUDA characteristics, briefly introducing them in \hyperref[chap:into]{Chapter 1} and deepening on more specific concepts in \hyperref[chap:tools]{Chapter 2} and \hyperref[chap:logic]{Chapter 3}. In the latter we also showed how some best practices and considerations were exploited to evaluate, implement and then test our model. \\
+
+Once we had an overall view on tools and NVIDIA GPUs architecture, we had the knowledge to the next step, ie to imagine a Farm parallel pattern in a graphic processor. Obviously some key problems have arisen:
+\begin{itemize}
+	\item Handle the difference on input/output, ie streams of items instead of data structures;
+	\item Handle how to group and send data to device;
+	\item Define the dimension of data chunks;
+	\item How to hide the overhead due to data transfers between host and device;
+	\item How to execute many "small" kernels at the same time, instead of a single "big" one;
+	\item How to exploit the capabilities of the GPU at their best.
+\end{itemize}
+The first two points were accomplished by thinking to a system of \textit{accumulator buffers} that was sent to device as soon as they were filled by the input stream. This was mainly designed for the simple-computation kernel, but it applies to all those scenarios where we have an input stream made of simple items (eg floats, integers, etc.).\\
+Instead for the other two kernels we simply had to test the Farm parallel pattern on small matrices or small images, that straightly arrived from the input stream, so they were ready to be directly sent to device.
+
+The third point is again bounded to all applications having simple items as input stream. The dimension of buffers was determined by both \textit{empirical approach} and a study on \textit{best practices} for GPUs, as we showed in \hyperref[chap:logic]{Chapter 3}, most of this reasoning relied on \textit{occupancy} evaluations. \\
+However, we also showed, how occupancy may not be a relevant factor; a lot of performances bottlenecks may depend on the kernel nature. We have to face some \textbf{latencies} that happens inside the Streaming Multiprocessors, in our study we mainly pointed out two types of bottleneck in kernels: \textbf{memory-bounded} code and \textbf{diverging flows}.\\
+Those concepts are straightly linked to the problem of last point.
+
+The fourth and fifth points are strongly related to a powerful programming technique in CUDA:\textit{\textbf{ Asynchronous calls}} and \textit{\textbf{CUDA Streams}}.\\
+We recall that here asynchronous is from a device side point of view, with respect to the host. That is, host can continue executing his code, after invoking a memory copy (or any other call that is generally blocking). Any asynchronous call will be forwarded to GPU that will "silently" work, sending back eventual results to CPU.\\
+This means, in general, to have some synchronization at some point. Often CUDA codes with asynchronous calls are implemented to introduce \textit{explicit synchronizations}, in order to have correct results and avoid memory overwriting.\\
+We also met that problem, having a lot of CUDA streams trying to write back results at the same time, that sometimes led to overwriting data from another non-default stream.\\
+This problem mainly showed up in device memory: in host side, from the beginning, we had foresee the need of sufficient host memory locations for all streams. In device side, the possible cases were:
+\begin{itemize}
+	\item Have a single chunk of space in global memory and use some explicit synchronization, that's the most used approach;
+	\item Reserve several chunks, as many as created CUDA streams amount, and not use any kind of explicit synchronization.
+\end{itemize}
+ The first approach can be used in data parallel approach without introducing a big amount of overhead, but in a stream parallel context it can cause a performance drop. So we decided to use the second approach. The first impression could be to risk for a saturation in global memory, but in our case this didn't happen, since we were using relatively small chunks of data (even if they were as many as number of CUDA streams).\\
+ This doesn't mean that it cannot exist any stream parallel application where synchronization may result in an advantage\footnote{Maybe to hide some other computations that are happening in the same time. Again it's a matter of experimenting according to the type of problem we're facing.}.\\
+ Furthermore trying a \textit{hybrid approach} could be a starting point for future works, where hybrid means having less allocated global memory locations (than CUDA Streams number) and introduce only few explicit synchronizations.\\
+ 
+ 
+ \subsection{Implementation and tests}
+ Those ideas and designs were implemented as described in \hyperref[chap:impl]{Chapter 4}. We decided to implement different kind of kernels to experiment the behavior of Farm parallel pattern in different conditions.\\
+ We recall that we decided to implement three types of kernels: Simple-computational, Matrix Multiplication and Image processing.\\
+ The first would have been the one from which we expected a "good behavior" in terms of performances, while we expected worse completion times and speedups from the second kernel type and even from the third one.
+ 
+ The next step has been to build tests, gather results and make the following considerations.\\
+ Tests have been set up in such a way to observe the performances of our model in different situations, such as varying the chunks size and varying the pressure on CUDA Streams, ie the number of tasks globally sent on a certain non-default stream.\\
+ What we wanted to mainly measure was:
+ \begin{itemize}
+ 	\item the global time spent to "consume" an input stream by transferring data one chunk per time, do all computations of the kernel and send back results. This is what we considered the \textit{serial version} for our applications, in other words the approach without CUDA Streams;
+ 	
+ 	\item the global time spent to "consume" an input stream by overlapping more chunks transfers and computations of the kernel. This is what we considered the \textit{parallel version}, in other words the approach using CUDA Streams (three or equal to the number of SMs);
+ 	
+ 	\item the completion time of the relative data parallel version, ie assuming that all our input stream is grouped in a single data structure.
+ 	
+ \end{itemize}
+ 
+ \subsection{Results and considerations}
+ The results we obtained are just as we expected:
+ \begin{enumerate}
+ 	\item Simple-computational kernel showed a great ability on overlapping, clearly with some appropriate adjustments. We get the expected speedups and the version with the maximum number of CUDA Streams\footnote{That is the version with an amount of non-default streams equal to the number of Streaming Multiprocessors.} performs almost as the data parallel version;
+ 	
+ 	
+ 	
+ 	\item Matrix multiplication kernel showed a low ability on overlapping, especially as matrices size increased. We get poor speedups and the version with the maximum number of CUDA Streams performs quite bad with respect to the data parallel version;
+ 	
+ 	
+ 	
+ 	\item Image processing kernel showed an almost  inexistent ability on overlapping. We get no speedups and the version with the maximum number of CUDA Streams performs really far from the data parallel version.
+ \end{enumerate}
+ From those results we understand that we have the best gain when we have long computations on each single chunks. Even if host/device data transfers introduce a not-negligible overhead, in Farm pattern, we're carrying small groups of items.\\ Furthermore, these small groups aren't available all at the same time, they arrive one at time, as they're generated from an input stream.
+ This leads potentially to a low data transfers overlap, just for a timing matter.\\ 
+ That's why we should mostly rely on overlapping kernels, as they should lasts longer than memory copy\footnote{This isn't a rule, it just often happens, as in our applications. There may still be cases in which this statement is false.} and so we've more chances to achieve an overlap.\\
+ About this consideration we recall \hyperref[fig:cosprofiling]{5.3}.
+ 
+ In fact, most of the problems in performances appeared in memory-bound kernels, because we have a lot of memory operations, merged with a really small amount of work per thread to do. This leads to inefficient kernels, that, in any case, last too short to afford a good overlap with other kernels or transfers.\\
+ Furthermore this behavior can even degrade as the portions of data sent to the GPU grows in size, as in our Matrix Multiplication case, because we had a high number of thread blocks occupying all hardware resources, for a single matrix multiplication. This led to longer kernels, but completely monopolizing Multiprocessors. \\
+ 
+ 
 
 
+\subsection{Final remarks and further works}
+The results and considerations just discussed in previous section, expose the following necessities for Farm parallel pattern: 
+\begin{itemize}
+	\item It better performs in high-computational intensity scenarios;
+	\item We get the best advantages from parallelizing executions, more than memory copies;
+	\item It relies on overlapping between CUDA streams, meaning it needs quite long kernels executions to hide the host latency deriving from the acquisition of items from an input stream;
+	\item Kernel launches should be configured such that they don't monopolize many multiprocessors (the best would be at most one SM occupied by a single kernel call). 
+\end{itemize}
+The above requirements may translates in a quite challenging effort, especially in evaluating problems, experimenting and profiling performances, more than in implementation difficulty.\\
+This especially holds in all those cases were we have memory-bound problems. But in this case we some chances of future workaround:
+\begin{itemize}
+	\item using efficient memory access patterns for GPU memory (especially needed for global);
+	\item assigning more work to each thread, for example giving more instructions to execute per kernel (Instruction Level Parallelism)\cite{cudabestpractices,loweroccupancy};
+	\item exploiting shared memory, it has smaller dimensions but it's much more faster than global memory.
+\end{itemize} 
+These stratagems may expand to a lot of further applications using Farm parallel pattern on GPUs in the future.\\
+For example numerous studies have been made in matrix multiplication to optimize device global memory latencies with shared memory.
+%[METTERE UNA FONTE CHE PARLA DI SHARED]. 
+Other studies showed that we can give smaller kernel configurations, in order to make each threads perform several matrix multiplications\cite{loweroccupancy}, instead of computing only one element of the result matrix for each threads (as it happens in classical approach).\\
+So by merging in future, those optimizations with Farm parallel pattern may give some interesting results.\\
 
 
+ Given that this thesis based all hypothesis on equal chunks of work, ie on balanced workloads for each kernel, an interesting further study could be done in those scenarios treating unbalanced chunks of works, leading to different workloads among kernel launches.\\
+ Suppose, for example, a scenario where the input stream sends items at fluctuating speeds, so the chunk size may be established according to a time interval instead of a predefined buffer size. This means send portions of items of unknown size to the GPU.\\
+ 
+ Another assumption on which we based all this study was in having the ready data chunks scheduled to CUDA Streams in a Round Robin fashion. But, according to the treated problem, other scheduling techniques can be adopted and may result in far more efficient spreading of work loads between streams and so giving a better exploitation in Multiprocessors resources.
+ 

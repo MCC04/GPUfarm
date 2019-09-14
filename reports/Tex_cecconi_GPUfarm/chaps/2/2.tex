@@ -269,7 +269,7 @@ In this work we mainly made use of many tools in the CUDA Toolkit. In the follow
 	\Large \textbf{Streams}\normalsize\\
 	Applications manage the concurrent operations described above through \textbf{streams}. A stream is a sequence of commands (possibly issued by different host threads) that execute in order. On the other hand, a stream may execute their commands out of order or concurrently with respect to another; this behavior is not guaranteed and	should not be relied upon for correctness (e.g. inter-kernel communication is undefined) \cite{cudaguide}.\\
 	A brief code example:
-	\begin{lstlisting}
+	\begin{lstlisting}[caption={CUDA Strams creation}]
 	cudaStream_t stream[2];
 	for (int i = 0; i < 2; ++i)
 		cudaStreamCreate(&stream[i]);
@@ -278,7 +278,7 @@ In this work we mainly made use of many tools in the CUDA Toolkit. In the follow
 	\end{lstlisting}	
 
 	Each of these streams is defined, by the following code sample, as a sequence of one memory copy \(host \rightarrow device\), one kernel launch, and one memory copy \(host \leftarrow device\):
-	\begin{lstlisting}
+	\begin{lstlisting}[caption={CUDA Strams and Async example}]
 	for (int i = 0; i < 2; ++i) {
 		cudaMemcpyAsync(inputDevPtr + i * size, hostPtr + i * size, size, cudaMemcpyHostToDevice, stream[i]);
 		MyKernel <<<100, 512, 0, stream[i]>>> (outputDevPtr + i * size, inputDevPtr + i * size, size);
@@ -290,7 +290,7 @@ In this work we mainly made use of many tools in the CUDA Toolkit. In the follow
 	the result \texttt{outputDevPtr} back to the same portion of \texttt{hostPtr}. Note that \texttt{hostPtr} must point to page-locked host memory for any overlap to
 	occur.\\
 	Streams are released by calling \texttt{cudaStreamDestroy()}.
-	\begin{lstlisting}
+	\begin{lstlisting}[caption={CUDA Strams destroy}]
 	for (int i = 0; i < 2; ++i)
 		cudaStreamDestroy(stream[i]);
 	\end{lstlisting}
