@@ -1,61 +1,62 @@
 \BOOKMARK [0][-]{chapter.1}{Introduction}{}% 1
 \BOOKMARK [1][-]{section.1.1}{Goals}{chapter.1}% 2
-\BOOKMARK [2][-]{subsection.1.1.1}{GPU Architecture and Data Parallel}{section.1.1}% 3
+\BOOKMARK [2][-]{subsection.1.1.1}{GPU Architecture and Data Parallelism}{section.1.1}% 3
 \BOOKMARK [2][-]{subsection.1.1.2}{Other Applications}{section.1.1}% 4
 \BOOKMARK [2][-]{subsection.1.1.3}{GP-GPUs and Stream Parallel}{section.1.1}% 5
 \BOOKMARK [1][-]{section.1.2}{Expectations}{chapter.1}% 6
 \BOOKMARK [1][-]{section.1.3}{Results}{chapter.1}% 7
 \BOOKMARK [1][-]{section.1.4}{Tools}{chapter.1}% 8
 \BOOKMARK [0][-]{chapter.2}{Tools}{}% 9
-\BOOKMARK [1][-]{section.2.1}{CUDA}{chapter.2}% 10
-\BOOKMARK [1][-]{section.2.2}{Profilers}{chapter.2}% 11
-\BOOKMARK [2][-]{subsection.2.2.1}{nvprof}{section.2.2}% 12
-\BOOKMARK [2][-]{subsection.2.2.2}{NVIDIA Visual Profiler}{section.2.2}% 13
-\BOOKMARK [1][-]{section.2.3}{CUDA C/C++}{chapter.2}% 14
-\BOOKMARK [2][-]{subsection.2.3.1}{Kernels}{section.2.3}% 15
-\BOOKMARK [2][-]{subsection.2.3.2}{Thread Hierarchy}{section.2.3}% 16
-\BOOKMARK [2][-]{subsection.2.3.3}{CUDA Streams}{section.2.3}% 17
-\BOOKMARK [2][-]{subsection.2.3.4}{nvcc compiler}{section.2.3}% 18
-\BOOKMARK [2][-]{subsection.2.3.5}{cuda-gdb debugger}{section.2.3}% 19
-\BOOKMARK [1][-]{section.2.4}{Visual Studio Code}{chapter.2}% 20
-\BOOKMARK [1][-]{section.2.5}{Tests, Result gathering, Plots}{chapter.2}% 21
-\BOOKMARK [2][-]{subsection.2.5.1}{Bash scripts}{section.2.5}% 22
-\BOOKMARK [2][-]{subsection.2.5.2}{Python scripts}{section.2.5}% 23
-\BOOKMARK [0][-]{chapter.3}{Project Logic}{}% 24
-\BOOKMARK [1][-]{section.3.1}{Streaming Parallelism: Farm pattern}{chapter.3}% 25
-\BOOKMARK [1][-]{section.3.2}{CPU-GPGPU: heterogeneous architecture}{chapter.3}% 26
-\BOOKMARK [2][-]{subsection.3.2.1}{Overlapping: Data Transfer hiding}{section.3.2}% 27
-\BOOKMARK [2][-]{subsection.3.2.2}{Occupancy of GPU cores}{section.3.2}% 28
-\BOOKMARK [2][-]{subsection.3.2.3}{Occupancy drawbacks}{section.3.2}% 29
-\BOOKMARK [1][-]{section.3.3}{Overall Logic}{chapter.3}% 30
-\BOOKMARK [1][-]{section.3.4}{Tunings}{chapter.3}% 31
-\BOOKMARK [2][-]{subsection.3.4.1}{Tuning on block and grid dimensions}{section.3.4}% 32
-\BOOKMARK [1][-]{section.3.5}{CPU/GPU Scheduling}{chapter.3}% 33
-\BOOKMARK [0][-]{chapter.4}{Implementation}{}% 34
-\BOOKMARK [1][-]{section.4.1}{Kernels}{chapter.4}% 35
-\BOOKMARK [2][-]{subsection.4.1.1}{Repeated cosine}{section.4.1}% 36
-\BOOKMARK [2][-]{subsection.4.1.2}{Matrix multiplication}{section.4.1}% 37
-\BOOKMARK [2][-]{subsection.4.1.3}{Blur Box filter}{section.4.1}% 38
-\BOOKMARK [1][-]{section.4.2}{Parallel Patterns implementation on GPU}{chapter.4}% 39
-\BOOKMARK [2][-]{subsection.4.2.1}{Stream Parallel on GPU}{section.4.2}% 40
-\BOOKMARK [2][-]{subsection.4.2.2}{Data Parallel un GPU}{section.4.2}% 41
-\BOOKMARK [1][-]{section.4.3}{CPU and GPU Mix}{chapter.4}% 42
+\BOOKMARK [1][-]{section.2.1}{NVIDIA Architecture and CUDA}{chapter.2}% 10
+\BOOKMARK [2][-]{subsection.2.1.1}{Copy engines and Memory organization}{section.2.1}% 11
+\BOOKMARK [1][-]{section.2.2}{CUDA C/C++}{chapter.2}% 12
+\BOOKMARK [2][-]{subsection.2.2.1}{Kernels}{section.2.2}% 13
+\BOOKMARK [2][-]{subsection.2.2.2}{Thread Hierarchy}{section.2.2}% 14
+\BOOKMARK [2][-]{subsection.2.2.3}{CUDA Streams}{section.2.2}% 15
+\BOOKMARK [2][-]{subsection.2.2.4}{nvcc compiler}{section.2.2}% 16
+\BOOKMARK [2][-]{subsection.2.2.5}{cuda-gdb debugger}{section.2.2}% 17
+\BOOKMARK [1][-]{section.2.3}{Profilers}{chapter.2}% 18
+\BOOKMARK [2][-]{subsection.2.3.1}{nvprof}{section.2.3}% 19
+\BOOKMARK [2][-]{subsection.2.3.2}{NVIDIA Visual Profiler}{section.2.3}% 20
+\BOOKMARK [1][-]{section.2.4}{Visual Studio Code}{chapter.2}% 21
+\BOOKMARK [1][-]{section.2.5}{Tests, Result gathering, Plots}{chapter.2}% 22
+\BOOKMARK [2][-]{subsection.2.5.1}{Bash scripts}{section.2.5}% 23
+\BOOKMARK [2][-]{subsection.2.5.2}{Python scripts}{section.2.5}% 24
+\BOOKMARK [0][-]{chapter.3}{Project Logic}{}% 25
+\BOOKMARK [1][-]{section.3.1}{Stream Parallelism: Farm pattern}{chapter.3}% 26
+\BOOKMARK [2][-]{subsection.3.1.1}{Farm performance model}{section.3.1}% 27
+\BOOKMARK [1][-]{section.3.2}{CPU-GPGPU: heterogeneous architecture}{chapter.3}% 28
+\BOOKMARK [2][-]{subsection.3.2.1}{Overlapping: Data Transfer hiding}{section.3.2}% 29
+\BOOKMARK [2][-]{subsection.3.2.2}{Occupancy of GPU cores}{section.3.2}% 30
+\BOOKMARK [2][-]{subsection.3.2.3}{Occupancy drawbacks}{section.3.2}% 31
+\BOOKMARK [1][-]{section.3.3}{Overall Logic}{chapter.3}% 32
+\BOOKMARK [1][-]{section.3.4}{Tunings}{chapter.3}% 33
+\BOOKMARK [2][-]{subsection.3.4.1}{Tuning on block and grid dimensions}{section.3.4}% 34
+\BOOKMARK [0][-]{chapter.4}{Implementation}{}% 35
+\BOOKMARK [1][-]{section.4.1}{Kernels}{chapter.4}% 36
+\BOOKMARK [2][-]{subsection.4.1.1}{Simple-computational kernel}{section.4.1}% 37
+\BOOKMARK [2][-]{subsection.4.1.2}{Matrix multiplication}{section.4.1}% 38
+\BOOKMARK [2][-]{subsection.4.1.3}{Blur Box filter}{section.4.1}% 39
+\BOOKMARK [1][-]{section.4.2}{Parallel Patterns implementation on GPU}{chapter.4}% 40
+\BOOKMARK [2][-]{subsection.4.2.1}{Stream Parallel on GPU}{section.4.2}% 41
+\BOOKMARK [2][-]{subsection.4.2.2}{Data Parallel un GPU}{section.4.2}% 42
 \BOOKMARK [0][-]{chapter.5}{Experiments}{}% 43
 \BOOKMARK [1][-]{section.5.1}{Expectations}{chapter.5}% 44
 \BOOKMARK [2][-]{subsection.5.1.1}{Measures: What and How}{section.5.1}% 45
 \BOOKMARK [2][-]{subsection.5.1.2}{Tests setup}{section.5.1}% 46
 \BOOKMARK [2][-]{subsection.5.1.3}{Speedup}{section.5.1}% 47
 \BOOKMARK [2][-]{subsection.5.1.4}{Results: gathering and evaluation}{section.5.1}% 48
-\BOOKMARK [1][-]{section.5.2}{Simple-computation kernel}{chapter.5}% 49
-\BOOKMARK [2][-]{subsection.5.2.1}{Results}{section.5.2}% 50
-\BOOKMARK [1][-]{section.5.3}{Matrix Multiplication}{chapter.5}% 51
-\BOOKMARK [2][-]{subsection.5.3.1}{Results}{section.5.3}% 52
-\BOOKMARK [1][-]{section.5.4}{Image processing}{chapter.5}% 53
-\BOOKMARK [2][-]{subsection.5.4.1}{Results}{section.5.4}% 54
-\BOOKMARK [1][-]{section.5.5}{Results Summary}{chapter.5}% 55
-\BOOKMARK [2][-]{subsection.5.5.1}{Stream parallel compared to Data parallel}{section.5.5}% 56
-\BOOKMARK [0][-]{chapter.6}{Conclusions}{}% 57
-\BOOKMARK [1][-]{subsection.6.0.2}{Evaluation of the problem}{chapter.6}% 58
-\BOOKMARK [2][-]{subsection.6.0.3}{Implementation and tests}{subsection.6.0.2}% 59
-\BOOKMARK [2][-]{subsection.6.0.4}{Results and considerations}{subsection.6.0.2}% 60
-\BOOKMARK [2][-]{subsection.6.0.5}{Final remarks and further works}{subsection.6.0.2}% 61
+\BOOKMARK [2][-]{subsection.5.1.5}{Computation-bound and memory-bound}{section.5.1}% 49
+\BOOKMARK [1][-]{section.5.2}{Simple-computation kernel}{chapter.5}% 50
+\BOOKMARK [2][-]{subsection.5.2.1}{Results}{section.5.2}% 51
+\BOOKMARK [1][-]{section.5.3}{Matrix Multiplication}{chapter.5}% 52
+\BOOKMARK [2][-]{subsection.5.3.1}{Results}{section.5.3}% 53
+\BOOKMARK [1][-]{section.5.4}{Image processing}{chapter.5}% 54
+\BOOKMARK [2][-]{subsection.5.4.1}{Results}{section.5.4}% 55
+\BOOKMARK [1][-]{section.5.5}{Results Summary}{chapter.5}% 56
+\BOOKMARK [2][-]{subsection.5.5.1}{Stream parallel compared to Data parallel}{section.5.5}% 57
+\BOOKMARK [0][-]{chapter.6}{Conclusions}{}% 58
+\BOOKMARK [1][-]{subsection.6.1.2}{Evaluation of the problem}{chapter.6}% 59
+\BOOKMARK [2][-]{subsection.6.1.3}{Implementation and tests}{subsection.6.1.2}% 60
+\BOOKMARK [2][-]{subsection.6.1.4}{Results and considerations}{subsection.6.1.2}% 61
+\BOOKMARK [2][-]{subsection.6.1.5}{Final remarks and further works}{subsection.6.1.2}% 62

@@ -1,19 +1,29 @@
 \chapter{Implementation} 
 \label{chap:impl}
-Given the logical schema of the previous chapter, we had to build different types of code to observe their behaviors in performances.
+Given the logical schema of the previous chapter, we had to build different types of code to test its correctness and efficiency.
 
-In particular, we wanted to distinguish some kernels of interest and adapt them to the Farm parallel pattern for GPU we conceived. So, in this project we've implemented the following applications:
+In particular, we wanted to distinguish some kernels of interest and adapt them to the Farm parallel pattern on GPU. So, in this project we've implemented the following applications:
 \begin{itemize}
-	\item Repeated cosine application;
+	\item Simple-computational kernel;
 	\item Matrix multiplication;
 	\item Blur Box filter.
 \end{itemize}
 
 \section{Kernels}
 As we anticipated in the previous section, our kernels mainly doesn't use shared memory.\\
-Each kernel clearly is designed such that each thread executes a different element from the input data structure.
-\subsection{Repeated cosine}
-	This is a very simple kernel, in which given as inputs an array of floating point and a number \textit{M}, it computes, for each input float, the cosine applied \textit{M} times. The output will be again a floats array (given by cosines).\\
+Each kernel clearly is designed such that each thread executes a different element from the input data parallel task, that is one of the input stream's items.
+\subsection{Simple-computational kernel}
+	This is a very synthetic kernel, where, given as inputs a data parallel task and a number \textit{M}, it computes the cosine applied \textit{M} times, for each element in the task.
+	In this case small data parallel tasks are implemented as an array, of size \textit{N}, formed by floating point numbers. So, the output will be again a floats array (given by cosines of the input).\\
+	This particular kernel has been chosen because it allows:
+	\begin{itemize}
+		\item to vary the load of computation \(T_{comp}\), changing the amount of cosine to compute inside the kernel (M);
+		\item to vary the communication weight \(T_{comm}\), changing the size of the task (N).
+	\end{itemize} 
+	The first parameter models the arithmetic intensity, while the second the amount of memory operations.
+	The second parameter, in this case, may include all those mechanisms that perform host/device transfers, but also time spent in transfer between global memory and registers inside the GPU.
+	However, in Farm performance model, the main cost of time we focus on is host/device memory copy, neglecting memory operations internal to GPU.
+
 	Note that, since here we're working on one-dimensional data structures, we'll use one-dimensional thread blocks for convenience.
 	\begin{lstlisting}[language=C++, caption={Implementation for Simple-Computation Kernel}]
 	__global__ void cosKernel(int M, int N, float *x_d){  		  
@@ -25,13 +35,15 @@ Each kernel clearly is designed such that each thread executes a different eleme
 		return ;
 	}
 	\end{lstlisting}
-	This is almost a regular kernel, with no branching and an almost equal workload for each thread that could execute that code.\\
-	It was a very useful kernel, because changing a single parameter we could then test situations either of low or high iterations amount, ie different workloads.
-	Moreover this is clearly a computation-bounded kernel.
+	This is almost a regular kernel, with no branching and an equal workload for each thread that executes that code.\\
+	It is a very useful kernel, because changing a single parameter we could then test situations either of low or high iterations amount, i.e. different workloads.\\
+	Moreover this is a computation-bounded application\footnote{Chapter \ref{chap:experim} explains the differences between computaion-bound and memory-bound.}. In particular it models all those kernels that perform a consistent amount of work, on a restrained quantity of data (low amount of memory operations) and that don't diverge during their execution.
+
 	
 \subsection{Matrix multiplication}
-	Here's the most classical version of matrix multiplication in CUDA.
-    An important difference from the application above is that now we're working with matrices, both in input and output. So, for convenience, we'll use two-dimensional thread blocks.\\  
+	Here we have the most classical and simple version of matrix multiplication in CUDA.\\
+	We're always working on input/output streams of small data parallel tasks.
+    However, there's an important difference from the application above, i.e. now we've matrices as tasks, both in input and output. So, for convenience, we'll use two-dimensional thread blocks.\\  
 	Each couple of threads perform the computation of a single element in result matrix. For example, assume we have \texttt{thread[ROW]} and \texttt{thread[COL]}, then they will perform\\ \texttt{sum += A[ROW, i] * B[i, COL];},\\ where \texttt{i = 0, ..., N} and \texttt{sum} will be \texttt{C[ROW, COL]}, ie one of the items result matrix.
 	\begin{lstlisting}[caption={Implementation for Matrix Multiplication Kernel, both non-square and square}]
 	/**** MATMUL ****/
@@ -69,14 +81,20 @@ Each kernel clearly is designed such that each thread executes a different eleme
 	}
 	\end{lstlisting}
 	Matrix multiplication is one of the most widespread applications in GPU computing, this is the basis of other applications too.\\
-	It is well known that this kind of very trivial matrix multiplication is quite inefficient. In fact, each for loop iteration will have to perform a multiplication and a sum but, at the same time, the GPU will have to access global memory three times \footnote{We'll have two pull from memory for A[i, k] and B[k, j] and a push for C[i, j].}.
-	This means we have a low arithmetic intensity w.r.t. memory accesses, so cores won't hide memory access latency.
-	That's why in general other optimized algorithms are used, the most known of them is the one decomposing matrices in tiles that will fit in \textit{shared memory}.
+	It is well known that this kind of very trivial matrix multiplication is quite inefficient. In fact, each for loop iteration will have to perform a multiplication and a sum but, at the same time, the GPU will have to access global memory three times \footnote{We'll have two load from memory for A[i, k] and B[k, j] and a store for C[i, j].}.\\
+	This means we have a low arithmetic intensity w.r.t. memory accesses, so threads won't hide memory access latency.
+	That's why in general other optimized algorithms are used, the most known of them is the one decomposing matrices in tiles that will fit in \textit{shared memory}.\\
+	Even if this implementation is poor in performances, to our testing purposes is very useful, because it represent a counterexample w.r.t. the implementation presented in the previous section.
+	In fact it's almost the opposite from Simple-computational kernel, as it's a kernel having a low arithmetic intensity with respect to the number of elements involved in computations.\\
+	As we mentioned before, just looking at each single iteration we've more memory accesses than arithmetic operations.
+	That's why this type of kernel is considered memory-bound.
+	
 	
 \subsection{Blur Box filter}
-	The last type of application implemented in this project is an image processing kernel to apply blur filter.
-	Here input and output pictures are represented as char buffer, items are \textbf{RGB} values in [0, 255] that represent pixels such as "RGB RGB RGB...".\\
-	For each pixel, in the input image, we take the average of each of the pixels in neighborhood (inside the limits of filter size) and writes it to the output image. This filter is known as a Box blur \footnote{Another blur filter is the \textit{Gaussian blur}, generally preferred as to be more accurate. In fact Box blurs are frequently used to approximate a Gaussian blur. By the central limit theorem, repeated application of a box blur will approximate a Gaussian blur.}.
+	The last type of application implemented in this project is an image processing kernel computing a blur filter.\\
+	Again we're working on input/output stream of data parallel tasks that, in this case, are given by small images.\\
+	Here input and output pictures are represented as char buffer, items are \textbf{RGB} values in [0, 255] that represent pixels as color tuples.\\
+	For each pixel, in the input image, we take the average of each of the pixels in neighborhood (inside the limits of filter size) and we write the average value to the pixel of the output image. This filter is known as a Box blur\footnote{Another blur filter is the \textit{Gaussian blur}, generally preferred as to be more accurate. In fact Box blurs are frequently used to approximate a Gaussian blur. By the central limit theorem, repeated application of a box blur will approximate a Gaussian blur.}.
 	
 %	Notice that we check if our offset is actually within the range of \texttt{width*height}, because it can happen that it will be outside due to the blocks CUDA will run, so remember to keep that. Also we need to remember to check whether or not the pixel we read are actually in our image when doing the box blur as well. You can try to remove them one at a time and see what happens.
 	\begin{lstlisting}[caption={Implementation for Image processing Kernel (Blur Box Algorithm)}]
@@ -113,7 +131,10 @@ Each kernel clearly is designed such that each thread executes a different eleme
 		return;
 	}
 	\end{lstlisting}
-
+	This type of kernel is another counterexample with respect to the Simple-computational kernel.\\
+	In fact this application model all those kernels that have low arithmetic intensity, opposed to a consistent amount of memory operations and, furthermore, having a lot of branching instructions. So in this case we're considering not only a memory-bound kernel, but also an example of kernel with divergent flows.
+	
+	
 \section{Parallel Patterns implementation on GPU}
 What really makes the difference in the implementation is how we send data to the GPU and kernel executions configurations.
 This is what really determines a behavior associated to either a Stream Parallel pattern or a Data Parallel pattern.
@@ -124,11 +145,11 @@ This is what really determines a behavior associated to either a Stream Parallel
 	Let's start by explaining the setting phase:
 	\begin{itemize}
 		\item The block dimension is provided as command line parameter;
-		\item Then grid dimensions are initially determined;
+		\item Then grid dimensions are derived;
 		\item Here we can have two different settings
 		\begin{itemize}
-			\item The chunk has the same dimension of the block, given the capabilities in our machines means having a size \(< 1024\). The grid will have size one;
-			\item The chunk takes as dimension the maximum number of threads active in a SM, for both our machines is 2048. Here the grid will be adjusted to cover the chunk dimension w.r.t. the block dimension, ie \texttt{GRID = maxThreads/BLOCK;}
+			\item The block has the same dimension of the task, given the capabilities in our machines means having a size \(< 1024\). The grid will have size one;
+			\item The task has equal size to the maximum allowed number of active threads in a SM, for both our machines is 2048. Here the grid will be adjusted to cover the task dimension w.r.t. the maximum block dimension (1024 for both machines), i.e. \texttt{GRID = maxThreads/BLOCK}.
 		\end{itemize}
 	
 	\end{itemize}
@@ -142,14 +163,13 @@ This is what really determines a behavior associated to either a Stream Parallel
 	#endif		
 	\end{lstlisting}
 	
-	Now we arrive at the core of the implementation. The number of CUDA streams to spawn, as we previously told, is equal to the number of Streaming multiprocessor in the target machine. So, we start by distinguish two different cases:
+	Now we outline the core of the implementation. The number of CUDA streams to spawn, as we previously told, is equal to the number of Streaming multiprocessor in the target machine. So, we start by distinguish two different cases:
 	\begin{itemize}
 		\item Number of streams equal to zero, this means we won't use CUDA stream
 		\begin{enumerate}
-			\item We allocate space for our device chunk, with a simple \texttt{cudaMalloc} (because here we'll not use streams);
-			\item As input stream items arrive, we store them on the host chunk buffer;
-			\item We send it to the device as soon as it's full, with a simple \texttt{cudaMemcpy} \footnote{Note that \texttt{cudaMemcpy} is a blocking operation w.r.t. the host, this means that other CUDA calls from the host will be issued after data is fully copied to device.};
-			\item We launch the Kernel, that will execute as soon as data is fully copied;
+			\item We allocate space on device for the task, with a \texttt{cudaMalloc};
+			\item As input stream items arrive, we send them to the device with a simple \texttt{cudaMemcpy}\footnote{Note that \texttt{cudaMemcpy} is a blocking operation w.r.t. the host, this means that other CUDA calls from the host will be issued after data is fully copied to device.} (because here we're not using CUDA streams);
+			\item We launch the Kernel, that will execute as soon as input data is fully copied;
 			\item We call another \texttt{cudaMemcpy} to bring back results to host.
 		\end{enumerate}
 		
@@ -170,14 +190,16 @@ This is what really determines a behavior associated to either a Stream Parallel
 			}
 			\end{lstlisting}
 		
-		\item Number of streams greater than zero, this means we will use CUDA stream, so steps are analogous to the previous except for some tricks (See Code Listing )
+		\item Number of streams greater than zero, this means we will use CUDA streams, so steps are analogous to the previous ones, except for some specific mechanism used, such as:
 		\begin{enumerate}
-			\item We allocate space for our device chunk, with a \texttt{cudaMallocHost} (in order to use CUDA streams and gain best overlapping possible, host should allocate memory as \textit{Pinned});
-			\item In a Round-Robin fashion, we send full chunks in an asynchronous way, using \texttt{cudaMemcpyAsync} \footnote{Note that \texttt{cudaMemcpyAsync} is non-blocking for the host, in parameters we'll have to specify which stream will issue the copy.};
-			\item We launch the Kernel in the same CUDA stream of the previous copy;
+			\item We allocate on host the space for the tasks, with a \texttt{cudaMallocHost} (in order to use CUDA streams and gain best overlapping possible, host should allocate memory as \textit{Pinned});
+			\item We allocate on device the space for the tasks, with a \texttt{cudaMalloc};
+			\item In a Round-Robin fashion, we send tasks in an asynchronous way, using \texttt{cudaMemcpyAsync} \footnote{Note that \texttt{cudaMemcpyAsync} is non-blocking for the host, in parameters we'll have to specify which stream will issue the copy.};
+			\item We launch the Kernel in the same CUDA stream of the copy for input data;
 			\item We call another \texttt{cudaMemcpyAsync} to bring back results to host, on the same stream as before.
 		\end{enumerate}
-		
+		Note that in first two steps we allocate space not for a single task, but for as many tasks as the number of CUDA streams.
+		This allows us to avoid some explicit synchronizations and to have space reserved for a certain task for each CUDA stream.
 		\begin{lstlisting}[label=lst:str, caption={Data transfer host/device and kernel call, CUDA Streams version}]
 		void cosKerStream(int m, int chunk, float *x, float *cosx, float *x_d, cudaStream_t strm, int strBytes)
 		{     
@@ -194,10 +216,18 @@ This is what really determines a behavior associated to either a Stream Parallel
 		\end{lstlisting}
 		
 	\end{itemize}
-	The reason why we implemented these two versions, of Farm Parallel Pattern for GPU, is that we want to show the gain obtained with CUDA Stream.\\
-	In particular we want to show that a Stream Parallel Pattern would be unfeasible in terms of device completion time, because of overhead introduced by data transfers. Instead, we wanted to show that, with CUDA Streams and some other precautions and experiments, a Stream Parallel Pattern could work near to the Data Parallel performances.\\
+	The reason why we implemented these two versions, of Farm Parallel Pattern on GPU, is that we want to show the gain obtained with CUDA Stream.\\
+	In particular we want to compare:
+	\begin{itemize}
+		\item the implementation without CUDA streams, that represents the serial version for each of our applications;
+		\item the implementation using CUDA streams, that correspond to the parallel version for each of our applications.
+	\end{itemize}
+	Given that we're working on a Streaming parallel problem, suppose we have an input stream of items, that are "small" data parallel tasks.\\
+	So, in the first case from the above list, we'll have a serial computation of the input stream's tasks.\\
+	While, in the second case, we consider SMs as \textit{Farm workers}, that executes different tasks in parallel.\\
+	Therefore, we want to show that with CUDA Streams and some other adjustments\footnote{Chapter \ref{chap:experim} shows how we set kernel execution configurations and other relevant assumptions.}, a Stream Parallel Pattern would have performances near to Data Parallel ones (comparing them for the same application and the same total amount of computed data).\\
 	
-	It may be interesting to see how the Round Robin scheduler sends buffers to the function \texttt{cosKerStream} via CUDA streams, we present a pseudo-code version that shows only main features:
+	It may be interesting to see how the Round Robin scheduler sends buffers to the function \texttt{cosKerStream} via CUDA streams. We present a pseudo-code version that shows only its main features:
 	\begin{lstlisting}[, caption={Host side pseudo-code: input stream + kernel launcher function}]
 	const int streamBytes = chunkSize*sizeof(float) ;
 	int strSize = nStreams*chunkSize;	
@@ -234,13 +264,14 @@ This is what really determines a behavior associated to either a Stream Parallel
 	\end{lstlisting}
 	It's interesting to highlight the use of \textit{CUDA Events}, they were useful to measure the completion time of memory copies and kernel executions. So they allowed us to make device side measures, that are the main concern in this project \footnote{We'll explain other details on measures on \hyperref[chap:experim]{Chapter 5}.}.
 	
-	As we can see we presented most important code parts relative to the Cosine Kernel, but the structure and the implementation to execute Matrix multiplication and Blur Box are totally analogous.
+	As we can see we presented most important code listings relative to the Simple-computational kernel. The structure and the implementation to execute Matrix multiplication and Blur Box are similar to Simple-comp kernel, since they are really different applications but each of them is, however, modeling a Farm parallel pattern with small data parallel tasks.
 
 \subsection{Data Parallel un GPU}
 	To prove that our Farm Pattern had acceptable performances, it was useful to compare it with its respective Data Parallel version.\\
-	Clearly, to have control on time probes and to compare such two different models, we set a maximum length on input stream. In the reality we know that we cannot have such informations on input/output streams. So we make the assumptions to know input stream length only for a time measuring purpose.
+	Clearly, to have control on time probes and to compare such two different models, we set a maximum length on input stream for Stream parallel version. In the reality we know that we cannot have such informations on input/output streams. So we make the assumption to know input stream length only for a time measuring purpose.
 	
-	Furthermore, this allow us to compare our Farm model, having an input stream of \texttt{N\_size} items length, with a Data Parallel model sending all \texttt{N\_size} items in once, computing them all in a classic configuration kernel and send back all again \footnote{And this is how generally the GPU is meant to be used and this is the kind of problem a GPU is designed for.}
+	So, supposing to have an input stream of \texttt{N\_size} items length, this allows us to compare our Farm model with a Data Parallel one. The latter will send to the GPU a single data structure in once, having a suitable size such that in total it will allow to perform the same amount of work that is done in Stream parallel version.\\
+	So pure data parallel computes a single and big data structure, in a canonical configuration kernel\footnote{A classic configuration, in general, is to experiment for block size and get grid size dividing the data dimension by the block size.} and sends back the output again \footnote{And this is how generally the GPU is meant to be used and this is the kind of problem a GPU is designed for.}
 	\begin{lstlisting}[, caption={Optimal Kernel launcher for Simple-Computation kernel, uses APIs to get best Block configuration}]
 	x = (float *) malloc(N_size*sizeof(float));
 	cosx = (float *) malloc(N_size*sizeof(float));
@@ -280,14 +311,19 @@ This is what really determines a behavior associated to either a Stream Parallel
 		
 	\end{lstlisting}
 	The peculiarity of this Kernel is that we exploited CUDA Occupancy APIs.
-	The occupancy-based launch configurator APIs,
-	\texttt{cudaOccupancyMaxPotentialBlockSize}, heuristically calculate an execution configuration (thread block and grid sizes) that achieves the maximum multiprocessor-level occupancy.\\
-	This was one example of the use of CUDA Occupancy calculator tools, in this case we used it to achieve the best block and grid configuration possible for our Kernel.
+	The occupancy-based launch configurator APIs, \texttt{cudaOccupancyMaxPotentialBlockSize}, heuristically calculate an execution configuration (thread block and grid sizes) that achieves the maximum multiprocessor-level occupancy\cite{cudaguide}.\\
+	This was one example of use for CUDA Occupancy calculator tools, in this case we used it to achieve the best block and grid configuration possible for our Kernel.
 	
 	Again the code presented above is relative to Cosine kernel, but the implementation structure is analogous to the one for Matrix multiplication and Blur Box.
-	For example, in Matrix multiplication, we'll have a stream of small matrices for Farm parallel and a single huge matrix for Data parallel.
+%	For example, in Matrix multiplication, we'll have a stream of small matrices for Farm parallel and a single huge matrix for Data parallel.
 	
 	
 	
-\section{CPU and GPU Mix}
+%\section{CPU and GPU Mix}
 %Queue with P and Q chunk exec by respectively CPU and GPU.
+
+
+
+%***************
+%QUI CHE CAZZO CI METTO??!!?!?
+%***************

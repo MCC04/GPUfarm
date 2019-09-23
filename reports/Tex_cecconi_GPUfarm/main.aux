@@ -25,219 +25,252 @@
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \newlabel{chap:intro}{{1}{1}{Introduction}{chapter.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.1}Goals}{1}{section.1.1}}
 \citation{pattersonhennessy}
-\@writefile{toc}{\contentsline {section}{\numberline {1.1}Goals}{2}{section.1.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.1}GPU Architecture and Data Parallel}{2}{subsection.1.1.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.2}Other Applications}{2}{subsection.1.1.2}}
-\newlabel{subs:otherApps}{{1.1.2}{2}{Other Applications}{subsection.1.1.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.1}GPU Architecture and Data Parallelism}{2}{subsection.1.1.1}}
 \citation{fromCUtoOCL}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.2}Other Applications}{3}{subsection.1.1.2}}
+\newlabel{subs:otherApps}{{1.1.2}{3}{Other Applications}{subsection.1.1.2}{}}
 \citation{backtrack}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.3}GP-GPUs and Stream Parallel}{4}{subsection.1.1.3}}
-\citation{spm}
-\@writefile{toc}{\contentsline {section}{\numberline {1.2}Expectations}{5}{section.1.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {1.3}Results}{6}{section.1.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {1.4}Tools}{6}{section.1.4}}
-\newlabel{sect:tools}{{1.4}{6}{Tools}{section.1.4}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {2}Tools}{9}{chapter.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.3}GP-GPUs and Stream Parallel}{5}{subsection.1.1.3}}
+\newlabel{subs:gpgpustreampar}{{1.1.3}{5}{GP-GPUs and Stream Parallel}{subsection.1.1.3}{}}
+\citation{parpattbench}
+\citation{parpattbench}
+\@writefile{toc}{\contentsline {section}{\numberline {1.2}Expectations}{8}{section.1.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.3}Results}{9}{section.1.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.4}Tools}{10}{section.1.4}}
+\newlabel{sect:tools}{{1.4}{10}{Tools}{section.1.4}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {2}Tools}{12}{chapter.2}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chap:tools}{{2}{9}{Tools}{chapter.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.1}CUDA}{10}{section.2.1}}
-\@writefile{lot}{\contentsline {table}{\numberline {2.1}{\ignorespaces GPUs specifics for the two remote machines employed in this project.\relax }}{11}{table.caption.1}}
+\newlabel{chap:tools}{{2}{12}{Tools}{chapter.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.1}NVIDIA Architecture and CUDA}{13}{section.2.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {2.1}{\ignorespaces GPUs specifics for the two remote machines employed in this project.\relax }}{14}{table.caption.1}}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{tab:gpuspecs}{{2.1}{11}{GPUs specifics for the two remote machines employed in this project.\relax }{table.caption.1}{}}
+\newlabel{tab:gpuspecs}{{2.1}{14}{GPUs specifics for the two remote machines employed in this project.\relax }{table.caption.1}{}}
+\citation{perfoptimize}
+\citation{understandlatency}
 \citation{cudaguide}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces GPU scalability.\relax }}{12}{figure.caption.2}}
-\newlabel{fig:cudaSM}{{2.1}{12}{GPU scalability.\relax }{figure.caption.2}{}}
+\citation{cudaguide}
+\citation{cudaguide}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces GPU scalability.\relax }}{18}{figure.caption.2}}
+\newlabel{fig:cudaSM}{{2.1}{18}{GPU scalability.\relax }{figure.caption.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.1}Copy engines and Memory organization}{19}{subsection.2.1.1}}
+\citation{cudahandbook}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces Comparison between no CUDA streams, one copy engine and streams, two copy engines and streams.\relax }}{20}{figure.caption.3}}
+\newlabel{fig:copyengines}{{2.2}{20}{Comparison between no CUDA streams, one copy engine and streams, two copy engines and streams.\relax }{figure.caption.3}{}}
+\citation{cudahandbook}
+\citation{cudaguide}
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}CUDA C/C++}{22}{section.2.2}}
+\newlabel{sect:CUDAcpp}{{2.2}{22}{CUDA C/C++}{section.2.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Kernels}{22}{subsection.2.2.1}}
+\newlabel{subs:ker}{{2.2.1}{22}{Kernels}{subsection.2.2.1}{}}
+\citation{cudaguide}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces Above: a Grid formed by Blocks.  Below: a Block formed by Threads.\relax }}{23}{figure.caption.4}}
+\newlabel{fig:gridblock}{{2.3}{23}{Above: a Grid formed by Blocks.\\ Below: a Block formed by Threads.\relax }{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Thread Hierarchy}{23}{subsection.2.2.2}}
+\newlabel{subs:thrhierarchy}{{2.2.2}{23}{Thread Hierarchy}{subsection.2.2.2}{}}
+\citation{cudahandbook}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.3}CUDA Streams}{24}{subsection.2.2.3}}
+\newlabel{subs:streams}{{2.2.3}{24}{CUDA Streams}{subsection.2.2.3}{}}
+\citation{cudastrandconcurr}
+\citation{cudaguide}
+\citation{custreamsblog}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.1}CUDA Strams creation}{25}{lstlisting.2.1}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.2}CUDA Strams and Async example}{26}{lstlisting.2.2}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.3}CUDA Strams destroy}{26}{lstlisting.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.4}nvcc compiler}{26}{subsection.2.2.4}}
 \citation{profilersguide}
 \citation{nvprofarticle}
 \citation{profilersguide}
-\@writefile{toc}{\contentsline {section}{\numberline {2.2}Profilers}{13}{section.2.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}nvprof}{13}{subsection.2.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.5}\texttt  {cuda-gdb} debugger}{28}{subsection.2.2.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Profilers}{28}{section.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}nvprof}{29}{subsection.2.3.1}}
 \citation{profilersguide}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}NVIDIA Visual Profiler}{14}{subsection.2.2.2}}
-\citation{cudaguide}
-\@writefile{toc}{\contentsline {section}{\numberline {2.3}CUDA C/C++}{15}{section.2.3}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces Above: a Grid formed by Blocks.  Below: a Block formed by Threads.\relax }}{15}{figure.caption.3}}
-\newlabel{fig:gridblock}{{2.2}{15}{Above: a Grid formed by Blocks.\\ Below: a Block formed by Threads.\relax }{figure.caption.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Kernels}{15}{subsection.2.3.1}}
-\newlabel{subs:ker}{{2.3.1}{15}{Kernels}{subsection.2.3.1}{}}
-\citation{cudaguide}
-\citation{cudaguide}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Thread Hierarchy}{16}{subsection.2.3.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}CUDA Streams}{16}{subsection.2.3.3}}
-\newlabel{subs:streams}{{2.3.3}{16}{CUDA Streams}{subsection.2.3.3}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.1}CUDA Strams creation}{17}{lstlisting.2.1}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.2}CUDA Strams and Async example}{17}{lstlisting.2.2}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.3}CUDA Strams destroy}{18}{lstlisting.2.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.4}nvcc compiler}{18}{subsection.2.3.4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.5}\texttt  {cuda-gdb} debugger}{19}{subsection.2.3.5}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.4}Visual Studio Code}{20}{section.2.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.5}Tests, Result gathering, Plots}{20}{section.2.5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Bash scripts}{21}{subsection.2.5.1}}
-\newlabel{subs:bash}{{2.5.1}{21}{Bash scripts}{subsection.2.5.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}Python scripts}{21}{subsection.2.5.2}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Project Logic}{22}{chapter.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}NVIDIA Visual Profiler}{30}{subsection.2.3.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Visual Studio Code}{30}{section.2.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}Tests, Result gathering, Plots}{31}{section.2.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Bash scripts}{31}{subsection.2.5.1}}
+\newlabel{subs:bash}{{2.5.1}{31}{Bash scripts}{subsection.2.5.1}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.4}Tests on bash scripts example}{31}{lstlisting.2.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}Python scripts}{33}{subsection.2.5.2}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.5}Portion of speedup and plots Python script}{33}{lstlisting.2.5}}
+\citation{spm}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Project Logic}{36}{chapter.3}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chap:logic}{{3}{22}{Project Logic}{chapter.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.1}Streaming Parallelism: Farm pattern}{22}{section.3.1}}
+\newlabel{chap:logic}{{3}{36}{Project Logic}{chapter.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Stream Parallelism: Farm pattern}{36}{section.3.1}}
 \citation{spm}
-\citation{spm}
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}CPU-GPGPU: heterogeneous architecture}{24}{section.3.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Overlapping: Data Transfer hiding}{25}{subsection.3.2.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Ideal behavior for 3 CUDA Streams.\relax }}{26}{figure.caption.4}}
-\newlabel{fig:threeStreams}{{3.1}{26}{Ideal behavior for 3 CUDA Streams.\relax }{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Farm performance model}{38}{subsection.3.1.1}}
+\newlabel{subs:farmperfmodel}{{3.1.1}{38}{Farm performance model}{subsection.3.1.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}CPU-GPGPU: heterogeneous architecture}{42}{section.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Overlapping: Data Transfer hiding}{43}{subsection.3.2.1}}
+\citation{cudastrandconcurr}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Ideal behavior for 3 CUDA Streams.\relax }}{44}{figure.caption.5}}
+\newlabel{fig:threeStreams}{{3.1}{44}{Ideal behavior for 3 CUDA Streams.\relax }{figure.caption.5}{}}
 \citation{cudaguide}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Occupancy of GPU cores}{28}{subsection.3.2.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Occupancy of GPU cores}{45}{subsection.3.2.2}}
+\citation{perfoptimize}
+\citation{understandlatency}
 \citation{cudaguide}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}Occupancy drawbacks}{30}{subsection.3.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}Occupancy drawbacks}{48}{subsection.3.2.3}}
+\citation{perfoptimize}
 \citation{loweroccupancy}
-\@writefile{toc}{\contentsline {section}{\numberline {3.3}Overall Logic}{32}{section.3.3}}
-\newlabel{sect:overallLogica}{{3.3}{32}{Overall Logic}{section.3.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Here we have a general and broad graphical representation of our idea on how to fit a Farm parallel pattern on GPU architecture.\relax }}{33}{figure.caption.5}}
-\newlabel{fig:H2D}{{3.2}{33}{Here we have a general and broad graphical representation of our idea on how to fit a Farm parallel pattern on GPU architecture.\relax }{figure.caption.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Here we have a general and broad graphical representation of our idea on how to fit a Farm parallel pattern on GPU architecture.\relax }}{35}{figure.caption.6}}
-\newlabel{fig:overallLogic}{{3.3}{35}{Here we have a general and broad graphical representation of our idea on how to fit a Farm parallel pattern on GPU architecture.\relax }{figure.caption.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces Legenda about Figure \ref  {fig:overallLogic}.\relax }}{37}{figure.caption.7}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces Here we can see what exactly happens in a certain CUDA Stream. Light violet numbered labels shows the order in which commands are issued by host to a certain stream.\relax }}{39}{figure.caption.8}}
-\newlabel{fig:singleStream}{{3.5}{39}{Here we can see what exactly happens in a certain CUDA Stream. Light violet numbered labels shows the order in which commands are issued by host to a certain stream.\relax }{figure.caption.8}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.4}Tunings}{39}{section.3.4}}
-\newlabel{sect:tunings}{{3.4}{39}{Tunings}{section.3.4}{}}
+\citation{understandlatency}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Overall Logic}{51}{section.3.3}}
+\newlabel{sect:overallLogic}{{3.3}{51}{Overall Logic}{section.3.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Here we have a general and broad graphical representation of our idea on how to fit a Farm parallel pattern on GPU architecture.\relax }}{52}{figure.caption.6}}
+\newlabel{fig:H2D}{{3.2}{52}{Here we have a general and broad graphical representation of our idea on how to fit a Farm parallel pattern on GPU architecture.\relax }{figure.caption.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Here we have a general and broad graphical representation of our idea on how to fit a Farm parallel pattern on GPU architecture.\relax }}{54}{figure.caption.7}}
+\newlabel{fig:overallLogic}{{3.3}{54}{Here we have a general and broad graphical representation of our idea on how to fit a Farm parallel pattern on GPU architecture.\relax }{figure.caption.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces Legenda about Figure \ref  {fig:overallLogic}.\relax }}{56}{figure.caption.8}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Tunings}{57}{section.3.4}}
+\newlabel{sect:tunings}{{3.4}{57}{Tunings}{section.3.4}{}}
 \citation{cudaguide}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Tuning on block and grid dimensions}{41}{subsection.3.4.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.5}CPU/GPU Scheduling}{42}{section.3.5}}
-\newlabel{sect:cpugpuscheduling}{{3.5}{42}{CPU/GPU Scheduling}{section.3.5}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Implementation}{44}{chapter.4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces In this picture we can see what exactly happens in a certain CUDA Stream. Light violet numbered labels shows the order in which commands are issued by host to a certain stream.\relax }}{58}{figure.caption.9}}
+\newlabel{fig:singleStream}{{3.5}{58}{In this picture we can see what exactly happens in a certain CUDA Stream. Light violet numbered labels shows the order in which commands are issued by host to a certain stream.\relax }{figure.caption.9}{}}
+\citation{perfoptimize}
+\citation{cudaguide}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Tuning on block and grid dimensions}{60}{subsection.3.4.1}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Implementation}{62}{chapter.4}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chap:impl}{{4}{44}{Implementation}{chapter.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Kernels}{44}{section.4.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Repeated cosine}{45}{subsection.4.1.1}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.1}Implementation for Simple-Computation Kernel}{45}{lstlisting.4.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}Matrix multiplication}{45}{subsection.4.1.2}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.2}Implementation for Matrix Multiplication Kernel, both non-square and square}{46}{lstlisting.4.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.3}Blur Box filter}{47}{subsection.4.1.3}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.3}Implementation for Image processing Kernel (Blur Box Algorithm)}{47}{lstlisting.4.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Parallel Patterns implementation on GPU}{48}{section.4.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Stream Parallel on GPU}{48}{subsection.4.2.1}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.4}Kernel Launch configuration, ie Grid and Block dimensions setting}{49}{lstlisting.4.4}}
-\newlabel{lst:noStr}{{4.5}{49}{Data transfer host/device and kernel call, NO-CUDA Streams version}{lstlisting.4.5}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.5}Data transfer host/device and kernel call, NO-CUDA Streams version}{49}{lstlisting.4.5}}
-\newlabel{lst:str}{{4.6}{50}{Data transfer host/device and kernel call, CUDA Streams version}{lstlisting.4.6}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.6}Data transfer host/device and kernel call, CUDA Streams version}{50}{lstlisting.4.6}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.7}Host side pseudo-code: input stream + kernel launcher function}{51}{lstlisting.4.7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Data Parallel un GPU}{52}{subsection.4.2.2}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.8}Optimal Kernel launcher for Simple-Computation kernel, uses APIs to get best Block configuration}{53}{lstlisting.4.8}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}CPU and GPU Mix}{54}{section.4.3}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Experiments}{55}{chapter.5}}
+\newlabel{chap:impl}{{4}{62}{Implementation}{chapter.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Kernels}{62}{section.4.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Simple-computational kernel}{63}{subsection.4.1.1}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.1}Implementation for Simple-Computation Kernel}{63}{lstlisting.4.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}Matrix multiplication}{64}{subsection.4.1.2}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.2}Implementation for Matrix Multiplication Kernel, both non-square and square}{64}{lstlisting.4.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.3}Blur Box filter}{66}{subsection.4.1.3}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.3}Implementation for Image processing Kernel (Blur Box Algorithm)}{66}{lstlisting.4.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Parallel Patterns implementation on GPU}{67}{section.4.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Stream Parallel on GPU}{68}{subsection.4.2.1}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.4}Kernel Launch configuration, ie Grid and Block dimensions setting}{68}{lstlisting.4.4}}
+\newlabel{lst:noStr}{{4.5}{69}{Data transfer host/device and kernel call, NO-CUDA Streams version}{lstlisting.4.5}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.5}Data transfer host/device and kernel call, NO-CUDA Streams version}{69}{lstlisting.4.5}}
+\newlabel{lst:str}{{4.6}{70}{Data transfer host/device and kernel call, CUDA Streams version}{lstlisting.4.6}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.6}Data transfer host/device and kernel call, CUDA Streams version}{70}{lstlisting.4.6}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.7}Host side pseudo-code: input stream + kernel launcher function}{71}{lstlisting.4.7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Data Parallel un GPU}{72}{subsection.4.2.2}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.8}Optimal Kernel launcher for Simple-Computation kernel, uses APIs to get best Block configuration}{73}{lstlisting.4.8}}
+\citation{cudaguide}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Experiments}{75}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chap:experim}{{5}{55}{Experiments}{chapter.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Expectations}{55}{section.5.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.1}Measures: What and How}{56}{subsection.5.1.1}}
-\newlabel{lst:timers}{{5.1.1}{57}{}{lstlisting.5.-4}{}}
+\newlabel{chap:experim}{{5}{75}{Experiments}{chapter.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Expectations}{75}{section.5.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.1}Measures: What and How}{76}{subsection.5.1.1}}
+\newlabel{lst:timers}{{5.1.1}{77}{}{lstlisting.5.-4}{}}
 \citation{devblogevents}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.2}Tests setup}{61}{subsection.5.1.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.3}Speedup}{61}{subsection.5.1.3}}
-\newlabel{subs:speedup}{{5.1.3}{61}{Speedup}{subsection.5.1.3}{}}
+\citation{cudaguide}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.2}Tests setup}{81}{subsection.5.1.2}}
 \citation{structparprog}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.3}Speedup}{82}{subsection.5.1.3}}
+\newlabel{subs:speedup}{{5.1.3}{82}{Speedup}{subsection.5.1.3}{}}
 \citation{structparprog}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.4}Results: gathering and evaluation}{63}{subsection.5.1.4}}
-\newlabel{subs:resgath}{{5.1.4}{63}{Results: gathering and evaluation}{subsection.5.1.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Simple-computation kernel}{67}{section.5.2}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces Input dataset for Simple-Computation kernel, these are the input stream length for both devices.\relax }}{68}{table.caption.9}}
-\newlabel{tab:cosdata}{{5.1}{68}{Input dataset for Simple-Computation kernel, these are the input stream length for both devices.\relax }{table.caption.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Results}{71}{subsection.5.2.1}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces Device completion times for Simple-computation kernel, without using CUDA Streams, results are reported for both machines (P100 and M40).\relax }}{72}{table.caption.10}}
-\newlabel{tab:cosavgszero}{{5.2}{72}{Device completion times for Simple-computation kernel, without using CUDA Streams, results are reported for both machines (P100 and M40).\relax }{table.caption.10}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.3}{\ignorespaces Device completion times for Simple-computation kernel, using as many CUDA Streams as SM number, results are reported for both machines (P100 and M40).\relax }}{73}{table.caption.11}}
-\newlabel{tab:cosavgsSM}{{5.3}{73}{Device completion times for Simple-computation kernel, using as many CUDA Streams as SM number, results are reported for both machines (P100 and M40).\relax }{table.caption.11}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.4}{\ignorespaces Here are showed speedups for all data sets of simple-computation kernel. Results are reported for both devices.\relax }}{74}{table.caption.12}}
-\newlabel{tab:cosspeedup}{{5.4}{74}{Here are showed speedups for all data sets of simple-computation kernel. Results are reported for both devices.\relax }{table.caption.12}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Speedup for 3 and 56 CUDA streams on P100 device.\relax }}{76}{figure.caption.13}}
-\newlabel{fig:p100sp}{{5.1}{76}{Speedup for 3 and 56 CUDA streams on P100 device.\relax }{figure.caption.13}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Speedup for 3 and 56 CUDA streams on M40 device.\relax }}{76}{figure.caption.13}}
-\newlabel{fig:m40sp}{{5.2}{76}{Speedup for 3 and 56 CUDA streams on M40 device.\relax }{figure.caption.13}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Profiling for an example execution: limit for input stream 786432, kernel iterations 10 000, 24 CUDA streams, on M40 device.\relax }}{77}{figure.caption.14}}
-\newlabel{fig:cosprofiling}{{5.3}{77}{Profiling for an example execution: limit for input stream 786432, kernel iterations 10 000, 24 CUDA streams, on M40 device.\relax }{figure.caption.14}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Sublinear speedup in bigger buffers execution, the performances drop by a factor of 2.\relax }}{78}{figure.caption.15}}
-\newlabel{fig:biggerbufferspeedup}{{5.4}{78}{Sublinear speedup in bigger buffers execution, the performances drop by a factor of 2.\relax }{figure.caption.15}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Matrix Multiplication}{78}{section.5.3}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.5}{\ignorespaces Input dataset for Matrix Multiplication kernel. Above Stream parallel configuration, below Data Parallel correspondent.\relax }}{80}{table.caption.16}}
-\newlabel{tab:matdata}{{5.5}{80}{Input dataset for Matrix Multiplication kernel. Above Stream parallel configuration, below Data Parallel correspondent.\relax }{table.caption.16}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}Results}{82}{subsection.5.3.1}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.6}{\ignorespaces Device completion times for Mat-Mul kernel, without using CUDA Streams (zero streams), results are reported for both P100 and M40.\relax }}{83}{table.caption.17}}
-\newlabel{tab:matvgszero}{{5.6}{83}{Device completion times for Mat-Mul kernel, without using CUDA Streams (zero streams), results are reported for both P100 and M40.\relax }{table.caption.17}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.7}{\ignorespaces Device completion times for Mat-Mul kernel, with three CUDA Streams, results are reported for both P100 and M40.\relax }}{84}{table.caption.18}}
-\newlabel{tab:matvgsThree}{{5.7}{84}{Device completion times for Mat-Mul kernel, with three CUDA Streams, results are reported for both P100 and M40.\relax }{table.caption.18}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.8}{\ignorespaces Device completion times for Mat-Mul kernel, with as many CUDA Streams as SM number, results are reported for both P100 and M40.\relax }}{85}{table.caption.19}}
-\newlabel{tab:matvgsSM}{{5.8}{85}{Device completion times for Mat-Mul kernel, with as many CUDA Streams as SM number, results are reported for both P100 and M40.\relax }{table.caption.19}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Completion Time as the matrix order changes on M40.\relax }}{87}{figure.caption.20}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces Completion Time as the matrix order changes on P100.\relax }}{87}{figure.caption.20}}
-\newlabel{fig:matcompsize}{{5.6}{87}{Completion Time as the matrix order changes on P100.\relax }{figure.caption.20}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces Completion Time as the number of matrices changes on M40.\relax }}{88}{figure.caption.21}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces Completion Time as the number of matrices changes on P100.\relax }}{88}{figure.caption.21}}
-\newlabel{fig:matcompnum}{{5.8}{88}{Completion Time as the number of matrices changes on P100.\relax }{figure.caption.21}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.9}{\ignorespaces Here are showed speedups for all data sets of matrix multiplication kernel. Results are reported for both devices.\relax }}{89}{table.caption.22}}
-\newlabel{tab:matspeedup}{{5.9}{89}{Here are showed speedups for all data sets of matrix multiplication kernel. Results are reported for both devices.\relax }{table.caption.22}{}}
-\newlabel{fig:timeln1024}{{5.9a}{91}{Subfigure 5 5.9a}{subfigure.5.9.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.4}Results: gathering and evaluation}{83}{subsection.5.1.4}}
+\newlabel{subs:resgath}{{5.1.4}{83}{Results: gathering and evaluation}{subsection.5.1.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.5}Computation-bound and memory-bound}{87}{subsection.5.1.5}}
+\citation{optimizingcuda}
+\citation{rooflinepaper}
+\citation{rooflineslides}
+\citation{rooflinepaper}
+\citation{applyroofline}
+\citation{p100whitepaper}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Simple-computation kernel}{91}{section.5.2}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces Input dataset for Simple-Computation kernel, these are the input stream length for both devices.\relax }}{92}{table.caption.10}}
+\newlabel{tab:cosdata}{{5.1}{92}{Input dataset for Simple-Computation kernel, these are the input stream length for both devices.\relax }{table.caption.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Results}{95}{subsection.5.2.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces Device completion times for Simple-computation kernel, without using CUDA Streams, results are reported for both machines (P100 and M40).\relax }}{96}{table.caption.11}}
+\newlabel{tab:cosavgszero}{{5.2}{96}{Device completion times for Simple-computation kernel, without using CUDA Streams, results are reported for both machines (P100 and M40).\relax }{table.caption.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.3}{\ignorespaces Device completion times for Simple-computation kernel, using as many CUDA Streams as SM number, results are reported for both machines (P100 and M40).\relax }}{97}{table.caption.12}}
+\newlabel{tab:cosavgsSM}{{5.3}{97}{Device completion times for Simple-computation kernel, using as many CUDA Streams as SM number, results are reported for both machines (P100 and M40).\relax }{table.caption.12}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.4}{\ignorespaces Here are showed speedups for all data sets of simple-computation kernel. Results are reported for both devices.\relax }}{99}{table.caption.13}}
+\newlabel{tab:cosspeedup}{{5.4}{99}{Here are showed speedups for all data sets of simple-computation kernel. Results are reported for both devices.\relax }{table.caption.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Speedup for 3 and 56 CUDA streams on P100 device.\relax }}{100}{figure.caption.14}}
+\newlabel{fig:p100sp}{{5.1}{100}{Speedup for 3 and 56 CUDA streams on P100 device.\relax }{figure.caption.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Speedup for 3 and 56 CUDA streams on M40 device.\relax }}{100}{figure.caption.14}}
+\newlabel{fig:m40sp}{{5.2}{100}{Speedup for 3 and 56 CUDA streams on M40 device.\relax }{figure.caption.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Profiling for an example execution: limit for input stream 786432, kernel iterations 10 000, 24 CUDA streams, on M40 device.\relax }}{101}{figure.caption.15}}
+\newlabel{fig:cosprofiling}{{5.3}{101}{Profiling for an example execution: limit for input stream 786432, kernel iterations 10 000, 24 CUDA streams, on M40 device.\relax }{figure.caption.15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Sublinear speedup in bigger buffers execution, the performances drop by a factor of 2.\relax }}{103}{figure.caption.16}}
+\newlabel{fig:biggerbufferspeedup}{{5.4}{103}{Sublinear speedup in bigger buffers execution, the performances drop by a factor of 2.\relax }{figure.caption.16}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Matrix Multiplication}{103}{section.5.3}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.5}{\ignorespaces Input dataset for Matrix Multiplication kernel. Above Stream parallel configuration, below Data Parallel correspondent.\relax }}{104}{table.caption.17}}
+\newlabel{tab:matdata}{{5.5}{104}{Input dataset for Matrix Multiplication kernel. Above Stream parallel configuration, below Data Parallel correspondent.\relax }{table.caption.17}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}Results}{106}{subsection.5.3.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.6}{\ignorespaces Device completion times for Mat-Mul kernel, without using CUDA Streams (zero streams), results are reported for both P100 and M40.\relax }}{107}{table.caption.18}}
+\newlabel{tab:matvgszero}{{5.6}{107}{Device completion times for Mat-Mul kernel, without using CUDA Streams (zero streams), results are reported for both P100 and M40.\relax }{table.caption.18}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.7}{\ignorespaces Device completion times for Mat-Mul kernel, with three CUDA Streams, results are reported for both P100 and M40.\relax }}{108}{table.caption.19}}
+\newlabel{tab:matvgsThree}{{5.7}{108}{Device completion times for Mat-Mul kernel, with three CUDA Streams, results are reported for both P100 and M40.\relax }{table.caption.19}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.8}{\ignorespaces Device completion times for Mat-Mul kernel, with as many CUDA Streams as SM number, results are reported for both P100 and M40.\relax }}{109}{table.caption.20}}
+\newlabel{tab:matvgsSM}{{5.8}{109}{Device completion times for Mat-Mul kernel, with as many CUDA Streams as SM number, results are reported for both P100 and M40.\relax }{table.caption.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Completion Time as the matrix order changes on M40.\relax }}{111}{figure.caption.21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces Completion Time as the matrix order changes on P100.\relax }}{111}{figure.caption.21}}
+\newlabel{fig:matcompsize}{{5.6}{111}{Completion Time as the matrix order changes on P100.\relax }{figure.caption.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces Completion Time as the number of matrices changes on M40.\relax }}{112}{figure.caption.22}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces Completion Time as the number of matrices changes on P100.\relax }}{112}{figure.caption.22}}
+\newlabel{fig:matcompnum}{{5.8}{112}{Completion Time as the number of matrices changes on P100.\relax }{figure.caption.22}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.9}{\ignorespaces Here are showed speedups for all data sets of matrix multiplication kernel. Results are reported for both devices.\relax }}{113}{table.caption.23}}
+\newlabel{tab:matspeedup}{{5.9}{113}{Here are showed speedups for all data sets of matrix multiplication kernel. Results are reported for both devices.\relax }{table.caption.23}{}}
+\newlabel{fig:timeln1024}{{5.9a}{114}{Subfigure 5 5.9a}{subfigure.5.9.1}{}}
 \newlabel{sub@fig:timeln1024}{{(a)}{a}{Subfigure 5 5.9a\relax }{subfigure.5.9.1}{}}
-\newlabel{fig:timeln256}{{5.9b}{91}{Subfigure 5 5.9b}{subfigure.5.9.2}{}}
+\newlabel{fig:timeln256}{{5.9b}{114}{Subfigure 5 5.9b}{subfigure.5.9.2}{}}
 \newlabel{sub@fig:timeln256}{{(b)}{b}{Subfigure 5 5.9b\relax }{subfigure.5.9.2}{}}
-\newlabel{fig:timeln64}{{5.9c}{91}{Subfigure 5 5.9c}{subfigure.5.9.3}{}}
+\newlabel{fig:timeln64}{{5.9c}{114}{Subfigure 5 5.9c}{subfigure.5.9.3}{}}
 \newlabel{sub@fig:timeln64}{{(c)}{c}{Subfigure 5 5.9c\relax }{subfigure.5.9.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.9}{\ignorespaces NVIDIA Visual profiler generated \textit  {timeline} on M40, using 24 CUDA streams and running code for 784 matrices.\relax }}{91}{figure.caption.23}}
-\newlabel{fig:timeln}{{5.9}{91}{NVIDIA Visual profiler generated \textit {timeline} on M40, using 24 CUDA streams and running code for 784 matrices.\relax }{figure.caption.23}{}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Matrix size 1024}}}{91}{subfigure.9.1}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Matrix size 256}}}{91}{subfigure.9.2}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Matrix size 64}}}{91}{subfigure.9.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.9}{\ignorespaces NVIDIA Visual profiler generated \textit  {timeline} on M40, using 24 CUDA streams and running code for 784 matrices.\relax }}{114}{figure.caption.24}}
+\newlabel{fig:timeln}{{5.9}{114}{NVIDIA Visual profiler generated \textit {timeline} on M40, using 24 CUDA streams and running code for 784 matrices.\relax }{figure.caption.24}{}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Matrix size 1024}}}{114}{subfigure.9.1}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Matrix size 256}}}{114}{subfigure.9.2}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Matrix size 64}}}{114}{subfigure.9.3}}
 \citation{loweroccupancy}
 \citation{cudabestpractices}
-\newlabel{fig:SMuse64}{{5.10a}{92}{Subfigure 5 5.10a}{subfigure.5.10.1}{}}
+\newlabel{fig:SMuse64}{{5.10a}{116}{Subfigure 5 5.10a}{subfigure.5.10.1}{}}
 \newlabel{sub@fig:SMuse64}{{(a)}{a}{Subfigure 5 5.10a\relax }{subfigure.5.10.1}{}}
-\newlabel{fig:SMuse1024}{{5.10b}{92}{Subfigure 5 5.10b}{subfigure.5.10.2}{}}
+\newlabel{fig:SMuse1024}{{5.10b}{116}{Subfigure 5 5.10b}{subfigure.5.10.2}{}}
 \newlabel{sub@fig:SMuse1024}{{(b)}{b}{Subfigure 5 5.10b\relax }{subfigure.5.10.2}{}}
-\newlabel{fig:SMuse256}{{5.10c}{92}{Subfigure 5 5.10c}{subfigure.5.10.3}{}}
+\newlabel{fig:SMuse256}{{5.10c}{116}{Subfigure 5 5.10c}{subfigure.5.10.3}{}}
 \newlabel{sub@fig:SMuse256}{{(c)}{c}{Subfigure 5 5.10c\relax }{subfigure.5.10.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.10}{\ignorespaces NVIDIA Visual profiler generated \textit  {timeline} on M40, using 24 CUDA streams and running code for 784 matrices.\relax }}{92}{figure.caption.24}}
-\newlabel{fig:SMuse}{{5.10}{92}{NVIDIA Visual profiler generated \textit {timeline} on M40, using 24 CUDA streams and running code for 784 matrices.\relax }{figure.caption.24}{}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Matrix size 64}}}{92}{subfigure.10.1}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Matrix size 1024}}}{92}{subfigure.10.2}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Matrix size 256}}}{92}{subfigure.10.3}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.11}{\ignorespaces Nsight profiler execution on M40, 24 CUDA streams, 784 matrices of size 256. This graph gives the types and amounts of latencies inside mat-mul kernel execution.\relax }}{93}{figure.caption.25}}
-\newlabel{fig:mat62latency}{{5.11}{93}{Nsight profiler execution on M40, 24 CUDA streams, 784 matrices of size 256. This graph gives the types and amounts of latencies inside mat-mul kernel execution.\relax }{figure.caption.25}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.4}Image processing}{94}{section.5.4}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.10}{\ignorespaces Input dataset for Image Processing kernel. Above Stream parallel configuration, below the relative Data Parallel.\relax }}{95}{table.caption.26}}
-\newlabel{tab:imgdata}{{5.10}{95}{Input dataset for Image Processing kernel. Above Stream parallel configuration, below the relative Data Parallel.\relax }{table.caption.26}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.1}Results}{96}{subsection.5.4.1}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.11}{\ignorespaces Device completion times for Image processing kernel, all types of tested CUDA Streams number are reported, results are given for both P100 and M40.\relax }}{97}{table.caption.27}}
-\newlabel{tab:imgavgs}{{5.11}{97}{Device completion times for Image processing kernel, all types of tested CUDA Streams number are reported, results are given for both P100 and M40.\relax }{table.caption.27}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.12}{\ignorespaces Here are showed speedups for all data sets of image processing kernel. Results are reported for both devices.\relax }}{98}{table.caption.28}}
-\newlabel{tab:imgspeedup}{{5.12}{98}{Here are showed speedups for all data sets of image processing kernel. Results are reported for both devices.\relax }{table.caption.28}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.5}Results Summary}{98}{section.5.5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.1}Stream parallel compared to Data parallel}{99}{subsection.5.5.1}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.13}{\ignorespaces Here are showed completion time and speedup for \(48 = 2 \cdot \#SM\) CUDA Streams. \relax }}{100}{table.caption.29}}
-\newlabel{tab:cosdoublestream}{{5.13}{100}{Here are showed completion time and speedup for \(48 = 2 \cdot \#SM\) CUDA Streams. \relax }{table.caption.29}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.14}{\ignorespaces Simple-computational kernel. Comparison between completion times for stream parallel (max stream -56 and 24 respectively-) and data parallel versions. Results are reported for both devices.\relax }}{101}{table.caption.30}}
-\newlabel{tab:cosdataparVSsm}{{5.14}{101}{Simple-computational kernel. Comparison between completion times for stream parallel (max stream -56 and 24 respectively-) and data parallel versions. Results are reported for both devices.\relax }{table.caption.30}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.15}{\ignorespaces Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -56) and data parallel versions (Partial dataset is of stream version is considered). Results are reported for P100.\relax }}{103}{table.caption.31}}
-\newlabel{tab:matdataparVSsmP100}{{5.15}{103}{Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -56) and data parallel versions (Partial dataset is of stream version is considered). Results are reported for P100.\relax }{table.caption.31}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.16}{\ignorespaces Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -24-) and data parallel versions (Partial dataset is of stream version is considered). Results are reported for M40.\relax }}{104}{table.caption.32}}
-\newlabel{tab:matdataparVSsmM40}{{5.16}{104}{Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -24-) and data parallel versions (Partial dataset is of stream version is considered). Results are reported for M40.\relax }{table.caption.32}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.17}{\ignorespaces Here is showed the data parallel vs. stream parallel comparison for image processing kernel. Results are reported for both devices.\relax }}{105}{table.caption.33}}
-\newlabel{tab:imgdataparVSsm}{{5.17}{105}{Here is showed the data parallel vs. stream parallel comparison for image processing kernel. Results are reported for both devices.\relax }{table.caption.33}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Conclusions}{106}{chapter.6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.10}{\ignorespaces NVIDIA Visual profiler generated \textit  {timeline} on M40, using 24 CUDA streams and running code for 784 matrices.\relax }}{116}{figure.caption.25}}
+\newlabel{fig:SMuse}{{5.10}{116}{NVIDIA Visual profiler generated \textit {timeline} on M40, using 24 CUDA streams and running code for 784 matrices.\relax }{figure.caption.25}{}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Matrix size 64}}}{116}{subfigure.10.1}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Matrix size 1024}}}{116}{subfigure.10.2}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Matrix size 256}}}{116}{subfigure.10.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.11}{\ignorespaces Nsight profiler execution on M40, 24 CUDA streams, 784 matrices of size 256. This graph gives the types and amounts of latencies inside mat-mul kernel execution.\relax }}{117}{figure.caption.26}}
+\newlabel{fig:mat62latency}{{5.11}{117}{Nsight profiler execution on M40, 24 CUDA streams, 784 matrices of size 256. This graph gives the types and amounts of latencies inside mat-mul kernel execution.\relax }{figure.caption.26}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}Image processing}{118}{section.5.4}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.10}{\ignorespaces Input dataset for Image Processing kernel. Above Stream parallel configuration, below the relative Data Parallel.\relax }}{119}{table.caption.27}}
+\newlabel{tab:imgdata}{{5.10}{119}{Input dataset for Image Processing kernel. Above Stream parallel configuration, below the relative Data Parallel.\relax }{table.caption.27}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.1}Results}{120}{subsection.5.4.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.11}{\ignorespaces Device completion times for Image processing kernel, all types of tested CUDA Streams number are reported, results are given for both P100 and M40.\relax }}{121}{table.caption.28}}
+\newlabel{tab:imgavgs}{{5.11}{121}{Device completion times for Image processing kernel, all types of tested CUDA Streams number are reported, results are given for both P100 and M40.\relax }{table.caption.28}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.12}{\ignorespaces Here are showed speedups for all data sets of image processing kernel. Results are reported for both devices.\relax }}{122}{table.caption.29}}
+\newlabel{tab:imgspeedup}{{5.12}{122}{Here are showed speedups for all data sets of image processing kernel. Results are reported for both devices.\relax }{table.caption.29}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.5}Results Summary}{123}{section.5.5}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.13}{\ignorespaces Here are showed completion time and speedup for \(48 = 2 \cdot \#SM\) CUDA Streams. \relax }}{124}{table.caption.30}}
+\newlabel{tab:cosdoublestream}{{5.13}{124}{Here are showed completion time and speedup for \(48 = 2 \cdot \#SM\) CUDA Streams. \relax }{table.caption.30}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.1}Stream parallel compared to Data parallel}{125}{subsection.5.5.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.14}{\ignorespaces Simple-computational kernel. Comparison between completion times for stream parallel (max stream -56 and 24 respectively-) and data parallel versions. Results are reported for both devices.\relax }}{126}{table.caption.31}}
+\newlabel{tab:cosdataparVSsm}{{5.14}{126}{Simple-computational kernel. Comparison between completion times for stream parallel (max stream -56 and 24 respectively-) and data parallel versions. Results are reported for both devices.\relax }{table.caption.31}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.15}{\ignorespaces Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -56) and data parallel versions (Partial dataset is of stream version is considered). Results are reported for P100.\relax }}{128}{table.caption.32}}
+\newlabel{tab:matdataparVSsmP100}{{5.15}{128}{Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -56) and data parallel versions (Partial dataset is of stream version is considered). Results are reported for P100.\relax }{table.caption.32}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.16}{\ignorespaces Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -24-) and data parallel versions (Partial dataset is of stream version is considered). Results are reported for M40.\relax }}{129}{table.caption.33}}
+\newlabel{tab:matdataparVSsmM40}{{5.16}{129}{Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -24-) and data parallel versions (Partial dataset is of stream version is considered). Results are reported for M40.\relax }{table.caption.33}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.17}{\ignorespaces Here is showed the data parallel vs. stream parallel comparison for image processing kernel. Results are reported for both devices.\relax }}{130}{table.caption.34}}
+\newlabel{tab:imgdataparVSsm}{{5.17}{130}{Here is showed the data parallel vs. stream parallel comparison for image processing kernel. Results are reported for both devices.\relax }{table.caption.34}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Conclusions}{131}{chapter.6}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chap:conclusions}{{6}{106}{Conclusions}{chapter.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.0.2}Evaluation of the problem}{107}{subsection.6.0.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.0.3}Implementation and tests}{109}{subsection.6.0.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.0.4}Results and considerations}{110}{subsection.6.0.4}}
+\newlabel{chap:conclusions}{{6}{131}{Conclusions}{chapter.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.2}Evaluation of the problem}{132}{subsection.6.1.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.3}Implementation and tests}{135}{subsection.6.1.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.4}Results and considerations}{136}{subsection.6.1.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.5}Final remarks and further works}{138}{subsection.6.1.5}}
 \citation{cudabestpractices}
 \citation{loweroccupancy}
 \citation{loweroccupancy}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.0.5}Final remarks and further works}{112}{subsection.6.0.5}}
 \bibcite{pattersonhennessy}{1}
 \bibcite{fromCUtoOCL}{2}
 \bibcite{backtrack}{3}
@@ -246,7 +279,18 @@
 \bibcite{profilersguide}{6}
 \bibcite{nvprofarticle}{7}
 \bibcite{loweroccupancy}{8}
-\bibcite{devblogevents}{9}
-\bibcite{libevents}{10}
-\bibcite{structparprog}{11}
-\bibcite{cudabestpractices}{12}
+\bibcite{understandlatency}{9}
+\bibcite{devblogevents}{10}
+\bibcite{libevents}{11}
+\bibcite{structparprog}{12}
+\bibcite{cudabestpractices}{13}
+\bibcite{parpattbench}{14}
+\bibcite{custreamsblog}{15}
+\bibcite{cudahandbook}{16}
+\bibcite{p100whitepaper}{17}
+\bibcite{cudastrandconcurr}{18}
+\bibcite{perfoptimize}{19}
+\bibcite{rooflinepaper}{20}
+\bibcite{rooflineslides}{21}
+\bibcite{applyroofline}{22}
+\bibcite{optimizingcuda}{23}

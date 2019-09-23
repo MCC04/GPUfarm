@@ -2,40 +2,43 @@
 \chapter{Introduction}
 \pagenumbering{arabic}
 \label{chap:intro}
-In a scenario were image processing needed to get more and more sophisticated, we saw \textit{graphic processor} follow the change getting increasingly powerful, not only in computation speed but also in flexibility.
+In a scenario were image processing needed to get more and more sophisticated, we saw \textit{graphic processors} follow the change getting increasingly powerful, not only in computation speed but also in flexibility.
 
-The new elasticity given to \textbf{GPU}s made possible to exploit their benefits for a wide range of non-image-processing problems. This is the beginning of \textbf{GPGPU}s.
+The new elasticity provided by \textbf{GPU}s made possible to exploit their benefits for a wide range of non-image-processing problems. This is the beginning of \textbf{GP-GPUs} era.
 
-Despite this, enthusiasm has been slowed down when scientific community had to deal with problems that seemed to be unsuitable for GPGPUs.But when the going gets tough, the tough get going and several studies and researches showed some good results and possibilities.
-
-This gives oxygen to keep trying mapping to GPU apparently unsuitable problems and that's the core of this work too.
+Despite this, enthusiasm slowed down when scientific community had to deal with problems that seemed to be unsuitable for GP-GPUs. However, several studies and researches showed some good results and possibilities, giving oxygen to keep trying mapping to GPU apparently unsuitable problems. This is the core of this work too.
 
 \pagenumbering{arabic}
 \section{Goals}
-	The main goal of this thesis is to study GPU's behavior when used for different purposes with respect to the common ones.
-	In particular, we wanted to use a GPU to perform a code that comes closer to a \textit{\textbf{stream parallel pattern}}.	
-	Then we observed ongoings, in terms of  \textit{completion time} and \textit{speed up }.
-	We now see in detail the concepts we've just introduced.
+	The main goal of this thesis is to study the behavior of GPUs when used for different purposes, with respect to the usual ones.
+	In particular, we want to use a GPU to run code that modeled after a \textit{\textbf{stream parallel pattern}}, to understand if we can exploit \textbf{Streaming Multiprocessors} (SM) in parallel and what is the relative efficiency.\\
+	This means we'll investigate the possibility to perform stream parallelism among "small" data parallel tasks, exploiting the different Streaming Multiprocessors, available on the GP-GPU, as workers. \\
+	Then we observed ongoings, in terms of \textit{completion time} and \textit{speedup}.\\
+	The latter will consider as sequential version the case that doesn't use CUDA Streams, while the parallel version using them.
+	From these speedups we expected to see an improvement slightly below the number of used CUDA Streams, giving us an assessment on the number of used Streaming Multiprocessors.\\
+	The different experiments\footnote{Experiments will be presented in detail in Chapter \ref{chap:experim}.}, gave us results that we expected. In particular we observed that, using CUDA streams, is possible to achieve a gain proportional to the number of SMs available on a GPU. We could see this behavior especially in arithmetic-intensive applications\footnote{We'll show in Chapter \ref{chap:impl} the different applications considered and implemented in this work. Chapter \ref{chap:experim} will show all results and speedups relative to the different study cases.}.
+	
+	In next sections, we're going to show some preliminary details about the concepts we've just introduced.
 
-\subsection{GPU Architecture and Data Parallel}
-	\textbf{GPU} (\textbf{\textit{Graphics Processing Unit}}) is a co-processor, generally known as a highly parallel multiprocessor optimized for visual computing.
+\subsection{GPU Architecture and Data Parallelism}
+	\textbf{GPU} (\textbf{\textit{Graphics Processing Unit}}) is a co-processor, generally known as a highly parallel multiprocessor optimized for parallel graphics computing.
 	Compared with multicore CPUs, manycore GPUs have different architectural design points, one focused on executing many parallel threads efficiently on many cores.
-	This is achieved using simpler cores and  optimizing for data parallel behavior among  groups of threads, so more of the per-chip  transistor budget is devoted to computation \cite{pattersonhennessy}.
+	This is achieved using simpler cores and  optimizing for data parallel behavior among  groups of threads\cite{pattersonhennessy}.
 	
 	In most of situations, visual processing can be associated to a \textbf{\textit{data parallel pattern}}.
-	In general, we can roughly think to an image as a given and known amount of \textit{independent} data upon which we want to do some computations. In most of cases, once the proper granularity of the problem has been chosen, this work should be done for each portion of the image.
+	In general, we can roughly think to an image as a given and known amount of \textit{independent} data upon which we want to do the same computations on each of the different data. In most of cases, once the proper granularity of the problem has been chosen, this work should be done for each portion of the image.
 	Considering the above scenario and given that generally a GPU should have to process huge amount of data, we wish to have a lot of threads (lot of cores consequently) doing "the same things" on all data portions.
 	
 	And that's why GPUs performs their best on data parallel problems. 
 
 \subsection{Other Applications}
 \label{subs:otherApps}
-	However in recent years we're moving to \textbf{GPGPUs} (\textbf{\textit{General-purpose computing on graphics processing units}}).
-	In other words, lately GPUs have been used for other applications than graphics processing.
+	However in recent years we're moving to \textbf{GP-GPUs} (\textbf{\textit{General-purpose computing on graphics processing units}}).
+	In other words, lately GPUs have been used for applications other than graphics processing.
 	
 	
-	One of the first attempts of non-graphical computations on a GPU was a matrix-matrix multiply. In 2001, low-end graphics cards had no floating-point support; floating-point color buffers arrived in 2003.
-	For the scientific community, the addition of floating point, meant no more problems on fixed-point arithmetic overflow. 
+	One of the first attempts of executing non-graphical computations on a GPU was a matrix-matrix multiply. In 2001, low-end graphics cards had no floating-point support; floating-point color buffers arrived in 2003.
+	For the scientific community the addition of floating point meant no more problems on fixed-point arithmetic overflow. 
 	
 	Other computational advances were possible thanks to programmable shaders, that broke the rigidity of the fixed graphics pipeline (for example LU factorization with partial pivoting on a GPU was one of the first common kernels, that ran faster than an optimized CPU implementation).
 	
@@ -43,72 +46,106 @@ This gives oxygen to keep trying mapping to GPU apparently unsuitable problems a
 	
 	In our work we took advantage of CUDA features  \footnote{We'll show some further informations about CUDA in \hyperref[sect:tools]{Section 1.4}.}. \\
 	
-	One thing we should point out from GPGPUs birth: initially scientific applications on GPGPUs started from matrix (or vector) computations, that mainly could be referred to as \textbf{\textit{data parallel problems}}.
+	One thing we should point out from GP-GPUs birth: initially scientific applications on GP-GPUs started from matrix (or vector) computations, that mainly could be referred to as \textbf{\textit{data parallel problems}}.
 	But over time scientific community felt the need to cover other applications, that not necessarily fit data parallel model.
 	
 	In particular some of latest researches are moving towards \textbf{\textit{Task parallel}} applications (sometimes also known as \textit{Irregular-Workloads parallel patterns}).\\
 	
 	An example of non-data parallel problem is the \textit{backtracking paradigm}.
-	It's oftentimes at the core of compute-and-memory-intensive problems and we can find its application in: constraint satisfaction in AI, maximal clique enumeration in graph mining, k-d tree traversal for ray tracing in graphics.
+	It's often at the core of compute-and-memory-intensive problems and we can find its application in different cases, such as: constraint satisfaction in AI, maximal clique enumeration in graph mining and k-d tree traversal for ray tracing in graphics.
 	
-	Some computational motifs perform effectively on a GPU, while the effectiveness of others is still an open issue. 		
+	Some computational parallel patterns perform effectively on a GPU, while the effectiveness of others is still an open issue. 		
 	In several studies it was highlighted that memory-bound algorithms on the GPU perform at the same level or worse than the corresponding CPU implementation. 
 	
-	In particular a task-parallel system should:
+	Task-parallel systems must deal with different situations with respect to those present in data parallelism, e.g.:
 	\begin{itemize}
 		\item Handle divergent workflows;
 		\item Handle irregular parallelism;
 		\item Respect dependencies between tasks;
-		\item Load balance all of this.
+		\item Implementing efficient load balancing.
 	\end{itemize}
 	
 	Those requirements can lead to inefficient use of the GPU memory hierarchy and SIMD-optimized GPU multi-processors.
 	
-	However, there have been backtracking-based or other task-parallel algorithms successfully mapped onto the GPU: the most visible example is in \textit{ray tracing} rendering technique; another is \textit{H.264 Intra Prediction} video compression encoding; \textit{Reyes Rendering}; Deferred Lighting.
+	However, there have been backtracking-based or other task-parallel algorithms successfully mapped onto the GPU: the most visible example is in \textit{ray tracing} rendering technique; other examples are \textit{H.264 Intra Prediction} video compression encoding, \textit{Reyes Rendering} and Deferred Lighting.
 		
-	But, in general, we	cannot expect an order of magnitude increase in performance. Rather, a more realistic goal is to perform at one-two times the CPU performance, which opens up the possibility of building future non-data-parallel algorithms on heterogeneous hardware (such as CPU-GPU clusters) and performing workload-based optimizations	\cite{backtrack}.
+	However, in general we cannot expect an order of magnitude increase in performance. Rather, a more realistic goal is to perform at one-two times the CPU performance, which opens up the possibility of building future non-data-parallel algorithms on heterogeneous hardware (such as CPU-GPU clusters) and performing workload-based optimizations	\cite{backtrack}.
  
 
 \subsection{GP-GPUs and Stream Parallel}
+\label{subs:gpgpustreampar}
 	In this work we were interested to a particular type of task parallelism:
 	\textbf{\textit{Stream parallelism}}.
 	
-	This means that our tasks are elements of an input stream, of which we don't know a priori the length or the emission rate.\\
-	Once the stream elements are available, parallel workers will make independent computations over them and, finally, the manipulated elements will become the output stream.\\
-	We recall as main stream parallel patterns \textbf{\textit{Farm}} and \textit{Pipeline}, the former is the object of this work.\\
+	This means that our tasks are elements of an input stream, of which we don't know a priori the length or the interval times between tasks.\\
+	Once the stream elements are available, parallel workers will make independent computations over them and, finally, the manipulated elements should be delivered to some output stream.\\
+	We recall as main stream parallel patterns the \textbf{\textit{Farm}} and the \textit{Pipeline}, the former being the main subject in this work.\\
 	
-	The \textbf{Farm parallel pattern} is used to model embarrassingly parallel computations. \\The only functional parameter of a farm is the function \(f\) needed to compute the single task.
-	Given a stream of input tasks \cite{spm}
-	\begin{center}
-		\(x_m , . . . , x_1\)\\
-	\end{center}
-	the farm with function \(f\) computes the output stream as
-	\begin{center}
-		\(f ( x_m ), . . . , f ( x_1 )\)
-	\end{center}
-	%Its parallel semantics ensures it will process the single task in a time close to the time needed to compute \(f\) sequentially. The time between the delivery of two different task results, instead, can be made close to the time spent to compute f sequentially divided by the number of parallel agents used to execute the farm, i.e. its parallelism degree 52 .
-			
-	It's not difficult to see that Farm pattern is really similar to a data parallel problem (in this case a \textit{Map Pattern}). The key difference resides in the input/output data type:
+	The \textbf{Farm parallel pattern}\footnote{The Farm parallel pattern will be seen in detail in Chapter \ref{chap:logic}.} is used to model embarrassingly parallel computations. \\
+	
+	This pattern computes in parallel the same  function \(f:\alpha\rightarrow\beta\) over all the items  appearing in an input stream of type \(\alpha\) \texttt{stream} delivering the results on the output stream of type \(\beta\) \texttt{stream}.\\
+	The model of computation of the task-farm pattern consists of three logical entities:  the \textit{Emitter}, that is in charge of accepting input data streams and to assign the data to the Workers; a pool of \textit{Workers} which compute the function \textit{f} in  parallel over different stream elements; the \textit{Collector} that non-deterministically  gathers Workers' partial results and  eventually produces the final result.\\
+	
+	The Emitter, the set of Workers and the Collector interact in a pipeline way using a data-flow model which can be implemented in several different ways depending on the target platform.  For example, the Emitter and Collector, could be implemented in a centralized way using a single thread, or in a partially or fully distributed way.\\
+	Farm's workers can be any other patterns.
+	%An  interesting  result  concerning  composition  ofpipeandfarmpatterns is the following [16]:pipe(seq(f1), seq(f2))≡farm(seqcomp(f1,f2), n)wherenis a non-functional parameter representing the num-ber  of  Workers  in  thefarmpattern.   
+	In the general case, input/output data ordering may be altered due to the different relative speeds of the workers executing the distinct stream items. If ordering is important, it can be enforced by the Collector or by the scheduling/gathering policies of the farm pattern.  
+	%We callofarmthe instance of thefarmpattern that preserves input/output ordering.
+	
+	\textit{Master-Worker} is a specialization of the task-farm pattern where the Emitter and Collector are collapsed in a single entity (called \textit{master}).\\
+	The Workers deliver computed results back to the master. The master schedules received input tasks toward the pool of workers trying to balance their workload \cite{parpattbench}.\\\\
+	
+	In the case of this thesis, we exploited SMs as Farm Workers, each computing one or more kernel executions, so the function \(f\), in our case, is given by the kernel code. Furthermore we assumed that Emitter and Collector were both managed by CPU-side.\\
+	This means that we considered \textit{GPU as Worker} and \textit{CPU as Master}, in particular our implementation is roughly organized as follows:
+	\begin{itemize}
+		\item \textit{\textbf{host-side} code} (code executed by CPU) manages input stream and forwards items to GPU according to \textit{Round-Robin} scheduling policy, furthermore host manages results arriving from GPU;
+		\item \textit{\textbf{device-side} code} (code executed by GPU) mainly executes the worker function \textit{f}, here called \textit{kernel}\footnote{In Chapter \ref{chap:tools} kernels will be explained, together with other main features from CUDA C++ language.}.
+	\end{itemize}
+	Since each kernel call is executed by a certain SM, we assumed Streaming Multiprocessors as workers.\\\\
+	
+	For completeness, we also briefly introduce \textit{data parallelism}. It refer to those problems where more workers perform the same task on different portion of data.\\
+	Generally this is achieved when we have different parallel entities (e.g. threads), such that they execute the same code on different parts of the input data structure.\\
+	
+	One of the most important data parallel pattern, is \textit{Map}. It computes a given function \(f:\alpha\rightarrow\beta\) over all the  data items of an input collection whose elements have type \(\alpha\). The  produced output is a collection of items of type \(\beta\).  Given the input collection \(x_{1},x_{2},...,x_{N}\), the output collection is \(y_{1},y_{2},...,y_{N}\) where \(y_{i}=f(xi)\) for \(i=1,2,...,N\).\\
+	Here each data item in the input collection is  independent from the other items, so all the  elements can be computed in parallel \cite{parpattbench}.\\
+	
+	The model of computation of the map pattern is very similar to the one described for the farm pattern.\\
+	The key difference is in the input/output data type:
 	\begin{itemize}			
-		\item \textit{data structures} for Data parallel patterns;
+		\item \textit{data structures} for Map;
 		\item \textit{streams of items} for Farm.
 	\end{itemize}
+	So, the farm pattern works on streams of independent data (a stream may be unbounded), while the map pattern receives a data collection, of a fixed number of items, that is partitioned among the available computing resources.
+
+	The above difference points out one of the main problems of this work: the \textit{Data Transfer times} between\\ \textit{\textbf{host memory}} (CPU side) and \textit{\textbf{device memory}} (GPU side), and vice versa.\\ 
+	In particular, host/device memory copies  overhead is a problem because:
+	\begin{itemize}
+		\item it represents an amount of time spent in memory operations, instead of necessary computations;
+		\item it introduces host/device synchronizations, for example GPU waits for input data copy to end and CPU waits for output data to be fully copied back\footnote{We'll see in Chapters \ref{chap:tools}-\ref{chap:logic} that we'll try to hide this overload by using asynchronous calls.}.
+	\end{itemize}
+	So data transfers, may represent a bottleneck, especially with respect to the arrival rate of input stream items.
 	
-	This reveal the main problem of this work, that is the \textit{Data Transfer times} between\\ \textit{\textbf{host memory}} (CPU side) and \textit{\textbf{device memory}} (GPU side), and vice versa.\\ We'll show in detail all aspects of this and other minor problems, together with respective solutions, in \hyperref[chap:logic]{Chapter 3}.
+	
+	We'll show in detail all aspects of this and other minor problems, together with respective solutions, in \hyperref[chap:logic]{Chapter 3}.
 
 \section{Expectations}
-	The main expectation was to show that a not suitable problem, such as Farm parallel pattern, could fit in a GPU. 
-	In other words we wanted to see that, running on GPU our streaming parallel code, it could take an advantage near the order of the number of \textbf{SMs} (\textit{\textbf{Streaming Multiprocessors}}).\\
+	The main expectation was to show that a not suitable problem, such as Farm parallel pattern, could fit in a GPU.\\
+	It's important to point out that, in particular, we're modeling a Streaming parallel pattern having small data parallel portions as tasks.\\
+	In other words, running on GPU our streaming parallel code, it calls a stream of light kernels, each computing a small data parallel task.\\
+	Then we wanted to see that in this way we could take an advantage near the order of the number of \textbf{SMs} (\textit{\textbf{Streaming Multiprocessors}}).\\
+
 	Looking closer at that this expected results, it means that:
 	\begin{itemize}
-		\item Data transfer time had in some way to be hidden behind Computation time; 
+		\item Data transfer time has to be hidden, in some way, by computation time;
 		
-		\item The GPU had to achieve a full \textit{Occupancy} \footnote{We'll insist on occupancy topic in \hyperref[chap:logic]{Chapter 3}.}.\\
+		\item Kernel executions should take enough time in computations, in order to have chances to achieve overlapping between different kernel executions;
+		
+		\item The GPU had to achieve a good \textit{Occupancy} \footnote{We'll insist on occupancy topic in \hyperref[chap:logic]{Chapter 3}.}.\\
 	\end{itemize}
-	Once we could gain these two factors, no matter what kind of feature GPU has, we expected to get a \(Speedup \approx number \: of \: SMs \).
+	Once we could achieve these factors, no matter what kind of feature GPU has, we expected to get a \(Speedup \approx number \: of \: SMs \).
 	The reason why we wanted to see such a speedup is all about gaining some advantages with respect to CPU processing:
 	\begin{itemize}
-		\item We can delegate our streaming problems to the GPU while the CPU can compute other things, this allow the CPU to not being saturated (especially when stream has high throughput or each element require high computation intensity); 
+		\item We can delegate streaming problems to the GPU while the CPU can compute other things, this allows to not saturate the CPU (especially when stream has high throughput or each element requires high computation intensity); 
 		
 		\item We can split the amount of work between CPU and GPU, the best would be to give respective quantities based on completion time \footnote{See \hyperref[sect:cpugpuscheduling]{Section 3.5}};
 	 
@@ -118,11 +155,22 @@ This gives oxygen to keep trying mapping to GPU apparently unsuitable problems a
 
 	
 \section{Results}
-Put a summary on results here.\\
-
+	At this point, it was useful to experiment different applications, i.e. different kernels codes. More precisely we implemented three types:
+	\begin{itemize}
+		\item Compute-bound, where the amount of computations, performed by the kernel, is  greater than the amount of memory operations;
+		\item Memory-bound, dominated by memory operations;
+		\item Divergent flows (and memory bound too), this means we have a kernel with a lot of branching code\footnote{Chapter \ref{chap:experim} explains details about compute-bound, memory-bound and divergent flows in kernels.}.
+	\end{itemize}
+	In the case of our kernels, memory-bound operations are mainly given by load/store from/to the Global Memory\footnote{In Chapter \ref{chap:tools} we'll see an overview on the memory organization in GPUs.}.
+	
+	We observed that compute-bound kernel gave us the expected results for GPU Farm, that is gaining a good overlap between kernel executions and, so, a speedup proportional to SMs number.\\
+	While memory-bound gave a really low amount of overlap an speedup, even worst for the divergent flow case, where we had no speedup at all.\\
+	Anyway, the above results represent what we expected.
+	
+	
 \section{Tools}
 \label{sect:tools}
-	As mentioned in \hyperref[subs:otherApps]{Subsection 1.1.2} we exploited NVIDIA's CUDA Toolkit. 
+	As mentioned in \hyperref[subs:otherApps]{Subsection 1.1.2} we mainly exploited NVIDIA's CUDA Toolkit. 
 	\footnote{In \hyperref[chap:tools]{Chapter 2} will be shown all features and details about the aforementioned tools.}	
 	In particular:
 	\begin{itemize}
@@ -146,10 +194,10 @@ Put a summary on results here.\\
 		\item \textit{Gedit} for Python scripts.\\\\
 	\end{itemize}
 		
-In next chapters all notions presented in this introduction will be seen in depth.\\
-In Chapter 2 there will be an accurate description of all employed tools and how they were used.\\
-We'll enter in the core of this work in Chapter 3, where we'll see the logic of the project, with both written and graphical illustrations. In other words here we point out the main ideas and concerns behind our approach and solutions.\\
-In Chapter 4 will be presented and explained main implementation choices and there will be listed some fundamental part of the code.\\ 
-Then in Chapter 5 will be shown either how experiments and test were set, obtained results and some respective plots.\\
-And we'll end up with Conclusions and some final remarks. 
+In next chapters all the concepts briefly outlined in this introduction will be discussed in depth.\\
+Chapter 2 introduces an accurate description of all employed tools and how they were used.\\
+Then Chapter 3 explains the logic of the project, with both text and graphical illustrations. In other words here we point out the main ideas and concerns behind our approach and solutions.\\
+Chapter 4 presents and explains main implementation choices and there will be listed some fundamental part of the code.\\ 
+Then Chapter 5 shows either how experiments and test are set, obtained results and some respective plots.\\
+Finally, conclusions give an overall view of the thesis and some final remarks. 
 % chapter intro (end)
