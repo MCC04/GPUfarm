@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2018.11.16)  23 SEP 2019 18:58
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2018.11.16)  27 SEP 2019 01:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1206,92 +1206,73 @@ l.20
       [1
 
 ] [2]
-Underfull \hbox (badness 10000) in paragraph at lines 47--48
+Underfull \hbox (badness 10000) in paragraph at lines 41--44
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 45--46
 
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 52--53
-
- []
-
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 62.
-(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 49.
+ (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 62.
- [4]
-Underfull \hbox (badness 10000) in paragraph at lines 80--83
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 49.
+
+
+LaTeX Font Warning: Font shape `OT1/cmss/m/it' in size <10> not available
+(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 54.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 53--55
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 84--85
+Underfull \hbox (badness 10000) in paragraph at lines 56--60
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 86--88
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 61--64
 
  []
 
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 95--97
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 95--97
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 104--105
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 104--105
+Underfull \hbox (badness 10000) in paragraph at lines 91--94
 
  []
 
 [6]
-Underfull \hbox (badness 10000) in paragraph at lines 106--108
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 109--111
+Underfull \hbox (badness 10000) in paragraph at lines 105--107
 
  []
 
 [7]
-Underfull \hbox (badness 10000) in paragraph at lines 132--136
+Underfull \hbox (badness 10000) in paragraph at lines 114--115
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 143--144
+Underfull \hbox (badness 10000) in paragraph at lines 120--122
 
  []
 
 [8]
-
-LaTeX Warning: Hyper reference `sect:cpugpuscheduling' on page 9 undefined on i
-nput line 150.
-
-[9] [10]
-Underfull \hbox (badness 10000) in paragraph at lines 194--195
+Underfull \hbox (badness 10000) in paragraph at lines 143--147
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 194--195
+[9] [10] [11]
+Underfull \hbox (badness 10000) in paragraph at lines 204--205
 
  []
 
-) (./chaps/2/2.tex [11]
+) (./chaps/2/2.tex [12]
 Chapter 2.
 
 Underfull \hbox (badness 10000) in paragraph at lines 19--20
@@ -1303,299 +1284,278 @@ Underfull \hbox (badness 10000) in paragraph at lines 19--20
 
  []
 
-[12
+[13
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 27--28
-
- []
-
-
 Overfull \hbox (36.65608pt too wide) in paragraph at lines 32--81
 [][] 
  []
 
 
-Overfull \hbox (7.72865pt too wide) in paragraph at lines 88--91
+Overfull \hbox (7.72865pt too wide) in paragraph at lines 89--92
 \OT1/cmr/m/n/12 The NVIDIA GPU ar-chi-tec-ture is built around a scal-able ar-r
 ay of mul-ti-threaded \OT1/cmr/bx/n/12 Stream-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 92--94
+Underfull \hbox (badness 10000) in paragraph at lines 93--95
 
  []
 
-[13] [14] [15]
-Underfull \hbox (badness 10000) in paragraph at lines 112--121
+[14] [15] [16]
+Underfull \hbox (badness 10000) in paragraph at lines 115--124
 
  []
-
-[16]
-Underfull \hbox (badness 10000) in paragraph at lines 136--137
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 139--140
-
- []
-
-<images/cudaSMs.png, id=480, 654.445pt x 582.175pt>
-File: images/cudaSMs.png Graphic file (type png)
- <use images/cudaSMs.png>
-Package pdftex.def Info: images/cudaSMs.png used on input line 157.
-(pdftex.def)             Requested size: 354.86412pt x 315.67566pt.
 
 [17]
-
-LaTeX Font Warning: Font shape `OT1/cmss/m/it' in size <10> not available
-(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 170.
-
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 167--172
+Underfull \hbox (badness 10000) in paragraph at lines 139--146
 
  []
 
-[18 <./images/cudaSMs.png>] [19]
-<images/streams-copy-engine.png, id=507, 1027.84pt x 579.16376pt>
-File: images/streams-copy-engine.png Graphic file (type png)
+<images/cudaSMs.png, id=521, 654.445pt x 582.175pt>
+File: images/cudaSMs.png Graphic file (type png)
+ <use images/cudaSMs.png>
+Package pdftex.def Info: images/cudaSMs.png used on input line 160.
+(pdftex.def)             Requested size: 354.86412pt x 315.67566pt.
 
-<use images/streams-copy-engine.png>
-Package pdftex.def Info: images/streams-copy-engine.png used on input line 186.
+[18] [19 <./images/cudaSMs.png>] [20]
+<images/copy-engine.jpg, id=552, 726.715pt x 137.51375pt>
+File: images/copy-engine.jpg Graphic file (type jpg)
 
-(pdftex.def)             Requested size: 354.86412pt x 199.96194pt.
+<use images/copy-engine.jpg>
+Package pdftex.def Info: images/copy-engine.jpg used on input line 188.
+(pdftex.def)             Requested size: 443.57848pt x 83.93782pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 190--193
+Underfull \hbox (badness 10000) in paragraph at lines 192--195
 
  []
 
-[20 <./images/streams-copy-engine.png>] [21]
-<images/gridblocks.png, id=532, 803.0pt x 1007.765pt>
+[21 <./images/copy-engine.jpg>]
+<images/Memory-model-CUDA-memory-hierarchy.jpeg, id=571, 91.48102pt x 103.67848
+pt>
+File: images/Memory-model-CUDA-memory-hierarchy.jpeg Graphic file (type jpg)
+ <use images/Memory-model-CUDA-memory-hierarchy.jpeg>
+Package pdftex.def Info: images/Memory-model-CUDA-memory-hierarchy.jpeg used on
+ input line 209.
+(pdftex.def)             Requested size: 310.50357pt x 351.94998pt.
+ [22]
+<images/gridblocks.png, id=582, 803.0pt x 1007.765pt>
 File: images/gridblocks.png Graphic file (type png)
 
 <use images/gridblocks.png>
-Package pdftex.def Info: images/gridblocks.png used on input line 227.
+Package pdftex.def Info: images/gridblocks.png used on input line 237.
 (pdftex.def)             Requested size: 257.27632pt x 322.89119pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 221--230
+Underfull \hbox (badness 10000) in paragraph at lines 231--240
 
  []
 
-[22]
-Underfull \hbox (badness 1939) in paragraph at lines 234--241
+[23 <./images/Memory-model-CUDA-memory-hierarchy.jpeg>]
+Underfull \hbox (badness 1939) in paragraph at lines 244--251
 \OT1/cmr/m/n/12 In prac-tice \OT1/cmtt/m/n/12 threadIdx \OT1/cmr/m/n/12 is a 3-
 
  []
 
-[23 <./images/gridblocks.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 264--268
+[24 <./images/gridblocks.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 274--289
 
  []
 
-[24]
-Underfull \hbox (badness 10000) in paragraph at lines 275--277
-
- []
-
-[25]
-Underfull \hbox (badness 10000) in paragraph at lines 313--313
-[][][]\OT1/cmss/m/n/10 NVCC doc-u-men-ta-tion: https://docs.nvidia.com/cuda/cud
-a-compiler-driver-
- []
-
-[26]
+[25] [26]
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 335.
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 314.
  [27] [28] [29]
-Underfull \hbox (badness 10000) in paragraph at lines 377--378
+Underfull \hbox (badness 10000) in paragraph at lines 380--381
 
  []
 
-[30]
+[30] [31]
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 403.
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 404.
  (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2013/08/26 1.5b listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2013/08/26 1.5b listings language file
-) [31] [32]
+) [32]
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2013/08/26 1.5b listings language file
-) [33] [34])
-(./chaps/3/3.tex [35]
+)
+Underfull \hbox (badness 10000) in paragraph at lines 448--451
+
+ []
+
+[33] [34] [35]) (./chaps/3/3.tex [36]
 Chapter 3.
-[36
+[37
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 29--35
+Underfull \hbox (badness 10000) in paragraph at lines 26--27
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 36--38
+Underfull \hbox (badness 10000) in paragraph at lines 37--40
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 42--43
-
- []
-
-[37]
-Underfull \hbox (badness 10000) in paragraph at lines 50--53
+Underfull \hbox (badness 10000) in paragraph at lines 41--45
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 54--55
+Underfull \hbox (badness 10000) in paragraph at lines 41--45
 
  []
 
-[38] [39]
-Underfull \hbox (badness 10000) in paragraph at lines 91--94
-
- []
-
-[40] [41]
-Underfull \hbox (badness 10000) in paragraph at lines 134--135
+[38]
+Underfull \hbox (badness 10000) in paragraph at lines 52--54
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 136--141
+Underfull \hbox (badness 10000) in paragraph at lines 55--56
 
  []
 
-[42]
+[39] [40]
+Underfull \hbox (badness 10000) in paragraph at lines 89--92
 
-LaTeX Warning: Hyper reference `subs:stream' on page 43 undefined on input line
- 153.
+ []
 
-[43] <images/3Streams.jpg, id=838, 881.2925pt x 192.72pt>
+[41] [42]
+Underfull \hbox (badness 10000) in paragraph at lines 135--136
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 137--142
+
+ []
+
+[43]
+
+LaTeX Warning: Hyper reference `subs:stream' on page 44 undefined on input line
+ 154.
+
+[44] <images/3Streams.jpg, id=891, 881.2925pt x 192.72pt>
 File: images/3Streams.jpg Graphic file (type jpg)
 
 <use images/3Streams.jpg>
 Package pdftex.def Info: images/3Streams.jpg used on input line 165.
 (pdftex.def)             Requested size: 443.57848pt x 97.00081pt.
- [44 <./images/3Streams.jpg>] [45]
+ [45 <./images/3Streams.jpg>] [46]
 Underfull \hbox (badness 10000) in paragraph at lines 198--201
 
  []
 
-[46]
-Underfull \hbox (badness 10000) in paragraph at lines 225--228
+[47]
+Underfull \hbox (badness 10000) in paragraph at lines 223--226
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 232--236
+[48]
+Underfull \hbox (badness 10000) in paragraph at lines 230--234
 
  []
 
-[47] [48] [49] [50] <images/H2D.jpg, id=922, 824.07875pt x 472.76625pt>
+[49] [50] [51] <images/H2D.jpg, id=988, 824.07875pt x 472.76625pt>
 File: images/H2D.jpg Graphic file (type jpg)
 
 <use images/H2D.jpg>
-Package pdftex.def Info: images/H2D.jpg used on input line 314.
+Package pdftex.def Info: images/H2D.jpg used on input line 312.
 (pdftex.def)             Requested size: 443.57848pt x 254.47481pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 319--321
+Underfull \hbox (badness 10000) in paragraph at lines 317--319
 
  []
 
-[51] <images/overallLogic.jpg, id=940, 1044.90375pt x 689.57625pt>
+[52] [53 <./images/H2D.jpg>]
+<images/overallLogic.jpg, id=1009, 1044.90375pt x 689.57625pt>
 File: images/overallLogic.jpg Graphic file (type jpg)
 
 <use images/overallLogic.jpg>
-Package pdftex.def Info: images/overallLogic.jpg used on input line 330.
+Package pdftex.def Info: images/overallLogic.jpg used on input line 328.
 (pdftex.def)             Requested size: 647.83363pt x 427.53285pt.
 
 
-LaTeX Warning: Float too large for page by 27.51378pt on input line 333.
+LaTeX Warning: Float too large for page by 27.51378pt on input line 331.
 
-[52 <./images/H2D.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 342--346
-
+[54] [55 <./images/overallLogic.jpg>]
+Overfull \hbox (19.1961pt too wide) in paragraph at lines 349--351
+\OT1/cmtt/m/n/12 cudaMemcpyAsync( devTask, hostTask, bytes, cudaMemcpyHostToDev
+ice,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 342--346
-
+Overfull \hbox (19.1961pt too wide) in paragraph at lines 354--356
+\OT1/cmtt/m/n/12 cudaMemcpyAsync( devTask, hostTask, bytes, cudaMemcpyHostToDev
+ice,
  []
 
-[53] [54 <./images/overallLogic.jpg>]
-Overfull \hbox (43.89612pt too wide) in paragraph at lines 352--354
-\OT1/cmtt/m/n/12 cudaMemcpyAsync( devBuffer, hostBuffer, bytes, cudaMemcpyHostT
-oDevice,
- []
-
-
-Overfull \hbox (43.89612pt too wide) in paragraph at lines 357--359
-\OT1/cmtt/m/n/12 cudaMemcpyAsync( devBuffer, hostBuffer, bytes, cudaMemcpyHostT
-oDevice,
- []
-
-<images/logicLegenda.jpg, id=967, 263.98625pt x 502.87875pt>
+<images/logicLegenda.jpg, id=1031, 263.98625pt x 502.87875pt>
 File: images/logicLegenda.jpg Graphic file (type jpg)
 
 <use images/logicLegenda.jpg>
-Package pdftex.def Info: images/logicLegenda.jpg used on input line 373.
-(pdftex.def)             Requested size: 221.78923pt x 422.492pt.
+Package pdftex.def Info: images/logicLegenda.jpg used on input line 367.
+(pdftex.def)             Requested size: 177.42868pt x 337.98593pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 364--376
-
- []
-
-[55]
-Underfull \hbox (badness 10000) in paragraph at lines 380--381
+Underfull \hbox (badness 10000) in paragraph at lines 361--370
 
  []
 
-[56 <./images/logicLegenda.jpg>]
-<images/singleStream.jpg, id=991, 884.30376pt x 355.3275pt>
+[56]
+Underfull \hbox (badness 10000) in paragraph at lines 370--374
+
+ []
+
+[57 <./images/logicLegenda.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 378--379
+
+ []
+
+<images/singleStream.jpg, id=1057, 884.30376pt x 355.3275pt>
 File: images/singleStream.jpg Graphic file (type jpg)
 
 <use images/singleStream.jpg>
-Package pdftex.def Info: images/singleStream.jpg used on input line 397.
+Package pdftex.def Info: images/singleStream.jpg used on input line 395.
 (pdftex.def)             Requested size: 495.20673pt x 198.98203pt.
 
-Overfull \hbox (51.62825pt too wide) in paragraph at lines 397--398
+Overfull \hbox (51.62825pt too wide) in paragraph at lines 395--396
 [][] 
  []
 
-
-Overfull \hbox (14.91559pt too wide) in paragraph at lines 408--409
+[58]
+Overfull \hbox (14.91559pt too wide) in paragraph at lines 406--407
 []\OT1/cmr/m/n/12 It was im-por-tant to think about a gen-eral logic, that wasn
 't architecture-dependent[][][][][]; 
  []
 
-[57] [58 <./images/singleStream.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 434--437
+[59 <./images/singleStream.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 432--435
 
  []
 
-[59] [60]) (./chaps/4/4.tex [61]
+[60] [61]) (./chaps/4/4.tex [62]
 Chapter 4.
-[62
+[63
 
-] [63] [64] [65] [66] [67] [68] [69]
+] [64] [65] [66] [67] [68] [69] [70]
 Underfull \hbox (badness 10000) in paragraph at lines 225--229
 
  []
 
-[70] [71] [72] [73]) (./chaps/5/5.tex [74]
+[71] [72] [73] [74]) (./chaps/5/5.tex [75]
 Chapter 5.
-[75
+[76
 
-] [76]
+] [77]
 Underfull \hbox (badness 10000) in paragraph at lines 36--40
 
  []
 
-[77] [78]
+[78] [79]
 Overfull \hbox (31.02795pt too wide) in paragraph at lines 110--112
 \OT1/cmr/m/n/12 A prob-lem with us-ing host-device syn-chro-niza-tion points, s
 uch as \OT1/cmtt/m/n/12 cudaDeviceSynchronize()\OT1/cmr/m/n/12 ,
@@ -1608,37 +1568,37 @@ r/m/n/12 and are cre-ated and de-stroyed with \OT1/cmtt/m/n/12 cudaEventCreate(
 )
  []
 
-[79] [80]
+[80] [81]
 Underfull \hbox (badness 10000) in paragraph at lines 138--140
 
  []
 
-[81]
+[82]
 Underfull \hbox (badness 10000) in paragraph at lines 178--180
 
  []
 
-[82]
+[83]
 Underfull \hbox (badness 10000) in paragraph at lines 207--208
 
  []
 
-[83]
+[84]
 Underfull \hbox (badness 10000) in paragraph at lines 217--218
 
  []
 
-[84]
+[85]
 Underfull \hbox (badness 10000) in paragraph at lines 240--241
 
  []
 
-[85] [86] [87]
+[86] [87] [88]
 Underfull \hbox (badness 10000) in paragraph at lines 309--311
 
  []
 
-[88]
+[89]
 Underfull \hbox (badness 10000) in paragraph at lines 320--323
 
  []
@@ -1648,19 +1608,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 329--334
 
  []
 
-[89]
+[90]
 Underfull \hbox (badness 10000) in paragraph at lines 335--340
 
  []
 
-[90]
+[91]
 Overfull \hbox (0.83997pt too wide) in paragraph at lines 364--392
 []\OT1/cmr/m/n/12 Another im-por-tant pa-ram-e-ter is the Block size that we se
 t to $\OML/cmm/m/it/12 BLOCK \OT1/cmr/m/n/12 = (1024\OML/cmm/m/it/12 ; \OT1/cmr
 /m/n/12 1\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 1)$.
  []
 
-[91] [92] [93] [94]
+[92] [93] [94] [95]
 Underfull \hbox (badness 10000) in paragraph at lines 541--547
 
  []
@@ -1675,19 +1635,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 541--547
 
  []
 
-[95] [96] [97]
+[96] [97] [98]
 Underfull \hbox (badness 10000) in paragraph at lines 548--551
 
  []
 
-<plots/figure_25.png, id=1563, 586.8324pt x 442.2924pt>
+<plots/figure_25.png, id=1630, 586.8324pt x 442.2924pt>
 File: plots/figure_25.png Graphic file (type png)
 
 <use plots/figure_25.png>
 Package pdftex.def Info: plots/figure_25.png used on input line 603.
 (pdftex.def)             Requested size: 410.77988pt x 309.60257pt.
 
-<plots/figure_26.png, id=1564, 586.8324pt x 442.2924pt>
+<plots/figure_26.png, id=1631, 586.8324pt x 442.2924pt>
 File: plots/figure_26.png Graphic file (type png)
 
 <use plots/figure_26.png>
@@ -1697,7 +1657,7 @@ Package pdftex.def Info: plots/figure_26.png used on input line 609.
 
 LaTeX Warning: Float too large for page by 9.88527pt on input line 612.
 
-<plots/cos_profile.jpg, id=1567, 576.1525pt x 1272.755pt>
+<plots/cos_profile.jpg, id=1634, 576.1525pt x 1272.755pt>
 File: plots/cos_profile.jpg Graphic file (type jpg)
 
 <use plots/cos_profile.jpg>
@@ -1707,8 +1667,8 @@ Package pdftex.def Info: plots/cos_profile.jpg used on input line 618.
 
 LaTeX Warning: Float too large for page by 41.51657pt on input line 622.
 
-[98] [99] [100 <./plots/figure_25.png> <./plots/figure_26.png>] [101 <./plots/c
-os_profile.jpg>]
+[99] [100] [101 <./plots/figure_25.png> <./plots/figure_26.png>] [102 <./plots/
+cos_profile.jpg>]
 Underfull \hbox (badness 10000) in paragraph at lines 627--636
 
  []
@@ -1723,19 +1683,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 627--636
 
  []
 
-[102] <plots/cos_speedup_biggerbuffer.png, id=1601, 586.8324pt x 442.2924pt>
+[103] <plots/cos_speedup_biggerbuffer.png, id=1667, 586.8324pt x 442.2924pt>
 File: plots/cos_speedup_biggerbuffer.png Graphic file (type png)
 
 <use plots/cos_speedup_biggerbuffer.png>
 Package pdftex.def Info: plots/cos_speedup_biggerbuffer.png used on input line 
 640.
 (pdftex.def)             Requested size: 305.1546pt x 229.99336pt.
- [103 <./plots/cos_speedup_biggerbuffer.png>] [104]
+ [104 <./plots/cos_speedup_biggerbuffer.png>] [105]
 Overfull \hbox (30.49478pt too wide) in paragraph at lines 776--813
  [][] 
  []
 
-[105]
+[106]
 Overfull \hbox (30.49478pt too wide) in paragraph at lines 819--853
  [][] 
  []
@@ -1745,14 +1705,14 @@ Overfull \hbox (30.49478pt too wide) in paragraph at lines 860--893
  [][] 
  []
 
-<plots/mat_comp_sizevar.png, id=1631, 586.8324pt x 442.2924pt>
+<plots/mat_comp_sizevar.png, id=1698, 586.8324pt x 442.2924pt>
 File: plots/mat_comp_sizevar.png Graphic file (type png)
 
 <use plots/mat_comp_sizevar.png>
 Package pdftex.def Info: plots/mat_comp_sizevar.png used on input line 919.
 (pdftex.def)             Requested size: 410.77988pt x 309.60257pt.
 
-<plots/mat_comp_sizevar_P100.png, id=1632, 586.8324pt x 442.2924pt>
+<plots/mat_comp_sizevar_P100.png, id=1699, 586.8324pt x 442.2924pt>
 File: plots/mat_comp_sizevar_P100.png Graphic file (type png)
 
 <use plots/mat_comp_sizevar_P100.png>
@@ -1763,14 +1723,14 @@ Package pdftex.def Info: plots/mat_comp_sizevar_P100.png used on input line 925
 
 LaTeX Warning: Float too large for page by 9.88527pt on input line 928.
 
-<plots/mat_comp_numvar.png, id=1633, 586.8324pt x 442.2924pt>
+<plots/mat_comp_numvar.png, id=1700, 586.8324pt x 442.2924pt>
 File: plots/mat_comp_numvar.png Graphic file (type png)
 
 <use plots/mat_comp_numvar.png>
 Package pdftex.def Info: plots/mat_comp_numvar.png used on input line 932.
 (pdftex.def)             Requested size: 410.77988pt x 309.60257pt.
 
-<plots/mat_comp_numvar_P100.png, id=1634, 586.8324pt x 442.2924pt>
+<plots/mat_comp_numvar_P100.png, id=1701, 586.8324pt x 442.2924pt>
 File: plots/mat_comp_numvar_P100.png Graphic file (type png)
 
 <use plots/mat_comp_numvar_P100.png>
@@ -1781,12 +1741,12 @@ Package pdftex.def Info: plots/mat_comp_numvar_P100.png used on input line 938.
 
 LaTeX Warning: Float too large for page by 9.88527pt on input line 941.
 
-[106] [107] [108] [109]
+[107] [108] [109] [110]
 Underfull \hbox (badness 10000) in paragraph at lines 943--947
 
  []
 
-<plots/matmul784_1024_timeline.png, id=1655, 452.69125pt x 1044.90375pt>
+<plots/matmul784_1024_timeline.png, id=1722, 452.69125pt x 1044.90375pt>
 File: plots/matmul784_1024_timeline.png Graphic file (type png)
 
 <use plots/matmul784_1024_timeline.png>
@@ -1794,7 +1754,7 @@ Package pdftex.def Info: plots/matmul784_1024_timeline.png used on input line 1
 008.
 (pdftex.def)             Requested size: 141.94835pt x 327.63174pt.
 
-<plots/matmul784_256_timeline.png, id=1656, 443.6575pt x 1046.91125pt>
+<plots/matmul784_256_timeline.png, id=1723, 443.6575pt x 1046.91125pt>
 File: plots/matmul784_256_timeline.png Graphic file (type png)
 
 <use plots/matmul784_256_timeline.png>
@@ -1802,7 +1762,7 @@ Package pdftex.def Info: plots/matmul784_256_timeline.png used on input line 10
 13.
 (pdftex.def)             Requested size: 141.94835pt x 334.95454pt.
 
-<plots/matmul784_64_timeline.png, id=1657, 407.5225pt x 1271.75125pt>
+<plots/matmul784_64_timeline.png, id=1724, 407.5225pt x 1271.75125pt>
 File: plots/matmul784_64_timeline.png Graphic file (type png)
 
 <use plots/matmul784_64_timeline.png>
@@ -1827,18 +1787,18 @@ Underfull \hbox (badness 10000) in paragraph at lines 1025--1028
 
  []
 
-[110] [111 <./plots/mat_comp_sizevar.png> <./plots/mat_comp_sizevar_P100.png>]
-[112 <./plots/mat_comp_numvar.png> <./plots/mat_comp_numvar_P100.png>] [113]
-[114 <./plots/matmul784_1024_timeline.png> <./plots/matmul784_256_timeline.png>
+[111] [112 <./plots/mat_comp_sizevar.png> <./plots/mat_comp_sizevar_P100.png>]
+[113 <./plots/mat_comp_numvar.png> <./plots/mat_comp_numvar_P100.png>] [114]
+[115 <./plots/matmul784_1024_timeline.png> <./plots/matmul784_256_timeline.png>
  <./plots/matmul784_64_timeline.png>]
-<plots/matmul784_64_SMuse.png, id=1691, 689.57625pt x 373.395pt>
+<plots/matmul784_64_SMuse.png, id=1758, 689.57625pt x 373.395pt>
 File: plots/matmul784_64_SMuse.png Graphic file (type png)
 
 <use plots/matmul784_64_SMuse.png>
 Package pdftex.def Info: plots/matmul784_64_SMuse.png used on input line 1036.
 (pdftex.def)             Requested size: 443.57848pt x 240.19125pt.
 
-<plots/matmul784_1024_SMuse.png, id=1692, 661.47125pt x 261.97874pt>
+<plots/matmul784_1024_SMuse.png, id=1759, 661.47125pt x 261.97874pt>
 File: plots/matmul784_1024_SMuse.png Graphic file (type png)
 
 <use plots/matmul784_1024_SMuse.png>
@@ -1846,7 +1806,7 @@ Package pdftex.def Info: plots/matmul784_1024_SMuse.png used on input line 1038
 .
 (pdftex.def)             Requested size: 221.78923pt x 87.84036pt.
 
-<plots/matmul784_256_SMuse.png, id=1693, 658.46pt x 258.9675pt>
+<plots/matmul784_256_SMuse.png, id=1760, 658.46pt x 258.9675pt>
 File: plots/matmul784_256_SMuse.png Graphic file (type png)
 
 <use plots/matmul784_256_SMuse.png>
@@ -1858,8 +1818,8 @@ Overfull \hbox (23.99998pt too wide) in paragraph at lines 1035--1043
  [][] 
  []
 
-[115]
-<plots/matmul784_64_kerlatencies.png, id=1713, 651.43375pt x 414.54875pt>
+[116]
+<plots/matmul784_64_kerlatencies.png, id=1779, 651.43375pt x 414.54875pt>
 File: plots/matmul784_64_kerlatencies.png Graphic file (type png)
 
 <use plots/matmul784_64_kerlatencies.png>
@@ -1871,28 +1831,28 @@ Overfull \hbox (51.72755pt too wide) in paragraph at lines 1060--1062
 []  [] 
  []
 
-[116 <./plots/matmul784_64_SMuse.png> <./plots/matmul784_1024_SMuse.png> <./plo
-ts/matmul784_256_SMuse.png>] [117 <./plots/matmul784_64_kerlatencies.png>]
-[118] [119]
+[117 <./plots/matmul784_64_SMuse.png> <./plots/matmul784_1024_SMuse.png> <./plo
+ts/matmul784_256_SMuse.png>] [118 <./plots/matmul784_64_kerlatencies.png>]
+[119] [120]
 
 LaTeX Warning: Float too large for page by 21.53244pt on input line 1202.
 
-[120] [121]
+[121] [122]
 Underfull \hbox (badness 10000) in paragraph at lines 1236--1239
 
  []
 
-[122]
+[123]
 Underfull \hbox (badness 10000) in paragraph at lines 1249--1250
 
  []
 
-[123] [124]
+[124] [125]
 Underfull \hbox (badness 10000) in paragraph at lines 1315--1316
 
  []
 
-[125] [126]
+[126] [127]
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -1904,14 +1864,14 @@ Overfull \hbox (44.48088pt too wide) in paragraph at lines 1406--1425
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[127]
+[128]
 Overfull \hbox (65.56926pt too wide) in paragraph at lines 1437--1459
  [][] 
  []
 
-) (./chaps/concl/concl.tex [128] [129] [130]
+) (./chaps/concl/concl.tex [129] [130] [131]
 Chapter 6.
-[131
+[132
 
 ]
 
@@ -1919,7 +1879,7 @@ Package hyperref Warning: Difference (2) between bookmark levels is greater
 (hyperref)                than one, level fixed on input line 12.
 
 
-LaTeX Warning: Hyper reference `chap:into' on page 132 undefined on input line 
+LaTeX Warning: Hyper reference `chap:into' on page 133 undefined on input line 
 13.
 
 
@@ -1927,32 +1887,32 @@ Underfull \hbox (badness 10000) in paragraph at lines 13--15
 
  []
 
-[132]
+[133]
 Underfull \hbox (badness 10000) in paragraph at lines 25--31
 
  []
 
-[133]
+[134]
 Underfull \hbox (badness 10000) in paragraph at lines 45--50
 
  []
 
-[134] [135]
+[135] [136]
 Underfull \hbox (badness 10000) in paragraph at lines 83--85
 
  []
 
-[136]
+[137]
 Underfull \hbox (badness 10000) in paragraph at lines 91--93
 
  []
 
-[137]
+[138]
 Underfull \hbox (badness 10000) in paragraph at lines 105--110
 
  []
 
-[138]
+[139]
 Underfull \hbox (badness 10000) in paragraph at lines 120--125
 
  []
@@ -1962,11 +1922,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 127--129
 
  []
 
-[139]) [140] (./main.lol)
+[140]) [141] (./main.lol)
 \tf@lol=\write5
 \openout5 = `main.lol'.
 
- [141
+ [142
 
 ] (./main.lot
 Overfull \hbox (8.76978pt too wide) in paragraph at lines 13--13
@@ -1980,33 +1940,33 @@ Overfull \hbox (6.15869pt too wide) in paragraph at lines 15--15
  as many CUDA Streams 
  []
 
-[142
+[143
 
 ])
 \tf@lot=\write6
 \openout6 = `main.lot'.
 
- [143]
-Underfull \hbox (badness 4699) in paragraph at lines 135--137
+ [144] [145
+
+]
+Underfull \hbox (badness 3271) in paragraph at lines 157--159
 []\OT1/cmr/m/n/12 NVIDIA, \OT1/cmr/m/it/12 NVIDIA Pro-fil-ers Guide\OT1/cmr/m/n
 /12 , CUDA Toolkit Doc-u-men-ta-tion, from
  []
 
-[144
 
-]
-Underfull \hbox (badness 2027) in paragraph at lines 144--146
+Underfull \hbox (badness 1383) in paragraph at lines 166--168
 []\OT1/cmr/m/n/12 Vasily Volkov, \OT1/cmr/m/it/12 Bet-ter Per-for-mance at Lowe
 r Oc-cu-pancy\OT1/cmr/m/n/12 , slide show from:
  []
 
-[145]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 215.
- [146]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 215.
+[146] [147]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 245.
+ [148]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 245.
  (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 215.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 215.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 245.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 245.
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 85BA96707CFBB753C70AAFECE9D1ECA6;4266.
 
@@ -2015,10 +1975,10 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 20152 strings out of 494985
- 328316 string characters out of 6180355
- 637786 words of memory out of 5000000
- 22168 multiletter control sequences out of 15000+600000
+ 20169 strings out of 494985
+ 328606 string characters out of 6180355
+ 639786 words of memory out of 5000000
+ 22176 multiletter control sequences out of 15000+600000
  16949 words of font info for 61 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  45i,22n,58p,10493b,2038s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -2046,10 +2006,10 @@ amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
 mtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.
 pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on main.pdf (150 pages, 2309230 bytes).
+Output written on main.pdf (152 pages, 2383031 bytes).
 PDF statistics:
- 2236 PDF objects out of 2487 (max. 8388607)
- 2001 compressed objects within 21 object streams
- 827 named destinations out of 1000 (max. 500000)
- 617 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 2309 PDF objects out of 2487 (max. 8388607)
+ 2072 compressed objects within 21 object streams
+ 834 named destinations out of 1000 (max. 500000)
+ 622 words of extra memory for PDF output out of 10000 (max. 10000000)
 

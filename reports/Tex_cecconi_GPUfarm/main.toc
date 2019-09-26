@@ -3,61 +3,61 @@
 \contentsline {section}{\numberline {1.1}Goals}{1}{section.1.1}
 \contentsline {subsection}{\numberline {1.1.1}GPU Architecture and Data Parallelism}{2}{subsection.1.1.1}
 \contentsline {subsection}{\numberline {1.1.2}Other Applications}{3}{subsection.1.1.2}
-\contentsline {subsection}{\numberline {1.1.3}GP-GPUs and Stream Parallel}{5}{subsection.1.1.3}
-\contentsline {section}{\numberline {1.2}Expectations}{8}{section.1.2}
-\contentsline {section}{\numberline {1.3}Results}{9}{section.1.3}
-\contentsline {section}{\numberline {1.4}Tools}{10}{section.1.4}
-\contentsline {chapter}{\numberline {2}Tools}{12}{chapter.2}
-\contentsline {section}{\numberline {2.1}NVIDIA Architecture and CUDA}{13}{section.2.1}
+\contentsline {subsection}{\numberline {1.1.3}GP-GPUs and Stream Parallel}{6}{subsection.1.1.3}
+\contentsline {section}{\numberline {1.2}Expectations}{9}{section.1.2}
+\contentsline {section}{\numberline {1.3}Results}{10}{section.1.3}
+\contentsline {section}{\numberline {1.4}Tools}{11}{section.1.4}
+\contentsline {chapter}{\numberline {2}Tools}{13}{chapter.2}
+\contentsline {section}{\numberline {2.1}NVIDIA Architecture and CUDA}{14}{section.2.1}
 \contentsline {subsection}{\numberline {2.1.1}Copy engines and Memory organization}{19}{subsection.2.1.1}
-\contentsline {section}{\numberline {2.2}CUDA C/C++}{22}{section.2.2}
-\contentsline {subsection}{\numberline {2.2.1}Kernels}{22}{subsection.2.2.1}
-\contentsline {subsection}{\numberline {2.2.2}Thread Hierarchy}{23}{subsection.2.2.2}
-\contentsline {subsection}{\numberline {2.2.3}CUDA Streams}{24}{subsection.2.2.3}
-\contentsline {subsection}{\numberline {2.2.4}nvcc compiler}{26}{subsection.2.2.4}
+\contentsline {section}{\numberline {2.2}CUDA C/C++}{23}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Kernels}{23}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Thread Hierarchy}{24}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.3}CUDA Streams}{25}{subsection.2.2.3}
+\contentsline {subsection}{\numberline {2.2.4}\texttt {nvcc} compiler}{27}{subsection.2.2.4}
 \contentsline {subsection}{\numberline {2.2.5}\texttt {cuda-gdb} debugger}{28}{subsection.2.2.5}
-\contentsline {section}{\numberline {2.3}Profilers}{28}{section.2.3}
-\contentsline {subsection}{\numberline {2.3.1}nvprof}{29}{subsection.2.3.1}
+\contentsline {section}{\numberline {2.3}Profilers}{29}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}\texttt {nvprof}}{29}{subsection.2.3.1}
 \contentsline {subsection}{\numberline {2.3.2}NVIDIA Visual Profiler}{30}{subsection.2.3.2}
-\contentsline {section}{\numberline {2.4}Visual Studio Code}{30}{section.2.4}
+\contentsline {section}{\numberline {2.4}Visual Studio Code}{31}{section.2.4}
 \contentsline {section}{\numberline {2.5}Tests, Result gathering, Plots}{31}{section.2.5}
-\contentsline {subsection}{\numberline {2.5.1}Bash scripts}{31}{subsection.2.5.1}
+\contentsline {subsection}{\numberline {2.5.1}Bash scripts}{32}{subsection.2.5.1}
 \contentsline {subsection}{\numberline {2.5.2}Python scripts}{33}{subsection.2.5.2}
-\contentsline {chapter}{\numberline {3}Project Logic}{36}{chapter.3}
-\contentsline {section}{\numberline {3.1}Stream Parallelism: Farm pattern}{36}{section.3.1}
-\contentsline {subsection}{\numberline {3.1.1}Farm performance model}{38}{subsection.3.1.1}
-\contentsline {section}{\numberline {3.2}CPU-GPGPU: heterogeneous architecture}{42}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Overlapping: Data Transfer hiding}{43}{subsection.3.2.1}
-\contentsline {subsection}{\numberline {3.2.2}Occupancy of GPU cores}{45}{subsection.3.2.2}
-\contentsline {subsection}{\numberline {3.2.3}Occupancy drawbacks}{48}{subsection.3.2.3}
-\contentsline {section}{\numberline {3.3}Overall Logic}{51}{section.3.3}
-\contentsline {section}{\numberline {3.4}Tunings}{57}{section.3.4}
-\contentsline {subsection}{\numberline {3.4.1}Tuning on block and grid dimensions}{60}{subsection.3.4.1}
-\contentsline {chapter}{\numberline {4}Implementation}{62}{chapter.4}
-\contentsline {section}{\numberline {4.1}Kernels}{62}{section.4.1}
-\contentsline {subsection}{\numberline {4.1.1}Simple-computational kernel}{63}{subsection.4.1.1}
-\contentsline {subsection}{\numberline {4.1.2}Matrix multiplication}{64}{subsection.4.1.2}
-\contentsline {subsection}{\numberline {4.1.3}Blur Box filter}{66}{subsection.4.1.3}
-\contentsline {section}{\numberline {4.2}Parallel Patterns implementation on GPU}{67}{section.4.2}
-\contentsline {subsection}{\numberline {4.2.1}Stream Parallel on GPU}{68}{subsection.4.2.1}
-\contentsline {subsection}{\numberline {4.2.2}Data Parallel un GPU}{72}{subsection.4.2.2}
-\contentsline {chapter}{\numberline {5}Experiments}{75}{chapter.5}
-\contentsline {section}{\numberline {5.1}Expectations}{75}{section.5.1}
-\contentsline {subsection}{\numberline {5.1.1}Measures: What and How}{76}{subsection.5.1.1}
-\contentsline {subsection}{\numberline {5.1.2}Tests setup}{81}{subsection.5.1.2}
-\contentsline {subsection}{\numberline {5.1.3}Speedup}{82}{subsection.5.1.3}
-\contentsline {subsection}{\numberline {5.1.4}Results: gathering and evaluation}{83}{subsection.5.1.4}
-\contentsline {subsection}{\numberline {5.1.5}Computation-bound and memory-bound}{87}{subsection.5.1.5}
-\contentsline {section}{\numberline {5.2}Simple-computation kernel}{91}{section.5.2}
-\contentsline {subsection}{\numberline {5.2.1}Results}{95}{subsection.5.2.1}
-\contentsline {section}{\numberline {5.3}Matrix Multiplication}{103}{section.5.3}
-\contentsline {subsection}{\numberline {5.3.1}Results}{106}{subsection.5.3.1}
-\contentsline {section}{\numberline {5.4}Image processing}{118}{section.5.4}
-\contentsline {subsection}{\numberline {5.4.1}Results}{120}{subsection.5.4.1}
-\contentsline {section}{\numberline {5.5}Results Summary}{123}{section.5.5}
-\contentsline {subsection}{\numberline {5.5.1}Stream parallel compared to Data parallel}{125}{subsection.5.5.1}
-\contentsline {chapter}{\numberline {6}Conclusions}{131}{chapter.6}
-\contentsline {subsection}{\numberline {6.1.2}Evaluation of the problem}{132}{subsection.6.1.2}
-\contentsline {subsection}{\numberline {6.1.3}Implementation and tests}{135}{subsection.6.1.3}
-\contentsline {subsection}{\numberline {6.1.4}Results and considerations}{136}{subsection.6.1.4}
-\contentsline {subsection}{\numberline {6.1.5}Final remarks and further works}{138}{subsection.6.1.5}
+\contentsline {chapter}{\numberline {3}Project Logic}{37}{chapter.3}
+\contentsline {section}{\numberline {3.1}Stream Parallelism: Farm pattern}{37}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Farm performance model}{39}{subsection.3.1.1}
+\contentsline {section}{\numberline {3.2}CPU-GPGPU: heterogeneous architecture}{43}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Overlapping: Data Transfer hiding}{44}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Occupancy of GPU cores}{47}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Occupancy drawbacks}{50}{subsection.3.2.3}
+\contentsline {section}{\numberline {3.3}Overall Logic}{52}{section.3.3}
+\contentsline {section}{\numberline {3.4}Tunings}{59}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}Tuning on block and grid dimensions}{61}{subsection.3.4.1}
+\contentsline {chapter}{\numberline {4}Implementation}{63}{chapter.4}
+\contentsline {section}{\numberline {4.1}Kernels}{63}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Simple-computational kernel}{64}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}Matrix multiplication}{65}{subsection.4.1.2}
+\contentsline {subsection}{\numberline {4.1.3}Blur Box filter}{67}{subsection.4.1.3}
+\contentsline {section}{\numberline {4.2}Parallel Patterns implementation on GPU}{68}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Stream Parallel on GPU}{69}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Data Parallel un GPU}{73}{subsection.4.2.2}
+\contentsline {chapter}{\numberline {5}Experiments}{76}{chapter.5}
+\contentsline {section}{\numberline {5.1}Expectations}{76}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Measures: What and How}{77}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Tests setup}{82}{subsection.5.1.2}
+\contentsline {subsection}{\numberline {5.1.3}Speedup}{83}{subsection.5.1.3}
+\contentsline {subsection}{\numberline {5.1.4}Results: gathering and evaluation}{84}{subsection.5.1.4}
+\contentsline {subsection}{\numberline {5.1.5}Computation-bound and memory-bound}{88}{subsection.5.1.5}
+\contentsline {section}{\numberline {5.2}Simple-computation kernel}{92}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Results}{96}{subsection.5.2.1}
+\contentsline {section}{\numberline {5.3}Matrix Multiplication}{104}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Results}{107}{subsection.5.3.1}
+\contentsline {section}{\numberline {5.4}Image processing}{119}{section.5.4}
+\contentsline {subsection}{\numberline {5.4.1}Results}{121}{subsection.5.4.1}
+\contentsline {section}{\numberline {5.5}Results Summary}{124}{section.5.5}
+\contentsline {subsection}{\numberline {5.5.1}Stream parallel compared to Data parallel}{126}{subsection.5.5.1}
+\contentsline {chapter}{\numberline {6}Conclusions}{132}{chapter.6}
+\contentsline {subsection}{\numberline {6.1.2}Evaluation of the problem}{133}{subsection.6.1.2}
+\contentsline {subsection}{\numberline {6.1.3}Implementation and tests}{136}{subsection.6.1.3}
+\contentsline {subsection}{\numberline {6.1.4}Results and considerations}{137}{subsection.6.1.4}
+\contentsline {subsection}{\numberline {6.1.5}Final remarks and further works}{139}{subsection.6.1.5}
