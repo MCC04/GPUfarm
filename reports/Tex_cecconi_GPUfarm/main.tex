@@ -30,11 +30,19 @@
 \usepackage{makecell}
 
 \usepackage{float}
+%\usepackage{floatpag}
 
 \usepackage{mathtools}
 
 \usepackage{listings,lstautogobble}
 \usepackage{xcolor}
+\usepackage{afterpage}
+
+\newcommand\blankpage{%
+	\null
+	\thispagestyle{empty}%
+	\addtocounter{page}{-1}%
+	\newpage}
 
 \definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
 
@@ -88,8 +96,10 @@
 %\definecolor{LightGray}{HTML}{F0F0F0}
 	
     \input{chaps/frontpage/FrontPage}
+    \afterpage{\blankpage}
     \pagenumbering{Roman}
     \tableofcontents
+    \afterpage{\blankpage}
     \input{chaps/1/1}
     \input{chaps/2/2}
     \input{chaps/3/3}
@@ -97,8 +107,11 @@
     \input{chaps/5/5}
     \input{chaps/concl/concl}
     
+    \afterpage{\blankpage}
     \lstlistoflistings
     \listoftables
+    \afterpage{\blankpage}
+    
     
 %	*********************
 %	devi mettere tutti i rif a modo: autore(i), titolo, luogo di pubblicazione (e.g. casa editrice per
@@ -122,24 +135,25 @@
 		\textit{Lessons Learned from Exploring the Backtracking Paradigm on the GPU}, 2011
 		
 		\bibitem{pipemicrosoft}
-		Microsoft, \textit{Graphics Pipeline}, \href{https://docs.microsoft.com/en-us/windows/win32/direct3d11/overviews-direct3d-11-graphics-pipeline?redirectedfrom=MSDN}{guide available here}, 2018
+		Microsoft, \textit{Graphics Pipeline}, Documentation guide:\\
+		https://docs.microsoft.com/en-us/windows/win32/direct3d11/overviews-direct3d-11-graphics-pipeline?redirectedfrom=MSDN, 2018
 		
 		\bibitem{rendering}
 		Hujun Bao, Wei Hua, \textit{Real-Time Graphics Rendering Engine}, 2011
 		
 		\bibitem{cudapipe}
-		NVIDIA, \textit{Pipe Utilization}, \href{https://docs.nvidia.com/gameworks/content/developertools/desktop/analysis/report/cudaexperiments/kernellevel/pipeutilization.htm}{documentation available here}, 2015
+		NVIDIA, \textit{Pipe Utilization}, CUDA documentation:\\
+		https://docs.nvidia.com/gameworks/content/developertools/desktop/analysis\\/report/cudaexperiments/kernellevel/pipeutilization.htm, 2015
 		
 		
 		\bibitem{spm}
 		Marco Danelutto,
-		\textit{Distributed Systems: Paradigms and Models}, 2014
+		\textit{Distributed Systems: Paradigms and Models}, Course notes, University of Pisa, 2014
 		
 		
 		
 		\bibitem{cpugpumix}
-		T. Serban , M. Danelutto , M. Coppola, \textit{Data parallel patterns on
-			CPU/GPU mix}, Dept. Computer Science Univ. of Pisa, ISTI C.N.R. Pisa, 2012
+		T. Serban , M. Danelutto , M. Coppola, \textit{Data parallel patterns on CPU/GPU mix}, Dept. Computer Science Univ. of Pisa, ISTI C.N.R. Pisa, 2012
 	
 		\bibitem{streamparpatt}
 		J. Daniel Garcia, D. del Rio, M.F. Dolz, J. Garcia-Blas, L.M. Sanchez, M. Danelutto, M. Torquati, \textit{Stream parallelism patterns}, Computer Science Dept. University of Pisa, Computer Science and Engineering Dept. University Carlos III of Madrid,\\
@@ -150,12 +164,12 @@
 		 
 		 
 		\bibitem{cudaguide}
-		NVIDIA, \textit{CUDA C Programming Guide}, CUDA Toolkit Documentation, from https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html, 2019
+		NVIDIA, \textit{CUDA C Programming Guide}, CUDA Toolkit Documentation:\\
+		https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html, 2019
 		
 		
 		\bibitem{profilersguide}
-		NVIDIA, \textit{NVIDIA Profilers Guide}, CUDA Toolkit Documentation, from
-		https://docs.nvidia.com/cuda/profiler-users-guide/index.html , 2019 
+		NVIDIA, \textit{NVIDIA Profilers Guide}, CUDA Toolkit Documentation:\\ https://docs.nvidia.com/cuda/profiler-users-guide/index.html , 2019 
 		
 		
 		\bibitem{nvprofarticle}
@@ -164,16 +178,17 @@
 		
 		\bibitem{loweroccupancy}
 		Vasily Volkov,
-		\textit{Better Performance at Lower Occupancy}, slide show from: https://www.nvidia.com/content/GTC-2010/pdfs/2238\_GTC2010.pdf , 2010
+		\textit{Better Performance at Lower Occupancy}, slide show from:\\ https://www.nvidia.com/content/GTC-2010/pdfs/2238\_GTC2010.pdf , 2010
 		
 		
 		\bibitem{understandlatency}
-		Vasily Volkov, \textit{Understanding Latency Hiding on GPUs}, \href{https://www2.eecs.berkeley.edu/Pubs/TechRpts/2016/EECS-2016-143.pdf}{Technical report available here}, 2016
+		Vasily Volkov, \textit{Understanding Latency Hiding on GPUs}, Technical report:\\
+		https://www2.eecs.berkeley.edu/Pubs/TechRpts/2016/EECS-2016-143.pdf , 2016
 		
 		
 		\bibitem{devblogevents}
-		Mark Harris, \textit{How to Implement Performance Metrics in CUDA C/C++}, NVIDIA Developer Blogs,  \\
-		\href{https://devblogs.nvidia.com/how-implement-performance-metrics-cuda-cc/}{post from NVIDIA Developer Blog available here}, 2012 
+		Mark Harris, \textit{How to Implement Performance Metrics in CUDA C/C++}, NVIDIA Developer Blogs:  \\
+		https://devblogs.nvidia.com/how-implement-performance-metrics-cuda-cc/ , 2012 
 		
 		\bibitem{libevents}
 		NVIDIA, \textit{NVIDIA Library Documentation- Event Management}, YEAR
@@ -182,13 +197,16 @@
 		M. McCool, A.D. Robinson, J. Reinders, \textit{Structured Parallel Programming: Patterns for Efficient Computation}, 2012
 		
 		\bibitem{cudabestpractices}
-		NVIDIA, \textit{CUDA C Best Practices Guide}, \href{https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html}{CUDA Toolkit Documentation, available here} , 2019
+		NVIDIA, \textit{CUDA C Best Practices Guide}, from CUDA Toolkit Documentation:\\
+		https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html , 2019
 		
 		\bibitem{parpattbench}
-		M. Danelutto, T. De Matteis, D. De Sensi, G. Mencagli, M. Torquati, \textit{P3ARSEC: Towards Parallel Patterns Benchmarking}, \href{http://pages.di.unipi.it/desensi/assets/pdf/2017\_SAC.pdf}{pdf paper here}, 2017
+		M. Danelutto, T. De Matteis, D. De Sensi, G. Mencagli, M. Torquati, \textit{P3ARSEC: Towards Parallel Patterns Benchmarking}, paper available here:\\
+		http://pages.di.unipi.it/desensi/assets/pdf/2017\_SAC.pdf , 2017
 		
 		\bibitem{custreamsblog}
-		Mark Harris, \textit{How to Overlap Data Transfers in CUDA C/C++}, \href{https://devblogs.nvidia.com/how-overlap-data-transfers-cuda-cc/}{post from NVIDIA Developer Blog here}, 2012
+		Mark Harris, \textit{How to Overlap Data Transfers in CUDA C/C++}, NVIDIA Developer Blog:\\
+		https://devblogs.nvidia.com/how-overlap-data-transfers-cuda-cc/ , 2012
 		
 		\bibitem{nvccdoc}
 		NVIDIA, \textit{CUDA Compiler Driver NVCC}, CUDA Toolkit Documentation:\\ 
@@ -198,34 +216,49 @@
 		NVIDIA, \textit{CUDA-GDB: CUDA debugger}, CUDA Toolkit Documentation:\\ 
 		https://docs.nvidia.com/cuda/cuda-gdb/index.html , 2019
 		
+		\bibitem{coalesced}
+		Mark Harris, \textit{How to Access Global Memory Efficiently in CUDA C/C++ Kernels}, NVIDIA Developer Blog,\\ https://devblogs.nvidia.com/how-access-global-memory-efficiently-cuda-c-kernels/ , 2013
+		
 		\bibitem{cudahandbook}
-		Nicholas Wilt, \textit{The CUDA Handbook: A Comprehensive Guide to GPU Programming}, 2013
+		Nicholas Wilt, \textit{The CUDA Handbook: A Comprehensive Guide to GPU Programming}, Addison-Wesley, first edition, 2013
 		
-		
+		\bibitem{blurbox}
+		Mads Ravn, \textit{Simple image processing with CUDA}, http://madsravn.dk/posts/simple-image-processing-with-cuda , october 2013
 		\bibitem{p100whitepaper}
-		NVIDIA, \textit{NVIDIA Tesla P100}, \href{https://images.nvidia.com/content/pdf/tesla/whitepaper/pascal-architecture-whitepaper.pdf}{The technical whitepaper is available here}, 2016
+		NVIDIA, \textit{NVIDIA Tesla P100}, Technical whitepaper:\\
+		https://images.nvidia.com/content/pdf/tesla/whitepaper/pascal-architecture-whitepaper.pdf , 2016
 		
 		
 		\bibitem{cudastrandconcurr}
-		Steve Rennich, NVIDIA, \textit{CUDA C/C++ Streams and Concurrency}, 		\href{https://developer.download.nvidia.com/CUDA/training/\\
-			StreamsAndConcurrencyWebinar.pdf}{slideshow here}, 2011
+		Steve Rennich, NVIDIA, \textit{CUDA C/C++ Streams and Concurrency}, CUDA Developers Download:\\
+		https://developer.download.nvidia.com/CUDA/training/\\
+		StreamsAndConcurrencyWebinar.pdf , 2011
 		
 		
 		\bibitem{perfoptimize}
-		Paulius Micikevicius, NVIDIA, \textit{Performance Optimization: Programming Guidelines and GPU Architecture Reasons Behind Them}, \href{http://on-demand.gputechconf.com/gtc/2013/presentations/S3466-Programming-Guidelines-GPU-Architecture.pdf}{slide show here}, 2013
+		Paulius Micikevicius, NVIDIA, \textit{Performance Optimization: Programming Guidelines and GPU Architecture Reasons Behind Them}, available here:\\
+		http://on-demand.gputechconf.com/gtc/2013/presentations/S3466-Programming-Guidelines-GPU-Architecture.pdf, 2013
 		
 		\bibitem{rooflinepaper}
-		S. Williams, A. Waterman, D. PAtterson, \textit{Roofline:  An insightful Visual Performance model for multicore Architectures}, \href{http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.156.756\&rep=rep1\&type=pdf}{pdf paper here}, 2009
+		S. Williams, A. Waterman, D. PAtterson, \textit{Roofline:  An insightful Visual Performance model for multicore Architectures}, paper here:\\
+		http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.156.756\&rep=rep1\&type=pdf , 2009
 		
 		\bibitem{rooflineslides}
-		S. Williams, D. PAtterson,\textit{The Roofline Model: A pedagogical tool for program analysis andoptimization}, \href{https://crd.lbl.gov/assets/pubs\_presos/parlab08-roofline-talk.pdf}{slide show here}, 2008
+		S. Williams, D. PAtterson,\textit{The Roofline Model: A pedagogical tool for program analysis andoptimization}, slide show here:\\
+		https://crd.lbl.gov/assets/pubs\_presos/parlab08-roofline-talk.pdf , 2008
 		
 		\bibitem{applyroofline}
-		G. Ofenbeck, R. Steinmann, V. Caparros, D. G. Spampinato, M. Püschel, \textit{Applying the roofline model},  \href{http://spiral.ece.cmu.edu:8080/pub-spiral/pubfile/ispass-2013\_177.pdf}{paper in pdf format here}  , 2014
+		G. Ofenbeck, R. Steinmann, V. Caparros, D. G. Spampinato, M. Püschel, \textit{Applying the roofline model}, available here:\\
+		http://spiral.ece.cmu.edu:8080/pub-spiral/pubfile/ispass-2013\_177.pdf , 2014
 		
 		\bibitem{optimizingcuda}
-		NVIDIA corporation, \textit{Optimizing CUDA}, \href{http://developer.download.nvidia.com/CUDA/training/NVIDIA_GPU_Computing_Webinars_CUDA_Optimization_April-2009.pdf}{slides how from CUDA developer download, available here}, 2009
+		NVIDIA corporation, \textit{Optimizing CUDA}, slide show from CUDA developer download:\\
+		http://developer.download.nvidia.com/CUDA/training/NVIDIA\_GPU\_Computing\\\_Webinars\_CUDA\_Optimization\_April-2009.pdf , 2009
 		
+		
+		\bibitem{matmul}
+		Robert Hochberg, \textit{Matrix Multiplication with CUDA - A basic introduction to the CUDA programming model}, from:\\
+		https://www.shodor.org/media/content/petascale/materials/UPModules/\\matrixMultiplication/moduleDocument.pdf , August 2012
 		%\bibitem{achievedflops}
 		%NVIDIA corporation, \textit{Achieved FLOPs}, \href{https://docs.nvidia.com/gameworks/content/developertools/desktop/analysis/report/cudaexperiments/kernellevel/achievedflops.htm}{article how from CUDA developer download, available here}, 2015
 		
@@ -237,9 +270,11 @@
 		
 	%	https://docs.nvidia.com/gameworks/content/developertools/desktop/analysis/report/cudaexperiments/kernellevel/achievedflops.htm
 	\end{thebibliography}
-   % \begin{appendices}
-    %    \input{chaps/appendix/appendix}
-    %\end{appendices}
+ 
+    
+    \afterpage{\blankpage}
+    
+    \include{chaps/ringraziamenti}
 
    % \printbibliography[heading=bibintoc,title={References}]
 \end{document}

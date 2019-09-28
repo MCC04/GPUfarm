@@ -10,7 +10,7 @@ import sys
 
 
 cosM=3
-cosN=6
+cosN=5
 dpCosTest = cosM*cosN
 strCosTest = cosM*cosN
 
@@ -227,7 +227,7 @@ def plotCompTimeGraph(strCompT, lbl, param1, param2, legT1, legT2,resType):
 	#title=title.upper()
 	plt.figure(figId)
 	plt.title(lbl)
-	plt.grid(axis='both')
+	
 	#import pdb; pdb.set_trace()
 	if resType=="cos":
 		for i in range(0,len(strCompT),param2):
@@ -272,7 +272,7 @@ def plotCompTimeGraph(strCompT, lbl, param1, param2, legT1, legT2,resType):
 		plt.plot(x1[0], y, '-', label = str(t1[i]), marker=markers[j], linestyle='-', linewidth=1)
 		i+=1
 		#j+=1
-
+	plt.grid(axis='both')
 	plt.xticks(x1[0])
 	plt.xlabel(legT1)
 	plt.xlim(left=-2)
@@ -295,7 +295,7 @@ def plotCompTimeGraph(strCompT, lbl, param1, param2, legT1, legT2,resType):
 		
 		i+=1
 		#j+=1
-
+	plt.grid(axis='both')
 	plt.xlim(left=-2)
 	plt.ylim(bottom=-2)
 	plt.xticks(x2[0])

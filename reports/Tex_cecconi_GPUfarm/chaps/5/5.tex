@@ -1,9 +1,9 @@
 \chapter{Experiments}
 \label{chap:experim}
 %\section{Overview}
-In this chapter will be shown all the experiments performed and their results. The first section starts from what we expect to get from different code tests and, to this aim, what kind of comparisons will be made.\\
-The second section, for each kernel implementation, will explain how tests are set up, i.e. the chosen datasets for each type of code to test, then some scripts main features and, finally, what results we get. In particular, here we'll show time measures and plots with some remarks.
-The last section gives a brief summary and some final consideration. Furthermore it gives comparisons between stream parallel and data parallel version, for each kernel type.
+In this chapter will be shown all the performed experiments and their results. The first section starts from what we expect to get from different code tests and, to this aim, what kind of comparisons will be made and how tests were set up.\\
+Then in second, third and fourth sections, for each kernel implementation, we will show the chosen datasets for each type of execution to test and results we get; in particular, here we'll show time measures and plots with some remarks.
+The last section gives a brief summary and some final consideration, furthermore it gives comparisons between stream parallel and data parallel version, for each kernel type.
 
 %\section{What and How}
 %What and How
@@ -17,13 +17,12 @@ Let's clarify some concepts in the sentence above:
 	\item We expect to have the best speedup only when we have certain conditions;
 	\item The best speedup would be in the order of multiprocessors number.
 \end{itemize}
-The last point means we can't expect to reach greater gain than the available amount of hardware resources.\\
-Further and specific definitions about these concepts will be given in \hyperref[subs:speedup]{Speedup subsection}.
+The last point means we can't expect to reach greater gain than the available amount of hardware resources, further and specific definitions about this concept will be given in \hyperref[subs:speedup]{Speedup subsection}.\\
 %This is strictly related to the fact that we can't expect Streaming parallel problems, that we implemented, to perform better than the equivalent Data Parallel version. \footnote{As we mentioned in previous Chapters, the GPU is specifically designed to be efficient and to perform at its best on Data Parallel problems.}
 The second point above means we can expect best performances in the following cases:
 \begin{itemize}
 	\item When we have a regular kernel, that is a kernel with the lowest possible amount of branching and, thus, very low (or absent) threads divergence;
-	\item When the kernel is more computational-bound than memory-bound, the less access to Global memory the less data transfer latency will slow down execution and this may generally lead to bad occupancy and/or kernels that could not overlap (or they do it rarely);
+	\item When the kernel is more computational-bound than memory-bound, the less access to Global memory the less data transfer latency will slow down execution. Memory-bound applications, in fact, may generally lead to bad occupancy and/or kernels that could not overlap (or they do it rarely);
 	\item When the kernel execution takes an amount of time near the one for data transfer and/or other kernel calls.
 \end{itemize} 
 When one, or more, of the above conditions isn't met, we're aware to have a considerably lower speedup than what we expected.
@@ -31,42 +30,43 @@ When one, or more, of the above conditions isn't met, we're aware to have a cons
 
 \subsection{Measures: What and How}
 Before the test setup and writing, it's important to understand what we should measure, in order to get significant comparisons.\\
-First we recall that the measures of interest are relative to \textit{data transfers} and \textit{kernel execution} and all completion times are reported in \textbf{milliseconds}. 
+First we recall that the measures of interest include \textit{data transfers} and \textit{kernel executions} and all completion times are reported in \textbf{milliseconds}. 
 
 In the case where CUDA streams are used, we have an additional time cost to create and destroy streams, especially when lot of streams are spawned.\\
-If we want to have as many CUDA Stream as many SMs in device, then creation costs in the order of hundreds of milliseconds and destruction in the order of hundred of microseconds\footnote{Measures on CUDA Streams spawn/deletion were collected with \textit{nvprof} log file, where all CUDA APIs time are precisely measured.}. However, we won't sum them up with measures on data transfer and kernel execution. This is because, even if the streams overhead can be notable, it's a one-time cost to pay.\\
+If we want to have as many CUDA Streams as many SMs in device, then creation cost is in the order of hundreds of milliseconds and destruction is in the order of hundred of microseconds\footnote{Measures on CUDA Streams spawn/deletion were collected with \textit{nvprof} log file, where all CUDA APIs time are precisely measured.}. However, we won't sum them up with measures on data transfer and kernel execution. This is because, even if the streams overhead can be notable, it's a one-time cost to pay.\\
 This means that it won't weigh on performances of a Stream parallel application, given that initially we create CUDA streams, then we'll run kernels on a indefinitely long input stream (theoretically) and, only when input is totally consumed out, CUDA streams will be destroyed. 
 So on a reasonably long input stream, the CUDA streams APIs cost should become negligible.\\
 
 So focusing on data transfers and kernels, we put two time probes, one before the start of the input stream loop and one at the end. The time probes are implemented using \textbf{CUDA Events}.\\
 Below will be reported a pseudo-code to clarify how the probes are placed inside the code:
-\begin{lstlisting}[label={lst:timers}]	
-/**** Code with events time probes ****/	
-streamCreate(streams, nStreams); // Create CUDA streams
-
-createAndStartEvent(&startEvent, &stopEvent); // Create "start" and "stop" events, start recording
-
+\begin{lstlisting}[label={lst:timers},caption={Example of code for events utilization as time probes.}]
+/**** main function ****/
+// Create CUDA streams	
+streamCreate(streams, nStreams); 
+// Create "start"/"stop" events and start measuring
+createAndStartEvent(&startEvent, &stopEvent); 
+//input stream starts
 int k = 0;
-while (InputStream) {  
-	if (buffer x[i: i+chunkSize] is full)
-	{
-		int i = k%nStreams;
-		
-		kernelCaller(input_host, output_host, input_device, output_device, streams[i], streamBytes, ...);
+while (InputStream) { 
+   if (buffer x[i: i+chunkSize] is full)
+   {
+      int i = k%nStreams;
+	
+      kernelCaller(input_host, output_host, input_device, output_device, streams[i], streamBytes, ...);
 
-		. . . .
-		
-		++k;
-	}
-	else
-	{
-		add item to buffer x[i: i+chunkSize]
-	}	
+      . . . .
+	
+      ++k;
+   }
+   else
+   {  add item to buffer x[i: i+chunkSize]  }	
 } 
+// Stop time measuring (input stream has ended)
 msTot = endEvent(&startEvent, &stopEvent);
+// Destroy events
 cudaEventDestroy();
 		
-/**** Events Creation and start ****/
+/**** Events Creation and start function ****/
 void createAndStartEvent(cudaEvent_t *startEvent, cudaEvent_t *stopEvent)
 {
 	gpuErrchk( cudaEventCreate(startEvent) );
@@ -74,7 +74,7 @@ void createAndStartEvent(cudaEvent_t *startEvent, cudaEvent_t *stopEvent)
 	gpuErrchk( cudaEventRecord(*startEvent,0) );
 }
 
-/**** Events end and time measure collection ****/
+/**** Events end and time collection function ****/
 float endEvent(cudaEvent_t *startEvent, cudaEvent_t *stopEvent)
 {
 	float ms = 0.0f;
@@ -84,18 +84,18 @@ float endEvent(cudaEvent_t *startEvent, cudaEvent_t *stopEvent)
 	return ms;
 }
 	
-/**** Kernel caller example ****/
+/**** Kernel caller function example ****/
 void kernelCaller(input_host, output_host, input_device, output_device, streams[i], streamBytes, ...)
 {
-	// H2D mem copy 
-	gpuErrchk( cudaMemcpyAsync(input_device, input_host, streamBytes, cudaMemcpyHostToDevice, streams[i]) ); 
-	// Kernel call
-	ernel<<<GRID, BLOCK, 0, streams[i]>>>(input_device, output_device, ...); 
-	#ifndef MEASURES
-	gpuErrchk( cudaPeekAtLastError() );
-	#endif   
-	// D2H mem copy 
-	gpuErrchk( cudaMemcpyAsync( output_host, output_device, streamBytes, cudaMemcpyDeviceToHost, streams[i]) );
+   // H2D mem copy 
+   gpuErrchk( cudaMemcpyAsync(input_device, input_host, streamBytes, cudaMemcpyHostToDevice, streams[i]) ); 
+   // Kernel call
+   kernel<<<GRID, BLOCK, 0, streams[i]>>>(input_device, output_device, ...); 
+   #ifndef MEASURES
+     gpuErrchk( cudaPeekAtLastError() );
+   #endif   
+   // D2H mem copy 
+   gpuErrchk( cudaMemcpyAsync( output_host, output_device, streamBytes, cudaMemcpyDeviceToHost, streams[i]) );
 }
 	
 \end{lstlisting}
@@ -108,26 +108,26 @@ Another approach could be to use any CPU timer provided for C++ in a way such as
 	t2 = myCPUTimer();
 \end{lstlisting}
 A problem with using host-device synchronization points, such as \texttt{cudaDeviceSynchronize()}, is that they stall the GPU pipeline.
-Events, instead, provide a relatively light-weight \footnote{CUDA events make use of the concept of CUDA streams.} alternative to CPU timers via the \textit{CUDA event API}. This API includes calls to create and destroy events, record events, and compute the elapsed time in milliseconds between two recorded events, exactly as it's shown in code Listing \ref{lst:timers}.
+Events, instead, provide a relatively light-weight \footnote{CUDA events make use of the concept of CUDA streams.} alternative to CPU timers via the \textit{CUDA event API}\cite{devblogevents}. This API includes calls to create and destroy events, record events, and compute the elapsed time in milliseconds between two recorded events, exactly as it's shown in code Listing \ref{lst:timers}.
  
-CUDA events are of type \texttt{cudaEvent\_t} and are created and destroyed with \texttt{cudaEventCreate()} and \texttt{cudaEventDestroy()}. In the above code \texttt{cudaEventRecord()} places the start and stop events into the default stream, or \texttt{stream 0} (also called the “\textit{Null Stream}”). This holds for all device timers we introduced in our code.\\
+CUDA events are of type \texttt{cudaEvent\_t} and are created and destroyed with \texttt{cudaEventCreate()} and \texttt{cudaEventDestroy()}. In the above code \texttt{cudaEventRecord()} places the start and stop events into the default stream, or \texttt{stream 0} (also called the “\textit{Null Stream}”)\cite{cudaguide}. This holds for all device timers we introduced in our code.\\
 The \texttt{cudaEventRecord()} will record a time stamp in device for the event, but only when that event is reached in the specified stream. The function \texttt{cudaEventSynchronize()} blocks CPU execution until the specified event is recorded.\\
-The \texttt{cudaEventElapsedTime()} function returns the number of milliseconds elapsed between the recording of \textit{start} and \textit{stop}. This value has a resolution of approximately 0.5 microseconds \cite{devblogevents,cudaguide}. So those timers will be enough accurate for our purpose, since we'll see that almost all elapsed times will be from tens to thousands milliseconds.
+The \texttt{cudaEventElapsedTime()} function returns the number of milliseconds elapsed between the recording of \textit{start} and \textit{stop}. This value has a resolution of approximately 0.5 microseconds\cite{devblogevents,cudaguide}. So those timers will be enough accurate for our purpose, since we'll see that almost all elapsed times will be from tens to thousands milliseconds.
 
 It's important to point out why we used events on the default stream. 
 %If one of the events were last recorded in a non-NULL stream, the resulting time may be greater than expected (even if both used the same stream handle). This happens because the \texttt{cudaEventRecord()} operation takes place asynchronously and there is no guarantee that the measured latency is actually just between the two events.\\
 %Any number of other different stream operations could execute in between the two measured events, thus altering the timing in a significant way \cite{libevents}.
-Given the asynchronous nature of CUDA calls, that we perform in non-default stream, the behavior and order in between different streams is unpredictable. This means that a call from a different non-null stream can actually be issued in between two events we're trying to recording, even if they were issued from the same non-default stream.\\
-This is one of the reasons why we chose to put timers outside the loop over input stream.
-We could insert events inside the loop, instead, in that way we'd have measured singularly each iteration\footnote{And so measure each single memory copy H2D, Kernel execution and memory copy D2H.} and sum up all those elapsed times.
+Given the asynchronous nature of CUDA calls, that we perform in non-default stream, the behavior and order in between different streams is unpredictable. This means that a call from a different non-null stream can actually be issued in between two events we're trying to recording, even if they were issued from the same non-default stream\cite{cudaguide}.\\
+This is one of the reasons why we chose to put timers on default stream and, furthermore, outside the loop over input stream.
+We could have inserted events inside the loop instead, but in that way we'd have measured singularly each iteration\footnote{And so measure each single memory copy H2D, Kernel execution and memory copy D2H.} and sum up all those elapsed times.
 There would have been three problems with that approach:
 \begin{itemize}
 	\item Each "\textit{end}" event, must be sure to measure everything until the ending event, that's why it's necessary to introduce \texttt{cudaEventSynchronize()};
-	\item Given that the input stream should be quite long, all those timers in each loop iteration would have introduced an amount of undesired sampling overhead, apart from synchronization time.
+	\item Given that the input stream should be quite long, all those timers in each loop iteration would have introduced an amount of undesired sampling overhead, coupled with useless synchronization time.
 \end{itemize}
 
-For first problem, we recall that \texttt{cudaEventSynchronize()} blocks CPU execution until the specified event is recorded, but we really want to avoid that.
-We should avoid as much (explicit) host-device synchronizations as we can: given that we're working on input/output streams of items from host, "stopping" this flow on host side at each iteration would invalidate the gain of our model, increasing the overall completion time (probably for a non negligible amount).\\
+For first problem, we recall that \texttt{cudaEventSynchronize()} blocks CPU execution until the specified event is recorded and we really want to avoid that.
+We should avoid as much (explicit) host-device synchronizations as we can: given that we're working on input/output streams of items from host, "stopping" this flow on host side at each iteration would invalidate the gain of our model (especially in terms of overlapping), increasing the overall completion time (probably for a non negligible amount).\\
 The second problem is related to the first. Even if events are a light-weight solution for device activities timing, it doesn't mean they don't introduce a bit of overhead (in addition to the synchronization one) in both host and device side.
 
 For completeness, we'll show some performances case of interest measured by profilers, in addition to those from timers.
@@ -135,10 +135,10 @@ In designing and implementation phase, this allowed us, not only to observe the 
 
 
 \subsection{Tests setup}
-First we must point out that the target machines where we have run tests on, weren't available in exclusive access. So, all collected time measures, could be affected by a perturbation introduced from other processes.\\
-Anyway, during the tests execution we set an automatic monitor of the resources occupancy of target machines. In particular, we made log files where it was printed some informations from \texttt{top} and \texttt{nvidia-smi} commands\footnote{\texttt{top} gives us informations on the machine state on host side, while \texttt{nvidia-smi} allows to monitor NVIDIA GPUs state. By state we mean the main running processes, utilization percentage, used memory etc.}.\\
+First we must point out that the target machines, where we have ran tests on, \textit{weren't available in exclusive access}. So, all collected time measures, could be affected by a perturbation introduced from other processes, that aren't under our control.\\
+Anyway, during the tests execution we set an automatic monitor for the resources occupancy of target machines. In particular, we made log files where there was printed the informations obtained by \texttt{top} and \texttt{nvidia-smi} commands\footnote{\texttt{top} gives us informations on the machine state on host side, while \texttt{nvidia-smi} allows to monitor NVIDIA GPUs state. By state we mean the main running processes, utilization percentage, used memory etc.}.\\
 
-Once we determined the time measure criterion, we had to decide what behaviors we wanted to observe from our code.\\% and its performances.
+Once we determined the time measurement criterion, we had to decide what behaviors we wanted to observe from our code.\\% and its performances.
 Note that for each type of input dataset, we run multiple times (more precisely 5 times) the executable so that, for a certain input setup, we can collect several time measures. This allows us to delete some \textit{outliers} completion times, as they may distort the result, and then we take the mean value among the remaining measures.
 
 Moreover, as we mentioned in Subsection \ref{subs:bash}, we implemented our tests as bash scripts.
@@ -157,15 +157,10 @@ It's important to recall that \textit{input stream length shouldn't be known a p
 \label{subs:speedup}
 %Two important metrics related to performance and parallelism are \textbf{speedup} and \textbf{efficiency}. 
 An important metric related to performance and parallelism is \textbf{speedup}, it's a derived measure from completion time measures. Speedup compares the latency for solving a certain computational problem with its \textit{best known} sequential implementation (on the target architecture available), versus solving the same problem on P hardware units, generally called \textit{workers}, as below
-\begin{center}
-	\(speedup = S_{P} = \frac{T_{seq}}{T_{P}} \)
-\end{center}
-
-%**************DICE:
-%"QUESTA È LA SCALABILITÀÀÀÀÀÀ"
-%*************
-
-where \(T_{seq}\) is the sequential execution time and \(T_{P}\) is the parallel completion time.
+\begin{equation}\label{eq:speedup}
+	speedup = S_{P} = \frac{T_{seq}}{T_{P}} 
+\end{equation}
+where \(T_{seq}\) is the sequential execution time and \(T_{P}\) is the parallel completion time, using \textit{P} parallel resources\cite{spm}.\\
 %\textbf{Efficiency} is speedup divided by the number of workers:
 %\begin{center}
 %\(efficiency = \frac{S_{P}}{P} =  \frac{T_{1}}{P \cdot T_{P}}\)
@@ -174,66 +169,65 @@ where \(T_{seq}\) is the sequential execution time and \(T_{P}\) is the parallel
 %If \(T_{seq}\) is the latency of the parallel program running with a single worker, the above equation for speedups, is sometimes called \textit{relative speedup}, because it shows relative improvement from using P workers. This uses a serialization of the parallel algorithm as the baseline. 
 %Sometimes there is a better serial algorithm that does not parallelize well. \\
 %If so, it is fairer to use that algorithm for \(T_{seq}\), and report \textit{absolute speedup}, as long as both algorithms are solving an identical computational problem. 
-
 An algorithm that runs P times faster on P processors is said to exhibit \textbf{linear speedup}. It is rare in practice, since there is extra work, involved in distributing work to processors and coordinating them. This extra work clearly introduces extra time, also known as \textbf{overhead}.\\
-While \textbf{sublinear speedup} is the norm\cite{structparprog}, there may be exceptions, i.e. occasional programs exhibiting \textbf{superlinear speedup}\footnote{In general, some causes of superlinear speedup may be: restructuring a program for parallel execution can cause it to use memory better (cache in CPU implementations), even with a single worker; or the parallel algorithm  may be able to avoid work that its serialization would be forced to do.}.\\%, that means an efficiency greater than 100\%. 
+While \textbf{sublinear speedup} is the norm, there may be exceptions, i.e. occasional programs exhibiting \textbf{superlinear speedup}\footnote{In general, some causes of superlinear speedup may be: restructuring a program for parallel execution can cause it to use memory better (cache in CPU implementations), even with a single worker; or the parallel algorithm  may be able to avoid work that its serialization would be forced to do.}\cite{structparprog}.\\%, that means an efficiency greater than 100\%. 
 
 
-\textbf{Amdahl's Law} gives an important limit on speedup: it considers speedup as P varies and the problem size remains fixed.\\
-Amdahl identified in the execution time \(T_{seq}\) of a program, two categories: time spent doing \textit{non-parallelizable serial work} and time spent doing \textit{parallelizable work}. Call these \(T_{ser}\) and \(T_{par}\) , respectively. \\
+\textbf{\textit{Amdahl's Law}} gives an important limit on speedup: it considers speedup as P varies and the problem size remains fixed.\\
+Amdahl identified in the execution time \(T_{seq}\) of a program, two categories: time spent doing \textit{non-parallelizable serial work} and time spent doing \textit{parallelizable work}. Call these \(T_{ser}\) and \(T_{par}\), respectively. \\
 Given P workers available to do the parallelizable work, the times for sequential and parallel execution are:
-\begin{center}
-	\(T_{seq} = T_{ser} + T_{par}\) \\
-	\(T_{P} \geq T_{ser} + \frac{T_{par}}{P}\)
-\end{center}
+\begin{equation}\label{eq:parserfract1}
+	T_{seq} = T_{ser} + T_{par} 
+\end{equation}
+\begin{equation}\label{eq:parserfract2}
+	T_{P} \geq T_{ser} + \frac{T_{par}}{P}
+\end{equation}
 
 The bound on \(T_{P}\) assumes no superlinear speedup, and is an exact equality only if the parallelizable work can be perfectly parallelized.\\
-Plugging these relations into the definition of speedup, we gave before, yields \textbf{Amdahl’s Law}:
-\begin{center}
-	\(S_{P} \leq \frac{T_{ser}+T_{par}}{T_{ser}+T_{par}/P}\)
-\end{center}
+Plugging relations in \ref{eq:parserfract1} and \ref{eq:parserfract2} into the definition of speedup in Eq.\ref{eq:speedup}, we gave before, yields \textbf{Amdahl's Law}:
+\begin{equation}
+	S_{P} \leq \frac{T_{ser}+T_{par}}{T_{ser}+T_{par}/P}
+\end{equation}
 %Amdahl’s Law has an important corollary. 
 Let \(f\) be the non-parallelizable serial fraction of the total work. Then the following equalities hold:
-\begin{center}
-	\(T_{ser} = f \cdot T_{seq}\)\\
-	 \(T_{par} = (1-f) \cdot T_{seq}\)
-\end{center}
+\begin{equation}\label{eq:serparfract}
+	\begin{array}{l}
+	T_{ser} = f \cdot T_{seq} \\
+	 T_{par} = (1-f) \cdot T_{seq}
+	 \end{array}
+\end{equation}
 
-Substituting these into speedup equation:
-\begin{center}
-	\(S_{P} \leq \frac{1}{f+(1-f)/P}\  \Rightarrow \  S_{\infty} \leq \frac{1}{f}\)
-\end{center}
+Substituting Equations \ref{eq:serparfract} into speedup equation \ref{eq:speedup}:
+\begin{equation}\label{eq:amdahlupperbound}
+	S_{P} \leq \frac{1}{f+(1-f)/P}\  \Rightarrow \  S_{\infty} \leq \frac{1}{f}
+\end{equation}
 
-Speedup is \textit{limited by the fraction of the work that is not parallelizable}, even using an infinite number of processors\cite{structparprog}.\\
+Speedup is \textit{limited by the fraction of the work that is not parallelizable}, even using an infinite number of processors\cite{structparprog,spm}.\\
 
 
 \subsection{Results: gathering and evaluation}
 \label{subs:resgath}
-From all \texttt{.txt} files, containing time measures for all the execution that have been run from tests, we have to manipulate results and do some calculations.\\
-In particular, implemented Python scripts \footnote{See \hyperref[chap:tools]{Chapter 2}.} provides a tool to:
+From all \texttt{.txt} files, containing time measures for all the execution run from tests, we have to manipulate results and do some calculations.\\
+In particular, implemented Python scripts\footnote{See \hyperref[chap:tools]{Chapter 2}.} provide a tool to:
 \begin{itemize}
-	\item First of all, output all necessary \texttt{.csv} containing all averages, of the times got by the multiple runs for a certain input \footnote{Remember that outliers values are rejected, and mean values are computed on remaining values.};
+	\item First of all, output all necessary \texttt{.csv} containing all averages on the measures obtained by the multiple runs for a certain input set\footnote{Remember that outliers values are rejected, and mean measures are computed on remaining values.};
 	\item Then from all those average Completion times, in \texttt{.csv} format, another script computes all \textbf{Speedups};
-	\item Finally, the same script that computes speedups, outputs plots on most significant measures and results.\\
+	\item Finally, the same script that computes speedups and then it outputs plots on most significant measures and results.\\
 \end{itemize}
-
-It's important to point out what kind of speedups will be computed, so that in next sections we can presents numeric and graphic results.\\
-Remembering what we introduced in Section \ref{subs:speedup}, the speedup, in brief, is the ratio of the time spent in sequential version to the time spent on parallel version, having P workers:
-\begin{center}
-	\(speedup = S_{P} = \frac{T_{seq}}{T_{P}} \)
-\end{center}
+It's important to point out what kind of speedups will be computed, so that in next sections we can present numeric and graphic results.\\
+Remembering what we introduced in Section \ref{subs:speedup}, the speedup, in brief, is the ratio of the time spent in sequential version to the time spent on parallel version, having P workers (see Equation \ref{eq:speedup}).\\
 Here we have to define what those times correspond in our implementation:
 \begin{itemize}
 	\item \(T_{seq}\), the sequential version, is the case in which CUDA Streams aren't used\footnote{More precisely only default stream is used, instead non-default streams aren't.}. In a sense, this corresponds to serialize all data transfers and kernel execution as
 	\begin{center}
 		\(H2D_{0},\ Ker_{0},\ D2H_{0},\ H2D_{1},\ Ker_{1},\ D2H_{1}, . . .\)
 	\end{center}
-	So, even if we have a stream of items as input, this means sending only a small task per time to the device, thus using only a small amount of computational resources at time;
+	So, even if we have a stream of items as input, this means sending only a small task per time to the device, thus using only a small amount of computational resources\footnote{E.g. this can be seen as using a single SM for all the duration of computations on farm input stream.} at time;
 	\item \(T_{P}\), the parallel version, is the case in which CUDA Streams are used, where P will be the number of non-default streams spawned.
 \end{itemize}
 In the particular scenario of a Farm for GPU, the number of workers has a more complex meaning. Those workers, more precisely, corresponds to how many Streaming Multiprocessors we're going to use in the GPU, i.e. the target number of SMs we want to make busy at computation peak time.\\
-So the speedup, obtained from those two implementations, should also give us an indicator on how many SMs will be effectively used.
-In other words, here we can see a CUDA stream as a sort of channel in which we put tasks and we want to see if those channels will successfully overlap, hiding data transfer from/to device, executing multiple kernels at the same time and other possible latencies.
+So the speedup, obtained from those two implementations, should also give us an indicator on how many SMs are effectively used.
+In other words, here we can see a CUDA stream as a sort of channel in which we put tasks and we want those channels to successfully overlap, hiding data transfer time from/to device by executing multiple kernels at the same time.
 So, the computed speedups are:
 \begin{enumerate}
 	\item \(S_{3} = \frac{T_{seq}}{T_{3}} \) as we mentioned before, this is a base case for CUDA streams usage;
@@ -241,114 +235,121 @@ So, the computed speedups are:
 \end{enumerate}
 
 The way we defined speedup lead us to ask what is the best we can achieve and this is where Amdahl's law can be applied.\\
-First we should define what completion times, upon which we base the analysis, are. 
-We start by focusing on the total completion time:
-\begin{center}
-	\(T_{Tot} = n \cdot (T_{In Stream} + T_{H2D} + T_{Kernel} + T_{D2H} +T_{Out Stream}) \)
-\end{center}
+First we should define what completion times, upon which we based the analysis, are. 
+We start by focusing on the total completion time for Farm in GPU, that we introduced in Chapter \ref{chap:logic}.
+We can extend the Equation \ref{eq:TcompFarm} to have an approximation of all possible times in our Farm for GPU
+\begin{equation}\label{eq:totTime}
+	T_{Tot} = T_{In Stream} + T_{Comp} + T_{Out Stream}
+	%T_{comp} \approx  \frac{T_{T_{H2D} + T_{ker} + T_{D2H}}}{n_w} + T_{ov}
+\end{equation}
 Below we'll explain this formula's components:
 \begin{enumerate}
-	\item \(n\) is the total number of tasks appearing on the input stream\footnote{Always consider this as an indefinitely big number.};
+	%\item \(n\) is the total number of tasks appearing on the input stream\footnote{Always consider this as an indefinitely big number and we don't know it a priori.};
 	
 	\item \(T_{Tot}\) is the overall time it takes to compute \(n\) elements from an input stream, i.e. latency from the first available item on the input stream, until the last result item is sent to the output stream (this can involve both host and device elapsed times);
 	
-	\item \(T_{In_Stream}\) this is the time it takes to get a \textendash data parallel small \textendash task from input stream (host measure);
+	\item \(T_{In_Stream}\) this is the time it takes to obtain all \textendash data parallel small\textendash \ tasks from input stream (host measure);
 	
-	\item \(T_{H2D}\) is the time spent in transferring a task from host to device (device time);
+	\item \(T_{Comp}\) is the time given by the Equation \ref{eq:TcompFarm} (device measure);
+	%\item \(T_{H2D}\) is the time spent in transferring a task from host to device (device time);
 	
-	\item \(T_{Kernel}\) is the time needed by the GPU to compute a certain kernel on the input item (device time);
+	%\item \(T_{Kernel}\) is the time needed by the GPU to compute a certain kernel on the input item (device time);
 	
-	\item \(T_{D2H}\) is the time spent in transferring back result item from device to host (device time);
+	%\item \(T_{D2H}\) is the time spent in transferring back result item from device to host (device time);
 	
-	\item \(T_{Out_Stream}\) the time it takes to send results to the output stream (host measure).	
+	\item \(T_{Out_Stream}\) the time it takes to send all results to the output stream (host measure).	
 \end{enumerate}
-Obviously the measures we performed and all next considerations will be based only on device completion times, i.e. points 4, 5 and 6 of the above list.\\
-We can reduce our test to an important assumption: we don't know how much it is \(n\) (the real length of the input stream), that's why we focus our measures on a reasonably long portion of the input stream, e.g. take as limit an \(l\) such that \((l \leq n\) elements will be the stream limit.\\
-So we'll focus our attention exclusively to:
-\begin{center}
-	\(T_{Device} = l \cdot T_{Comp}\)\\
-	where\\
-	\(T_{Comp}= T_{H2D} + T_{Kernel} + T_{D2H}\)\\
-\end{center}
-In other words \(T_{Comp}\) is the time needed to: send an item of the input stream to the GPU; make computations on that item and then send back the result item to host.\\
+Obviously the measures we performed and all next considerations will be based only on device completion time, i.e. point 3 from the above list.\\
+We recall that our tests rely on an important assumption: we don't know how much the real length of the input stream is (call it \(n\)), that's why we focus our measures on a reasonably long portion of the input stream, e.g. take as limit an \(l\) such that \((l \leq n\) elements will be the stream limit.\\
+So, focusing our attention exclusively to device time, from Equation \ref{eq:totTime} we'll only consider \(T_{comp}\), plugging it with Equation \ref{eq:Tseq}, then we get
+\begin{equation}
+	%\(T_{Device} = l \cdot T_{Comp}\)\\
+	%where\\
+	%\(T_{Comp}= T_{H2D} + T_{Kernel} + T_{D2H}\)\\
+	T_{comp} \approx  \frac{T_{seq}}{n_w} + T_{ov} \approx \frac{(T_{H2D} + T_{ker} + T_{D2H})}{n_w} + T_{ov}
+\end{equation}
+In other words \(T_{Comp}\) is approximatively the time needed to send items of the input stream to the GPU, make computations on them and then send back the results item to host\footnote{As we mentioned in \ref{subs:farmperfmodel} the overhead is given by all intervals where we can't get perfect overlapping.}.
+In the specific case of our measures in tests this will be the time employed for all of the \(l\) items.\\
 %We can see that this as analogous to the completion time performance model we showed in Subse\ref{subs:farmperfmodel}.
-As we told before, host elapsed times aren't in the study domain of this thesis. So, what we want to parallelize is \(T_{Device}\), in particular we want all \(l\) tasks to run in parallel. Clearly, we're also assuming that \(l > \#SM\), i.e. our tests will run on a limited input stream, but still ensuring that we have several tasks to send for each CUDA streams, consequently more tasks per SM.\\
-Following all these assumptions, it's normal to ask what would it be the maximum reachable speedup and to define this we exploit Amdahl law, showed in previous section. Recall that according to Amdahl, serial code can be identified in two categories: serial fraction and parallelizable fraction.\\
-Since we're only focusing on \(T_{Device}\) and, since we wish to parallelize all of it, ideally all operations included in this completion time may be considered parallelizable. This leads trivially to: \(f=0\) and  \((1-f)=1\).\\
+As we told before, host elapsed times aren't in the study domain of this thesis. So, from Equation \ref{eq:totTime} what we wanted to parallelize is \(T_{Comp}\), in particular we want all \(l\) tasks to run in parallel on \(n_w\) workers. Clearly, we're also assuming that \(l \ >> \ n_w \) where \(n_w= \#SM\), i.e. our tests will run on a limited input stream, but still ensuring that we have many tasks to send for each CUDA stream, consequently more tasks per SM.\\
+Following all these assumptions, it's normal to ask what would it be the maximum reachable speedup and to define this we exploit Amdahl's law, recall Equation \ref{eq:amdahlupperbound}. Recall that according to Amdahl, serial code can be identified in two categories: serial fraction and parallelizable fraction.\\
+%Since we're only focusing on \(T_{Comp}\) and, since we wish to parallelize all of it, except for overhead, ideally all operations included in this completion time may be considered parallelizable.
+Considering our sequential code \(T_{Seq}\), theoretically we should be able to parallelize all of it using our Farm model and CUDA streams. So, ideally, we can assume that it's all parallelizable. This leads trivially to: \(f=0\) and  \((1-f)=1\).\\
 Merging this with the Amdahl's upper bound we obtain:
-\begin{center}
-		\(S_{P} \leq \frac{1}{f+(1-f)/P}\   = \frac{1}{1/P}=P\)
-\end{center}
-And since we have a limited amount of resources, given by the Streaming Multiprocessors number, we can conclude that the maximum speedup we can achieve is: \(Sp_{\#SM} \leq \#SM\). This formally proves our expectations.
+\begin{equation}\label{eq:SMupperbound}
+		S_{P} \leq \frac{1}{f+(1-f)/P}\   = \frac{1}{1/P}=P
+\end{equation}
+Since we have a limited amount of resources, i.e. Streaming Multiprocessors number, exploiting Equation \ref{eq:SMupperbound} we can conclude that the maximum speedup we can achieve is: \(Sp_{\#SM} \leq \#SM\). This formally proves our expectations.
 %\Rightarrow \  S_{\infty} \leq \frac{1}{f}
 
 
-In the next sections there will be reported all completion times and speedups, that are mostly representative. 
-For each type ok kernel, that was implemented,  we'll show inputs, tests and results (with some graphics and plots).
+In the next sections we will report all completion times and speedups, that are mostly representative. 
+For each type of kernel that was implemented,  we'll show inputs, tests and results (with some graphics and plots).
 
 
 
 \subsection{Computation-bound and memory-bound}
-	In Chapter \ref{chap:logic} we presented a performance model for Farm parallel pattern, coupled with speedup and Amdahl's law. These types of performance model are the most used to predict (approximately) performances.\\
+\label{sect:roofline}
+	In Section \ref{subs:farmperfmodel} we presented a performance model for Farm parallel pattern, then we coupled that with speedup and Amdahl's law in the previous section. These performance models are the most used to predict (approximately) performances.\\
 	Anyway, in this study we're interested also in another performance model: \textit{\textbf{Roofline Model}}.\\
-	Often off-chip memory bandwidth is a constraining  resource  in  system  performance.
-	Hence, we want a model that relates processor  performance  to off-chip  memory  traffic. \\
+	Often off-chip memory bandwidth is a constraining  resource in system performance.
+	Hence, we want a model that relates processor  performance  to off-chip  memory  traffic\cite{rooflinepaper}. \\
 	To this aim we define some important concepts:
 	\begin{itemize}
 		\item \textbf{work \textit{W}} denotes the number of operations performed by a given kernel or application. This metric may refer to any type of operation according to the study necessity (e.g. the number of integer operations, the number of floating point operations (FLOPs), etc.). In the majority of the cases however, \textit{W} is expressed as FLOPs.\\	
 		Note that the work is a property of the given kernel or application and thus only partially depend on the platform characteristics. 
 		
-		\item \textbf{memory traffic \textit{Q}} denotes the number of bytes of memory transfers incurred during the execution of the kernel or application. In contrast to \textit{W}, \textit{Q} is heavily dependent on the properties of the target machine.%, such as for instance the structure of the cache hierarchy.[
+		\item \textbf{memory traffic \textit{Q}} denotes the number of bytes of memory transfers incurred during the execution of the kernel or application. In contrast to \textit{W}, \textit{Q} is heavily dependent on the properties of the target machine\cite{rooflineslides}.%, such as for instance the structure of the cache hierarchy.[
 		
 		\item \textbf{arithmetic intensity \textit{I}}, also referred to as operational intensity, is the ratio of the work \textit{W} to the memory traffic \textit{Q}:
-		\begin{center}
-			\( I = \frac{W}{Q}\)
-		\end{center}
-		and denotes the number of operations per byte of memory traffic. When the work \textit{W} is expressed as FLOPs, the resulting arithmetic intensity \textit{I} will be the ratio of floating point operations to total data movement (FLOPs/byte)\cite{optimizingcuda}. 
+		\begin{equation}
+			I = \frac{W}{Q}
+		\end{equation}
+		and denotes the number of operations per byte of memory traffic. When the work \textit{W} is expressed as FLOPs, the resulting arithmetic intensity \textit{I} will be the ratio of floating point operations to total data movement (FLOPs/byte)\cite{optimizingcuda,rooflineslides}. 
 	\end{itemize}
 	In particular, the term  “operational intensity” generally means operations per byte of  DRAM  traffic. That is, we measure traffic between the caches and memory rather than between the processor and the caches. 
-	Thus, operational intensity predicts the DRAM bandwidth needed by a kernel on a particular computer\cite{rooflinepaper,rooflineslides}.\\
+	Thus, operational intensity predicts the DRAM (global memory) bandwidth needed by a kernel on a particular computer\cite{rooflinepaper,rooflineslides}.\\
 	
 	
 	The \textit{naive Roofline} is obtained by applying simple bound and bottleneck analysis.
 	In this formulation of the Roofline model, there are only two parameters, the \textit{peak performance} and the \textit{peak bandwidth} of the specific architecture, and one variable, the \textit{arithmetic intensity}.\\
-	The peak performance, in general expressed as GFLOPS\footnote{Floating point operations per second are called FLOPS, it is a measure of computer performance, useful when we've floating-point calculations. GFLOPS, are simply giga FLOPS.}, usually it's derived from architectural manuals, while the peak bandwidth, that references to peak DRAM bandwidth to be specific, is instead obtained via benchmarking.\\
-	The resulting plot\footnote{in general with both axes in logarithmic scale} is then derived by the following formula:
-	\begin{center}
-		\(P=\min {\begin{cases}\pi \\\beta \times I\end{cases}}\)
-	\end{center}	
-	where \textit{P} is the attainable performance, \(\pi\)is the peak performance, \(\beta\) is the peak bandwidth and \textit{I} is the arithmetic intensity.\\
+	The peak performance, in general expressed as GFLOPs\footnote{Floating point operations per second are called FLOPs, it is a measure of computer performance, useful when we've floating-point calculations. GFLOPs, are simply giga FLOPS.}, usually it's derived from architectural manuals, while the peak bandwidth, is generally obtained via benchmarking\cite{rooflinepaper} (in our case we found it from the features manual of our two target machines).\\
+	The Roofline model gives a plot, that is derived by the following formula:
+	\begin{equation}
+		P=\min {\begin{cases}\pi \\\beta \times I\end{cases}}
+	\end{equation}	
+	where \textit{P} is the attainable performance, \(\pi\)is the peak performance, \(\beta\) is the peak bandwidth and \textit{I} is the arithmetic intensity\cite{applyroofline}.\\
 	The point at which the performance saturates at the peak performance level \(\pi\) (that is where the diagonal and horizontal roof meet), is defined as ridge point.\\
-	The ridge point offers insight on the machine's overall performance, by providing the minimum arithmetic intensity required to achieve peak performance.\\
-	
-	A given kernel or application is then characterized by a point given by its arithmetic intensity \textit{I} (on the x-axis). The attainable performance \textit{P} is then computed by drawing a vertical line that hits the Roofline curve.
+	The ridge point offers insight on the machine's overall performance, by providing the minimum arithmetic intensity required to achieve peak performance.\\	
+	A given kernel or application is then characterized by a point given by its arithmetic intensity \textit{I} (on the x-axis). The attainable performance \textit{P} is then computed by drawing a vertical line that hits the Roofline curve.\\
 	
 	So, the kernel or application is said to be \textit{\textbf{memory-bound}} if \(I \leq \pi /\beta \).\\
-	Conversely, if \( I\geq \pi /\beta \), the computation is said to be \textit{\textbf{compute-bound}}\cite{rooflinepaper, applyroofline}.
-
-	We'll give an example on our kernel applications, mainly to prove whether they're memory or compute bound.\\
+	Conversely, if \( I\geq \pi /\beta \), the computation is said to be \textit{\textbf{compute-bound}}\cite{rooflinepaper, applyroofline}.\\
+	We'll give an example on two of our kernel applications, mainly to prove whether they're memory or compute bound.\\
 	To simplify this example, consider the amount of computations and memory operations needed to produce a single floating point number as output.
 	Moreover, we consider memory traffic as simple count of loads/stores, instead of single bytes (as we're considering an example on individual floats, that is always 4 bytes).\\
-	First, consider the Simple-computational kernel and assume to set it to perform \textit{M} iterations (e.g. take 10 000\footnote{We'll see in next sections that this is the minimum amount of computations that kernel had to perform in our tests.}) to produce a single float as output. At each iteration we perform a single-precision cosine (\texttt{cosf}) that is internally computed in approximately 10 FLOP\footnote{\href{https://devtalk.nvidia.com/default/topic/983983/how-to-calculate-the-total-number-of-fop-and-floating-point-performance-of-special-operations-exp-sin-sqrt-/}{Here we can see a discussion on amount of FLOP per mathematical operation.}}. Furthermore, to get a single output, we perform 2 memory operations, one load and one store between registers and global memory.\\
-	So we can get as computational intensity: \(I \approx \frac{10}{2} \cdot M = 5 \cdot M \), where \textit{M} is the number of times we repeat arithmetic operations. For example for \textit{M = 10 000} we get \textit{I = 50 000}.\\
+	First, consider the Simple-computational kernel and assume to set it to perform \textit{M} iterations (e.g. take \(10000\)\footnote{We'll see in next sections that this is the minimum amount of computations that kernel had to perform in our tests.}) to produce a single float as output. At each iteration we perform a single-precision cosine (\texttt{cosf}) that is internally computed in approximately 10 FLOP\footnote{Here we can see a discussion on amount of FLOP per mathematical operation:\\ https://devtalk.nvidia.com/default/topic/983983/}. Furthermore, to get a single output, we perform 2 memory operations, one load and one store between registers and global memory.\\
+	So we get as computational intensity: \(I \approx \frac{10}{2} \cdot M = 5 \cdot M \), where \textit{M} is the number of times we repeat arithmetic operations. For example for \textit{M = 10 000} we get \textit{I = 50 000}.\\
 	
 	Now we make an example on matrix-multiplication kernel.
-	Call \textit{k} the number of sums of multiplications that the kernel performs to output each floating-point number.\\
-	So, for each output, the kernel performs \(2 \cdot k\) FLOPs\footnote{Here intended as FLoating POint operationS, and not FLOPs per second.} (one sum, one multiplication for each kernel iteration).
-	Furthermore, we have \(2 \cdot k\) loads (the couples of elements from input matrices that will be multiplied) and \(1\) store, between global memory and registers (one element of the result matrix).\\
+	Call \textit{k} the amount of floating-point numbers upon which we have to perform computations to get each floating-point results (i.e. a generic element \(C[i, j]\)).\\
+	So, for each output, the kernel performs \(2 \cdot k\) FLOP (one sum, one multiplication for each iteration).
+	Furthermore, we have \(2 \cdot k\) loads (the couples of elements from input matrices that will be multiplied) and \(1\) store (one element of the result matrix), between global memory and registers.\\
 	So computational intensity will be given by: \(I = \frac{2 \cdot k}{(2 \cdot k) + 1} \).\\
 	
 	Summarizing the results of the above examples, we can observe that in first kernel, computation intensity simply will proportionally grow, as the number of iterations will increase.\\
-	While the second kernel shows a different behavior, i.e. computation intensity doesn't really depend on the number of iterations of the kernel, since it will give always a result \(< 1\) (we have more memory than compute operations).\\
-	According to the Naive Roofline model we can determine if an application is memory or compute bound, by check respectively if \(I \leq \pi / \beta \) or \(I \geq \pi / \beta \).
-	From architecture manuals\cite{p100whitepaper} and specifications\footnote{We checked the CUDA Device Query too.}, we obtained \( \frac{\pi}{\beta} \approx \frac{10600 \ \  GFLOP/s}{732 \ \ GB/s} = 14,48 \ \ FLOP/B \) for the P100 device and \( \frac{\pi}{\beta} \approx \frac{6840 \ \ GFLOP/s}{288 \ \ GB/s} = 23,75 \ \ FLOP/B \) for the M40 GPU.\\
-	Merging it with the above kernel examples of arithmetic intensity, we get\footnote{Now we'll consider memory operations in terms of bytes, instead of load/stores number, to uniform them with the model.}:
+	While the second kernel shows a different behavior, i.e. computation intensity doesn't depend on the number of iterations of the kernel, since it will give always a result \(< 1\) (we have more memory than compute operations).\\
+	According to the Naive Roofline model we can determine if an application is memory or compute bound, by check respectively if \(I \leq \pi / \beta \) or \(I \geq \pi / \beta \).\\
+	From architecture manuals\cite{p100whitepaper} and specifications\footnote{We checked the CUDA Device Query too.}, we obtained\\
+	 \( \frac{\pi}{\beta} \approx \frac{10600 \ \  GFLOP/s}{732 \ \ GB/s} = 14,48 \ \ FLOP/B \) in P100 device and\\
+	 \( \frac{\pi}{\beta} \approx \frac{6840 \ \ GFLOP/s}{288 \ \ GB/s} = 23,75 \ \ FLOP/B \) in M40 GPU.\\
+	Merging it with the above kernel examples of different arithmetic intensity, we get\footnote{Now we'll consider memory operations in terms of bytes, instead of load/stores number, to uniform them with the model.}:
 	\begin{itemize}
-		\item simple-computational kernel \(I \approx \frac{10}{4 (bytes)} \cdot M = 2.5 \cdot M \)
-		\item matrix multiplication \(I = \frac{8 \cdot k}{(12 \cdot k)+1} \approx 1 \)
+		\item simple-computational kernel \( \Longrightarrow \ I \approx \frac{10}{4 (bytes)} \cdot M = 2.5 \cdot M \)
+		\item matrix multiplication \(\Longrightarrow \ I = \frac{8 \cdot k}{(12 \cdot k)+1} \approx 1 \)
 	\end{itemize}
 	So we can conclude that for matrix multiplication computation intensity will be \(I \leq \pi / \beta \) for both target machines.\\
-	While in simple-computational kernel, we have a computation bound behavior for a small value of \textit{M} (e.g. for M=10 the kernel is compute-bound for both target machines, we recall that the minimum amount we used in tests is M = 10 000).
+	While in simple-computational kernel, we have a computation bound behavior yet for a small amount of \textit{M} (e.g. for \textit{M=10} the kernel is already considerable as compute-bound for both target machines, we recall that the minimum amount we used in tests is \textit{M = 10000}).
 	
 	
 %%%%%%%%%%%%%%%%%%%
@@ -358,10 +359,10 @@ For each type ok kernel, that was implemented,  we'll show inputs, tests and res
 %*******IN SOSTANZA DA QUI IN POI IL PROF DICE CHE NON SI CAPISCE 
 %"NON È CHIARO COSA SIANO GLI STREAM ITEMS, SE SONO DATA PARALLEL, QUANTO E COSA C'ENTRA DATA PARALLEL"
 %************
-For this computation-bound kernel, for each type of input dataset, we identified three different values of kernel iterations number, call it \(M\), it takes the following values: \(10 000, 400 000, 800 000\).\\
-These values identify how many times the kernel will have to repeat a certain mathematical operation (in our case the Cosine). This is what makes the computation load variable.
+For this computation-bound kernel, for each type of input dataset, we identified three different kernel iterations amount, call it \(M\), it takes the following values: \(10 000, 400 000, 800 000\).\\
+These values identify how many times the kernel will have to repeat a certain mathematical operation (in our case the single-precision Cosine). This is what makes the computation load variable.
 
-Another important parameter is the Block size that we set to \(BLOCK = (1024, 1, 1)\). We recall that 1024 is the maximum we can give to \textit{x} and \textit{y} block dimension, this holds for both of the GPUs we used to run tests, ie \textbf{P100} and \textbf{M40}.\\
+Another important parameter is the Block size that we set to \(BLOCK = (1024, 1, 1)\). We recall that 1024 is the maximum we can give to \textit{x} and \textit{y} block dimension, this holds for both of the GPUs we used to run tests, i.e. \textbf{P100} and \textbf{M40}.\\
 The choice for 1024 was made according to CUDA Occupancy APIs, that suggested this as best block size for the considered application. In general, but it's not a strict rule, computation-bound kernels perform at their best on higher block size, because this should allow us to use the maximum number of threads possible and, thus, to use as much computational resources as possible.\\
 %As we mentioned in \hyperref[chap:logic]{Chapter 3}
 %Then, for each iterations amount, we performed the following executions in \hyperref[tab:cosdata]{Table 5.1}, here are reported all limits on input stream length.
@@ -373,20 +374,20 @@ The choice for 1024 was made according to CUDA Occupancy APIs, that suggested th
 			\hline\hline
 			
 			57 344 & 24 576  \\ 
-			\hline		
+			%\hline		
 			114 688	& 49 152  \\ 
-			\hline			
+			%\hline			
 			229 376 & 98 304 \\
-			\hline				
+			%\hline				
 			458 752 & 196 608 \\
-			\hline
+			%\hline
 			917 504 & 393 216 \\
-			\hline
+			%\hline
 			1 835 008 & 786 432 \\
 			\hline
 
 		\end{tabular}
-		\caption{Input dataset for Simple-Computation kernel, these are the input stream length for both devices.}	
+		\caption{Input dataset for Simple-Computation kernel, these are the input stream limits for both devices.}	
 		\label{tab:cosdata}		
 	\end{table}
 
@@ -395,56 +396,57 @@ All types of tests performed on Simple-computational kernel are:
 	\item \textbf{Classic data parallel approach}\\
 		Here we launch the execution of our simple-computation kernel, as it would be classically used: as fully data parallel application.\\
 		This means that we have a single big data structure, that we'll send entirely to the GPU for data parallel computations.\\
-		Clearly this collection of data will execute the same kernel and will compute the same amount of work w.r.t. the Stream parallel version.\\
-		So, essentially, we're trying to model a problem from the perspectives of two different parallel pattern. It's important to point out that stream parallel will model an input/output stream of small data parallel tasks, while data parallel is modeling a fixed size unique big data structure\footnote{E.g. Simple-computation's data parallel version could be used to make data parallel computations over a big array of floats.}.
+		Clearly this collection of data will be computed by the same kernel and performing the same amount of work w.r.t. the Stream parallel version.\\
+		So, essentially, we're trying to model a problem from the perspectives of two different parallel pattern. It's important to point out that stream parallel will model input/output streams, of unknown length, made by small data parallel tasks, while data parallel is modeling a single and known-sized big data structure\footnote{E.g. Simple-computation's data parallel version could be used to make data parallel computations over a given big and unique array of floats.}.
 		
-		In \hyperref[tab:cosdata]{Table 5.1} we show length that was used.
-		In data parallel those values are the size of the data structure upon which data parallel computations will be performed.\\
-		Instead, in stream parallel, the same amount of computations will be performed, but it will be done in different input streams items, given by small data parallel tasks.
+		In Table \ref{tab:cosdata} we show length that was used.
+		In data parallel those values are the known sizes of the data structure upon which data parallel computations will be performed.\\
+		Instead, in stream parallel we'll have different input streams, formed by small data parallel tasks. Anyway, to compare two such different parallel patterns, we ensured that stream of tasks will give the same total amount of work, w.r.t. the one given by data parallel version.
 		
-		Note that we should not wrongly think that data parallel version is the equivalent of bringing together tasks from input stream of stream parallel problem\footnote{Here, as in all data parallel versions we implemented, we don't make use of CUDA Streams, they'd be useless since we're launching a single kernel on a single huge data structure}.
+		Note that it's wrong to think that data parallel version is the equivalent of bringing together tasks from input stream of stream parallel problem\footnote{Here, as in all data parallel versions we implemented, we don't make use of CUDA Streams, they'd be useless since we're launching a single kernel on a single huge data structure}.
 
 		
-	\item \textbf{Streaming parallel with smaller tasks}
+	\item \textbf{Stream parallel with smaller tasks}
 		Here we're facing the Farm parallel pattern for GPU, but with smaller tasks size.
 		As we mentioned in \hyperref[chap:logic]{Chapter 3}, we're trying to get maximal occupancy, especially in a computational-bound kernel.\\
-		So, given that the goal of our code is that each called kernel could fill fully or partially a SM, we had to take into account of: 
+		So, given that the goal of our code is fully or partially filling a SM with a kernel call, we had to take into account of: 
 		\begin{itemize}
-			\item How big should be each task for each kernel execution;
-			\item Consequently, how many thread blocks our kernel will issue.
+			\item How big should have been each task for each kernel execution;
+			\item Consequently, how many thread blocks our kernel would have to issue.
 		\end{itemize}
-		These choices followed from our devices features, though the two GPUs are located in different Compute Capabilities (P100 is c.c. 6.0, M40 is c.c. 5.2) they have the same limits for 
+		These choices followed from our devices features.
+		Even though the two GPUs are located in different Compute Capabilities (P100 is c.c. 6.0, M40 is c.c. 5.2), they have the same limits for 
 		\begin{itemize}
 			\item Resident \textbf{threads} per SM = 2048 (equivalent to 64 resident warps per SM);
 			\item Resident \textbf{thread blocks} per SM = 32.
 		\end{itemize}
-		The second limit means that we can have at most 32 thread blocks active, and so running, on a certain Streaming Multiprocessor. 
+		The second limit means that we can have at most 32 active thread blocks, i.e. running on a certain Streaming Multiprocessor. 
 	%	********
 	%	NON GLI TORNA STA FRASEEEEEEEE
 	%	However we can hit this limit only when we have a poor amount of threads in each block or a consistent quantity of thread blocks.\\
 	%	***************************
 		%These aren't our case, since we decided to use the maximum number of threads in a block, ie for \textit{x} block dimension and the lowest possible size in grid.
-		
 		The first limit, instead, is our main goal here. Having at most 2048 active threads in a SM and having configuration of \texttt{blocks = (1024, 1, 1)}, we will have at most two resident blocks in a SM.
 		
-		The execution configuration for smaller buffers is such that we want to have 1024 buffers and kernel configuration such as \texttt{<<<1, 1024>>>}. 
+		The execution configuration for smaller tasks version is such that we want to have 1024 as task size and, so, a kernel configuration such as \texttt{<<<1, 1024>>>}. 
 		So here each launched kernel will have one block containing 1024 threads and this theoretically should correspond to half the occupancy of a SM.\\
-		Clearly the code will send a lot of tasks to device, i.e. enough to hopefully fill all SMs. We recall that the number of chunks will be limited according to values in \hyperref[tab:cosdata]{Table 5.1}.
+		Clearly the code will send a lot of tasks to device, i.e. enough to hopefully fill all SMs (at peak work load). We recall that all of the tasks should give a total amount of work limited according to values in Table \ref{tab:cosdata}.
 		
 		All of the above mentioned configurations will be tested for the following CUDA streams cases:		
 		\begin{itemize}
-			\item \textbf{Zero} CUDA Streams. This is the scenario where we use any non-default CUDA stream, so we'll have serial and synchronous data transfers. Kernel are still an asynchronous call, but immediately after we want to have data back from device and this means have a \texttt{cudaMemcpy}, ie a synchronous call (w.r.t. the host);
-			\item \textbf{Three} CUDA Streams. Here we'll use 3 non-default streams, because we want to observe the behavior of our code in a sort of base case. In general, using three stream is the classic configuration for devices with two copy engines. This means it's the minimum to expect an overlap such as a kernel and at most two simultaneous data transfers;
-			\item \textbf{N\textsubscript{SM}} CUDA Streams, with \(N_{SM}\ =\#Streaming \ Multiprocessors\). This is the special case because, in general, applications don't use such a high number of CUDA Streams. But in our case it's necessary to try to achieve the expected speedup with respect to the version without non-default streams (we'll sometimes refer to as "zero version").\\
-			Clearly, at a certain time say \(t_{i}\), we can have at most two data transfer but there's no limit on kernel calls, clearly they will be effectively executed as long as there are available resources on the device. So this is the key point why all of kernel launches, at peak CUDA stream filling, should be spread in SMs, as soon as requested resources will be available.
+			\item \textbf{Zero} CUDA Streams. This is the scenario where we use only default CUDA stream, so we'll have serial and synchronous data transfers (w.r.t. the host). Kernel are still an asynchronous call, but immediately after we want to have data back from device and this means to have a \texttt{cudaMemcpy}, i.e. a synchronous call;
+			\item \textbf{Three} CUDA Streams. Here we'll use 3 non-default streams, because we want to observe the behavior of our code in a sort of base case. In general, using three CUDA streams is the classic approach for devices with two copy engines. This means it's the minimum to expect an overlap such as a kernel and at most two simultaneous data transfers;
+			\item \textbf{N\textsubscript{SM}} CUDA Streams, with \(N_{SM}\ =\#Streaming \ Multiprocessors\). This is the special case because, in general, applications don't use such a high number of non-default Streams. But in our case it's necessary to try to achieve the expected speedup, with respect to the version without CUDA streams (we'll sometimes refer to as "zero-stream" version).\\
+			Clearly, at a certain time, say \(t_{i}\), we can have at most two data transfers but there's no limit on kernel calls, clearly they will be effectively executed as long as there are available resources on the device. 
+			%So this is why all of kernel launches, at peak CUDA stream filling, should be spread in SMs, as soon as kernel's needed resources will become available.
 		\end{itemize}
 		
 	\item \textbf{Streaming parallel with bigger tasks}
-	This tests setup has similar premises to the one for smaller (data parallel) tasks, clearly the only thing is changing is the task size, tha will be set to 2048.\\
-	Thus, having always \texttt{blockSize=(1024, 1, 1)}, the code will set \texttt{gridSize=(2, 1, 1)}, this is because we'll have two blocks, each covering calculations on one half of the task.
+	This tests setup has similar premises to the one for smaller (data parallel) tasks, clearly the only thing is changing is the task size, that will be set to 2048.\\
+	Thus, having always \texttt{blockSize=(1024, 1, 1)}, the code will set\\ \texttt{gridSize=(2, 1, 1)}, so we'll have two blocks, each covering calculations on one half of the task. So having such configurations, we should have ideally a fully occupied SM.
 	This can sound as having better performances, with respect to smaller tasks, but, as we said before, it's not a strict rule to have better performances on maximum occupancy.
 	We'll see from results that instead this approach behaves worse than smaller tasks. \\
-	Clearly we repeated the above mentioned amount of CUDA streams, so for this configuration we executed code using: \textbf{Zero}, \textbf{Three} and \textbf{N\textsubscript{SM}} CUDA Streams.
+	Clearly we reused the above mentioned amount of CUDA streams, so for this type of execution we ran code using: \textbf{Zero}, \textbf{Three} and \textbf{N\textsubscript{SM}} CUDA Streams.
 	%Motivations for those number of non-default streams are completely analogous to the one explained before.
 
 
@@ -459,38 +461,38 @@ All types of tests performed on Simple-computational kernel are:
 \end{enumerate}
 \begin{table}	
 	\centering
-	\begin{tabular}{ | c ||  c | c  || c | c | } 
+	\begin{tabular}{ | c ||  c | c  c  || c | c  c | } 
 		\hline
-		&  \multicolumn{2}{c}{\textbf{Tesla P100 (zero stream)}} & \multicolumn{2}{c}{\textbf{Tesla M40 (zero stream)}}\\ [0.5ex]
+		&  \multicolumn{3}{c||}{\textbf{Tesla P100 (zero stream)}} & \multicolumn{3}{c|}{\textbf{Tesla M40 (zero stream)}}\\ [0.5ex]
 		% & \textbf{Tesla P100} & \textbf{Tesla M40} \\ 
 		\hline
-		M iterations & Event Times & N elements    &    Event Times & N elements  \\
+		M iterations & Event Times & \makecell{Tasks \\ Num} & \makecell{Tot.Work \\ Amount}    &    Event Times & \makecell{Tasks \\ Num} & \makecell{Tot.Work \\ Amount}  \\
 		\hline\hline
 		
 		
-		10000 &	4622.86 &	\multirow{3}{*}{57344}&	693.747&	\multirow{3}{*}{24576}\\
-		400000 & 181465.333&	&	27453.933&	\\
-		800000 &	361199.666&	&	54888.933&	\\
+		10000 &	4622.86 & \multirow{3}{*}{56} &	\multirow{3}{*}{57344}&	693.747 & \multirow{3}{*}{24} &	\multirow{3}{*}{24576}\\
+		400000 & 181465.333 &  &	&	27453.933& &	\\
+		800000 &	361199.666&	& &	54888.933 &  &	\\
 		\hline
-		10000 &	9294.18&	\multirow{3}{*}{114688}&	1382.363&	\multirow{3}{*}{49152}\\
-		400000 &	281507 &	&	54901.6333&	\\
-		800000 &	407750.666&	&	109783.666&	\\
+		10000 &	9294.18 & \multirow{3}{*}{112}&	\multirow{3}{*}{114688}&	1382.363&\multirow{3}{*}{48}&	\multirow{3}{*}{49152}\\
+		400000 &	281507 &	& &	54901.6333& &	\\
+		800000 &	407750.666&	& &	109783.666&	&\\
 		\hline
-		10000 &	10217.933&	\multirow{3}{*}{229376}&	2765.323&	\multirow{3}{*}{98304}\\
-		400000 &	407779.666&	&	109799.333&	\\
-		800000 &	815513.666&	&	219553&	\\
+		10000 &	10217.933&\multirow{3}{*}{224}&	\multirow{3}{*}{229376}&	2765.323& \multirow{3}{*}{96}&	\multirow{3}{*}{98304}\\
+		400000 &	407779.666&	& &	109799.333& &\\
+		800000 &	815513.666&	& &	219553& &	\\
 		\hline
-		10000 &	20433.633&	\multirow{3}{*}{458752}&	5528.96&	\multirow{3}{*}{196608}\\
-		400000 &	815561&	&	219589&	\\
-		800000 &	1631013.333&	&	439097.666&	\\
+		10000 &	20433.633&\multirow{3}{*}{448}&	\multirow{3}{*}{458752}&	5528.96&\multirow{3}{*}{192}&	\multirow{3}{*}{196608}\\
+		400000 &	815561&	& &	219589& &	\\
+		800000 &	1631013.333& &	&	439097.666& &	\\
 		\hline
-		10000 &	40865.4&	\multirow{3}{*}{917504}&	11058.433&	\multirow{3}{*}{393216}\\
-		400000 &	1631096.666&	&	439192.333&	\\
-		800000 &	3261986.666&	&	878195&	\\
+		10000 &	40865.4&\multirow{3}{*}{896}&	\multirow{3}{*}{917504}&	11058.433&\multirow{3}{*}{384}&	\multirow{3}{*}{393216}\\
+		400000 &	1631096.666& &	&	439192.333& &	\\
+		800000 &	3261986.666& &	&	878195& &	\\
 		\hline
-		10000 &	81731.733&	\multirow{3}{*}{1835008}&	22112.6&	\multirow{3}{*}{786432}\\
-		400000 &	3262250	& &	878433&	\\
-		800000 &	6617950 &	&	1756373.333&	\\
+		10000 &	81731.733& \multirow{3}{*}{1792}&\multirow{3}{*}{1835008}&	22112.6&\multirow{3}{*}{768}&	\multirow{3}{*}{786432}\\
+		400000 &	3262250	& & &	878433& &	\\
+		800000 &	6617950 & &	&	1756373.333& &	\\
 		\hline
 	\end{tabular}
 	\caption{Device completion times for Simple-computation kernel, without using CUDA Streams, results are reported for both machines (P100 and M40).}	
@@ -499,37 +501,37 @@ All types of tests performed on Simple-computational kernel are:
 
 \begin{table}	
 	\centering
-	\begin{tabular}{ | c |  c c  | c c | } 
+	\begin{tabular}{ | c |  c | c c  || c | c c | } 
 		\hline
-		& \multicolumn{2}{c}{\textbf{Tesla P100 (56 Streams)}} & \multicolumn{2}{c}{\textbf{Tesla M40 (24 Streams)}}\\ [0.5ex]
+		& \multicolumn{3}{c||}{\textbf{Tesla P100 (56 Streams)}} & \multicolumn{3}{c|}{\textbf{Tesla M40 (24 Streams)}}\\ [0.5ex]
 		% & \textbf{Tesla P100} & \textbf{Tesla M40} \\ 
 		\hline
-		M iterations & Event Times & N elements    &    Event Times & N elements  \\
+		M iterations & Event Times & \makecell{Tasks \\ Num} & \makecell{Tot.Work \\ Amount}    &    Event Times & \makecell{Tasks \\ Num} & \makecell{Tot.Work \\ Amount}  \\
 		\hline\hline
 		
-		10000 &	104.772& \multirow{3}{*}{57344}& 30.6074& 24576\\
-		400000&	3968.913&	&	1178.72	& 24576\\
-		800000&	7818.843&	&	2355.413&	24576\\
+		10000 &	104.772& \multirow{3}{*}{56}& \multirow{3}{*}{57344}& 30.6074 & \multirow{3}{*}{24}& \multirow{3}{*}{24576}\\
+		400000&	3968.913& &	&	1178.72	& &\\
+		800000&	7818.843& &	&	2355.413& &	\\
 		\hline
-		10000&	205.729&\multirow{3}{*}{114688}& 60.208& 49152\\
-		400000&	7828.193&	&	2358.656&	49152\\
-		800000&	15691.833&	&	4714.36&	49152\\
+		10000&	205.729& \multirow{3}{*}{112}&\multirow{3}{*}{114688}& 60.208& \multirow{3}{*}{48}& \multirow{3}{*}{49152}\\
+		400000&	7828.193&	&	&	2358.656&	&\\
+		800000&	15691.833&	&	&	4714.36&	&	\\
 		\hline
-		10000&	407.712& \multirow{3}{*}{229376}& 119.3446&	98304\\
-		400000&	15687.966&	&	4715.123&	98304\\
-		800000&	31396&	&	9425.92&	98304\\
+		10000&	407.712 & \multirow{3}{*}{224}& \multirow{3}{*}{229376}& 119.3446 & \multirow{3}{*}{96}&	\multirow{3}{*}{98304}\\
+		400000&	15687.966&	&	&	4715.123&	&\\
+		800000&	31396&	&	&	9425.92&	&	\\
 		\hline
-		10000&	803.223& \multirow{3}{*}{458752}& 238.249&	196608\\
-		400000&	31422.033&	&	9429.89&	196608\\
-		800000&	62818.7&	&	18853.966&	196608\\
+		10000&	803.223 & \multirow{3}{*}{448}& \multirow{3}{*}{196608}& 238.249 & \multirow{3}{*}{192}& \multirow{3}{*}{196608}\\
+		400000&	31422.033&	&	&	9429.89&	&	\\
+		800000&	62818.7&	&	&	18853.966&	&	\\
 		\hline
-		10000&	1619.586& \multirow{3}{*}{917504}&	475.590&	393216\\
-		400000&	62793.4&	&	18856.8&	393216\\
-		800000&	125575&	&	37705.666&	393216\\
+		10000&	1619.586 & \multirow{3}{*}{896}& \multirow{3}{*}{917504}&	475.590& \multirow{3}{*}{384}&	\multirow{3}{*}{393216}\\
+		400000&	62793.4&	&	&	18856.8&	&	\\
+		800000&	125575&	&	&	37705.666&	&	\\
 		\hline
-		10000&	3229.063& \multirow{3}{*}{1835008}&	949.497 & 786432\\
-		400000&	125547.666&	&	37711.9 &	786432\\
-		800000&	251503&	&	75445.266&	786432\\
+		10000&	3229.063& \multirow{3}{*}{1792}& \multirow{3}{*}{1835008}&	949.497 & \multirow{3}{*}{768} & \multirow{3}{*}{786432}\\
+		400000&	125547.666&	&	&	37711.9 &	&	\\
+		800000&	251503&	&	&	75445.266&	&	\\
 		
 		\hline
 	\end{tabular}
@@ -538,66 +540,64 @@ All types of tests performed on Simple-computational kernel are:
 \end{table}
 
 \subsection{Results}
-All the above tests on Simple-Computation Kernel give us the measures of device times, on which most of observations will rely on.\\
-We can group the measures into two parts:\\\\\\
-	{\large \textbf{Smaller buffers}}\\
-	All collected elapsed times for 1024-sized tasks are reported in \hyperref[tab:cosavgszero]{Table 5.2}, for the zero-streams version, and \hyperref[tab:cosavgsSM]{Table 5.3}, for the SM-streams version.\\
-	From measures in \hyperref[tab:cosavgszero]{Table 5.2}(zero-streams) we can see that Completion Time, fixed an input stream length, increases proportionally with iterations number (e.g. completion times for 40 000 iterations kernel compared to the one for 1000, is almost \(40\times\) bigger). This holds on both of devices.\\
-	This is a further sign that this type of kernel is computation-bound.\\
-
-	Furthermore, in the input data set for tests on Simple-computational kernel, we set input stream tasks to increase in number by a factor of 2\footnote{This means we're increasing the pressure of tasks that each SM will have to compute in total}.\\ 
-	Always looking at \hyperref[tab:cosavgszero]{Table 5.2}, fixed a number of iterations, we can see that even completion times grows by a factor of 2.\\
-	This confirms that, no matter how many tasks the input stream sends, no matter how many iterations the kernel does, \textit{we'll have a completion time directly proportional to the computations amount} performed by the simple-computation kernel.\\
+All the above tests on Simple-Computation Kernel give us the measures of device times, on which most of observations will rely on.
+We can group the measures into two parts: Smaller tasks and Bigger tasks.\\\\\\
+	{\large \textbf{Smaller tasks}}\\
+	All collected elapsed times for 1024-sized tasks are reported in Table \ref{tab:cosavgszero}, for the zero-streams version, and Table \ref{tab:cosavgsSM}, for the SM-streams version.\\	
+	From measures in Table \ref{tab:cosavgszero}(zero-streams) we can see that Completion Time, fixed an input stream length, increases proportionally with iterations number (e.g. completion times for 40 000 iterations kernel compared to the one for 1000, is almost \(40\times\) bigger). This holds on both of devices.\\
+	This is a further sign that this type of kernel is computation-bound.\\\\
+	Furthermore, in the input data set for tests on Simple-computational kernel, we set the tasks number to increase, for each different test, by a factor of 2\footnote{This means we're increasing the pressure of tasks that each SM will have to compute in total}.\\ 	
+	Always looking at Table \ref{tab:cosavgszero}, fixed a number of iterations, we can see that even completion times grows by a factor of 2, as the tasks number grows.\\
+	This confirms that, no matter how many tasks the input stream sends, no matter how many iterations the kernel does, \textit{we'll have a completion time directly proportional to the computations amount}, performed by the simple-computation kernel.\\
 	
-	Now turning on \hyperref[tab:cosavgsSM]{Table 5.3}, we can see the same behavior just presented for zero-streams version. In SM-streams version too we can observe that measures grows as computations amounts grows. However it's immediate to see that zero-streams and SM-streams have completely different completion times.
+	Now turning on Table \ref{tab:cosavgsSM}, we can see the same behavior just presented for zero-streams version. In SM-streams version too we can observe that measures grows as computations amounts grows. However it's immediate to see that zero-streams and SM-streams have completely different completion times.\\
+	Note that in those tables we reported both the tasks number given as input and the correspondent total amount of work they effectively produce.\\
 			
 			
 	\begin{table}	
 		\centering
 		\begin{tabular}{ | c ||  c | c | c  || c | c | c | } 
 			\hline
-			& \multicolumn{3}{c}{\textbf{Tesla P100 (56 Streams)}} & \multicolumn{3}{c}{\textbf{Tesla M40 (24 Streams)}}\\ [0.5ex]
+			& \multicolumn{3}{c||}{\textbf{Tesla P100 (56 Streams)}} & \multicolumn{3}{c|}{\textbf{Tesla M40 (24 Streams)}}\\ [0.5ex]
 			% & \textbf{Tesla P100} & \textbf{Tesla M40} \\ 
 			\hline
-		\textbf{M iterations}  & \textbf{N elements} & \textbf{Sp(3)} & \textbf{Sp(56)} & \textbf{N elements}  & \textbf{Sp(3)} & \textbf{Sp(24)} \\
+		\textbf{M iterations}  & \textbf{\makecell{Tasks\\Num}} & \textbf{Sp(3)} & \textbf{Sp(56)} & \textbf{\makecell{Tasks\\Num}}  & \textbf{Sp(3)} & \textbf{Sp(24)} \\
 			\hline\hline 
-			10000&	\multirow{2}{*}{57344} &	5.337&	44.122&		\multirow{2}{*}{24576}&	2.976&	22.665\\
+			10000&	\multirow{2}{*}{56} &	5.337&	44.122&		\multirow{2}{*}{24}&	2.976&	22.665\\
 			400000&	&	5.246&	45.721&	&	2.963&	23.291\\
 			800000&	&	5.221&	46.196&	&	2.963&	23.303\\
 			\hline
-			10000&	\multirow{2}{*}{114688}&	5.366&	45.176&		\multirow{2}{*}{49152}&	2.967&	22.959\\
+			10000&	\multirow{2}{*}{112}&	5.366&	45.176&		\multirow{2}{*}{48}&	2.967&	22.959\\
 			400000&	&	4.069&	35.960&	&	2.962&	23.276\\
 			800000&	&	2.947&	25.984&	&	2.963&	23.287\\
 			\hline
-			10000&	\multirow{2}{*}{229376}&	2.988&	25.061&		\multirow{2}{*}{98304}&	2.970&	23.170\\
+			10000&	\multirow{2}{*}{224}&	2.988&	25.061&		\multirow{2}{*}{96}&	2.970&	23.170\\
 			400000&	&	2.986&	25.993&	&	2.963&	23.286\\
 			800000&	&	2.986&	25.975&	&	2.962&	23.292\\
 			\hline
-			10000&	\multirow{2}{*}{458752}&	2.988&	25.439&		\multirow{2}{*}{196608}&	2.967&	23.206\\
+			10000&	\multirow{2}{*}{448}&	2.988&	25.439&		\multirow{2}{*}{192}&	2.967&	23.206\\
 			400000&	&	2.986&	25.955&	&	2.963&	23.286\\
 			800000&	&	1.940&	25.963&	&	2.963&	23.289\\
 			\hline
-			10000&	\multirow{2}{*}{917504}&	1.635&	25.231&		\multirow{2}{*}{393216}&	2.967&	23.251\\
+			10000&	\multirow{2}{*}{896}&	1.635&	25.231&		\multirow{2}{*}{384}&	2.967&	23.251\\
 			400000&	&	1.689&	25.975&	&	2.963&	23.290\\
 			800000&	&	2.861&	25.976&	&	2.963&	23.290\\
 			\hline
-			10000&	\multirow{2}{*}{1835008}&	2.998&	25.311&		\multirow{2}{*}{786432}&	2.968&	23.288\\
+			10000&	\multirow{2}{*}{1792}&	2.998&	25.311&		\multirow{2}{*}{768}&	2.968&	23.288\\
 			400000&	&	2.996&	25.984&	&	2.964&	23.293\\
 			800000&	&	2.654&	26.313&	&	2.963&	23.280\\	
 		\hline			
 		\end{tabular}
-		\caption{Here are showed speedups for all data sets of simple-computation kernel. Results are reported for both devices.}	
+		\caption{Speedups for all data sets of simple-computation kernel. Results are reported for both devices.}	
 		\label{tab:cosspeedup}		
 	\end{table}
 			
 			
-	This leads to compute speedups, following the approach explained in Section \ref{subs:resgath}. All of the speedups are shown in Table \ref{tab:cosspeedup}. In this table the most important columns are \textit{Sp(3)} \textit{Sp(SM)}, those columns stands for:
+	This leads us to compute speedups, following the approach explained in Section \ref{subs:resgath}. All of the speedups are shown in Table \ref{tab:cosspeedup}. In this table the most important columns are \textit{Sp(3)} \textit{Sp(SM)}, those columns stands for:
 	\begin{center}
 		\(Sp(3) =  \frac{T_{seq}}{T_{3}} \)  and   
 		\(Sp(SM) = \frac{T_{seq}}{T_{SM}} \).\\
-	\end{center}
-	
-	
+	\end{center}	
 	\begin{figure}
 		\vspace{-2cm}
 		\includegraphics[scale=0.7]{plots/figure_25.png}
@@ -610,35 +610,40 @@ We can group the measures into two parts:\\\\\\
 		\caption{Speedup for 3 and 56 CUDA streams on M40 device.}
 		\label{fig:m40sp}
 	\end{figure}
-	To have an overall view on speedup we also present plots for both P100, in  \hyperref[fig:p100sp]{Figure 5.1}, and M40, in \hyperref[fig:m40sp]{Figure 5.2}.\\
-	The two plots show the speedups only for a part of the real input dataset; in particular, each plot shows the smaller and bigger input stream length and for both it shows the smaller and bigger kernel iterations number.
+	To have an overall view on speedup we also present plots for both P100, in Figure \ref{fig:p100sp}, and M40, in \ref{fig:m40sp}.\\
+	The two plots show the speedups only for a part of the real input dataset; in particular, each plot shows the smaller and bigger tasks amount and for both it shows the smaller and bigger kernel iterations number.
+
 	\begin{figure}
 		\vspace{-2cm}
 		\centering
-		\includegraphics[scale=0.52]{plots/cos_profile.jpg}
-		\caption{Profiling for an example execution: limit for input stream 786432, kernel iterations 10 000, 24 CUDA streams, on M40 device.}
+
+		\includegraphics[scale=0.5]{plots/cos_profile.jpg}
+		\caption{Profiling for an example of execution: number of tasks 768, total amount of work load 786432 floats, kernel iterations 10 000, 24 CUDA streams, on M40 device.}
 		\label{fig:cosprofiling}
+	%\thisfloatpagestyle{empty}
 	
 	\end{figure}
-	
+
 	From the two plots we can clearly see how performances increase proportionally with the number of CUDA streams\footnote{More precisely this gain is bounded to the number of Streaming Multiprocessors the GPU exploits.}.\\
-	We can have a further proof of the achieved speedup, by running the \texttt{NVIDIA Visual Profiler}, we can see a portion of timeline representation in \hyperref[fig:cosprofiling]{Figure 5.3}. It's evident that we have a good overlapping between CUDA Streams, on the right side of the figure we can see a zoom in to the "\textit{stabilization phase}", i.e. the time interval it takes for the program to fill buffers and send them out to the device, until we reach a peak work rate and that "stairs" behavior vanishes.
+	We can have a further proof of the achieved speedup, by running the \texttt{NVIDIA Visual Profiler}, we can see a portion of timeline representation in Figure \ref{fig:cosprofiling}. It's evident that we have a good overlapping between CUDA Streams, on the right side of the figure we can see a zoom in to the "\textit{stabilization phase}", i.e. the time interval it takes for the program to fill CUDA streams with tasks and send them out to the device, until we reach a peak work rate and that "stairs" behavior vanishes.
 	
-	However the profiler analysis reported some issues in our code, for example the profiling showed a too much low grid/block size and a poor memory copy overlapping (having 2 data transfers at the same time). But all these issues are really dependent on the "extreme" use case we're approaching to achieve stream parallel computations and, furthermore, they don't have a bad impact in this particular application.\\
-	A good signal from the profiler is that the average usage of SMs, for a certain kernel call, is equal to one almost fully used SM. And this is exactly what we wanted to achieve, so this allows CUDA streams to spread kernel calls on all SMs, as soon as we have the maximum work rate.\\\\\\
+	However the profiler analysis reported some issues in our code, for example the profiling showed a too much low grid/block size and a poor memory copy overlapping (having 2 data transfers at the same time). But all these issues are really dependent on the "extreme" use case we're approaching in order to achieve stream parallel computations and, in any case, these issues don't have a bad impact in this particular application.\\
+	A good sign from the profiler is that the average usage of SMs, for a certain kernel call, is equal to one almost fully used SM. And this is exactly what we wanted to achieve, so this allows CUDA streams to spread kernel calls on all SMs, as soon as we reach the maximum work rate.\\\\
+	%
 	%BIGGER BUFFERS
-	{\large \textbf{Bigger tasks}}\\\\
+	%
+	{\large \textbf{Bigger tasks}}\\
 	As expected, we get about half the ideal speedup.\\
-	This is because chunks of 2048 should take up the maximum possible for active threads per SM. This means having, for each kernel call, a grid containing 2 blocks, each of size 1024.\\
+	This is because chunks of 2048 should take up the maximum possible active threads per SM. This means having, for each kernel call, a grid containing 2 blocks, each of size 1024.\\
 	So it seems that performances, in this kernel, are related to grid size. Recalling the smaller tasks, the profiler showed an almost full occupancy of one SM at \texttt{<<<1, 1024>>>} yet. So it makes sense to deduce that, \texttt{<<<2, 1024>>>} is a kernel configuration such that it occupies two SMs simultaneously. \\
 	This is the same of having about the half of available resources.
-	We show a plot about this result, tested on P100, in \hyperref[fig:biggerbufferspeedup]{Figure 5.4}
+	We show a plot about this result, tested on P100, in Figure \ref{fig:biggerbufferspeedup}
 	
 	\begin{figure}
 		\vspace{-2cm}
 		\centering
-		\includegraphics[scale=0.52]{plots/cos_speedup_biggerbuffer.png}
-		\caption{Sublinear speedup in bigger buffers execution, the performances drop by a factor of 2.}
+		\includegraphics[scale=0.7]{plots/cos_speedup_biggerbuffer.png}
+		\caption{Sublinear speedup in bigger buffers execution, the performances are clearly halved.}
 		\label{fig:biggerbufferspeedup}
 		
 	\end{figure}
@@ -656,9 +661,9 @@ We can group the measures into two parts:\\\\\\
 \section{Matrix Multiplication}
 With Matrix multiplication we're facing a memory-bound kernel, so we had to make some slightly different tests with respect to the ones in simple-computation kernel.\\
 Note that, even if the Farm logic is the same as the previous application, there are some details to redefine.\\
-First of all, before we were dealing with an input stream of small data parallel tasks built by floats, here those small data parallel tasks are built by small \textit{matrices}. In particular as soon as we have two available input matrices (say \textit{A} and \textit{B}), they're sent out to device to apply the matrix multiplication kernel.\\
+First of all, before we were dealing with an input stream of small data parallel tasks formed by arrays of float numbers, here those small data parallel tasks are built by small \textit{matrices} of float numbers. In particular as soon as we have two available input matrices (say \textit{A} and \textit{B}) from the input streams, they're sent out to device to apply the matrix multiplication kernel.\\
 Finally we get back to host with the result matrix (say \textit{C}), that will be one of the output stream components.\\
-For simplicity, we're measuring for square matrices case, even if code was implemented for non-square case too. 
+For simplicity, we're testing and measuring for square matrices case, even if code was implemented for non-square case too. 
 
 Another assumption is that, for each Matrix Multiplication test, the kernel execution configuration was set up as follows:\\
 assume \textit{N} to be the matrices order, then \texttt{BLOCK = 32} and
@@ -668,17 +673,17 @@ assume \textit{N} to be the matrices order, then \texttt{BLOCK = 32} and
 	\texttt{gridSize=(GRID, GRID, 1)}
 \end{center}
 
-We performed the following executions:
-	\begin{table}	
+So, we performed the executions with the following input data sets:
+	\begin{table}[h]	
 		\centering
-		\begin{tabular}{| c | c | c | c |} 
+		\begin{tabular}{| c | c || c | c |} 
 			\hline
 			
-			 \multicolumn{2}{c}{\textbf{Tesla P100}} & \multicolumn{2}{c}{\textbf{Tesla M40}} \\ [0.5ex]
+			 \multicolumn{2}{|c||}{\textbf{Tesla P100}} & \multicolumn{2}{c|}{\textbf{Tesla M40}} \\ [0.5ex]
 			 % & \textbf{Tesla P100} & \textbf{Tesla M40} \\ 
 			\hline
 			
-			\textbf{Mat. Order} & \textbf{In stream limit} & \textbf{Mat. Order} & \textbf{In stream limit}  \\ 
+			\textbf{\makecell{Task Order Dim\\ (Mat. Order)}} & \textbf{Task Num} & \textbf{\makecell{Task Order Dim\\ (Mat. Order)}} & \textbf{Task Num}  \\ 
 			\hline\hline
 			128 & 225 & 64 & 100  \\ 
 			\hline	
@@ -694,25 +699,25 @@ We performed the following executions:
 			%3 670 016 & ---- & ---- & ---- \\
 			%\hline
 			
-			\multicolumn{2}{c}{Data Parallel} &  \multicolumn{2}{c}{Data Parallel} \\ [0.5ex]
+			\multicolumn{2}{|c||}{\textbf{Tot. Work Load}} &  \multicolumn{2}{c|}{\textbf{Tot. Work Load}} \\ [0.5ex]
 			% & \textbf{Data Parallel} & \textbf{Data Parallel} \\ 
 			\hline\hline
-			\multicolumn{2}{c}{1920} & \multicolumn{2}{c}{1280} \\ [0.5ex]
+			\multicolumn{2}{|c||}{1920} & \multicolumn{2}{c|}{1280} \\ [0.5ex]
 			% & \textbf{Data Parallel} & \textbf{Data Parallel} \\ 
-			\hline			
-			\multicolumn{2}{c}{2816} & \multicolumn{2}{c}{1792} \\ [0.5ex]
-			\hline
-			\multicolumn{2}{c}{3840} & \multicolumn{2}{c}{2560} \\ [0.5ex]
-			\hline
-			\multicolumn{2}{c}{5632} & \multicolumn{2}{c}{3584} \\ [0.5ex]
-			\hline
-			\multicolumn{2}{c}{7680} & \multicolumn{2}{c}{5120} \\ [0.5ex]
-			\hline
-			\multicolumn{2}{c}{11264} & \multicolumn{2}{c}{7168} \\ [0.5ex]
+			%\hline			
+			\multicolumn{2}{|c||}{2816} & \multicolumn{2}{c|}{1792} \\ [0.5ex]
+			%\hline
+			\multicolumn{2}{|c||}{3840} & \multicolumn{2}{c|}{2560} \\ [0.5ex]
+			%\hline
+			\multicolumn{2}{|c||}{5632} & \multicolumn{2}{c|}{3584} \\ [0.5ex]
+			%\hline
+			\multicolumn{2}{|c||}{7680} & \multicolumn{2}{c|}{5120} \\ [0.5ex]
+			%\hline
+			\multicolumn{2}{|c||}{11264} & \multicolumn{2}{c|}{7168} \\ [0.5ex]
 			\hline
 
 		\end{tabular}
-		\caption{Input dataset for Matrix Multiplication kernel. Above Stream parallel configuration, below Data Parallel correspondent.}	
+		\caption{Input dataset for Matrix Multiplication kernel. Above Stream parallel configuration (task size and task amount), below the total work load for the overall executiont.}	
 		\label{tab:matdata}		
 	\end{table}
 %	*************************
@@ -722,11 +727,12 @@ We performed the following executions:
 \begin{enumerate}
 	\item \textbf{Classic data parallel approach}
 	The fully data parallel version here, is totally analogous to the one explained for Simple-computational kernel.\\
-	Here we have again big data parallel data structures (in this case a big matrices), upon which we're performing data parallel computations (i.e. matrix multiplication between two big matrices).
-	In Table \ref{tab:matdata}, in the lower portion, are showed the matrices orders we used for data parallel version of matrix multiplication. \\
+	Here we have again big data parallel data structures (in this case big matrices), upon which we're performing data parallel computations (i.e. a single matrix multiplication between two big matrices, having known size).
+	In Table \ref{tab:matdata}, in the lower portion, are showed the values that represent the overall work performed by all tasks in a stream, this amount is used as term of comparison with pure data parallel version of matrix multiplication.
+	So we'll have big data structures having a known size, that will be assigned using the values in the lower part of Table \ref{tab:matdata}, this is because we have to make a fair comparison between stream and data parallel. \\
 	Again we shouldn't confuse a totally data parallel matrix multiplication on single and big data structures, with a stream parallel version having as items small data parallel tasks.\\
-	So data parallel must not be confused as a grouping of tasks by stream parallel version.
-	Instead, the values presented in Table \ref{tab:matdata} for Data Parallel and Stream parallel should be considered as simple indicators to compare the two versions in a situation in which they're computing the same amount of overall work (and clearly they're modeling the same problem but on totally different types of input).
+	So data parallel must not be intended as a grouping of tasks give by a stream parallel version.
+	Instead, the values presented in Table \ref{tab:matdata}, below the ones used for Data Parallel and above the ones for Stream parallel, should be considered as simple indicators to compare the two versions in a situation in which they're computing the same amount of overall work (and clearly they're modeling the same problem, but on totally different types of input).
 	
 	
 	
@@ -759,26 +765,24 @@ We performed the following executions:
 	
 	% \footnote{We'll see later what cases we match between data and stream parallel to make comparisons.}.
 	
-	\item \textbf{Streaming parallel}
-	As we mentioned before, we have to put a limit on the stream length for both streams\footnote{As in matrix multiplication we have to multiply 2 matrices per time obtaining one as result, we suppose to have two input streams, giving us two tasks per worker. Workers in turn will output one item per time on the output stream.}.\\
-	In the upper portion of Table \ref{tab:matdata} are reported all input stream limits and, for each of them, we test different input tasks sizes (matrices order).\\
-	Note that input stream limits from Table \ref{tab:matdata} means how many tasks will be arriving from each of the two input streams (and, so, how many items should be sent to the output stream).
-	For every combination given by the input parameters, we'll test for different numbers of CUDA streams: \textbf{Zero}, \textbf{Three} and \textbf{N\textsubscript{SM}} CUDA Streams (with \(N_{SM} \ =\# Streaming \ Multiprocessors\)).
-	The above test on different numbers of non-default streams, is implemented in a totally analogous way to the one for Simple-computation Kernel.
+	\item \textbf{Stream parallel}
+	As we mentioned before, we have to put a limit on the amount of tasks arriving from both streams\footnote{As in matrix multiplication we have to multiply 2 matrices per time obtaining one as result, we suppose to have two input streams, giving us two tasks per worker. Workers in turn will output one item per time on the output stream.}.\\
+	In the upper portion of Table \ref{tab:matdata} are reported all relative values for tasks amount and, for each of them, we test different input tasks sizes (matrices order).\\
+	Note that values for tasks number from Table \ref{tab:matdata} means how many tasks will be arriving from each of the two input streams, i.e. more precisely these values represent how many matrix multiplications will be performed (and, so, how many result items should be sent to the output stream).
+	For every combination given by the input parameters, we'll test for different numbers of CUDA streams: \textbf{Zero}, \textbf{Three} and \textbf{N\textsubscript{SM}} non-default Streams (with \(N_{SM} \ =\# Streaming \ Multiprocessors\)).
+	The above test on different numbers of CUDA streams, is implemented in a totally analogous way to the one for Simple-computation Kernel.
 	% And the reasons why we test for those numbers of streams are the same too.
 \end{enumerate}
 
 
-
-\subsection{Results}
 \begin{table}	
 	\centering
 	\begin{tabular}{ | c c c  || c c c | } 
 		\hline
-		\multicolumn{3}{c}{\textbf{Tesla P100 (zero Streams)}} & \multicolumn{3}{c}{\textbf{Tesla M40 (zero Streams)}}\\ [0.5ex]
+		\multicolumn{3}{|c||}{\textbf{Tesla P100 (zero Streams)}} & \multicolumn{3}{c|}{\textbf{Tesla M40 (zero Streams)}}\\ [0.5ex]
 		% & \textbf{Tesla P100} & \textbf{Tesla M40} \\ 
 		\hline
-		Event Times  & Number of Mats & Mat. Order & Event Times  & Number of Mats & Mat. Order  \\
+		\textbf{\makecell{Event\\ Times}}  & \textbf{\makecell{Task Num\\ (\#Mat.Mul)}} & \textbf{\makecell{Task \\ Order Dim\\ (Mat.Order)}} & \textbf{\makecell{Event\\ Times}}  & \textbf{\makecell{Task Num\\ (\#Mat.Mul)}} & \textbf{\makecell{Task\\ Order Dim\\ (Mat.Order)}}  \\
 		\hline\hline
 		
 		
@@ -810,7 +814,7 @@ We performed the following executions:
 		\hline
 		
 	\end{tabular}
-	\caption{Device completion times for Mat-Mul kernel, without using CUDA Streams (zero streams), results are reported for both P100 and M40.}	
+	\caption{Device completion times for Mat-Mul kernel, without using CUDA Streams (zero non-default streams), results are reported for both P100 and M40.}	
 	\label{tab:matvgszero}		
 \end{table}
 
@@ -818,12 +822,12 @@ We performed the following executions:
 	\centering
 	\begin{tabular}{ | c c c  || c c c | } 
 		\hline
-		\multicolumn{3}{c}{\textbf{Tesla P100 (3 Streams)}} & \multicolumn{3}{c}{\textbf{Tesla M40 (3 Streams)}}\\ [0.5ex]
+		\multicolumn{3}{|c||}{\textbf{Tesla P100 (3 Streams)}} & \multicolumn{3}{c|}{\textbf{Tesla M40 (3 Streams)}}\\ [0.5ex]
 		% & \textbf{Tesla P100} & \textbf{Tesla M40} \\ 
 		\hline
-		Event Times  & Number of Mats & Mat. Order & Event Times  & Number of Mats & Mat. Order  \\
+		\textbf{\makecell{Event\\ Times}}  & \textbf{\makecell{Task Num\\ (\#Mat.Mul)}} & \textbf{\makecell{Task \\ Order Dim\\ (Mat.Order)}} & \textbf{\makecell{Event\\ Times}}  & \textbf{\makecell{Task Num\\ (\#Mat.Mul)}} & \textbf{\makecell{Task\\ Order Dim\\ (Mat.Order)}}  \\
 		\hline\hline
-
+		
 		25.5549& 225&	\multirow{4}{*}{128}&	5.2046&	100&	\multirow{4}{*}{64}\\
 		53.2203&	441&	&	10.7422&	196&	\\
 		102.0575&	900&	&	23.9773&	400&	\\
@@ -859,10 +863,10 @@ We performed the following executions:
 	\centering
 	\begin{tabular}{ | c c c  || c c c | } 
 		\hline
-		\multicolumn{3}{c}{\textbf{Tesla P100 (56 Streams)}} & \multicolumn{3}{c}{\textbf{Tesla M40 (24 Streams)}}\\ [0.5ex]
+		\multicolumn{3}{|c||}{\textbf{Tesla P100 (56 Streams)}} & \multicolumn{3}{c|}{\textbf{Tesla M40 (24 Streams)}}\\ [0.5ex]
 		% & \textbf{Tesla P100} & \textbf{Tesla M40} \\ 
 		\hline
-		Event Times  & Number of Mats & Mat. Order & Event Times  & Number of Mats & Mat. Order  \\
+		\textbf{\makecell{Event\\ Times}}  & \textbf{\makecell{Task Num\\ (\#Mat.Mul)}} & \textbf{\makecell{Task \\ Order Dim\\ (Mat.Order)}} & \textbf{\makecell{Event\\ Times}}  & \textbf{\makecell{Task Num\\ (\#Mat.Mul)}} & \textbf{\makecell{Task\\ Order Dim\\ (Mat.Order)}}  \\
 		\hline \hline
 		20.8758&	225&	\multirow{4}{*}{128}&	2.739&	100&	\multirow{4}{*}{64}\\
 		40.5783&	441&	&	5.0942&	196&	\\
@@ -890,66 +894,69 @@ We performed the following executions:
 		559425&	1764&	&	64786.5333&	784&	\\
 		\hline
 	\end{tabular}
-	\caption{Device completion times for Mat-Mul kernel, with as many CUDA Streams as SM number, results are reported for both P100 and M40.}	
+	\caption{Device completion times for Mat-Mul kernel, with as many CUDA Streams as SM amount, results are reported for both P100 and M40.}	
 	\label{tab:matvgsSM}		
 \end{table}
 
+\subsection{Results}
 All the above tests, on Matrix Multiplication Kernel, give us the measures of device times.\\
 Below we'll see that completion times and performance will notably be different, with respect to the previous computation-bound application.
 
-All collected elapsed times are reported in \hyperref[tab:matvgszero]{Table 5.6}, for the zero-streams version, in \hyperref[tab:matvgsThree]{Table 5.7}, for the three-streams one, and \hyperref[tab:matvgsSM]{Table 5.8}, for the SM-streams version.\\
+All collected elapsed times are reported in Table \ref{tab:matvgszero}, for the zero-streams version, in Table \ref{tab:matvgsThree}, for the three-streams one, and Table \ref{tab:matvgsSM}, for the SM-streams version.\\
 From these tables we can highlight some behaviors:
 \begin{itemize}
-	\item input streams of tasks have lengths that grow by a factor of 2 (the task number per SM doubles as execution input parameter) and it's easy to see that this makes a proportional increase in completion times, i.e. even measures grows by factors of 2;
+	\item we made tests for several input stream's tasks total amount so, fixed a certain task size, we have the number of tasks growing by a factor of 2 (i.e. tests are set up in such a way that we execute an application for growing input parameters, in this case the tasks number per SM doubles) and we can see that this makes a proportional increase in completion times, i.e. even measures grows by factors of 2;
 	
-	\item input task sizes again grow of \(2\times\) each, but in this case the completion times don't grow proportionally;
+	\item each tested input task's size again grows of \(2\times\) each, but in this case the completion times don't grow proportionally. Fixed a certain number of tasks arriving from the input stream:
+	\begin{itemize}
+		\item for zero-streams we can see that, as each input parameter for tasks size grows by a factor 2 (w.r.t. the previous one listed in the table), then the completion time can increase from \(\approx4\times\) to \(\approx7\times\); 
+		
+		\item analogously for three-streams, having input tasks sizes each growing by 2, we get that the completion times can vary from \(\approx5\times\) to \(\approx8\times\); 
+		
+		\item finally for SM-streams we can see that, the completion time can increase between them from \(\approx7\times\) to \(\approx8\times\).
+	\end{itemize}
 	
-	\item for zero-streams we can see that, as tasks size grows by a factor 2, the completion time can increase from \(\approx4\times\) to \(\approx7\times\); 
-	
-	\item for three-streams we can see that, as the task size grows by \(2\times\), the completion time can increase from \(\approx5\times\) to \(\approx8\times\); 
-	
-	\item finally for SM-streams we can see that, the completion time can increase from \(\approx7\times\) to \(\approx8\times\).
 \end{itemize}
-Those evidences hold for both machines measures and they give some hints on matrix multiplication nature.\\
-The first point tells us that: the elapsed time to send/receive to/from the device, grows linearly with the number of tasks, so this parameter would not affect particularly performances. Especially, no matter the CUDA streams amount we decide to use, the increase by 2x of tasks quantity, will always give a growth of 2x in measures.\\
-To have a visual comparison, we show plots for completion times in \hyperref[fig:matcompsize]{Figures 5.5 - 5.6}, where we can have a graphical view of the completion time variation, as the tasks size grows (respectively on M40 and P100. In \hyperref[fig:matcompnum]{Figures 5.7-5.8}, instead, we have similar plots, but for the time changing as the number of tasks increments.
+Those evidences hold for both machines measures and they give some further hints on matrix multiplication nature.\\
+The first point tells us that: the elapsed time to send/receive to/from the device, grows proportionally with the number of tasks, so this parameter would not really affect performances. Especially, for any CUDA streams amount we're using, the increase by 2x of each tasks quantity, will always give a growth of 2x in time measures.\\
+To have a visual comparison, we show plots for completion times in Figures \ref{fig:matcompsizeM40}-\ref{fig:matcompsizeP100}, where we can have a graphical view of the completion time variation, as the tasks size grows (respectively on M40 and P100). In Figures \ref{fig:matcompnumM40}-\ref{fig:matcompnumP100}, instead, we have similar plots, but this time for completion times variations as the number of tasks increments.
 \begin{figure}
 	\centering
 	\vspace{-2cm}
 	\includegraphics[scale=0.7]{plots/mat_comp_sizevar.png}
-	\caption{Completion Time as the matrix order changes on M40.}
-	
+	\caption{Completion Time as the task size (matrix order) changes on M40.}
+	\label{fig:matcompsizeM40}
 	%\end{figure}
 	% \vspace*{\floatsep}
 	%\begin{figure}
 	\includegraphics[scale=0.7]{plots/mat_comp_sizevar_P100.png}
-	\caption{Completion Time as the matrix order changes on P100.}
-	\label{fig:matcompsize}
+	\caption{Completion Time as the task size (matrix order) changes on P100.}
+	\label{fig:matcompsizeP100}
 \end{figure} 
 \begin{figure}
 	\centering
-	\vspace{-2cm}
+	\vspace{-2.4cm}
 	\includegraphics[scale=0.7]{plots/mat_comp_numvar.png}
-	\caption{Completion Time as the number of matrices changes on M40.}
-	
+	\caption{Completion Time as the number of tasks (number of matrix multiplications) changes on M40.}
+	\label{fig:matcompnumM40}
 	%\end{figure}
-	% \vspace*{\floatsep}
+	 \vspace*{-0.2cm}
 	%\begin{figure}
 	\includegraphics[scale=0.7]{plots/mat_comp_numvar_P100.png}
-	\caption{Completion Time as the number of matrices changes on P100.}
-	\label{fig:matcompnum}
+	\caption{Completion Time as the number of tasks (number of matrix multiplications) changes on P100.}
+	\label{fig:matcompnumP100}
 \end{figure} 
 
-The other points, emerging from completion times behavior, tell us that, as task size increases, we'll get worser and worser performances. Clearly this doesn't depend on CPU/GPU data transfers overhead, otherwise we'd have the same behavior when the number of tasks grows.\\
-So, the cause must reside on what happens inside the GPU. In reality, the classic matrix multiplication is a well known problem in GPUs paradigm and the classical implementation is known as a not efficient. \\
-This is because, the simpler implementation, at each iteration, spends more time in \textit{global memory}/\textit{registers} transfers than in effective calculations. So that's why this kind of matrix multiplication is considered memory-bound.\\
-So, the more elements a matrices have, the more data transfers (internal to the device) the GPU will have to perform and the more active threads will stall waiting for data to be available for computations.\\
+The other points, emerging from completion times behavior, tell us that, as task size increases, we'll get worser and worser performances. Clearly this doesn't depend on CPU/GPU data transfers overhead, otherwise we'd have this same behavior when the number of tasks grows too.\\
+So, the cause must reside on what happens inside the GPU. In reality, the classic matrix multiplication is a well known problem in GPUs paradigm and the classical implementation is known as a not efficient\cite{cudaguide}. \\
+This is because, our trivial implementation, at each iteration, spends more in \textit{global memory}/\textit{registers} memory operations than in effective calculations. In fact, this kind of matrix multiplication is considered memory-bound\footnote{We also showed that in Section \ref{sect:roofline}}.\\
+So, the more elements matrices have, the more data transfers (internal to the device) the GPU will have to perform and, so, the more active threads will stall waiting for data to be available for computations.\\
 
 \begin{table}	
 	\centering
-	\begin{tabular}{ | c | c | c | c  || c | c | c | c | } 
+	\begin{tabular}{ | c  c | c | c  || c  c | c | c | } 
 		\hline
-		\multicolumn{4}{c}{\textbf{Tesla P100 (56 Streams)}} & \multicolumn{4}{c}{\textbf{Tesla M40 (24 Streams)}}\\ [0.5ex]
+		\multicolumn{4}{|c||}{\textbf{Tesla P100 (56 Streams)}} & \multicolumn{4}{c|}{\textbf{Tesla M40 (24 Streams)}}\\ [0.5ex]
 		% & \textbf{Tesla P100} & \textbf{Tesla M40} \\ 
 		\hline
 			\textbf{\makecell{Mat.\\Number}}  & 	\textbf{\makecell{Mat.\\ Order}} & \textbf{Sp(3)} & \textbf{Sp(56)} & \textbf{\makecell{Mat.\\ Number} }  & \textbf{\makecell{Mat.\\ Order}}   & \textbf{Sp(3)} & \textbf{Sp(24)} \\
@@ -988,86 +995,93 @@ So, the more elements a matrices have, the more data transfers (internal to the 
 	\caption{Here are showed speedups for all data sets of matrix multiplication kernel. Results are reported for both devices.}	
 	\label{tab:matspeedup}		
 \end{table}
-So we'll now focus on speedups, to see that this memory-bound behavior will be negatively reflected on GPU Farm approach. All speedups are listed in \hyperref[tab:matspeedup]{Table 5.9}.\\
+So we'll now focus on speedups, to see that this memory-bound behavior will be negatively reflected on GPU Farm parallel pattern. All speedups are listed in Table \ref{tab:matspeedup}.\\
 From those results, we can mainly observe that:
 \begin{itemize}
 	\item \textit{Sp(3)} gives results near to the expected value, ie \(\approx 3\) for the smaller tasks sizes (128-256 for the P100, 64 for the M40);
 	
-	\item \textit{Sp(SM)} gives a really poor gain w.r.t. \textit{Sp(3)};
+	\item \textit{Sp(SM)} gives a really poor, or inexistent, gain especially w.r.t. \textit{Sp(3)};
 	
 	\item all speedups degrade  to \(\approx1\) as the task dimension grows.
 \end{itemize}
-
+%
+%
+%
 \begin{figure}[!tbp]
 	\centering
-	\vspace{-2cm}
+	\vspace{-2.5cm}
 	\hspace*{-1cm}
 	\begin{tabular}[c]{ccc}
 			
 		\begin{tabular}{l}
-			\subfloat[Matrix size 1024]{\includegraphics[width=0.32\textwidth]{plots/matmul784_1024_timeline.png}\label{fig:timeln1024}}
+			\subfloat[Task size 1024 ]{\includegraphics[width=0.32\textwidth]{plots/matmul784_1024_timeline.png}\label{fig:timeln1024}}
 		\end{tabular}
 		 &
 		
 		\begin{tabular}{l}
-			\subfloat[Matrix size 256]{\includegraphics[width=0.32\textwidth]{plots/matmul784_256_timeline.png}\label{fig:timeln256}}
+			\subfloat[Task size 256 ]{\includegraphics[width=0.32\textwidth]{plots/matmul784_256_timeline.png}\label{fig:timeln256}}
 		\end{tabular} 
 		& 
 		\begin{tabular}{l}
-		\subfloat[Matrix size 64]{\includegraphics[width=0.45\textwidth]{plots/matmul784_64_timeline.png}\label{fig:timeln64}}
+		\subfloat[Task size 64 ]{\includegraphics[width=0.43\textwidth]{plots/matmul784_64_timeline.png}\label{fig:timeln64}}
 		\end{tabular}
 		\\
 	\end{tabular}    
-	\caption{NVIDIA Visual profiler generated \textit{timeline} on M40, using 24 CUDA streams and running code for 784 matrices.}
+	\caption{NVIDIA Visual profiler generated \textit{timeline} on M40, using 24 CUDA streams, running code for 784 tasks (matrix multiplications) and the different Task sizes (matrix orders) reported in captions above.}
 	\label{fig:timeln}
 \end{figure}
+%
+%
+This behavior translates in the following: when the tasks get bigger, even if CUDA Streams push to have more simultaneous matrix-multiplication, we'll have a lot of active threads (and so Multiprocessors) busy and probably waiting on gathering floats from global memory and instruction dependencies in memory operations.\\
+This, in fact, limits amount performances per se, even when using a lot of CUDA streams. Furthermore, those results tell us that we will fit in Multiprocessor less simultaneous matrix multiplications (kernel executions) than we wish\footnote{Clearly this strictly holds for this particular type of matrix multiplication that we implemented.}.\\
+In fact, the necessity of having multiple blocks in the grid\footnote{This is determined by the implementation we gave, see Chapter \ref{chap:impl} and it also depends on the specific application we're considering.}, translates in a monopolization of SMs resources by a small amount of kernel calls (that moreover performs a poor amount of computations).\\
 
-This behavior translates in the following: when the tasks get bigger, even if CUDA Streams push to have more simultaneous mat-mul, we'll have a lot of active threads (and so Multiprocessors) busy and probably waiting on gathering floats from global memory and instruction dependencies in memory operations.\\
-This, in fact, inevitably leads to a very limited amount of gain, even when using a lot of CUDA streams. Furthermore, those results tell us that we will fit in Multiprocessor less matrix multiplication than we wish \footnote{Clearly this strictly holds for this type of matrix multiplication we implemented.}.\\
-Furthermore, the necessity of having multiple blocks on grid, for this specific use case, translates in a monopolization of SMs resources by a small amount of kernel calls.\\
-
-Profiling the application for some key data set we can inspect the above described facts and the relative reasons.
-
+Profiling the application for some key data set we can inspect the above described facts and the relative causes.
+%
+%
 \begin{figure}[!tb]
 	\centering
 	\vspace{-2cm}
 	%\hspace{2cm}
 	\begin{tabular}[c]{cc}
-		\multicolumn{2}{c}{\subfloat[Matrix size 64]{\includegraphics[width=\textwidth]{plots/matmul784_64_SMuse.png}\label{fig:SMuse64}}} \\
+		\multicolumn{2}{c}{\subfloat[Task size 64]{\includegraphics[width=\textwidth]{plots/matmul784_64_SMuse.png}\label{fig:SMuse64}}} \\
 		
-		\subfloat[Matrix size 1024]{\includegraphics[width=0.5\textwidth]{plots/matmul784_1024_SMuse.png}\label{fig:SMuse1024}}
+		\subfloat[Task size 1024]{\includegraphics[width=0.5\textwidth]{plots/matmul784_1024_SMuse.png}\label{fig:SMuse1024}}
 		&
-		\subfloat[Matrix size 256]{\includegraphics[width=0.5\textwidth]{plots/matmul784_256_SMuse.png}\label{fig:SMuse256}}\\
+		\subfloat[Task size 256]{\includegraphics[width=0.5\textwidth]{plots/matmul784_256_SMuse.png}\label{fig:SMuse256}}\\
 
 	\end{tabular}    
-	\caption{NVIDIA Visual profiler generated \textit{timeline} on M40, using 24 CUDA streams and running code for 784 matrices.}
+	\caption{NVIDIA Visual profiler generated \textit{timeline} on M40, using 24 CUDA streams, running code for 784 matrices and the different Task sizes (matrix orders) reported in captions above.}
 	\label{fig:SMuse}
 \end{figure}
-
-In \hyperref[fig:timeln]{Figure 5.9} we can have a visual cue on what is happening during an execution of mat-mul on M40, with 24 CUDA streams, having an input stream of 784 tasks (matrices) of sizes: \(64\times64\) (\hyperref[fig:timeln64]{Figure 5.9 (c)}), \(256\times256\)(\hyperref[fig:timeln256]{Figure 5.9 (b)}), \(1024\times1024\)(\hyperref[fig:timeln1024]{Figure 5.9 (a)}).\\
-Analyzing the figure we can see that the amount of overlapping, between operations in different streams, is really limited in general, this just confirms what we saw from speedups.\\
+%
+%
+In Figure\ref{fig:timeln} we can have a visual cue on what is happening during an execution of matrix-multiplication on M40, with 24 CUDA streams, having an input stream of 784 tasks (i.e. multiplications to perform) of effective size: \(64\times64\) (Figure \ref{fig:timeln64}), \(256\times256\)(Figure \ref{fig:timeln256}), \(1024\times1024\)(Figure \ref{fig:timeln1024}).\\
+Analyzing the figure we can see that the amount of overlapping, between operations (kernel overlapping too) in different streams, is really limited in general, this just confirms what we saw from speedups.\\
 From the above mentioned pictures, we can observe that in 64-sized case we're having a slightly better overlapping and a little more kernels running at the same time. In this case this may happens because grid and block sizes are smaller for each kernel launch, so this allow to have multiple kernels fit in SMs.
 
 Having each thread block such that it contains \(32\times32\) threads, then a \(64\times64\) result matrix (say C) is managed by a grid of \(2\times2\) blocks, while a \(256\times256\) C is managed by a grid of \(8\times8\) blocks and, finally, a \(1024\times1024\) C is managed by a grid of \(32\times32\) blocks\footnote{This depends on how we implemented kernel launch, that is the classical kernel launch approach setting blocks at the maximum size possible. Remember implementations in \hyperref[chap:impl]{Chapter 4} and remember the kernel launch configuration explained above.}.\\
-This means that, in the two latter cases, we don't even have all blocks, from a single kernel launch, fitting in all the SMs. If this may theoretically give a full occupancy of the GPU by a certain kernel, from the other side means saturate the cores without permitting other launches to fit, until the residing kernels ends or, at least, some resources are freed.
+This means that, in the two latter cases, we don't even have all blocks, from a single kernel launch, fitting in all of the SMs. If this may theoretically give a full occupancy of the GPU by a certain kernel, from the other side it means saturate the cores without permitting other launches to fit, until the residing kernel ends or, at least, some resources are freed.
 
-We can confirm this fact by looking at the occupancy graphs (generated from Visual Profiler), showed in \hyperref[fig:SMuse]{Figure 5.10}. In 64-sized case, we've only 4 SMs almost fully employed, while in the other cases all SMs are almost busy (this holds on average in a single kernel launch).\\
-The above cases exposes an example of the fact that \textit{not always a high or full occupancy may give better performances} \cite{loweroccupancy,cudabestpractices}, it strongly depends on the kernel nature.\\
-On the other side as we decrease the tasks size we can't exploit enough resources. As we can see from \hyperref[fig:timeln64]{Figure 5.9} we have a better overlapping, but it seems that kernels lasts too little, so the host can't push kernels quickly enough to fill SMs. In fact Visual Profiler suggests us that those kernels perform a really poor amount of computations, especially with respect to memory latencies, see figure \hyperref[fig:mat62latency]{Figure 5.11}.\\ 
+We can confirm this fact by looking at the occupancy graphs (generated by Visual Profiler), showed in Figure \ref{fig:SMuse}. In 64-sized case, we've only 4 SMs almost fully employed, while in the other cases all SMs are almost busy (and this holds on average in a single kernel launch).\\
+The above cases exposes an example of the fact that \textit{not always a high or full occupancy may give better performances}, it strongly depends on the kernel nature\cite{loweroccupancy,cudabestpractices}.\\
+On the other side as we decrease the tasks size we can't exploit enough resources. As we can see from Figure \ref{fig:timeln64} we have a better overlapping, but it seems that kernels lasts too little, so the host can't push kernels quickly enough to fill SMs. In fact Visual Profiler suggests us that those kernels perform a really poor amount of computations, especially with respect to memory latencies, see figure Figure \ref{fig:mat62latency}.
+%
 \begin{figure}[!tb]
 	%\centering
 	\vspace{-1cm}
 	\hspace{-1cm}
 	\includegraphics[scale=0.8]{plots/matmul784_64_kerlatencies.png}
-	\caption{Nsight profiler execution on M40, 24 CUDA streams, 784 matrices of size 256. This graph gives the types and amounts of latencies inside mat-mul kernel execution.}
+	\caption{Nsight profiler execution on M40, 24 CUDA streams, 784 matrices of size 256. This pie chart gives the types and amounts of latencies inside mat-mul kernel execution.}
 	\label{fig:mat62latency}
 \end{figure}
-
-This pie chart shows that most of the time kernels is idle on:
+%
+%
+This pie chart shows that, most of the time, kernels are idle on:\\\\
 \begin{itemize}
 	\item execution dependency\footnote{Execution dependency stall can be potentially reduced by increasing instruction-level parallelism (ILP). We saw in Chapter \ref{chap:logic}, that we can improve parallelism by increasing the amount of instructions per thread. This can translate in less threads having a greater work-load each. Furthermore we can put independent operations between dependent ones, to cover their latencies.}, i.e. an input required by the issued instruction isn't yet available; 
 	
-	\item memory dependency\footnote{ Memory dependency stall type can potentially be reduced by optimizing memory alignment and access patterns.}, a load/store cannot be made because the required resources aren't available or are fully utilized, or too many requests of a given type are outstanding.
+	\item memory dependency\footnote{ Memory dependency stall can potentially be reduced by optimizing memory alignment and access patterns.}, a load/store cannot be made because the required resources aren't available or are fully utilized, or too many requests of a given type are outstanding.
 \end{itemize}
 This further demonstrates the fact that matrix multiplication is a memory-bound problem in GPU and, so, poor in computation amount.\\
 This is why we have too much short kernels for smaller input data size and heavy kernels for bigger input sizes.
@@ -1079,35 +1093,32 @@ This is why we have too much short kernels for smaller input data size and heavy
 \section{Image processing}
 With image processing, i.e. Blur Box algorithm, we're facing a memory-bound kernel and especially rich of divergent execution flows, in fact we made similar tests to the ones for Matrix multiplication.\\
 For each Image Processing we're working on input/output streams of small data parallel tasks, given in this case by small images.
-So, assume that task size is represented by \textit{N}, that is the image resolution, more precisely given by \(N\times N\), then
+So, assume that task size is represented by \textit{N}, i.e. the order for image resolution, where the latter is given by \(N\times N\), then
 in tests, the kernel execution configuration was set up as follows:
 \begin{center}	
- \texttt{BLOCK = 1024}\\ and\\
-\texttt{GRID = (N/BLOCK) + BLOCK -1}
+	\texttt{BLOCK = 1024}\\
+	 and\\
+	 \texttt{GRID = (N/BLOCK) + BLOCK -1}
 \end{center}
- so we have
-\begin{center}	
-	\texttt{blockSize = (BLOCK, 1, 1)}\\
-	\texttt{gridSize=(GRID, 1, 1)}
-\end{center}
+ so we'll have \texttt{blockSize = (BLOCK, 1, 1)} and \texttt{gridSize=(GRID, 1, 1)}.\\
 Then we performed the following executions:
 %BLOCK=1024
 %imgSize=(128 256)
 %#nStreams=(0 3 56)
 %nImgs=(256 1024) # 14680064 29360128)
 %dpSize=(4096 8192)
-
-
-\begin{table}	
+%
+%
+\begin{table}[h]	
 	\centering
 	\begin{tabular}{| c | c |} 
 		\hline
 		
-		 \multicolumn{2}{c}{\textbf{Tesla P100} \& \textbf{Tesla M40}} \\ [0.5ex]
+		 \multicolumn{2}{|c|}{\textbf{Tesla P100} \& \textbf{Tesla M40}} \\ [0.5ex]
 		%& \textbf{Tesla P100} & \textbf{Tesla M40} \\ 
 		\hline
 		
-		\textbf{Img. Order} & \textbf{In stream limit} \\ 
+		\textbf{\makecell{Task Size\\(Img.Order)}} & \textbf{\makecell{Task Num\\(Img.Number)}} \\ 
 		\hline\hline
 		128 & 64 \\ 
 		\hline		
@@ -1116,51 +1127,51 @@ Then we performed the following executions:
 		512	& 1024 \\ 
 		
 		\hline\hline	
-		\multicolumn{2}{c}{\textbf{Data Parallel Tesla P100 \& Tesla M40}} \\ [0.5ex] 
+		\multicolumn{2}{|c|}{\textbf{Tot. work load}} \\ [0.5ex] 
 		
 		\hline\hline		
-		\multicolumn{2}{c}{1024 } \\ [0.5ex] 
+		\multicolumn{2}{|c|}{1024 } \\ [0.5ex] 
 		
-		\multicolumn{2}{c}{2048 } \\ [0.5ex] 
+		\multicolumn{2}{|c|}{2048 } \\ [0.5ex] 
 		
-		\multicolumn{2}{c}{4096 } \\ [0.5ex] 
+		\multicolumn{2}{|c|}{4096 } \\ [0.5ex] 
 		
-		\multicolumn{2}{c}{8192 } \\ [0.5ex] 
+		\multicolumn{2}{|c|}{8192 } \\ [0.5ex] 
 		\hline	
 	\end{tabular}
 	\caption{Input dataset for Image Processing kernel. Above Stream parallel configuration, below the relative Data Parallel.}	
 	\label{tab:imgdata}		
 \end{table}
-
+%
 \begin{enumerate}
-	\item \textbf{Classic data parallel approach}
-	If we think to a picture as a matrix of pixels, then it's easy to see the analogy to the previous application.\\
+	\item \textbf{Classic data parallel approach}\\
+	If we think to a picture as a matrix of pixels, then it's easy to see the analogy to the previous application.
 	In particular the Data Parallel approach will be tested giving a single image of large dimensions.\\
-	Again we're considering a single big image, such that it's comparable with some Stream Parallel versions. Similarly to matrix multiplication case, we remember that in data parallel version we have a data parallel big structure, it will be sent to the GPU and it will perform data parallel computations all over the data structure elements.\\
-	This is totally different from stream parallel case, where we have a stream of small data parallel images.
-	However we can find some interest sizes for data parallel structures, such that they allow to perform the same amount of work of an overall stream parallel execution.
-	In the lower part of \hyperref[tab:imgdata]{Table 5.3} we show the order of dimension of the single and full data parallel images used to compare to some streaming parallel cases.
+	Again we're considering a single big image, such that it's comparable with some Stream Parallel versions. Similarly to matrix multiplication case, we remember that in data parallel version we have a data parallel big structure, it will be sent to the GPU, where data parallel computations will be performed all over the data structure elements.\\
+	This is totally different from stream parallel case, where we have a stream of small data parallel tasks, in this case given by small images.
+	However we can find some interest sizes for data parallel structures, such that they allow to perform the same amount of work with respect to the stream parallel execution.
+	In the lower part of Table \ref{tab:imgdata} we show the values for some overall work loads computed from an input stream, we use these values only to make a fair comparison with the different data parallel version.\\
+	Clearly, again we've an input stream of small data parallel tasks (theoretically in unknown quantity) that is totally different from having a big data parallel data structure of known dimension.
+	So, we're only comparing two different approaches for the same application and, in order to give a fair comparison, we execute the two versions for the same overall amount of work.
 	
-	\item \textbf{Streaming parallel}
-	
-	As previous cases of Farm parallel pattern, we have to put a limit on the input stream's tasks number (we recall that tasks are given by small images, that are small data parallel tasks).\\
-	In the upper portion of \hyperref[tab:imgdata]{Table 5.10} are reported input stream limits and, for each of them, we test the three types of tasks size (small images resolution). Note that tasks are square images, so, for example, a size of 128 stands for a picture of \((128\times128)\) resolution (16 384 pixels).\\
+	\item \textbf{Stream parallel}\\	
+	As previous cases of Farm parallel pattern, we have to determine the tasks number arriving from the input stream (we recall that stream items are small data parallel tasks, that are made up by small images).\\
+	In the upper portion of Table \ref{tab:imgdata} are reported different amount of tasks and, for each of them, we test the three types of tasks size (resolution of the small images).
+	% Note that tasks are square images, so, for example, a size of 128 stands for a picture of \((128\times128)\) resolution (16 384 pixels).\\
 	For every combination given by the variation on input parameters, we'll test for different numbers of CUDA streams: \textbf{Zero}, \textbf{Three} and \textbf{N\textsubscript{SM}} CUDA Streams (with \(N_{SM} \ =\# Streaming \ Multiprocessors\)).
-	The above test on different numbers of non-default streams, is implemented in a totally analogous way to the ones for the two applications showed above.
-	
+	The above test on different numbers of non-default streams, is implemented in a totally analogous way to the ones for the two applications showed above.	
 \end{enumerate}
-
 
 
 
 \subsection{Results}
 \begin{table}	
 	\centering	
-	\vspace*{-1cm}
+	\vspace*{-1.5cm}
 	\begin{tabular}{ | c |  c c  || c | c | } 
 		\hline
 
-		CUDA Streams &	Img Number & Img Size & Tesla M40 & Tesla P100\\
+		CUDAStreams &	Tasks Num. & Tasks Size & Tesla M40 & Tesla P100\\
 		\hline\hline
 		\multirow{8}{*}{0}&	64&	\multirow{2}{*}{128}&	1608.7367&	1425.9833\\
 		&	256& &	6153.5800&	5670.5567\\
@@ -1201,21 +1212,21 @@ Then we performed the following executions:
 	\label{tab:imgavgs}		
 \end{table}
 
-As expected this image processing kernel demonstrates a bad fitting for Farm parallel pattern in GPU. It gives even worse performances than matrix multiplication.
+As expected, this image processing kernel demonstrates a bad fitting for Farm parallel pattern in GPU. It gives even worse performances than matrix multiplication.
 
-We report in \hyperref[tab:imgavgs]{Table 5.11} all completion times, for zero-streams, three-streams and SM-streams versions.\\
-We can see that the input stream limit, so the number of tasks per SM, is tested making it growing by a factor 4, in fact completion times follow this trend by increasing \(\approx4\times\) proportionally with number of tasks arriving from the input stream.\\
-Instead, fixed a certain number of tasks given from the input stream, we vary the task size to experiment dimensions that double from one to another. This makes the respective completion times growing by a slightly bigger factor, ie \(\approx3\times\).
-
-
+We report in Table \ref{tab:imgavgs} all completion times, for zero-streams, three-streams and SM-streams versions.\\
+We can see that, fixed a task size, the input stream length (i.e. total number of tasks to compute) is a parameter tested for values each growing by a factor 4 (w.r.t. to the previous chosen one), in fact completion times follow this trend by increasing  each\(\approx4\times\), i.e. measures grow proportionally with number of tasks arriving from the input stream.\\
+Instead, fixed a certain number of total tasks arriving from the input stream, we vary the task size to experiment dimensions that double from one to another. This makes the respective completion times growing by a slightly bigger factor, i.e. \(\approx3\times\).\\
+%
+%
 \begin{table}	
 	\centering
 	\begin{tabular}{ | c  c || c | c  || c | c || } 
 		\hline
-		& &  \multicolumn{2}{c}{\textbf{Tesla M40 (24 Streams)}}& \multicolumn{2}{c}{\textbf{Tesla P100 (56 Streams)}} \\ [0.5ex]
+		& &  \multicolumn{2}{c||}{\textbf{Tesla M40 (24 Streams)}}& \multicolumn{2}{c|}{\textbf{Tesla P100 (56 Streams)}} \\ [0.5ex]
 		% & \textbf{Tesla P100} & \textbf{Tesla M40} \\ 
 		\hline		
-		Img Number &	Img Size&	\textbf{Sp(3)} & \textbf{Sp(24)} &	\textbf{Sp(3)} &	\textbf{Sp(56)}\\
+		Tasks Num. & Task Size &	\textbf{Sp(3)} & \textbf{Sp(24)} &	\textbf{Sp(3)} &	\textbf{Sp(56)}\\
 		\hline	\hline	
 		64&	\multirow{2}{*}{128}&	1.0396&	1.0855&	1.4805&	1.3666\\
 		256&	&	1.1235&	1.0889&	1.4723&	1.3570\\
@@ -1228,25 +1239,25 @@ Instead, fixed a certain number of tasks given from the input stream, we vary th
 		1024&	&	1.1383&	1.1292&	1.1346&	1.0781\\
 		\hline
 	\end{tabular}
-	\caption{Here are showed speedups for all data sets of image processing kernel. Results are reported for both devices.}	
+	\caption{Here we showed speedups for all data sets of image processing kernel. Results are reported for both devices.}	
 	\label{tab:imgspeedup}		
 \end{table}
-
-
+%
+%
 But the really evident and important behavior is that we don't have much difference between the version not using CUDA Streams and the ones using them.\\
-This is, in fact, confirmed by the speedups in \hyperref[tab:imgspeedup]{Table 5.12}, where we can see that almost everywhere the best speedup we can achieve is about 1, that means no speedup at all.\\
-So, we almost have no overlapping, we expected a similar behavior though.\\
-
+This is, in fact, confirmed by the speedups in Table \ref{tab:imgspeedup}, where we can see that almost everywhere the best speedup we can achieve is about 1, that means no speedup at all.\\
+So, we almost have no overlapping, we expected a similar behavior though.
 
 
 
 \section{Results Summary}
 %Results are collected, for each group of execution, in some \texttt{.txt} files. In those files we can find a list of applications outputs in \texttt{.csv} format.
 Merging all obtained results, we can state that, under specific assumptions and adjustments, \textit{Farm parallel pattern can give a speedup really near to linear one}.\\
-We can observe this behavior especially in computation-bound case, where we're below the ideal speedup for a small quantity. Anyway, we can't achieve perfectly the ideal for more possible reasons: 
+We can observe this behavior especially in computation-bound case, where we're below the ideal speedup for a small amount. Anyway, we can't achieve perfectly the ideal for more possible reasons: 
 \begin{itemize}
 	\item First we've to take into account that we have a "\textit{stabilization phase}", meaning that when input stream starts to send first items we've a little interval where CUDA streams and SMs need to fill up, until we reach the peak occupation;
-	\item We can have the rare situation where in a certain portion of time, say \([t_{i},t_{i}+\Delta_{t}\), we have multiple requests (from different CUDA Streams) for memory copy, ie we've \(> number of Copy Engines (=2)\) simultaneous requests.\\
+	\item We can have the rare situation where in a certain portion of time, say \([t_{i},t_{i}+\Delta_{t}\), we have multiple requests (from different CUDA Streams) for memory copy, i.e. we've \(> number \ of \ Copy \ Engines (=2)\) simultaneous requests;
+	\item We can have cases such that we can't reach the best possible overlapping\footnote{Since the behavior of commands issued by different CUDA streams is undefined, we can't be sure to always have the best overlapping.}
 \end{itemize}
 However, we only proved theoretically that \(Sp_{\#SM} \leq \#SM\), just for completeness we could show some tests for a greater number of CUDA Streams, for example\\ \(\#CUDA Streams \geq 2\cdot\#SM\).\\
 We briefly show the result for Simple-computational kernel, comparing the SM-version and the double-SM-version\footnote{We only report results for M40 machine, but performances are analogous on P100.}.
@@ -1297,31 +1308,32 @@ So this means we're trying to use an amount of CUDA streams that is the double o
 \end{table}
 
 
-And, as we expected, the \hyperref[tab:cosdoublestream]{Table 5.13} confirms the theoretical upper bound determined with Amdahl's law. The table clearly shows that the speedup is still \(Sp_{\#SM}\leq\#SM\).
+And, as we expected, the Table \ref{tab:cosdoublestream} confirms the theoretical upper bound determined with Amdahl's law. The table clearly shows that the speedup is still \(Sp_{\#SM}\leq\#SM\).
+Furthermore, it seems we're having speedups even lower than the ones for SM-version and it may be due to the overhead caused by the management of such a huge quantity of CUDA streams.
 
 
 
 
 
 \subsection{Stream parallel compared to Data parallel}
-As introduced on the tests settings, we executed and collected completion time measures for data parallel version too.\\
+As introduced on the tests settings, we executed and collected completion time measures for data parallel version too.
 The latter clearly is setup in such a way that it computes the same workload that we're computing in stream version.\\
-But we enforce again the concept that we're comparing the same application from the two different perspective of two totally different parallel patterns.\\
-In fact, we have to remember that pure data parallel version will take a single data structure, having known size both theoretically and practically, and over all the content of this collection we perform data parallel computations, so as result we'll have again a big data structure having the same size as the input.\\
-The Farm version, instead, takes a stream of small tasks that are sent to the GPU to perform data parallel computations on each of those small items and, as output, we'll have back the same amount of tasks, having the same size each.\\
-So we're not clearly comparing directly input types and dimensions, but we're comparing the overall amount of work given by the two different versions.\\
+But we enforce again the concept that we're comparing the same application from two distinct perspectives of two totally different parallel patterns.\\
+In fact, we have to remember that pure data parallel version will take a single data structure, having known size both theoretically and practically, and over all the content of this collection we perform data parallel computations, so the result will be again a big data structure having the same size as the input.\\
+The Farm version, instead, takes a stream of small tasks that are sent to the GPU to perform data parallel computations on each of those small items and, as output, we'll have back the same amount of tasks, having the same size as input each.\\
+So we're not clearly comparing directly input types and dimensions, but we're comparing a certain application for the overall amount of work given by the two different versions.\\
 Below we'll show results for each kernel type:
 \begin{itemize}
 	\item \textbf{Simple-computation kernel}\\%Dire che smaller buffer meglio perché non monopolizza interamente un SM, lascia spazio ad un altro kernel launch di entrare.
-		
+		%
 	\begin{table}
 		\centering
-		\begin{tabular}{ | c  c || c | c  || c | c || } 
+		\begin{tabular}{ | c  c || c | c  || c | c | } 
 			\hline
-			& &  \multicolumn{2}{c}{\textbf{Tesla P100 (56 Streams)}}& \multicolumn{2}{c}{\textbf{Tesla M40 (24 Streams)}} \\ [0.5ex]
+			& &  \multicolumn{2}{c||}{\textbf{Tesla P100 (56 Streams)}}& \multicolumn{2}{c|}{\textbf{Tesla M40 (24 Streams)}} \\ [0.5ex]
 			% & \textbf{Tesla P100} & \textbf{Tesla M40} \\ 
 			\hline		
-			N items &	M iterations &	56 Streams & Data Parallel &	24 Streams & Data Parallel\\
+			\textbf{N items} &	\textbf{M iterations} &	\textbf{56 Streams} & \textbf{Data Parallel} &	\textbf{24 Streams} & \textbf{Data Parallel}\\
 			\hline	\hline	
 			
 			\multirow{2}{*}{57344}&	10000&	104.7727&	51.3901&	30.6074&	34.9234\\
@@ -1355,30 +1367,30 @@ Below we'll show results for each kernel type:
 		\label{tab:cosdataparVSsm}		
 	\end{table}
 	
-	From the \hyperref[tab:cosdataparVSsm]{Table 5.14} we can clearly see that data parallel has really similar performances with respect to stream parallel version(in SM-CUDA-streams setting).\\
+	From the Table \ref{tab:cosdataparVSsm} we can clearly see that data parallel has really similar performances with respect to stream parallel version (with as many CUDA streams as SMs number).\\
 	This is what we expected, since, the almost-linear speedup we obtained, means that we successfully overlapped different executions for small tasks. Formally, suppose that for any data/stream parallel comparison, we consider the same application and the same overall work load.\\
-	Call \(T_{DataPar}\) the amount of time needed to: copy the whole single data structure from host to device, perform data parallel computations on the whole data structure, then copy back the whole result data structure. 
+	Call \(T_{DataPar}\) the amount of time needed to: copy the whole single data structure from host to device, perform data parallel computations on the whole data structure, then copy back the all the result data structure. 
 	For stream parallel version we'll wish to have instead
-	\begin{center}
-		\(T_{StreamPar} \approx \Delta_{t} + T_{DataPar}\)
-	\end{center}
+	\begin{equation}
+		T_{StreamPar} \approx \Delta_{t} + T_{DataPar}
+	\end{equation}
 	where \(\Delta_{t}\) is a not predictable overhead, given by the different behavior on GPU of stream parallel w.r.t. data parallel.\\
 	In this \(\Delta_{t}\) we may also think to include those overheads due to imperfect streams overlapping, i.e. host/device copy or kernel execution that couldn't hide with other activities (partially or totally). So, in those cases where \(\Delta_{t}\) can be negligible with respect to the overall completion time, we hope to achieve:
-	\begin{center}
-		\(T_{DP} \approx T_{SP}\)
-	\end{center}
+	\begin{equation}
+		T_{DP} \approx T_{SP}
+	\end{equation}
 	where in general we expect that it's more likely to have \(T_{DP} \leq T_{SP}\), than the contrary.
 	
 	\item \textbf{Matrix Multiplication kernel}\\
 	%	Dire che in sostanza si è capit oche per questo kernel e in versione Farm ci vuole un compromesso tra matrici grandi, quindi tanti blocchi, che saturano la GPU e matrici troppo piccole t.c il kernel dura troppo poco.
-	In \hyperref[tab:matdataparVSsmM40]{M40 Table} and \hyperref[tab:matdataparVSsmP100]{P100 Table} we'll se a really particular behavior, because on both devices we get consistently better performances from streaming parallel version, with respect to the data parallel version.\\
+	In M40 Table \ref{tab:matdataparVSsmM40} and P100 Table \ref{tab:matdataparVSsmP100} we can see a really particular behavior, because on both devices we get consistently better performances from streaming parallel version, with respect to the data parallel version.\\
 	\begin{table}[!h]	
 		\centering
-		\begin{tabular}{ | c  c || c | c  || c || } 
+		\begin{tabular}{ | c  c || c | c  || c | } 
 			\hline
 	 
 		
-			Mat Number&	Mat Order&	56 Streams&	Event Time&	Data Par Mat Order\\
+			\textbf{Tasks Num.}&	\textbf{Tasks Size}&	\textbf{56 Streams}&	\textbf{Event Time}&	\textbf{Data Par. size}\\
 			\hline	\hline	
 			225&	\multirow{3}{*}{128}&	20.8758	& 289.4027&	1920\\
 			441	& &	40.5783&	898.0440&	2688\\
@@ -1394,19 +1406,20 @@ Below we'll show results for each kernel type:
 			441	& &	2298.3967&	56190.3667&	10752\\
 			\hline
 		\end{tabular}
-		\caption{Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -56) and data parallel versions (Partial dataset is of stream version is considered). Results are reported for P100.}	
+		\caption{Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -56) and data parallel versions (Partial dataset of stream version is considered). Results are reported for P100.}	
 		\label{tab:matdataparVSsmP100}		
 	\end{table}
 	
-	For Completeness in \hyperref[tab:matdataparVSsmM40]{M40 Table} we also introduced a column to compare the data parallel version with serial version (streaming parallel with zero CUDA Streams).\\
-	From that column we can see that Data parallel version also has worse performances than serial version. Furthermore we introduced a column to compute the ratio \(T_{dataParallel} \ T_{\#SM streams}\), and as we can see that from Stream Parallel version we have a gain of \(\approx 20\times\).
+	For Completeness in M40 Table \ref{tab:matdataparVSsmM40} we also introduced a column to compare the data parallel version with serial version (streaming parallel with zero CUDA Streams).\\
+	From that column we can see that Data parallel version also has worse performances than serial version.
+	Furthermore we introduced a column to compute the ratio \( \ \frac{T_{dataParallel}}{T_{\#SM streams}} \ \), and as we can see  from Stream parallel version, we have a gain of \(\approx 20\times\).
 	
 	\begin{table}[!h]
 		\centering
-		\begin{tabular}{ | c  c || c | c  || c | c | c  || } 
+		\begin{tabular}{ | c  c || c | c  || c | c | c  | } 
 			\hline
 		
-		\makecell{	Mat\\ Number}&	\makecell{Mat\\ Order}&	Zero Streams&	24 Streams&	Data Parallel& \makecell{Mat Order\\Data Par}&	(DataPar)/(24Str)\\
+		\textbf{\makecell{	Mat\\ Number}}&	\textbf{\makecell{Mat\\ Order}}&	\textbf{\makecell{Zero\\ Streams}}&	\textbf{\makecell{24\\ Streams}}&	\textbf{\makecell{Data Par\\ Time}}& \textbf{\makecell{Mat Order\\Data Par}}&	\textbf{(DataPar)/(24Str)}\\
 			\hline	\hline	
 			100&	\multirow{3}{*}{128}&	36.2095&	19.3538&	172.6997&	1280&	8.9233\\
 			196	& &	74.2686&	37.8561&	456.3713&	1792&	12.0554\\
@@ -1422,26 +1435,29 @@ Below we'll show results for each kernel type:
 			196& &	2479.4333&	2027.2867&	28711&	7168&	14.1623\\
 		\hline
 		\end{tabular}
-		\caption{Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -24-) and data parallel versions (Partial dataset is of stream version is considered). Results are reported for M40.}	
+		\caption{Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -24-) and data parallel versions (Partial dataset of stream version is considered). Results are reported for M40.}	
 		\label{tab:matdataparVSsmM40}		
 	\end{table}
 	This singular behavior again depends on the memory-bound nature of this implementation.\\
-	Having a huge single data structure, computing a poor amount of arithmetic on a huge amount of items residing in global memory, inevitably leads to a over-occupancy in SMs (mainly due to latencies and thread stalls), dropping dramatically performances.
+	Having a huge single data structure, computing a poor amount of arithmetic on a huge amount of items residing in global memory, inevitably leads to a drop in performances, mainly due to latencies and thread stalls.\\
+	Recalling the implementation we studied for matrix multiplication, have a big data structure means: each thread couple computes a single element for result matrix and since we're working on high order matrices, for each \(C[i, \ j]\) we'll have a high number of sums of products but especially a lot of double loads (for \(A[i, \ k]\) and \(B[k, \ j]\)).
+	This inevitably will give heavy and slow blocks of threads, monopolizing SMs resources.\\
+	Furthermore, at any given time, we'll have only part of the total computations fitting in all SMs. So having such heavy blocks, in such a huge quantity, contributes to drop the performances, especially w.r.t. the stream parallel version.
 	
 	
 	\item \textbf{Image Processing kernel}\\
-	In this case, looking at \hyperref[tab:imgdataparVSsm]{Table 5.17}, we can observe a fluctuation in behavior.\\
-	Sometimes Data Parallel performs better than Stream Parallel, and sometimes the vice versa happens. But we recall that this type of kernel is peculiarly chosen to have divergent flows. Indeed, even the profiler reported the latency due to diverging flows as an issue.
+	In this case, looking at Table \ref{tab:imgdataparVSsm}, we can observe a fluctuation in behavior.\\
+	Sometimes Data Parallel performs better than Stream Parallel, and sometimes the vice versa happens. But we recall that this type of kernel is peculiarly chosen to have divergent flows. Indeed, even the profiler reported issues and latencies due to diverging flows.
 	\begin{table}
 		\centering
-		\begin{tabular}{ | c  c || c | c  || c | c || c|| } 
+		\begin{tabular}{ | c  c || c | c  || c | c || c| } 
 			\hline
-			& &  \multicolumn{2}{c}{\textbf{Tesla M40 (24 Streams)}}& \multicolumn{2}{c}{\textbf{Tesla P100 (56 Streams)}}& \\ [0.5ex]
+			& &  \multicolumn{2}{c||}{\textbf{Tesla M40 (24 Streams)}}& \multicolumn{2}{c}{\textbf{Tesla P100 (56 Streams)}}& \\ [0.5ex]
 			% & \textbf{Tesla P100} & \textbf{Tesla M40} \\ 
 			%\hline		
 			%Img Number &	Img Size&	\textbf{Sp(3)} & \textbf{Sp(24)} &	\textbf{Sp(3)} &	\textbf{Sp(56)}\\
-			\hline							M40	
-			Img Number&	Img Size&	Streams 56&	Data Par&	Streams 24&	Data Par	& Img Size\\
+			\hline					
+			\textbf{\makecell{Tasks\\ Num.}}&	\textbf{\makecell{Task \\Size}}&	\textbf{Streams 56}&	\textbf{\makecell{Data Par\\time}}& \textbf{Streams 24}& \textbf{\makecell{Data Par\\time}}	& \textbf{\makecell{DataPar\\ Size}}\\
 			\hline	\hline	
 			64&	\multirow{2}{*}{128}&	1043.4733&	1042.1233&	1482.0533&	1928.8767&	1024\\
 			256	& &	4178.6333&	2522.0767&	5651.3833&	7369.49&	2048\\
@@ -1456,7 +1472,7 @@ Below we'll show results for each kernel type:
 			
 		\hline			
 		\end{tabular}
-		\caption{Here is showed the data parallel vs. stream parallel comparison for image processing kernel. Results are reported for both devices.}	
+		\caption{Here is showed the data parallel and stream parallel comparison for image processing kernel. Results are reported for both devices.}	
 		\label{tab:imgdataparVSsm}		
 	\end{table}
 	

@@ -5,21 +5,21 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {5.1}{\ignorespaces Input dataset for Simple-Computation kernel, these are the input stream length for both devices.\relax }}{93}{table.caption.11}
-\contentsline {table}{\numberline {5.2}{\ignorespaces Device completion times for Simple-computation kernel, without using CUDA Streams, results are reported for both machines (P100 and M40).\relax }}{97}{table.caption.12}
-\contentsline {table}{\numberline {5.3}{\ignorespaces Device completion times for Simple-computation kernel, using as many CUDA Streams as SM number, results are reported for both machines (P100 and M40).\relax }}{98}{table.caption.13}
-\contentsline {table}{\numberline {5.4}{\ignorespaces Here are showed speedups for all data sets of simple-computation kernel. Results are reported for both devices.\relax }}{100}{table.caption.14}
-\contentsline {table}{\numberline {5.5}{\ignorespaces Input dataset for Matrix Multiplication kernel. Above Stream parallel configuration, below Data Parallel correspondent.\relax }}{105}{table.caption.18}
-\contentsline {table}{\numberline {5.6}{\ignorespaces Device completion times for Mat-Mul kernel, without using CUDA Streams (zero streams), results are reported for both P100 and M40.\relax }}{108}{table.caption.19}
-\contentsline {table}{\numberline {5.7}{\ignorespaces Device completion times for Mat-Mul kernel, with three CUDA Streams, results are reported for both P100 and M40.\relax }}{109}{table.caption.20}
-\contentsline {table}{\numberline {5.8}{\ignorespaces Device completion times for Mat-Mul kernel, with as many CUDA Streams as SM number, results are reported for both P100 and M40.\relax }}{110}{table.caption.21}
-\contentsline {table}{\numberline {5.9}{\ignorespaces Here are showed speedups for all data sets of matrix multiplication kernel. Results are reported for both devices.\relax }}{114}{table.caption.24}
-\contentsline {table}{\numberline {5.10}{\ignorespaces Input dataset for Image Processing kernel. Above Stream parallel configuration, below the relative Data Parallel.\relax }}{120}{table.caption.28}
-\contentsline {table}{\numberline {5.11}{\ignorespaces Device completion times for Image processing kernel, all types of tested CUDA Streams number are reported, results are given for both P100 and M40.\relax }}{122}{table.caption.29}
-\contentsline {table}{\numberline {5.12}{\ignorespaces Here are showed speedups for all data sets of image processing kernel. Results are reported for both devices.\relax }}{123}{table.caption.30}
-\contentsline {table}{\numberline {5.13}{\ignorespaces Here are showed completion time and speedup for \(48 = 2 \cdot \#SM\) CUDA Streams. \relax }}{125}{table.caption.31}
-\contentsline {table}{\numberline {5.14}{\ignorespaces Simple-computational kernel. Comparison between completion times for stream parallel (max stream -56 and 24 respectively-) and data parallel versions. Results are reported for both devices.\relax }}{127}{table.caption.32}
-\contentsline {table}{\numberline {5.15}{\ignorespaces Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -56) and data parallel versions (Partial dataset is of stream version is considered). Results are reported for P100.\relax }}{129}{table.caption.33}
-\contentsline {table}{\numberline {5.16}{\ignorespaces Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -24-) and data parallel versions (Partial dataset is of stream version is considered). Results are reported for M40.\relax }}{130}{table.caption.34}
-\contentsline {table}{\numberline {5.17}{\ignorespaces Here is showed the data parallel vs. stream parallel comparison for image processing kernel. Results are reported for both devices.\relax }}{131}{table.caption.35}
+\contentsline {table}{\numberline {5.1}{\ignorespaces Input dataset for Simple-Computation kernel, these are the input stream limits for both devices.\relax }}{94}{table.caption.11}
+\contentsline {table}{\numberline {5.2}{\ignorespaces Device completion times for Simple-computation kernel, without using CUDA Streams, results are reported for both machines (P100 and M40).\relax }}{98}{table.caption.12}
+\contentsline {table}{\numberline {5.3}{\ignorespaces Device completion times for Simple-computation kernel, using as many CUDA Streams as SM number, results are reported for both machines (P100 and M40).\relax }}{99}{table.caption.13}
+\contentsline {table}{\numberline {5.4}{\ignorespaces Speedups for all data sets of simple-computation kernel. Results are reported for both devices.\relax }}{101}{table.caption.14}
+\contentsline {table}{\numberline {5.5}{\ignorespaces Input dataset for Matrix Multiplication kernel. Above Stream parallel configuration (task size and task amount), below the total work load for the overall executiont.\relax }}{106}{table.caption.18}
+\contentsline {table}{\numberline {5.6}{\ignorespaces Device completion times for Mat-Mul kernel, without using CUDA Streams (zero non-default streams), results are reported for both P100 and M40.\relax }}{109}{table.caption.19}
+\contentsline {table}{\numberline {5.7}{\ignorespaces Device completion times for Mat-Mul kernel, with three CUDA Streams, results are reported for both P100 and M40.\relax }}{110}{table.caption.20}
+\contentsline {table}{\numberline {5.8}{\ignorespaces Device completion times for Mat-Mul kernel, with as many CUDA Streams as SM amount, results are reported for both P100 and M40.\relax }}{111}{table.caption.21}
+\contentsline {table}{\numberline {5.9}{\ignorespaces Here are showed speedups for all data sets of matrix multiplication kernel. Results are reported for both devices.\relax }}{116}{table.caption.24}
+\contentsline {table}{\numberline {5.10}{\ignorespaces Input dataset for Image Processing kernel. Above Stream parallel configuration, below the relative Data Parallel.\relax }}{122}{table.caption.28}
+\contentsline {table}{\numberline {5.11}{\ignorespaces Device completion times for Image processing kernel, all types of tested CUDA Streams number are reported, results are given for both P100 and M40.\relax }}{124}{table.caption.29}
+\contentsline {table}{\numberline {5.12}{\ignorespaces Here we showed speedups for all data sets of image processing kernel. Results are reported for both devices.\relax }}{125}{table.caption.30}
+\contentsline {table}{\numberline {5.13}{\ignorespaces Here are showed completion time and speedup for \(48 = 2 \cdot \#SM\) CUDA Streams. \relax }}{127}{table.caption.31}
+\contentsline {table}{\numberline {5.14}{\ignorespaces Simple-computational kernel. Comparison between completion times for stream parallel (max stream -56 and 24 respectively-) and data parallel versions. Results are reported for both devices.\relax }}{129}{table.caption.32}
+\contentsline {table}{\numberline {5.15}{\ignorespaces Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -56) and data parallel versions (Partial dataset of stream version is considered). Results are reported for P100.\relax }}{130}{table.caption.33}
+\contentsline {table}{\numberline {5.16}{\ignorespaces Matrix multiplication kernel. Comparison between completion times for stream parallel (max stream -24-) and data parallel versions (Partial dataset of stream version is considered). Results are reported for M40.\relax }}{131}{table.caption.34}
+\contentsline {table}{\numberline {5.17}{\ignorespaces Here is showed the data parallel and stream parallel comparison for image processing kernel. Results are reported for both devices.\relax }}{132}{table.caption.35}
 \addvspace {10\p@ }

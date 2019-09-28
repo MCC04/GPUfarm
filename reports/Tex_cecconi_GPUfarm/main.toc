@@ -38,26 +38,26 @@
 \contentsline {subsection}{\numberline {4.1.1}Simple-computational kernel}{64}{subsection.4.1.1}
 \contentsline {subsection}{\numberline {4.1.2}Matrix multiplication}{65}{subsection.4.1.2}
 \contentsline {subsection}{\numberline {4.1.3}Blur Box filter}{67}{subsection.4.1.3}
-\contentsline {section}{\numberline {4.2}Parallel Patterns implementation on GPU}{68}{section.4.2}
+\contentsline {section}{\numberline {4.2}Parallel Patterns implementation on GPU}{69}{section.4.2}
 \contentsline {subsection}{\numberline {4.2.1}Stream Parallel on GPU}{69}{subsection.4.2.1}
-\contentsline {subsection}{\numberline {4.2.2}Data Parallel un GPU}{73}{subsection.4.2.2}
-\contentsline {chapter}{\numberline {5}Experiments}{76}{chapter.5}
-\contentsline {section}{\numberline {5.1}Expectations}{76}{section.5.1}
-\contentsline {subsection}{\numberline {5.1.1}Measures: What and How}{77}{subsection.5.1.1}
-\contentsline {subsection}{\numberline {5.1.2}Tests setup}{82}{subsection.5.1.2}
-\contentsline {subsection}{\numberline {5.1.3}Speedup}{83}{subsection.5.1.3}
-\contentsline {subsection}{\numberline {5.1.4}Results: gathering and evaluation}{84}{subsection.5.1.4}
-\contentsline {subsection}{\numberline {5.1.5}Computation-bound and memory-bound}{88}{subsection.5.1.5}
-\contentsline {section}{\numberline {5.2}Simple-computation kernel}{92}{section.5.2}
-\contentsline {subsection}{\numberline {5.2.1}Results}{96}{subsection.5.2.1}
-\contentsline {section}{\numberline {5.3}Matrix Multiplication}{104}{section.5.3}
-\contentsline {subsection}{\numberline {5.3.1}Results}{107}{subsection.5.3.1}
-\contentsline {section}{\numberline {5.4}Image processing}{119}{section.5.4}
-\contentsline {subsection}{\numberline {5.4.1}Results}{121}{subsection.5.4.1}
-\contentsline {section}{\numberline {5.5}Results Summary}{124}{section.5.5}
+\contentsline {subsection}{\numberline {4.2.2}Data Parallel un GPU}{74}{subsection.4.2.2}
+\contentsline {chapter}{\numberline {5}Experiments}{77}{chapter.5}
+\contentsline {section}{\numberline {5.1}Expectations}{77}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Measures: What and How}{78}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Tests setup}{83}{subsection.5.1.2}
+\contentsline {subsection}{\numberline {5.1.3}Speedup}{84}{subsection.5.1.3}
+\contentsline {subsection}{\numberline {5.1.4}Results: gathering and evaluation}{85}{subsection.5.1.4}
+\contentsline {subsection}{\numberline {5.1.5}Computation-bound and memory-bound}{89}{subsection.5.1.5}
+\contentsline {section}{\numberline {5.2}Simple-computation kernel}{93}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Results}{97}{subsection.5.2.1}
+\contentsline {section}{\numberline {5.3}Matrix Multiplication}{105}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Results}{108}{subsection.5.3.1}
+\contentsline {section}{\numberline {5.4}Image processing}{121}{section.5.4}
+\contentsline {subsection}{\numberline {5.4.1}Results}{123}{subsection.5.4.1}
+\contentsline {section}{\numberline {5.5}Results Summary}{125}{section.5.5}
 \contentsline {subsection}{\numberline {5.5.1}Stream parallel compared to Data parallel}{126}{subsection.5.5.1}
-\contentsline {chapter}{\numberline {6}Conclusions}{132}{chapter.6}
-\contentsline {subsection}{\numberline {6.1.2}Evaluation of the problem}{133}{subsection.6.1.2}
-\contentsline {subsection}{\numberline {6.1.3}Implementation and tests}{136}{subsection.6.1.3}
-\contentsline {subsection}{\numberline {6.1.4}Results and considerations}{137}{subsection.6.1.4}
-\contentsline {subsection}{\numberline {6.1.5}Final remarks and further works}{139}{subsection.6.1.5}
+\contentsline {chapter}{\numberline {6}Conclusions}{133}{chapter.6}
+\contentsline {subsection}{\numberline {6.1.2}Evaluation of the problem}{134}{subsection.6.1.2}
+\contentsline {subsection}{\numberline {6.1.3}Implementation and tests}{137}{subsection.6.1.3}
+\contentsline {subsection}{\numberline {6.1.4}Results and considerations}{138}{subsection.6.1.4}
+\contentsline {subsection}{\numberline {6.1.5}Final remarks and further works}{140}{subsection.6.1.5}
